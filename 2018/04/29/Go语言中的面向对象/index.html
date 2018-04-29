@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuecho.com">
-  <title>Archives | WuEcho的博客</title>
+  <title>Go语言中的面向对象 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一个区块链，iOS开发攻城狮">
-<meta name="keywords" content="区块链">
-<meta property="og:type" content="website">
-<meta property="og:title" content="WuEcho的博客">
-<meta property="og:url" content="http://www.wuecho.com/archives/index.html">
+  <meta name="description" content="面向对象（OOP）go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。 Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。 1.1 定义结构体和方法通过以下代码来更好的理解，首先在src目录下创建一个package命名为oop，在oop目录下，再创建一个子目录命名为employe">
+<meta name="keywords" content="面向对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言中的面向对象">
+<meta property="og:url" content="http://www.wuecho.com/2018/04/29/Go语言中的面向对象/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="一个区块链，iOS开发攻城狮">
+<meta property="og:description" content="面向对象（OOP）go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。 Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。 1.1 定义结构体和方法通过以下代码来更好的理解，首先在src目录下创建一个package命名为oop，在oop目录下，再创建一个子目录命名为employe">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-29T10:55:52.068Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WuEcho的博客">
-<meta name="twitter:description" content="一个区块链，iOS开发攻城狮">
+<meta name="twitter:title" content="Go语言中的面向对象">
+<meta name="twitter:description" content="面向对象（OOP）go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。 Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。 1.1 定义结构体和方法通过以下代码来更好的理解，首先在src目录下创建一个package命名为oop，在oop目录下，再创建一个子目录命名为employe">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -156,36 +157,163 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Go语言中的面向对象" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言中的面向对象/" class="archive-article-date">
-  	<time datetime="2018-04-29T10:24:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言中的面向对象/">Go语言中的面向对象</a>
+    <h1 class="article-title" itemprop="name">
+      Go语言中的面向对象
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/04/29/Go语言中的面向对象/" class="archive-article-date">
+  	<time datetime="2018-04-29T10:24:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
+</a>
+        
+      </header>
+      
+      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+      </p>
+      <div id="toc-article" class="toc-article">
+          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#面向对象（OOP）"><span class="toc-number">1.</span> <span class="toc-text">面向对象（OOP）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-定义结构体和方法"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 定义结构体和方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-New-函数替代了构造函数"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 New()函数替代了构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3组成-Composition-替代了继承-Inheritance"><span class="toc-number">1.3.</span> <span class="toc-text">1.3组成(Composition )替代了继承(Inheritance)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-通过嵌入结构体实现组成"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.3.1 通过嵌入结构体实现组成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-多态性-Polymorphism"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 多态性(Polymorphism)</span></a></li></ol></li></ol>
+      </div>
+      <script type="text/javascript">
+          function showToc(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:block");
+              show_toc_btn.setAttribute("style","display:none");
+          };
+          function showBtn(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:none");
+              show_toc_btn.setAttribute("style","display:block");
+          };
+      </script>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="面向对象（OOP）"><a href="#面向对象（OOP）" class="headerlink" title="面向对象（OOP）"></a>面向对象（OOP）</h1><p>go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。</p>
+<p>Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。</p>
+<h2 id="1-1-定义结构体和方法"><a href="#1-1-定义结构体和方法" class="headerlink" title="1.1 定义结构体和方法"></a>1.1 定义结构体和方法</h2><p>通过以下代码来更好的理解，首先在src目录下创建一个package命名为oop，在oop目录下，再创建一个子目录命名为employee，在该目录下创建一个go文件命名为employee.go。</p>
+<p>目录结构：oop -&gt; employee -&gt; employee.go</p>
+<p>在employee.go文件中保存以下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> employee</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Employee <span class="keyword">struct</span> &#123;  </span><br><span class="line">    FirstName   <span class="keyword">string</span></span><br><span class="line">    LastName    <span class="keyword">string</span></span><br><span class="line">    TotalLeaves <span class="keyword">int</span></span><br><span class="line">    LeavesTaken <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e Employee)</span> <span class="title">LeavesRemaining</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Printf(<span class="string">"%s %s has %d leaves remaining"</span>, e.FirstName, e.LastName, (e.TotalLeaves - e.LeavesTaken))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在oop目录下，创建文件并命名为main.go，并保存以下内容</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"oop/employee"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    e := employee.Employee &#123;</span><br><span class="line">        FirstName: <span class="string">"Sam"</span>,</span><br><span class="line">        LastName: <span class="string">"Adolf"</span>,</span><br><span class="line">        TotalLeaves: <span class="number">30</span>,</span><br><span class="line">        LeavesTaken: <span class="number">20</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    e.LeavesRemaining()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sam Adolf has 10 leaves remaining</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-New-函数替代了构造函数"><a href="#1-2-New-函数替代了构造函数" class="headerlink" title="1.2 New()函数替代了构造函数"></a>1.2 New()函数替代了构造函数</h2><p>我们上面写的程序看起来不错，但是里面有一个微妙的问题。让我们看看当我们用0值定义employee struct时会发生什么。更改main的内容。转到下面的代码，</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"oop/employee"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">var</span> e employee.Employee</span><br><span class="line">    e.LeavesRemaining()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">has 0 leaves remaining</span><br></pre></td></tr></table></figure>
+<p>通过运行结果可以知道，使用Employee的零值创建的变量是不可用的。它没有有效的名、姓，也没有有效的保留细节。在其他的OOP语言中，比如java，这个问题可以通过使用构造函数来解决。使用参数化构造函数可以创建一个有效的对象。</p>
+<p>go不支持构造函数。如果某个类型的零值不可用，则程序员的任务是不导出该类型以防止其他包的访问，并提供一个名为NewT(parameters)的函数，该函数初始化类型T和所需的值。在go中，它是一个命名一个函数的约定，它创建了一个T类型的值给NewT(parameters)。这就像一个构造函数。如果包只定义了一个类型，那么它的一个约定就是将这个函数命名为New(parameters)而不是NewT(parameters)。</p>
+<p>更改employee.go的代码：</p>
+<p>首先修改employee结构体为非导出，并创建一个函数New()，它将创建一个新Employee。代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> employee</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> employee <span class="keyword">struct</span> &#123;  </span><br><span class="line">    firstName   <span class="keyword">string</span></span><br><span class="line">    lastName    <span class="keyword">string</span></span><br><span class="line">    totalLeaves <span class="keyword">int</span></span><br><span class="line">    leavesTaken <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">(firstName <span class="keyword">string</span>, lastName <span class="keyword">string</span>, totalLeave <span class="keyword">int</span>, leavesTaken <span class="keyword">int</span>)</span> <span class="title">employee</span></span> &#123;  </span><br><span class="line">    e := employee &#123;firstName, lastName, totalLeave, leavesTaken&#125;</span><br><span class="line">    <span class="keyword">return</span> e</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e employee)</span> <span class="title">LeavesRemaining</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Printf(<span class="string">"%s %s has %d leaves remaining"</span>, e.firstName, e.lastName, (e.totalLeaves - e.leavesTaken))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在这里做了一些重要的改变。我们已经将Employee struct的起始字母e设置为小写，即我们已经将类型Employee struct更改为type Employee struct。通过这样做，我们成功地导出了employee结构并阻止了其他包的访问。将未导出的结构的所有字段都导出为未导出的方法是很好的做法，除非有特定的需要导出它们。由于我们不需要在包之外的任何地方使用employee struct的字段，所以我们也没有导出所有字段。</p>
+<p>由于employee是未导出的，所以不可能从其他包中创建类型employee的值。因此，我们提供了一个输出的新函数。将所需的参数作为输入并返回新创建的employee。</p>
+<p>这个程序还需要做一些修改，让它能够工作，但是让我们运行这个程序来了解到目前为止变化的效果。如果这个程序运行，它将会失败，有以下编译错误，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go/src/constructor/main.go:6: undefined: employee.Employee</span><br></pre></td></tr></table></figure>
+<p>这是因为我们有未导出的Employee，因此编译器抛出错误，该类型在main中没有定义。完美的。正是我们想要的。现在没有其他的包能够创建一个零值的员工。我们成功地防止了一个无法使用的员工结构价值被创建。现在创建员工的唯一方法是使用新功能。</p>
+<p>修改main.go代码</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"oop/employee"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    e := employee.New(<span class="string">"Sam"</span>, <span class="string">"Adolf"</span>, <span class="number">30</span>, <span class="number">20</span>)</span><br><span class="line">    e.LeavesRemaining()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sam Adolf has 10 leaves remaining</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以明白，虽然Go不支持类，但是结构体可以有效地使用，在使用构造函数的位置，使用New(parameters)的方法即可。</p>
+<h2 id="1-3组成-Composition-替代了继承-Inheritance"><a href="#1-3组成-Composition-替代了继承-Inheritance" class="headerlink" title="1.3组成(Composition )替代了继承(Inheritance)"></a>1.3组成(Composition )替代了继承(Inheritance)</h2><p>Go不支持继承，但它支持组合。组合的一般定义是“放在一起”。构图的一个例子就是汽车。汽车是由轮子、发动机和其他各种部件组成的。</p>
+<p>博客文章就是一个完美的组合例子。每个博客都有标题、内容和作者信息。这可以用组合完美地表示出来。</p>
+<h3 id="1-3-1-通过嵌入结构体实现组成"><a href="#1-3-1-通过嵌入结构体实现组成" class="headerlink" title="1.3.1 通过嵌入结构体实现组成"></a>1.3.1 通过嵌入结构体实现组成</h3><p>可以通过将一个struct类型嵌入到另一个结构中实现。</p>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">我们创建了一个author struct，它包含字段名、lastName和bio。我们还添加了一个方法fullName()，将作者作为接收者类型，这将返回作者的全名。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">type</span> author <span class="keyword">struct</span> &#123;  </span><br><span class="line">    firstName <span class="keyword">string</span></span><br><span class="line">    lastName  <span class="keyword">string</span></span><br><span class="line">    bio       <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a author)</span> <span class="title">fullName</span><span class="params">()</span> <span class="title">string</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> fmt.Sprintf(<span class="string">"%s %s"</span>, a.firstName, a.lastName)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">post struct有字段标题、内容。它还有一个嵌入式匿名字段作者。这个字段表示post struct是由author组成的。现在post struct可以访问作者结构的所有字段和方法。我们还在post struct中添加了details()方法，它打印出作者的标题、内容、全名和bio。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">type</span> post <span class="keyword">struct</span> &#123;  </span><br><span class="line">    title     <span class="keyword">string</span></span><br><span class="line">    content   <span class="keyword">string</span></span><br><span class="line">    author</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p post)</span> <span class="title">details</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"Title: "</span>, p.title)</span><br><span class="line">    fmt.Println(<span class="string">"Content: "</span>, p.content)</span><br><span class="line">    fmt.Println(<span class="string">"Author: "</span>, p.author.fullName())</span><br><span class="line">    fmt.Println(<span class="string">"Bio: "</span>, p.author.bio)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    author1 := author&#123;</span><br><span class="line">        <span class="string">"Naveen"</span>,</span><br><span class="line">        <span class="string">"Ramanathan"</span>,</span><br><span class="line">        <span class="string">"Golang Enthusiast"</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    post1 := post&#123;</span><br><span class="line">        <span class="string">"Inheritance in Go"</span>,</span><br><span class="line">        <span class="string">"Go supports composition instead of inheritance"</span>,</span><br><span class="line">        author1,</span><br><span class="line">    &#125;</span><br><span class="line">    post1.details()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Title:  Inheritance in Go  </span><br><span class="line">Content:  Go supports composition instead of inheritance  </span><br><span class="line">Author:  Naveen Ramanathan  </span><br><span class="line">Bio:  Golang Enthusiast</span><br></pre></td></tr></table></figure>
+<p><strong>嵌入结构体的切片</strong></p>
+<p>在以上程序的main函数下增加以下代码，并运行</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> website <span class="keyword">struct</span> &#123;  </span><br><span class="line">        []post</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w website)</span> <span class="title">contents</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"Contents of Website\n"</span>)</span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> w.posts &#123;</span><br><span class="line">        v.details()</span><br><span class="line">        fmt.Println()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main.go:31:9: syntax error: unexpected [, expecting field name or embedded type</span><br></pre></td></tr></table></figure>
+<p>这个错误指向structs []post的嵌入部分。原因是不可能匿名嵌入一片。需要一个字段名。我们来修正这个错误，让编译器通过。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> website <span class="keyword">struct</span> &#123;  </span><br><span class="line">        posts []post</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在让我们修改的main函数,为我们的新的website创建几个posts。修改完完整代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> author <span class="keyword">struct</span> &#123;  </span><br><span class="line">    firstName <span class="keyword">string</span></span><br><span class="line">    lastName  <span class="keyword">string</span></span><br><span class="line">    bio       <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a author)</span> <span class="title">fullName</span><span class="params">()</span> <span class="title">string</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> fmt.Sprintf(<span class="string">"%s %s"</span>, a.firstName, a.lastName)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> post <span class="keyword">struct</span> &#123;  </span><br><span class="line">    title   <span class="keyword">string</span></span><br><span class="line">    content <span class="keyword">string</span></span><br><span class="line">    author</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p post)</span> <span class="title">details</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"Title: "</span>, p.title)</span><br><span class="line">    fmt.Println(<span class="string">"Content: "</span>, p.content)</span><br><span class="line">    fmt.Println(<span class="string">"Author: "</span>, p.fullName())</span><br><span class="line">    fmt.Println(<span class="string">"Bio: "</span>, p.bio)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> website <span class="keyword">struct</span> &#123;  </span><br><span class="line"> posts []post</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w website)</span> <span class="title">contents</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"Contents of Website\n"</span>)</span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> w.posts &#123;</span><br><span class="line">        v.details()</span><br><span class="line">        fmt.Println()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    author1 := author&#123;</span><br><span class="line">        <span class="string">"Naveen"</span>,</span><br><span class="line">        <span class="string">"Ramanathan"</span>,</span><br><span class="line">        <span class="string">"Golang Enthusiast"</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    post1 := post&#123;</span><br><span class="line">        <span class="string">"Inheritance in Go"</span>,</span><br><span class="line">        <span class="string">"Go supports composition instead of inheritance"</span>,</span><br><span class="line">        author1,</span><br><span class="line">    &#125;</span><br><span class="line">    post2 := post&#123;</span><br><span class="line">        <span class="string">"Struct instead of Classes in Go"</span>,</span><br><span class="line">        <span class="string">"Go does not support classes but methods can be added to structs"</span>,</span><br><span class="line">        author1,</span><br><span class="line">    &#125;</span><br><span class="line">    post3 := post&#123;</span><br><span class="line">        <span class="string">"Concurrency"</span>,</span><br><span class="line">        <span class="string">"Go is a concurrent language and not a parallel one"</span>,</span><br><span class="line">        author1,</span><br><span class="line">    &#125;</span><br><span class="line">    w := website&#123;</span><br><span class="line">        posts: []post&#123;post1, post2, post3&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">    w.contents()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Contents of Website</span><br><span class="line"></span><br><span class="line">Title:  Inheritance in Go  </span><br><span class="line">Content:  Go supports composition instead of inheritance  </span><br><span class="line">Author:  Naveen Ramanathan  </span><br><span class="line">Bio:  Golang Enthusiast</span><br><span class="line"></span><br><span class="line">Title:  Struct instead of Classes in Go  </span><br><span class="line">Content:  Go does not support classes but methods can be added to structs  </span><br><span class="line">Author:  Naveen Ramanathan  </span><br><span class="line">Bio:  Golang Enthusiast</span><br><span class="line"></span><br><span class="line">Title:  Concurrency  </span><br><span class="line">Content:  Go is a concurrent language and not a parallel one  </span><br><span class="line">Author:  Naveen Ramanathan  </span><br><span class="line">Bio:  Golang Enthusiast</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-多态性-Polymorphism"><a href="#1-4-多态性-Polymorphism" class="headerlink" title="1.4 多态性(Polymorphism)"></a>1.4 多态性(Polymorphism)</h2><p>Go中的多态性是在接口的帮助下实现的。接口可以在Go中隐式地实现。如果类型为接口中声明的所有方法提供了定义，则实现一个接口。</p>
+<p>任何定义接口所有方法的类型都被称为隐式地实现该接口。</p>
+<p>类型接口的变量可以保存实现接口的任何值。接口的这个属性用于实现Go中的多态性。</p>
+<p>定义一个接口：Income</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Income <span class="keyword">interface</span> &#123;  </span><br><span class="line">    calculate() <span class="keyword">int</span></span><br><span class="line">    source() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义两个结构体：FixedBilling和TimeAndMaterial</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> FixedBilling <span class="keyword">struct</span> &#123;  </span><br><span class="line">    projectName <span class="keyword">string</span></span><br><span class="line">    biddedAmount <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> TimeAndMaterial <span class="keyword">struct</span> &#123;  </span><br><span class="line">    projectName <span class="keyword">string</span></span><br><span class="line">    noOfHours  <span class="keyword">int</span></span><br><span class="line">    hourlyRate <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义这些结构体类型的方法，计算并返回实际收入和收入来源。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(fb FixedBilling)</span> <span class="title">calculate</span><span class="params">()</span> <span class="title">int</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> fb.biddedAmount</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(fb FixedBilling)</span> <span class="title">source</span><span class="params">()</span> <span class="title">string</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> fb.projectName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tm TimeAndMaterial)</span> <span class="title">calculate</span><span class="params">()</span> <span class="title">int</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> tm.noOfHours * tm.hourlyRate</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tm TimeAndMaterial)</span> <span class="title">source</span><span class="params">()</span> <span class="title">string</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> tm.projectName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，声明一下计算和打印总收入的calculateNetIncome函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calculateNetIncome</span><span class="params">(ic []Income)</span></span> &#123;  </span><br><span class="line">    <span class="keyword">var</span> netincome <span class="keyword">int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> _, income := <span class="keyword">range</span> ic &#123;</span><br><span class="line">        fmt.Printf(<span class="string">"Income From %s = $%d\n"</span>, income.source(), income.calculate())</span><br><span class="line">        netincome += income.calculate()</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Printf(<span class="string">"Net income of organisation = $%d"</span>, netincome)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的calculateNetIncome函数接受一部分Income接口作为参数。它通过遍历切片和调用calculate()方法来计算总收入。它还通过调用source()方法来显示收入来源。根据收入接口的具体类型，将调用不同的calculate()和source()方法。在calculateNetIncome函数中实现了多态。</p>
+<p>在未来，如果组织增加了一种新的收入来源，这个函数仍然可以正确地计算总收入，而没有一行代码更改。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    project1 := FixedBilling&#123;projectName: <span class="string">"Project 1"</span>, biddedAmount: <span class="number">5000</span>&#125;</span><br><span class="line">    project2 := FixedBilling&#123;projectName: <span class="string">"Project 2"</span>, biddedAmount: <span class="number">10000</span>&#125;</span><br><span class="line">    project3 := TimeAndMaterial&#123;projectName: <span class="string">"Project 3"</span>, noOfHours: <span class="number">160</span>, hourlyRate: <span class="number">25</span>&#125;</span><br><span class="line">    incomeStreams := []Income&#123;project1, project2, project3&#125;</span><br><span class="line">    calculateNetIncome(incomeStreams)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Income From Project 1 = $5000  </span><br><span class="line">Income From Project 2 = $10000  </span><br><span class="line">Income From Project 3 = $4000  </span><br><span class="line">Net income of organisation = $19000</span><br></pre></td></tr></table></figure>
+<p>假设该组织通过广告找到了新的收入来源。简单地添加新的收入方式和计算总收入，而不用对calculateNetIncome函数做任何更改。由于多态性，这样是可行的。</p>
+<p>首先让我们定义Advertisement类型和calculate()和source()方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Advertisement <span class="keyword">struct</span> &#123;  </span><br><span class="line">    adName     <span class="keyword">string</span></span><br><span class="line">    CPC        <span class="keyword">int</span></span><br><span class="line">    noOfClicks <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a Advertisement)</span> <span class="title">calculate</span><span class="params">()</span> <span class="title">int</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> a.CPC * a.noOfClicks</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a Advertisement)</span> <span class="title">source</span><span class="params">()</span> <span class="title">string</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> a.adName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>广告类型有三个字段adName, CPC(cost per click)和noof点击数(cost per click)。广告的总收入是CPC和noOfClicks的产品。</p>
+<p>修改主函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    project1 := FixedBilling&#123;projectName: <span class="string">"Project 1"</span>, biddedAmount: <span class="number">5000</span>&#125;</span><br><span class="line">    project2 := FixedBilling&#123;projectName: <span class="string">"Project 2"</span>, biddedAmount: <span class="number">10000</span>&#125;</span><br><span class="line">    project3 := TimeAndMaterial&#123;projectName: <span class="string">"Project 3"</span>, noOfHours: <span class="number">160</span>, hourlyRate: <span class="number">25</span>&#125;</span><br><span class="line">    bannerAd := Advertisement&#123;adName: <span class="string">"Banner Ad"</span>, CPC: <span class="number">2</span>, noOfClicks: <span class="number">500</span>&#125;</span><br><span class="line">    popupAd := Advertisement&#123;adName: <span class="string">"Popup Ad"</span>, CPC: <span class="number">5</span>, noOfClicks: <span class="number">750</span>&#125;</span><br><span class="line">    incomeStreams := []Income&#123;project1, project2, project3, bannerAd, popupAd&#125;</span><br><span class="line">    calculateNetIncome(incomeStreams)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Income From Project 1 = $5000  </span><br><span class="line">Income From Project 2 = $10000  </span><br><span class="line">Income From Project 3 = $4000  </span><br><span class="line">Income From Banner Ad = $1000  </span><br><span class="line">Income From Popup Ad = $3750  </span><br><span class="line">Net income of organisation = $23750</span><br></pre></td></tr></table></figure>
+<p>综上，有对calculateNetIncome函数做任何更改，尽管添加了新的收入方式。它只是因为多态性而起作用。由于新的Advertisement类型也实现了Income接口，将它添加到incomeStreams切片中。calculateNetIncome函数也在没有任何更改的情况下工作，因为它可以调用Advertisement类型的calculate()和source()方法。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢您的投食<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/weixin.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -197,7 +325,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -210,461 +338,116 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/04/29/Go语言中的面向对象/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言的反射-reflection/" class="archive-article-date">
-  	<time datetime="2018-04-29T06:29:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/29/Go语言的反射-reflection/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Go语言的反射(reflection)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言的反射-reflection/">Go语言的反射(reflection)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">reflection反射</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#面向对象（OOP）"><span class="toc-number">1.</span> <span class="toc-text">面向对象（OOP）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-定义结构体和方法"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 定义结构体和方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-New-函数替代了构造函数"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 New()函数替代了构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3组成-Composition-替代了继承-Inheritance"><span class="toc-number">1.3.</span> <span class="toc-text">1.3组成(Composition )替代了继承(Inheritance)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-通过嵌入结构体实现组成"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.3.1 通过嵌入结构体实现组成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-多态性-Polymorphism"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 多态性(Polymorphism)</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言的接口/" class="archive-article-date">
-  	<time datetime="2018-04-28T11:50:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言的接口/">Go语言的接口</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">接口</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言中的方法/" class="archive-article-date">
-  	<time datetime="2018-04-28T08:58:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言中的方法/">Go语言中的方法</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">方法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的结构体/" class="archive-article-date">
-  	<time datetime="2018-04-27T13:03:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的结构体/">Go语言的结构体</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">结构体</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言中的指针/" class="archive-article-date">
-  	<time datetime="2018-04-27T10:36:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言中的指针/">Go语言中的指针</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">指针</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的函数/" class="archive-article-date">
-  	<time datetime="2018-04-27T06:52:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的函数/">Go语言的函数</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">函数</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的数组，切片，以及map/" class="archive-article-date">
-  	<time datetime="2018-04-27T01:10:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的数组，切片，以及map/">Go语言的数组，切片，map,字符串</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数组,切片(slice),集合(map)，字符串(string)</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的循环控制/" class="archive-article-date">
-  	<time datetime="2018-04-26T13:13:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的循环控制/">Go语言的循环控制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">循环控制</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的基本语法/" class="archive-article-date">
-  	<time datetime="2018-04-26T11:32:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的基本语法/">Go语言的基本语法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">基本语法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -688,8 +471,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

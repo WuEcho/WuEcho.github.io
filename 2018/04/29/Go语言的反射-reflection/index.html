@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuecho.com">
-  <title>Archives | WuEcho的博客</title>
+  <title>Go语言的反射(reflection) | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一个区块链，iOS开发攻城狮">
-<meta name="keywords" content="区块链">
-<meta property="og:type" content="website">
-<meta property="og:title" content="WuEcho的博客">
-<meta property="og:url" content="http://www.wuecho.com/archives/index.html">
+  <meta name="description" content="反射 reflection1.什么反射 反射可大大的提高程序的灵活性，使得interface{}有更大的发挥余地 反射使用TypeOf和ValueOf函数从接口中获取目标对象对象信息 反射会将匿名字段作为独立字段(匿名字段的本质) 想要利用反射修改对象状态，前提是interface.data是settable，即pointer-interface 通过反射可以”动态”调用方法  2.获取属性以及对">
+<meta name="keywords" content="reflection反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言的反射(reflection)">
+<meta property="og:url" content="http://www.wuecho.com/2018/04/29/Go语言的反射-reflection/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="一个区块链，iOS开发攻城狮">
+<meta property="og:description" content="反射 reflection1.什么反射 反射可大大的提高程序的灵活性，使得interface{}有更大的发挥余地 反射使用TypeOf和ValueOf函数从接口中获取目标对象对象信息 反射会将匿名字段作为独立字段(匿名字段的本质) 想要利用反射修改对象状态，前提是interface.data是settable，即pointer-interface 通过反射可以”动态”调用方法  2.获取属性以及对">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-29T10:04:10.952Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WuEcho的博客">
-<meta name="twitter:description" content="一个区块链，iOS开发攻城狮">
+<meta name="twitter:title" content="Go语言的反射(reflection)">
+<meta name="twitter:description" content="反射 reflection1.什么反射 反射可大大的提高程序的灵活性，使得interface{}有更大的发挥余地 反射使用TypeOf和ValueOf函数从接口中获取目标对象对象信息 反射会将匿名字段作为独立字段(匿名字段的本质) 想要利用反射修改对象状态，前提是interface.data是settable，即pointer-interface 通过反射可以”动态”调用方法  2.获取属性以及对">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -156,85 +157,121 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Go语言的反射-reflection" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言中的面向对象/" class="archive-article-date">
-  	<time datetime="2018-04-29T10:24:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言中的面向对象/">Go语言中的面向对象</a>
+    <h1 class="article-title" itemprop="name">
+      Go语言的反射(reflection)
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">面向对象</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言的反射-reflection/" class="archive-article-date">
+        
+        <a href="/2018/04/29/Go语言的反射-reflection/" class="archive-article-date">
   	<time datetime="2018-04-29T06:29:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言的反射-reflection/">Go语言的反射(reflection)</a>
-    </h1>
-  
+        
+      </header>
+      
+      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+      </p>
+      <div id="toc-article" class="toc-article">
+          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#反射-reflection"><span class="toc-number">1.</span> <span class="toc-text">反射 reflection</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么反射"><span class="toc-number">1.1.</span> <span class="toc-text">1.什么反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-获取属性以及对应的变量"><span class="toc-number">1.2.</span> <span class="toc-text">2.获取属性以及对应的变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-获取方法"><span class="toc-number">1.3.</span> <span class="toc-text">3.获取方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-对于传入的参数为变量的地址，即pointer-interface的注意事项"><span class="toc-number">1.4.</span> <span class="toc-text">4.对于传入的参数为变量的地址，即pointer-interface的注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-反射匿名和嵌入字段"><span class="toc-number">1.5.</span> <span class="toc-text">5.反射匿名和嵌入字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-获取和修改变属性的值"><span class="toc-number">1.6.</span> <span class="toc-text">6.获取和修改变属性的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-反射调用方法"><span class="toc-number">1.7.</span> <span class="toc-text">7.反射调用方法</span></a></li></ol></li></ol>
+      </div>
+      <script type="text/javascript">
+          function showToc(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:block");
+              show_toc_btn.setAttribute("style","display:none");
+          };
+          function showBtn(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:none");
+              show_toc_btn.setAttribute("style","display:block");
+          };
+      </script>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="反射-reflection"><a href="#反射-reflection" class="headerlink" title="反射 reflection"></a>反射 reflection</h1><h2 id="1-什么反射"><a href="#1-什么反射" class="headerlink" title="1.什么反射"></a>1.什么反射</h2><ul>
+<li>反射可大大的提高程序的灵活性，使得interface{}有更大的发挥余地</li>
+<li>反射使用<code>TypeOf</code>和<code>ValueOf</code>函数从接口中获取目标对象对象信息</li>
+<li>反射会将匿名字段作为独立字段(匿名字段的本质)</li>
+<li>想要利用反射修改对象状态，前提是interface.data是settable，即pointer-interface</li>
+<li>通过反射可以”动态”调用方法</li>
+</ul>
+<h2 id="2-获取属性以及对应的变量"><a href="#2-获取属性以及对应的变量" class="headerlink" title="2.获取属性以及对应的变量"></a>2.获取属性以及对应的变量</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">  <span class="comment">//引用反射包</span></span><br><span class="line">  <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span>&#123;</span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">  ID <span class="keyword">int</span></span><br><span class="line">  Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u User)</span> <span class="title">Hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">  fmt.Println(u.Name)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  user := User&#123;Name:<span class="string">"haha"</span>,ID:<span class="number">12</span>,Age:<span class="number">23</span>&#125;</span><br><span class="line">  Info(user)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Info</span><span class="params">(o <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">  <span class="comment">//用反射获取类型</span></span><br><span class="line">  v := reflect.TypeOf(o)</span><br><span class="line">  fmt.Print(<span class="string">"类型名称:"</span>,v.Name(),<span class="string">"\n"</span>)</span><br><span class="line">  <span class="comment">//获取所有的属性值</span></span><br><span class="line">  v1 := reflect.ValueOf(o)</span><br><span class="line">  fmt.Print(<span class="string">"所有值："</span>,v1)</span><br><span class="line">  <span class="comment">//          获取结构体内属性的个数</span></span><br><span class="line">  <span class="comment">//                 ↓</span></span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; v.NumField(); i ++&#123;</span><br><span class="line">     <span class="comment">//获取第i个属性</span></span><br><span class="line">     propetyName := v.Field(i)</span><br><span class="line">     valueV := v1.Field(i).Interface()</span><br><span class="line">     fmt.Printf(<span class="string">"属性名称: %6s 数质量：%v 类型: %v \n"</span>,propetyName.Name,valueV,propetyName.Type)</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">类型名称：User</span><br><span class="line">所有值：&#123;haha 12 23&#125;</span><br><span class="line">属性名称： Name 数值量：haha  类型: string</span><br><span class="line">属性名称：   ID 数值量: 12    类型: int</span><br><span class="line">属性名称：  Age 数值量: 23    类型: int</span><br></pre></td></tr></table></figure>
+<h2 id="3-获取方法"><a href="#3-获取方法" class="headerlink" title="3.获取方法"></a>3.获取方法</h2><p>针对上面代码做出添加修改</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Info</span><span class="params">(o <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">   <span class="comment">//用反射获取类型</span></span><br><span class="line">  v := reflect.TypeOf(o)</span><br><span class="line">  fmt.Print(<span class="string">"类型名称:"</span>,v.Name(),<span class="string">"\n"</span>)</span><br><span class="line">  <span class="comment">//获取所有的属性值</span></span><br><span class="line">  v1 := reflect.ValueOf(o)</span><br><span class="line">  fmt.Print(<span class="string">"所有值："</span>,v1)</span><br><span class="line">  <span class="comment">//          获取结构体内属性的个数</span></span><br><span class="line">  <span class="comment">//                 ↓</span></span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; v.NumField(); i ++&#123;</span><br><span class="line">     <span class="comment">//获取第i个属性</span></span><br><span class="line">     propetyName := v.Field(i)</span><br><span class="line">     valueV := v1.Field(i).Interface()</span><br><span class="line">     fmt.Printf(<span class="string">"属性名称: %6s 数质量：%v 类型: %v \n"</span>,propetyName.Name,valueV,propetyName.Type)</span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  <span class="comment">//           获取方法的数量</span></span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; v.NumMethod(); i ++&#123;</span><br><span class="line">     <span class="comment">// 获取方法   </span></span><br><span class="line">      m := v.Method(i)</span><br><span class="line">      fmt.Println(<span class="string">"方法名称:"</span>,m.Name,<span class="string">"方法类型:"</span>,m.Type)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-对于传入的参数为变量的地址，即pointer-interface的注意事项"><a href="#4-对于传入的参数为变量的地址，即pointer-interface的注意事项" class="headerlink" title="4.对于传入的参数为变量的地址，即pointer-interface的注意事项"></a>4.对于传入的参数为变量的地址，即pointer-interface的注意事项</h2><p>对于上面的代码再做修改<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  user := User&#123;Name:<span class="string">"haha"</span>,ID:<span class="number">12</span>,Age:<span class="number">23</span>&#125;</span><br><span class="line">  Info(&amp;user)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Info</span><span class="params">(o <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">   <span class="comment">//用反射获取类型</span></span><br><span class="line">  v := reflect.TypeOf(o)</span><br><span class="line">  fmt.Print(<span class="string">"类型名称:"</span>,v.Name(),<span class="string">"\n"</span>)</span><br><span class="line">  <span class="comment">//获取所有的属性值</span></span><br><span class="line">  v1 := reflect.ValueOf(o)</span><br><span class="line">  fmt.Print(<span class="string">"所有值："</span>,v1)</span><br><span class="line">  <span class="comment">//          获取结构体内属性的个数</span></span><br><span class="line">  <span class="comment">//                 ↓</span></span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; v.NumField(); i ++&#123;</span><br><span class="line">     <span class="comment">//获取第i个属性</span></span><br><span class="line">     propetyName := v.Field(i)</span><br><span class="line">     valueV := v1.Field(i).Interface()</span><br><span class="line">     fmt.Printf(<span class="string">"属性名称: %6s 数质量：%v 类型: %v \n"</span>,propetyName.Name,valueV,propetyName.Type)</span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  <span class="comment">//           获取方法的数量</span></span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; v.NumMethod(); i ++&#123;</span><br><span class="line">     <span class="comment">// 获取方法   </span></span><br><span class="line">      m := v.Method(i)</span><br><span class="line">      fmt.Println(<span class="string">"方法名称:"</span>,m.Name,<span class="string">"方法类型:"</span>,m.Type)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类型名称</span><br><span class="line">reflect:NumField of non-struct type</span><br><span class="line">所有值：&amp;&#123;haha 12 23&#125;goroutine 1 [running]</span><br><span class="line">reflect.(*rtype).NumField....</span><br></pre></td></tr></table></figure>
+<p>为防止以上问题出现需要加入类型检测</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Info</span><span class="params">(o <span class="keyword">interface</span>&#123;&#125;)</span></span>&#123;</span><br><span class="line">  v := reflect.TypeOf(o)</span><br><span class="line">  <span class="keyword">if</span> t := v.Kind();t != reflect.Struct&#123;</span><br><span class="line">     <span class="built_in">println</span>(<span class="string">"传入参数类型不正确"</span>)</span><br><span class="line">     <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   fmt.Print(<span class="string">"类型名称:"</span>,v.Name(),<span class="string">"\n"</span>)</span><br><span class="line">   v1 := reflect.ValueOf(o)</span><br><span class="line">   fmt.Print(<span class="string">"所有值:"</span>,v1)</span><br><span class="line">     <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; v.NumField(); i ++&#123;</span><br><span class="line">     <span class="comment">//获取第i个属性</span></span><br><span class="line">     propetyName := v.Field(i)</span><br><span class="line">     valueV := v1.Field(i).Interface()</span><br><span class="line">     fmt.Printf(<span class="string">"属性名称: %6s 数质量：%v 类型: %v \n"</span>,propetyName.Name,valueV,propetyName.Type)</span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  <span class="comment">//           获取方法的数量</span></span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; v.NumMethod(); i ++&#123;</span><br><span class="line">     <span class="comment">// 获取方法   </span></span><br><span class="line">      m := v.Method(i)</span><br><span class="line">      fmt.Println(<span class="string">"方法名称:"</span>,m.Name,<span class="string">"方法类型:"</span>,m.Type)</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">传入参数类型不正确</span><br></pre></td></tr></table></figure>
+<h2 id="5-反射匿名和嵌入字段"><a href="#5-反射匿名和嵌入字段" class="headerlink" title="5.反射匿名和嵌入字段"></a>5.反射匿名和嵌入字段</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">  <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span>&#123;</span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">  ID <span class="keyword">int</span></span><br><span class="line">  Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Manager <span class="keyword">struct</span>&#123;</span><br><span class="line">    User</span><br><span class="line">    title <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u User)</span> <span class="title">Hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">   fmt.Println(u.Name)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   user := Manager&#123;User:User&#123;Name:<span class="string">"haha"</span>,ID:<span class="number">12</span>,Age:<span class="number">23</span>&#125;,title:<span class="string">"标题"</span>&#125;</span><br><span class="line">   t := reflect.TypeOf(user)</span><br><span class="line">   fmt.Println(<span class="string">"类型："</span>,t.Name())</span><br><span class="line">   fmt.Println(<span class="string">"匿名属性:"</span>,t.Field(i:<span class="number">0</span>))</span><br><span class="line">   fmt.Println(<span class="string">"匿名属性的名称:"</span>,t.FieldByIndex([]<span class="keyword">int</span>&#123;<span class="number">0</span>&#125;).Name)</span><br><span class="line">   fmt.Println(<span class="string">"匿名属性里面的属性"</span>,t.FieldByIndex([]<span class="keyword">int</span>&#123;<span class="number">0</span>&#125;).Type.Field(i:<span class="number">0</span>))</span><br><span class="line">   <span class="comment">//获取第i个属性里面的第i个属性</span></span><br><span class="line">   fmt.Println(<span class="string">"匿名属性里面的属性"</span>,t.FieldByIndex([]<span class="keyword">int</span>&#123;<span class="number">0</span>,<span class="number">0</span>&#125;))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">类型：Manager</span><br><span class="line">//                          是否是匿名属性</span><br><span class="line">//                              ↓</span><br><span class="line">匿名属性: &#123;User main.User 0 [0] true&#125;</span><br><span class="line">匿名属性的名称: User</span><br><span class="line">匿名属性里面的属性 &#123;Name string 0 [0] false&#125;</span><br><span class="line">匿名属性里面的属性 &#123;Name string 0 [0] false&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="6-获取和修改变属性的值"><a href="#6-获取和修改变属性的值" class="headerlink" title="6.获取和修改变属性的值"></a>6.获取和修改变属性的值</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">   <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    x := <span class="number">123</span></span><br><span class="line">    <span class="comment">//获取变量</span></span><br><span class="line">    y := reflect.ValueOf(&amp;x)</span><br><span class="line">    <span class="comment">//设置变量的值</span></span><br><span class="line">    y.Elem().SetInt(x:<span class="number">333</span>)</span><br><span class="line">    fmt.Println(a:<span class="string">"变量的值"</span>,x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">变量的值 333</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">   <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span>&#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">    Id <span class="keyword">int</span></span><br><span class="line">    Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    user := User&#123;Name:<span class="string">"AHAH"</span>,Id:<span class="number">12</span>,Age:<span class="number">20</span>&#125;</span><br><span class="line">    fmt.Println(user)</span><br><span class="line">    setPropity(&amp;user)</span><br><span class="line">    fmt.Println(user)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setPropity</span><span class="params">(i <span class="keyword">interface</span>&#123;&#125;)</span></span>&#123;</span><br><span class="line">    v := reflect.ValueOf(i)</span><br><span class="line">    <span class="comment">//判断类型应为指针类型并且是可以修改的</span></span><br><span class="line">    <span class="keyword">if</span> v.Kind() != reflect.Ptr &amp;&amp; !v.Elem().CanSet()&#123;</span><br><span class="line">      fmt.Println(<span class="string">"类型不正确"</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      v = v.Elem()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//使用字符串来获取属性</span></span><br><span class="line">    f := v.FieldByName(name:<span class="string">"Name"</span>)</span><br><span class="line">    <span class="comment">//这个属性是否获取到了</span></span><br><span class="line">    <span class="keyword">if</span> !f.IsValid()&#123;</span><br><span class="line">        fmt.Println(<span class="string">"没找到属性"</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断类型是否是字符串类型</span></span><br><span class="line">    <span class="keyword">if</span> f.Kind() == reflect.String&#123;</span><br><span class="line">       f.SetString(x:<span class="string">"oiseu"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;AHAH 12 20&#125;</span><br><span class="line">&#123;oiseu 12 20&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="7-反射调用方法"><a href="#7-反射调用方法" class="headerlink" title="7.反射调用方法"></a>7.反射调用方法</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">   <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span>&#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">    Id <span class="keyword">int</span></span><br><span class="line">    Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u User)</span><span class="title">Hello</span><span class="params">(n <span class="keyword">string</span>)</span></span>&#123;</span><br><span class="line">    fmt.Println(<span class="string">"hello"</span>,n,<span class="string">"my name is"</span>,u.Name)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    user := User&#123;Name:<span class="string">"AHAH"</span>,Id:<span class="number">12</span>,Age:<span class="number">20</span>&#125;</span><br><span class="line">    fmt.Println(user)</span><br><span class="line">    v := reflect.ValueOf(user)</span><br><span class="line">    <span class="comment">// 通过方法名称来获取方法地址</span></span><br><span class="line">    m := v.MethodByName(<span class="string">"Hello"</span>)</span><br><span class="line">    fmt.Println(m)</span><br><span class="line">    arg := []reflect.Value&#123;reflect.ValueOf(<span class="string">"joe"</span>)&#125;</span><br><span class="line">    fmt.Println(arg)</span><br><span class="line">    fmt.Printf(<span class="string">"%T"</span>,arg)</span><br><span class="line">    fmt.Println()</span><br><span class="line">    m.Call(arg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;haha 12 20&#125;</span><br><span class="line">0x109f020</span><br><span class="line">[joe]</span><br><span class="line">[]reflect.Value</span><br><span class="line">hello joe my name is haha</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢您的投食<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/weixin.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -246,7 +283,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -259,412 +296,125 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/04/29/Go语言的反射-reflection/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言的接口/" class="archive-article-date">
-  	<time datetime="2018-04-28T11:50:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/04/29/Go语言中的面向对象/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Go语言中的面向对象
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/28/Go语言的接口/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Go语言的接口</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言的接口/">Go语言的接口</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">接口</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#反射-reflection"><span class="toc-number">1.</span> <span class="toc-text">反射 reflection</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么反射"><span class="toc-number">1.1.</span> <span class="toc-text">1.什么反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-获取属性以及对应的变量"><span class="toc-number">1.2.</span> <span class="toc-text">2.获取属性以及对应的变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-获取方法"><span class="toc-number">1.3.</span> <span class="toc-text">3.获取方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-对于传入的参数为变量的地址，即pointer-interface的注意事项"><span class="toc-number">1.4.</span> <span class="toc-text">4.对于传入的参数为变量的地址，即pointer-interface的注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-反射匿名和嵌入字段"><span class="toc-number">1.5.</span> <span class="toc-text">5.反射匿名和嵌入字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-获取和修改变属性的值"><span class="toc-number">1.6.</span> <span class="toc-text">6.获取和修改变属性的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-反射调用方法"><span class="toc-number">1.7.</span> <span class="toc-text">7.反射调用方法</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言中的方法/" class="archive-article-date">
-  	<time datetime="2018-04-28T08:58:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言中的方法/">Go语言中的方法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">方法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的结构体/" class="archive-article-date">
-  	<time datetime="2018-04-27T13:03:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的结构体/">Go语言的结构体</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">结构体</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言中的指针/" class="archive-article-date">
-  	<time datetime="2018-04-27T10:36:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言中的指针/">Go语言中的指针</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">指针</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的函数/" class="archive-article-date">
-  	<time datetime="2018-04-27T06:52:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的函数/">Go语言的函数</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">函数</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的数组，切片，以及map/" class="archive-article-date">
-  	<time datetime="2018-04-27T01:10:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的数组，切片，以及map/">Go语言的数组，切片，map,字符串</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数组,切片(slice),集合(map)，字符串(string)</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的循环控制/" class="archive-article-date">
-  	<time datetime="2018-04-26T13:13:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的循环控制/">Go语言的循环控制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">循环控制</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的基本语法/" class="archive-article-date">
-  	<time datetime="2018-04-26T11:32:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的基本语法/">Go语言的基本语法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">基本语法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -688,8 +438,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

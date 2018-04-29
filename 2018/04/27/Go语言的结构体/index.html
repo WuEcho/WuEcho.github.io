@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuecho.com">
-  <title>Archives | WuEcho的博客</title>
+  <title>Go语言的结构体 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一个区块链，iOS开发攻城狮">
-<meta name="keywords" content="区块链">
-<meta property="og:type" content="website">
-<meta property="og:title" content="WuEcho的博客">
-<meta property="og:url" content="http://www.wuecho.com/archives/index.html">
+  <meta name="description" content="结构体内容介绍 什么是结构体 结构体的定义和初始化 结构体的访问 结构体指针 结构体的匿名字段 结构体嵌套 提升字段 导出结构体和字段 结构体比较  1.1 什么是结构体　　Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。  Go中的struct与C中的struct非常相似，并且Go没有class">
+<meta name="keywords" content="结构体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言的结构体">
+<meta property="og:url" content="http://www.wuecho.com/2018/04/27/Go语言的结构体/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="一个区块链，iOS开发攻城狮">
+<meta property="og:description" content="结构体内容介绍 什么是结构体 结构体的定义和初始化 结构体的访问 结构体指针 结构体的匿名字段 结构体嵌套 提升字段 导出结构体和字段 结构体比较  1.1 什么是结构体　　Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。  Go中的struct与C中的struct非常相似，并且Go没有class">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-29T03:42:53.293Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WuEcho的博客">
-<meta name="twitter:description" content="一个区块链，iOS开发攻城狮">
+<meta name="twitter:title" content="Go语言的结构体">
+<meta name="twitter:description" content="结构体内容介绍 什么是结构体 结构体的定义和初始化 结构体的访问 结构体指针 结构体的匿名字段 结构体嵌套 提升字段 导出结构体和字段 结构体比较  1.1 什么是结构体　　Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。  Go中的struct与C中的struct非常相似，并且Go没有class">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -156,232 +157,190 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Go语言的结构体" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言中的面向对象/" class="archive-article-date">
-  	<time datetime="2018-04-29T10:24:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言中的面向对象/">Go语言中的面向对象</a>
+    <h1 class="article-title" itemprop="name">
+      Go语言的结构体
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">面向对象</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言的反射-reflection/" class="archive-article-date">
-  	<time datetime="2018-04-29T06:29:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言的反射-reflection/">Go语言的反射(reflection)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">reflection反射</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言的接口/" class="archive-article-date">
-  	<time datetime="2018-04-28T11:50:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言的接口/">Go语言的接口</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">接口</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言中的方法/" class="archive-article-date">
-  	<time datetime="2018-04-28T08:58:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言中的方法/">Go语言中的方法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">方法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的结构体/" class="archive-article-date">
+        
+        <a href="/2018/04/27/Go语言的结构体/" class="archive-article-date">
   	<time datetime="2018-04-27T13:03:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的结构体/">Go语言的结构体</a>
-    </h1>
-  
+        
+      </header>
+      
+      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+      </p>
+      <div id="toc-article" class="toc-article">
+          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#结构体"><span class="toc-number">1.</span> <span class="toc-text">结构体</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#内容介绍"><span class="toc-number">1.1.</span> <span class="toc-text">内容介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-什么是结构体"><span class="toc-number">1.2.</span> <span class="toc-text">1.1 什么是结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-结构体的定义和初始化"><span class="toc-number">1.3.</span> <span class="toc-text">1.2 结构体的定义和初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-结构体的访问"><span class="toc-number">1.4.</span> <span class="toc-text">1.3 结构体的访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-结构体指针"><span class="toc-number">1.5.</span> <span class="toc-text">1.4 结构体指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-结构体的匿名字段"><span class="toc-number">1.6.</span> <span class="toc-text">1.5 结构体的匿名字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-结构体嵌套"><span class="toc-number">1.7.</span> <span class="toc-text">1.6 结构体嵌套</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-提升字段"><span class="toc-number">1.8.</span> <span class="toc-text">1.7 提升字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-8-导出结构体和字段"><span class="toc-number">1.9.</span> <span class="toc-text">1.8 导出结构体和字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-9-结构体比较"><span class="toc-number">1.10.</span> <span class="toc-text">1.9 结构体比较</span></a></li></ol></li></ol>
+      </div>
+      <script type="text/javascript">
+          function showToc(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:block");
+              show_toc_btn.setAttribute("style","display:none");
+          };
+          function showBtn(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:none");
+              show_toc_btn.setAttribute("style","display:block");
+          };
+      </script>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h1><h2 id="内容介绍"><a href="#内容介绍" class="headerlink" title="内容介绍"></a>内容介绍</h2><ol>
+<li>什么是结构体</li>
+<li>结构体的定义和初始化</li>
+<li>结构体的访问</li>
+<li>结构体指针</li>
+<li>结构体的匿名字段</li>
+<li>结构体嵌套</li>
+<li>提升字段</li>
+<li>导出结构体和字段</li>
+<li>结构体比较</li>
+</ol>
+<h2 id="1-1-什么是结构体"><a href="#1-1-什么是结构体" class="headerlink" title="1.1 什么是结构体"></a>1.1 什么是结构体</h2><p>　　Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。<br>结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。</p>
+<ul>
+<li>Go中的struct与C中的struct非常相似，并且Go没有class</li>
+<li>支持指向自身的指针类型成员</li>
+<li>支持匿名结构，可用作成员或定义成员变量</li>
+<li>匿名结构也可以用于map的值</li>
+<li>可以使用字面值对结构体进行初始化</li>
+<li>允许直接通过指针来读写结构成员</li>
+<li>相同类型的成员可进行直接拷贝赋值</li>
+<li>支持 == 与 != 比较运算符，但不支持 &lt; 或 &gt;</li>
+<li>支持匿名字段，本质上是定义了以某个类型名为名称的字段</li>
+<li>嵌入结构作为匿名字段看起来像继承，但不是继承</li>
+<li>可以使用匿名字段指针</li>
+<li>结构体也是一种类型</li>
+</ul>
+<h2 id="1-2-结构体的定义和初始化"><a href="#1-2-结构体的定义和初始化" class="headerlink" title="1.2 结构体的定义和初始化"></a>1.2 结构体的定义和初始化</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> struct_variable_type <span class="keyword">struct</span> &#123;</span><br><span class="line">   member definition;</span><br><span class="line">   member definition;</span><br><span class="line">   ...</span><br><span class="line">   member definition;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一旦定义了结构体类型，它就能用于变量的声明</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">variable_name := structure_variable_type &#123;value1, value2...valuen&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>初始化结构体</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.按照顺序提供初始化值</span></span><br><span class="line">P := person&#123;<span class="string">"Tom"</span>, <span class="number">25</span>&#125;</span><br><span class="line"><span class="comment">// 2.通过field:value的方式初始化，这样可以任意顺序</span></span><br><span class="line">P := person&#123;age:<span class="number">24</span>, name:<span class="string">"Tom"</span>&#125;</span><br><span class="line"><span class="comment">// 3.new方式,未设置初始值的，会赋予类型的默认初始值</span></span><br><span class="line">p := <span class="built_in">new</span>(person)</span><br><span class="line">p.age=<span class="number">24</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-3-结构体的访问"><a href="#1-3-结构体的访问" class="headerlink" title="1.3 结构体的访问"></a>1.3 结构体的访问</h2><p>访问结构体成员(访问结构的各个字段)</p>
+<p>通过点.操作符用于访问结构的各个字段。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Books <span class="keyword">struct</span> &#123;</span><br><span class="line">   title <span class="keyword">string</span></span><br><span class="line">   author <span class="keyword">string</span></span><br><span class="line">   subject <span class="keyword">string</span></span><br><span class="line">   book_id <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> Book1 Books        <span class="comment">/* 声明 Book1 为 Books 类型 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   /* book 1 描述 */</span></span><br><span class="line">   Book1.title = <span class="string">"Go 语言"</span></span><br><span class="line">   Book1.author = <span class="string">"www.runoob.com"</span></span><br><span class="line">   Book1.subject = <span class="string">"Go 语言教程"</span></span><br><span class="line">   Book1.book_id = <span class="number">6495407</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 打印 Book1 信息 */</span></span><br><span class="line">   fmt.Printf( <span class="string">"Book 1 title : %s\n"</span>, Book1.title)</span><br><span class="line">   fmt.Printf( <span class="string">"Book 1 author : %s\n"</span>, Book1.author)</span><br><span class="line">   fmt.Printf( <span class="string">"Book 1 subject : %s\n"</span>, Book1.subject)</span><br><span class="line">   fmt.Printf( <span class="string">"Book 1 book_id : %d\n"</span>, Book1.book_id)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Book <span class="number">1</span> title : Go 语言</span><br><span class="line">Book <span class="number">1</span> author : www.runoob.com</span><br><span class="line">Book <span class="number">1</span> subject : Go 语言教程</span><br><span class="line">Book <span class="number">1</span> book_id : <span class="number">6495407</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-4-结构体指针"><a href="#1-4-结构体指针" class="headerlink" title="1.4 结构体指针"></a>1.4 结构体指针</h2><p>指针指向一个结构体，也可以创建指向结构的指针。</p>
+<p><strong>结构体指针</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> struct_pointer *Books</span><br></pre></td></tr></table></figure>
+<p>以上定义的指针变量可以存储结构体变量的地址。查看结构体变量地址，可以将 &amp; 符号放置于结构体变量前</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct_pointer = &amp;Book1;</span><br></pre></td></tr></table></figure>
+<p>使用结构体指针访问结构体成员，使用 “.” 操作符</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct_pointer.title;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Books <span class="keyword">struct</span> &#123;</span><br><span class="line">   title <span class="keyword">string</span></span><br><span class="line">   author <span class="keyword">string</span></span><br><span class="line">   subject <span class="keyword">string</span></span><br><span class="line">   book_id <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> Book1 Books        <span class="comment">/* Declare Book1 of type Book */</span></span><br><span class="line">   <span class="comment">/* book 1 描述 */</span></span><br><span class="line">   Book1.title = <span class="string">"Go 语言"</span></span><br><span class="line">   Book1.author = <span class="string">"www.runoob.com"</span></span><br><span class="line">   Book1.subject = <span class="string">"Go 语言教程"</span></span><br><span class="line">   Book1.book_id = <span class="number">6495407</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 打印 Book1 信息 */</span></span><br><span class="line">   printBook(&amp;Book1)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printBook</span><span class="params">( book *Books )</span></span> &#123;</span><br><span class="line">   fmt.Printf( <span class="string">"Book title : %s\n"</span>, book.title);</span><br><span class="line">   fmt.Printf( <span class="string">"Book author : %s\n"</span>, book.author);</span><br><span class="line">   fmt.Printf( <span class="string">"Book subject : %s\n"</span>, book.subject);</span><br><span class="line">   fmt.Printf( <span class="string">"Book book_id : %d\n"</span>, book.book_id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结构体实例化也可以是这样的</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Books <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s Books)</span> <span class="title">String</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"data"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"%v\n"</span>, Books&#123;&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-结构体的匿名字段"><a href="#1-5-结构体的匿名字段" class="headerlink" title="1.5 结构体的匿名字段"></a>1.5 结构体的匿名字段</h2><p><strong>结构体的匿名字段</strong></p>
+<p>可以用字段来创建结构，这些字段只包含一个没有字段名的类型。这些字段被称为匿名字段。</p>
+<p>在类型中，使用不写字段名的方式，使用另一个类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Human <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">    age <span class="keyword">int</span></span><br><span class="line">    weight <span class="keyword">int</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</span><br><span class="line">    Human <span class="comment">// 匿名字段，那么默认Student就包含了Human的所有字段</span></span><br><span class="line">    speciality <span class="keyword">string</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 我们初始化一个学生</span></span><br><span class="line">    mark := Student&#123;Human&#123;<span class="string">"Mark"</span>, <span class="number">25</span>, <span class="number">120</span>&#125;, <span class="string">"Computer Science"</span>&#125;</span><br><span class="line">    <span class="comment">// 我们访问相应的字段</span></span><br><span class="line">    fmt.Println(<span class="string">"His name is "</span>, mark.name)</span><br><span class="line">    fmt.Println(<span class="string">"His age is "</span>, mark.age)</span><br><span class="line">    fmt.Println(<span class="string">"His weight is "</span>, mark.weight)</span><br><span class="line">    fmt.Println(<span class="string">"His speciality is "</span>, mark.speciality)</span><br><span class="line">    <span class="comment">// 修改对应的备注信息</span></span><br><span class="line">    mark.speciality = <span class="string">"AI"</span></span><br><span class="line">    fmt.Println(<span class="string">"Mark changed his speciality"</span>)</span><br><span class="line">    fmt.Println(<span class="string">"His speciality is "</span>, mark.speciality)</span><br><span class="line">    <span class="comment">// 修改他的年龄信息</span></span><br><span class="line">    fmt.Println(<span class="string">"Mark become old"</span>)</span><br><span class="line">    mark.age = <span class="number">46</span></span><br><span class="line">    fmt.Println(<span class="string">"His age is"</span>, mark.age)</span><br><span class="line">    <span class="comment">// 修改他的体重信息</span></span><br><span class="line">    fmt.Println(<span class="string">"Mark is not an athlet anymore"</span>)</span><br><span class="line">    mark.weight += <span class="number">60</span></span><br><span class="line">    fmt.Println(<span class="string">"His weight is"</span>, mark.weight)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以使用”.”的方式进行调用匿名字段中的属性值</p>
+<p>实际就是字段的继承</p>
+<p>其中可以将匿名字段理解为字段名和字段类型都是同一个</p>
+<p>若存在匿名字段中的字段与非匿名字段名字相同，则最外层的优先访问，就近原则</p>
+</blockquote>
+<p>通过匿名访问和修改字段相当的有用，但是不仅仅是struct字段哦，所有的内置类型和自定义类型都是可以作为匿名字段的。</p>
+<h2 id="1-6-结构体嵌套"><a href="#1-6-结构体嵌套" class="headerlink" title="1.6 结构体嵌套"></a>1.6 结构体嵌套</h2><p>一个结构体可能包含一个字段，而这个字段反过来就是一个结构体。这些结构被称为嵌套结构。</p>
+<ul>
+<li>聚合关系：一个结构体作为另一个结构体的属性,has - a</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A <span class="keyword">struct</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> B <span class="keyword">struct</span> &#123;</span><br><span class="line">    a  A </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>继承关系：一个结构体继承另一个结构体，is - a</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> C <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="keyword">type</span> D <span class="keyword">struct</span>&#123;</span><br><span class="line">   C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于上面两种嵌套模式，主要区别在于能否直接调用匿名结构体里面的字段。</p>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Address <span class="keyword">struct</span> &#123;  </span><br><span class="line">    city, state <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;  </span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">    age <span class="keyword">int</span></span><br><span class="line">    address Address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">var</span> p Person</span><br><span class="line">    p.name = <span class="string">"Naveen"</span></span><br><span class="line">    p.age = <span class="number">50</span></span><br><span class="line">    p.address = Address &#123;</span><br><span class="line">        city: <span class="string">"Chicago"</span>,</span><br><span class="line">        state: <span class="string">"Illinois"</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(<span class="string">"Name:"</span>, p.name)</span><br><span class="line">    fmt.Println(<span class="string">"Age:"</span>,p.age)</span><br><span class="line">    fmt.Println(<span class="string">"City:"</span>,p.address.city)</span><br><span class="line">    fmt.Println(<span class="string">"State:"</span>,p.address.state)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-7-提升字段"><a href="#1-7-提升字段" class="headerlink" title="1.7 提升字段"></a>1.7 提升字段</h2><p>在结构体中属于匿名结构体的字段称为提升字段，因为它们可以被访问，就好像它们属于拥有匿名结构字段的结构一样。</p>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Address <span class="keyword">struct</span> &#123;  </span><br><span class="line">    city, state <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;  </span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">    age  <span class="keyword">int</span></span><br><span class="line">    Address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">var</span> p Person</span><br><span class="line">    p.name = <span class="string">"Naveen"</span></span><br><span class="line">    p.age = <span class="number">50</span></span><br><span class="line">    p.Address = Address&#123;</span><br><span class="line">        city:  <span class="string">"Chicago"</span>,</span><br><span class="line">        state: <span class="string">"Illinois"</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(<span class="string">"Name:"</span>, p.name)</span><br><span class="line">    fmt.Println(<span class="string">"Age:"</span>, p.age)</span><br><span class="line">    fmt.Println(<span class="string">"City:"</span>, p.city) <span class="comment">//city is promoted field</span></span><br><span class="line">    fmt.Println(<span class="string">"State:"</span>, p.state) <span class="comment">//state is promoted field</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Name: Naveen  </span><br><span class="line">Age: 50  </span><br><span class="line">City: Chicago  </span><br><span class="line">State: Illinois</span><br></pre></td></tr></table></figure>
+<h2 id="1-8-导出结构体和字段"><a href="#1-8-导出结构体和字段" class="headerlink" title="1.8 导出结构体和字段"></a>1.8 导出结构体和字段</h2><p>如果结构体类型以大写字母开头，那么它是一个导出类型，可以从其他包访问它。类似地，如果结构体的字段以大写开头，则可以从其他包访问它们。</p>
+<p>示例代码：</p>
+<p>1.在computer目录下，创建文件spec.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> computer</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Spec <span class="keyword">struct</span> &#123; <span class="comment">//exported struct  </span></span><br><span class="line">    Maker <span class="keyword">string</span> <span class="comment">//exported field</span></span><br><span class="line">    model <span class="keyword">string</span> <span class="comment">//unexported field</span></span><br><span class="line">    Price <span class="keyword">int</span> <span class="comment">//exported field</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.创建main.go 文件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"structs/computer"</span>  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">var</span> spec computer.Spec</span><br><span class="line">    spec.Maker = <span class="string">"apple"</span></span><br><span class="line">    spec.Price = <span class="number">50000</span></span><br><span class="line">    fmt.Println(<span class="string">"Spec:"</span>, spec)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>目录结构如下：</p>
+<pre><code>src  
+    structs
+        computer
+            spec.go
+        main.go
+</code></pre></blockquote>
+<h2 id="1-9-结构体比较"><a href="#1-9-结构体比较" class="headerlink" title="1.9 结构体比较"></a>1.9 结构体比较</h2><p>结构体是值类型，如果每个字段具有可比性，则是可比较的。如果它们对应的字段相等，则认为两个结构体变量是相等的。</p>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> name <span class="keyword">struct</span> &#123;  </span><br><span class="line">    firstName <span class="keyword">string</span></span><br><span class="line">    lastName <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    name1 := name&#123;<span class="string">"Steve"</span>, <span class="string">"Jobs"</span>&#125;</span><br><span class="line">    name2 := name&#123;<span class="string">"Steve"</span>, <span class="string">"Jobs"</span>&#125;</span><br><span class="line">    <span class="keyword">if</span> name1 == name2 &#123;</span><br><span class="line">        fmt.Println(<span class="string">"name1 and name2 are equal"</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"name1 and name2 are not equal"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name1 and name2 are equal</span><br></pre></td></tr></table></figure>
+<p><strong>如果结构变量包含的字段是不可比较的，那么结构变量是不可比较的</strong></p>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> image <span class="keyword">struct</span> &#123;  </span><br><span class="line">    data <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    image1 := image&#123;data: <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;</span><br><span class="line">        <span class="number">0</span>: <span class="number">155</span>,</span><br><span class="line">    &#125;&#125;</span><br><span class="line">    image2 := image&#123;data: <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;</span><br><span class="line">        <span class="number">0</span>: <span class="number">155</span>,</span><br><span class="line">    &#125;&#125;</span><br><span class="line">    <span class="keyword">if</span> image1 == image2 &#123;</span><br><span class="line">        fmt.Println(<span class="string">"image1 and image2 are equal"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>make、new操作</strong></p>
+<p>make用于内建类型（map、slice 和channel）的内存分配。new用于各种类型的内存分配<br>内建函数new本质上说跟其它语言中的同名函数功能一样：new(T)分配了零值填充的T类型的内存空间，并且返回其地址，即一个*T类型的值。用Go的术语说，它返回了一个指针，指向新分配的类型T的零值。有一点非常重要：new返回指针</p>
+<p>内建函数make(T, args)与new(T)有着不同的功能，make只能创建slice、map和channel，并且返回一个有初始值(非零)的T类型，而不是*T。本质来讲，导致这三个类型有所不同的原因是指向数据结构的引用在使用前必须被初始化。例如，一个slice，是一个包含指向数据（内部array）的指针、长度和容量的三项描述符；在这些项目被初始化之前，slice为nil。对于slice、map和channel来说，make初始化了内部的数据结构，填充适当的值。</p>
+<p>make返回初始化后的（非零）值</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢您的投食<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/weixin.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -393,7 +352,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -406,265 +365,125 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/04/27/Go语言的结构体/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言中的指针/" class="archive-article-date">
-  	<time datetime="2018-04-27T10:36:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/04/28/Go语言中的方法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Go语言中的方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/27/Go语言中的指针/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Go语言中的指针</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言中的指针/">Go语言中的指针</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">指针</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#结构体"><span class="toc-number">1.</span> <span class="toc-text">结构体</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#内容介绍"><span class="toc-number">1.1.</span> <span class="toc-text">内容介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-什么是结构体"><span class="toc-number">1.2.</span> <span class="toc-text">1.1 什么是结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-结构体的定义和初始化"><span class="toc-number">1.3.</span> <span class="toc-text">1.2 结构体的定义和初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-结构体的访问"><span class="toc-number">1.4.</span> <span class="toc-text">1.3 结构体的访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-结构体指针"><span class="toc-number">1.5.</span> <span class="toc-text">1.4 结构体指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-结构体的匿名字段"><span class="toc-number">1.6.</span> <span class="toc-text">1.5 结构体的匿名字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-结构体嵌套"><span class="toc-number">1.7.</span> <span class="toc-text">1.6 结构体嵌套</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-提升字段"><span class="toc-number">1.8.</span> <span class="toc-text">1.7 提升字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-8-导出结构体和字段"><span class="toc-number">1.9.</span> <span class="toc-text">1.8 导出结构体和字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-9-结构体比较"><span class="toc-number">1.10.</span> <span class="toc-text">1.9 结构体比较</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的函数/" class="archive-article-date">
-  	<time datetime="2018-04-27T06:52:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的函数/">Go语言的函数</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">函数</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的数组，切片，以及map/" class="archive-article-date">
-  	<time datetime="2018-04-27T01:10:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的数组，切片，以及map/">Go语言的数组，切片，map,字符串</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数组,切片(slice),集合(map)，字符串(string)</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的循环控制/" class="archive-article-date">
-  	<time datetime="2018-04-26T13:13:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的循环控制/">Go语言的循环控制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">循环控制</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的基本语法/" class="archive-article-date">
-  	<time datetime="2018-04-26T11:32:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的基本语法/">Go语言的基本语法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">基本语法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -688,8 +507,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

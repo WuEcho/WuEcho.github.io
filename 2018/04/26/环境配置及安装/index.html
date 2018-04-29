@@ -6,19 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuecho.com">
-  <title>Archives | WuEcho的博客</title>
+  <title>Go语言环境配置及安装 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一个区块链，iOS开发攻城狮">
-<meta name="keywords" content="区块链">
-<meta property="og:type" content="website">
-<meta property="og:title" content="WuEcho的博客">
-<meta property="og:url" content="http://www.wuecho.com/archives/index.html">
+  <meta name="description" content="Go语言介绍 内容介绍 什么是Golang 安装 开发工具 go语言的程序结构 第一个Go程序  1.什么是GolangGo也被称为Golang，它是由谷歌创建的一种开源、编译和静态类型的编程语言。 Golang的主要目标是使高可用性和可伸缩的web应用程序的开发变得简单易行。 1.1 Go语言特点 类型安全和内存安全 以非常直观和极低代价的方案实现高并发 高效的垃圾回收机制 快速编译(同时解决c">
+<meta name="keywords" content="环境配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言环境配置及安装">
+<meta property="og:url" content="http://www.wuecho.com/2018/04/26/环境配置及安装/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="一个区块链，iOS开发攻城狮">
+<meta property="og:description" content="Go语言介绍 内容介绍 什么是Golang 安装 开发工具 go语言的程序结构 第一个Go程序  1.什么是GolangGo也被称为Golang，它是由谷歌创建的一种开源、编译和静态类型的编程语言。 Golang的主要目标是使高可用性和可伸缩的web应用程序的开发变得简单易行。 1.1 Go语言特点 类型安全和内存安全 以非常直观和极低代价的方案实现高并发 高效的垃圾回收机制 快速编译(同时解决c">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/001_%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%8C%85.jpg">
+<meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F3.jpg">
+<meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F2.jpg">
+<meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/22188-96e2f6da75383392.png">
+<meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/language-go.jpg">
+<meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/002_%E6%8F%92%E4%BB%B6.bmp">
+<meta property="og:updated_time" content="2018-04-29T03:41:20.872Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WuEcho的博客">
-<meta name="twitter:description" content="一个区块链，iOS开发攻城狮">
+<meta name="twitter:title" content="Go语言环境配置及安装">
+<meta name="twitter:description" content="Go语言介绍 内容介绍 什么是Golang 安装 开发工具 go语言的程序结构 第一个Go程序  1.什么是GolangGo也被称为Golang，它是由谷歌创建的一种开源、编译和静态类型的编程语言。 Golang的主要目标是使高可用性和可伸缩的web应用程序的开发变得简单易行。 1.1 Go语言特点 类型安全和内存安全 以非常直观和极低代价的方案实现高并发 高效的垃圾回收机制 快速编译(同时解决c">
+<meta name="twitter:image" content="http://om1c35wrq.bkt.clouddn.com/001_%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%8C%85.jpg">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -156,48 +164,216 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-环境配置及安装" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Go语言环境配置及安装
+    </h1>
+  
+
+        
+        <a href="/2018/04/26/环境配置及安装/" class="archive-article-date">
+  	<time datetime="2018-04-26T09:25:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
+</a>
+        
+      </header>
+      
+      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+      </p>
+      <div id="toc-article" class="toc-article">
+          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#内容介绍"><span class="toc-number">1.</span> <span class="toc-text">内容介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是Golang"><span class="toc-number">2.</span> <span class="toc-text">1.什么是Golang</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Go语言特点"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 Go语言特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装"><span class="toc-number">3.</span> <span class="toc-text">2.安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-下载"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-windows下安装并配置环境变量"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 windows下安装并配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-mac系统安装并配置"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 mac系统安装并配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-开发工具"><span class="toc-number">4.</span> <span class="toc-text">3.开发工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-使用atom"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 使用atom</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-使用Goland"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 使用Goland</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-go语言的程序结构"><span class="toc-number">5.</span> <span class="toc-text">4.go语言的程序结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-第一个go程序"><span class="toc-number">6.</span> <span class="toc-text">5.第一个go程序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-编写第一个程序"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 编写第一个程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-程序文件说明"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 程序文件说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-package"><span class="toc-number">6.2.1.</span> <span class="toc-text">5.2.1 package</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-import"><span class="toc-number">6.2.2.</span> <span class="toc-text">5.2.2 import</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-main"><span class="toc-number">6.3.</span> <span class="toc-text">5.3 main</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-注释"><span class="toc-number">6.4.</span> <span class="toc-text">5.4 注释</span></a></li></ol></li></ol>
+      </div>
+      <script type="text/javascript">
+          function showToc(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:block");
+              show_toc_btn.setAttribute("style","display:none");
+          };
+          function showBtn(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:none");
+              show_toc_btn.setAttribute("style","display:block");
+          };
+      </script>
+      
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Go语言介绍</p>
+<h2 id="内容介绍"><a href="#内容介绍" class="headerlink" title="内容介绍"></a>内容介绍</h2><ol>
+<li>什么是Golang</li>
+<li>安装</li>
+<li>开发工具</li>
+<li>go语言的程序结构</li>
+<li>第一个Go程序</li>
+</ol>
+<h2 id="1-什么是Golang"><a href="#1-什么是Golang" class="headerlink" title="1.什么是Golang"></a>1.什么是Golang</h2><p>Go也被称为Golang，它是由谷歌创建的一种开源、编译和静态类型的编程语言。</p>
+<p>Golang的主要目标是使高可用性和可伸缩的web应用程序的开发变得简单易行。</p>
+<h3 id="1-1-Go语言特点"><a href="#1-1-Go语言特点" class="headerlink" title="1.1 Go语言特点"></a>1.1 Go语言特点</h3><ol>
+<li><strong>类型安全</strong>和<strong>内存安全</strong></li>
+<li>以非常<strong>直观</strong>和<strong>极低代价</strong>的方案实现<strong>高并发</strong></li>
+<li><strong>高效</strong>的垃圾回收机制</li>
+<li><strong>快速编译</strong>(同时解决c语言中头文件太多的问题)</li>
+<li>为多核计算机提供性能提升的方案</li>
+<li><strong>UTF-8</strong>编码支持</li>
+</ol>
+<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h2><h3 id="2-1-下载"><a href="#2-1-下载" class="headerlink" title="2.1 下载"></a>2.1 下载</h3><p>　　在Mac、Windows和Linux三个平台上都支持Golang。您可以从<a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a>下载相应平台的二进制文件。<br><img src="http://om1c35wrq.bkt.clouddn.com/001_%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%8C%85.jpg" alt=""></p>
+<p><strong>Mac OS</strong><br>　　从<a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a>下载osx安装程序。双击启动安装。按照提示，这应该在/usr/local/go中安装了Golang，并且还会将文件夹/usr/local/go/bin添加到您的PATH环境变量中。</p>
+<p><strong>Windows</strong><br>　　从<a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a>下载MSI安装程序。双击启动安装并遵循提示。这将在位置c中安装Golang:\Go，并且还将添加目录c:\Go\bin到您的path环境变量。</p>
+<p><strong>Linux</strong><br>　　从 <a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a> 下载tar文件，并将其解压到/usr/local。将/usr/local/go/bin添加到PATH环境变量中。这应该安装在linux中。M</p>
+<h3 id="2-2-windows下安装并配置环境变量"><a href="#2-2-windows下安装并配置环境变量" class="headerlink" title="2.2 windows下安装并配置环境变量"></a>2.2 windows下安装并配置环境变量</h3><p>安装步骤就不在多说什么了，一路到底</p>
+<p><strong>A、配置环境变量</strong></p>
+<p>注意：如果是msi安装文件，Go语言的环境变量会自动设置好。</p>
+<p>我的电脑——右键“属性”——“高级系统设置”——“环境变量”——“系统变量”</p>
+<p>​    假设GO安装于C盘根目录</p>
+<p><strong>新建：</strong></p>
+<ul>
+<li><p>GOROOT：Go安装路径（例：C:\Go）</p>
+</li>
+<li><p>GOPATH：Go工程的路径（例：E:\go）。如果有多个，就以分号分隔添加</p>
+<p><img src="http://om1c35wrq.bkt.clouddn.com/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F3.jpg" alt=""></p>
+</li>
+</ul>
+<p><strong>修改：</strong></p>
+<ul>
+<li><p>Path：在path中增加：C:\Go\bin;%GOPATH%\bin;</p>
+<blockquote>
+<p>需要把GOPATH中的可执行目录也配置到环境变量中, 否则你自行下载的第三方go工具就无法使用了</p>
+</blockquote>
+<p>​</p>
+<p><img src="http://om1c35wrq.bkt.clouddn.com/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F2.jpg" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<ol>
+<li>工作目录就是我们用来存放开发的源代码的地方，对应的也是Go里的GOPATH这个环境变量。这个环境变量指定之后，我们编译源代码等生成的文件都会放到这个目录下，GOPATH环境变量的配置参考上面的安装Go，配置到Windows下的系统变量里。</li>
+<li>GOPATH之下主要包含三个目录: bin、pkg、src。bin目录主要存放可执行文件; pkg目录存放编译好的库文件, 主要是*.a文件; src目录下主要存放go的源文件</li>
+</ol>
+</blockquote>
+<p><strong>B、查看是否安装配置成功</strong></p>
+<p>使用快捷键win+R键，输入cmd，打开命令行提示符，在命令行中输入</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> env  # 查看得到<span class="keyword">go</span>的配置信息</span><br><span class="line"><span class="keyword">go</span> version  # 查看<span class="keyword">go</span>的版本号</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-mac系统安装并配置"><a href="#2-3-mac系统安装并配置" class="headerlink" title="2.3 mac系统安装并配置"></a>2.3 mac系统安装并配置</h3><p><strong>安装</strong></p>
+<p>双击pkg包，顺着指引，即可安装成功。<br>在命令行输入 go version，获取到go的版本号，则代表安装成功。</p>
+<p><strong>配置环境变量</strong></p>
+<p>1、打开终端输入cd ~进入用户主目录;<br>2、输入ls -all命令查看是否存在.bash_profile;<br>3、存在既使用vim .bash_profile 打开文件;<br>4、输入 i 进入vim编辑模式；<br>5、输入下面代码，<br>其中 GOPATH: 日常开发的根目录。GOBIN:是GOPATH下的bin目录。</p>
+<blockquote>
+<p><code>export GOPATH=/Users/ruby/go</code></p>
+<p><code>export GOBIN=$GOPATH/bin</code></p>
+<p><code>export PATH=$PATH:$GOBIN</code></p>
+</blockquote>
+<p>6、点击ESC，并输入 :wq 保存并退出编辑。可输入vim .bash_profile 查看是否保存成功。</p>
+<p>7、输入source ~/.bash_profile 完成对golang环境变量的配置，配置成功没有提示。<br>8、输入go env 查看配置结果</p>
+<h2 id="3-开发工具"><a href="#3-开发工具" class="headerlink" title="3.开发工具"></a>3.开发工具</h2><h3 id="3-1-使用atom"><a href="#3-1-使用atom" class="headerlink" title="3.1 使用atom"></a>3.1 使用atom</h3><p>　　安装好atom工具，然后安装go-plus插件和<code>atom-terminal-panel</code>等插件。</p>
+<p>1.安装go-plus插件，这个插件提供了Atom中几乎所有go语言开发的支持，包括 tools, build flows, linters, vet 和 coverage tools。它还包含很多代码片段和一些其它特性。</p>
+<p><img src="http://om1c35wrq.bkt.clouddn.com/22188-96e2f6da75383392.png" alt=""></p>
+<p>2.language-go</p>
+<p><img src="http://om1c35wrq.bkt.clouddn.com/language-go.jpg" alt=""></p>
+<p>3.安装file-icon插件，它提针对不同后缀的文件，提供了大量的icon显示。</p>
+<p><img src="http://om1c35wrq.bkt.clouddn.com/002_%E6%8F%92%E4%BB%B6.bmp" alt=""></p>
+<h3 id="3-2-使用Goland"><a href="#3-2-使用Goland" class="headerlink" title="3.2 使用Goland"></a>3.2 使用Goland</h3><p>下载地址：<a href="http://www.jetbrains.com/go/" target="_blank" rel="noopener">http://www.jetbrains.com/go/</a><br>傻瓜式安装，一路next，直到完成</p>
+<h2 id="4-go语言的程序结构"><a href="#4-go语言的程序结构" class="headerlink" title="4.go语言的程序结构"></a>4.go语言的程序结构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">bin/</span><br><span class="line">   mathapp</span><br><span class="line">pkg/</span><br><span class="line">   平台名/如：darwin_amd64,linux_ammd64</span><br><span class="line">   mymath.a</span><br><span class="line">   github.com/ </span><br><span class="line">        astaxie/</span><br><span class="line">              beedb.a</span><br><span class="line">src/                 </span><br><span class="line">   mathapp</span><br><span class="line">        main.go</span><br><span class="line">      mymath/</span><br><span class="line">          sqrt.go</span><br><span class="line">          ...</span><br></pre></td></tr></table></figure>
+<p><strong>目录结构解释：</strong><br>根据约定，GOPATH下需要建立3个目录：</p>
+<blockquote>
+<p>bin(存放编译后生成的可执行文件)<br>pkg(存放编译后生成的包文件)<br>src(存放项目源码)</p>
+</blockquote>
+<h2 id="5-第一个go程序"><a href="#5-第一个go程序" class="headerlink" title="5.第一个go程序"></a>5.第一个go程序</h2><p>　　Go程序是通过package来组织的。只有package名称为<code>main</code>的包可以包含<code>main</code>函数，一个可执行程序<strong>有且仅有</strong>一个<code>main</code>包</p>
+<h3 id="5-1-编写第一个程序"><a href="#5-1-编写第一个程序" class="headerlink" title="5.1 编写第一个程序"></a>5.1 编写第一个程序</h3><blockquote>
+<p>打开编辑器、控制器，创建一个新的文件helloworld.go文件，并输入一下内容</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="comment">/*输出*/</span></span><br><span class="line">  fmt.Println(<span class="string">"Hello, world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>执行程序<br>执行编写好的go文件：</p>
+<ol>
+<li>使用<code>go run</code>命令<br>打开编辑器/控制台，进入<code>helloworld.go</code>所在的目录，输入<code>go run helloworld.go</code>命令可以看到命令控制台里输出<code>Hello, world</code></li>
+<li>使用<code>go build</code>命令<br>打开命令行控制台，进入<code>helloworld.go</code>所在的目录，输入<code>go build helloworld.go</code>命令进行编译，会产生同名的<code>helloworld.exe</code>,双击可执行文件，执行</li>
+</ol>
+</blockquote>
+<h3 id="5-2-程序文件说明"><a href="#5-2-程序文件说明" class="headerlink" title="5.2 程序文件说明"></a>5.2 程序文件说明</h3><h4 id="5-2-1-package"><a href="#5-2-1-package" class="headerlink" title="5.2.1 package"></a>5.2.1 package</h4><blockquote>
+<p>在同一包下面的文件属于同一个工程文件，不用<code>import</code>包，可以直接使用<br>在同一个包下面的所有文件的package名，都是一样的<br>在同一个包下面的文件<code>package</code>名都建议设为是该目录名，但也可以不是</p>
+</blockquote>
+<h4 id="5-2-2-import"><a href="#5-2-2-import" class="headerlink" title="5.2.2 import"></a>5.2.2 import</h4><p>　　import “fmt” 告诉 Go 编译器这个程序需要使用 fmt 包的函数，fmt 包实现了格式化 IO（输入/输出）的函数,可以是相对路径也可以是绝对路径，推荐使用绝对路径（起始于工程根目录）</p>
+<ol>
+<li><p>点操作<br>我们有时候会看到如下的方式导入包</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>(</span><br><span class="line">	. <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>这个点操作的含义就是这个包导入之后在你调用这个包的函数时，你可以省略前缀的包名，也就是前面你调</p>
+<p>用的<code>fmt.Println(&quot;hello world&quot;)</code>可以省略的写成<code>Println(&quot;hello world&quot;)</code></p>
+</li>
+<li><p>别名操作<br>别名操作顾名思义我们可以把包命名成另一个我们用起来容易记忆的名字</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>(</span><br><span class="line">	f <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>别名操作的话调用包函数时前缀变成了我们的前缀，即<code>f.Println(&quot;hello world&quot;)</code></p>
+</li>
+<li><p>_操作<br>这个操作经常是让很多人费解的一个操作符，请看下面这个import</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"database/sql"</span></span><br><span class="line">  _ <span class="string">"github.com/ziutek/mymysql/godrv"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>_操作其实是引入该包，而不直接使用包里面的函数，而是调用了该包里面的init函数</p>
+</li>
+</ol>
+<h3 id="5-3-main"><a href="#5-3-main" class="headerlink" title="5.3 main"></a>5.3 main</h3><p>main(),是程序运行的入口</p>
+<h3 id="5-4-注释"><a href="#5-4-注释" class="headerlink" title="5.4 注释"></a>5.4 注释</h3><ul>
+<li>单行注释是最常见的注释形式，你可以在任何地方使用以 // 开头的单行注释</li>
+<li>多行注释也叫块注释，均已以 /<em> 开头，并以 </em>/ 结尾，且不可以嵌套使用，多行注释一般用于包的文档描述或注释成块的代码片段</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢您的投食<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/weixin.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言中的面向对象/" class="archive-article-date">
-  	<time datetime="2018-04-29T10:24:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言中的面向对象/">Go语言中的面向对象</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">面向对象</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">环境配置</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -210,461 +386,125 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/04/26/环境配置及安装/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/29/Go语言的反射-reflection/" class="archive-article-date">
-  	<time datetime="2018-04-29T06:29:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/04/26/Go语言的基本语法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Go语言的基本语法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/29/Go语言的反射-reflection/">Go语言的反射(reflection)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">reflection反射</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#内容介绍"><span class="toc-number">1.</span> <span class="toc-text">内容介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是Golang"><span class="toc-number">2.</span> <span class="toc-text">1.什么是Golang</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Go语言特点"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 Go语言特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装"><span class="toc-number">3.</span> <span class="toc-text">2.安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-下载"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-windows下安装并配置环境变量"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 windows下安装并配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-mac系统安装并配置"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 mac系统安装并配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-开发工具"><span class="toc-number">4.</span> <span class="toc-text">3.开发工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-使用atom"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 使用atom</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-使用Goland"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 使用Goland</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-go语言的程序结构"><span class="toc-number">5.</span> <span class="toc-text">4.go语言的程序结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-第一个go程序"><span class="toc-number">6.</span> <span class="toc-text">5.第一个go程序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-编写第一个程序"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 编写第一个程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-程序文件说明"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 程序文件说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-package"><span class="toc-number">6.2.1.</span> <span class="toc-text">5.2.1 package</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-import"><span class="toc-number">6.2.2.</span> <span class="toc-text">5.2.2 import</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-main"><span class="toc-number">6.3.</span> <span class="toc-text">5.3 main</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-注释"><span class="toc-number">6.4.</span> <span class="toc-text">5.4 注释</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言的接口/" class="archive-article-date">
-  	<time datetime="2018-04-28T11:50:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言的接口/">Go语言的接口</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">接口</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/28/Go语言中的方法/" class="archive-article-date">
-  	<time datetime="2018-04-28T08:58:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/28/Go语言中的方法/">Go语言中的方法</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">方法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的结构体/" class="archive-article-date">
-  	<time datetime="2018-04-27T13:03:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的结构体/">Go语言的结构体</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">结构体</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言中的指针/" class="archive-article-date">
-  	<time datetime="2018-04-27T10:36:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言中的指针/">Go语言中的指针</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">指针</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的函数/" class="archive-article-date">
-  	<time datetime="2018-04-27T06:52:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的函数/">Go语言的函数</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">函数</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/27/Go语言的数组，切片，以及map/" class="archive-article-date">
-  	<time datetime="2018-04-27T01:10:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/27/Go语言的数组，切片，以及map/">Go语言的数组，切片，map,字符串</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数组,切片(slice),集合(map)，字符串(string)</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的循环控制/" class="archive-article-date">
-  	<time datetime="2018-04-26T13:13:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的循环控制/">Go语言的循环控制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">循环控制</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/26/Go语言的基本语法/" class="archive-article-date">
-  	<time datetime="2018-04-26T11:32:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/26/Go语言的基本语法/">Go语言的基本语法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">基本语法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -688,8 +528,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
