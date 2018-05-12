@@ -203,23 +203,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="加密算法以及应用"><a href="#加密算法以及应用" class="headerlink" title="加密算法以及应用"></a>加密算法以及应用</h1><h2 id="1-什么是hash加密"><a href="#1-什么是hash加密" class="headerlink" title="1. 什么是hash加密"></a>1. 什么是hash加密</h2><p>Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把<strong>任意长度</strong>的输入（又叫做预映射， pre-image），通过散列算法，变换成<strong>固定长度</strong>的输出，该输出就是散列值。</p>
-<p>这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。</p>
-<p>哈希表就是一种以 键-值(key-indexed) 存储数据的结构，我们只要输入待查找的值即key，即可查找到其对应的值。哈希的思路很简单，如果所有的键都是整数，那么就可以使用一个简单的无序数组来实现：将键作为索引，值即为其对应的值，这样就可以快速访问任意键的值。</p>
-<p>在Hash表中，<strong>记录在表中的位置和其关键字之间存在着一种确定的关系</strong>。这样我们就能预先知道所查关键字在表中的位置，从而直接通过下标找到记录。使ASL趋近与0.</p>
+        <h1 id="加密算法以及应用"><a href="#加密算法以及应用" class="headerlink" title="加密算法以及应用"></a>加密算法以及应用</h1><h2 id="1-什么是hash加密"><a href="#1-什么是hash加密" class="headerlink" title="1. 什么是hash加密"></a>1. 什么是hash加密</h2><p>　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把<strong>任意长度</strong>的输入（又叫做预映射， pre-image），通过散列算法，变换成<strong>固定长度</strong>的输出，该输出就是散列值。</p>
+<p>　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。</p>
+<p>　　哈希表就是一种以 键-值(key-indexed) 存储数据的结构，我们只要输入待查找的值即key，即可查找到其对应的值。哈希的思路很简单，如果所有的键都是整数，那么就可以使用一个简单的无序数组来实现：将键作为索引，值即为其对应的值，这样就可以快速访问任意键的值。</p>
+<p>　　在Hash表中，<strong>记录在表中的位置和其关键字之间存在着一种确定的关系</strong>。这样我们就能预先知道所查关键字在表中的位置，从而直接通过下标找到记录。使ASL趋近与0.</p>
 <p><strong>hash的特点：</strong> </p>
 <ol>
 <li>不定长度的输入输出长度一定</li>
 <li>同一输入输出结果相同</li>
-<li>不同的输入可能产生一样的输出</li>
 </ol>
-<p><strong>常用的hash算法：</strong><br>  1.MD4<br>  MD4(RFC 1320)是 MIT 的Ronald L. Rivest在 1990 年设计的，MD 是 Message Digest（消息摘要） 的缩写。它适用在32位字长的处理器上用高速软件实现——它是基于 32位操作数的位操作来实现的。<br>  2.MD5<br>  MD5(RFC 1321)是 Rivest 于1991年对MD4的改进版本。它对输入仍以512位分组，其输出是4个32位字的级联，与 MD4 相同。MD5比MD4来得复杂，并且速度较之要慢一点，但更安全，在抗分析和抗差分方面表现更好。<br>  3.SHA-1及其他<br>　SHA1是由NIST NSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为<strong>160bit</strong>的散列值，因此抗穷举(brute-force)性更好。SHA-1 设计时基于和MD4相同原理,并且模仿了该算法。</p>
-<h3 id="2-在区块链中的应用"><a href="#2-在区块链中的应用" class="headerlink" title="2. 在区块链中的应用"></a>2. 在区块链中的应用</h3><p>在区路链中主要使用的是sha256加密算法。</p>
+<p><strong>hash的四种特性：</strong></p>
+<ol>
+<li>原像不可逆。 原像不可逆是指对于任意给定的h，都无法依据h自身的信息推导出z。</li>
+<li>难题友好性。难题友好性通俗的理解就是如果要得到难题的答案，只能暴力枚举。</li>
+<li>发散性。 发散性是指对于任意的z，即使只改动非常少的信息那么修改之前的hash值和修改之后的hash值就会大相径庭。</li>
+<li>抗碰撞性。 抗碰撞性是指对于任意两个不相同的z，那么他们对应的hash值也不相同。如果对于任意的y不等于z，则HASH(y)不等于HASH(z)。满足上述定义哈希特性的算法，称作具有<strong>严格抗碰撞性。</strong>如果给定一个z，都无法找到另外一个z<sup>`</sup>使得其他值也等于h，满足这样的哈希特性的算法就有<strong>弱抗碰撞法。</strong></li>
+</ol>
+<p><strong>常用的hash算法：</strong><br>  1.MD4<br> 　 MD4(RFC 1320)是 MIT 的Ronald L. Rivest在 1990 年设计的，MD 是 Message Digest（消息摘要） 的缩写。它适用在32位字长的处理器上用高速软件实现——它是基于 32位操作数的位操作来实现的。<br>  2.MD5<br> 　 MD5(RFC 1321)是 Rivest 于1991年对MD4的改进版本。它对输入仍以512位分组，其输出是4个32位字的级联，与 MD4 相同。MD5比MD4来得复杂，并且速度较之要慢一点，但更安全，在抗分析和抗差分方面表现更好。MD5被证明不具有强抗碰撞性。<br>  3.SHA系列<br> 　 SHA(Secure Hash Algorithm)是一个Hash函数族，分为SHA-1,SHA-2,SHA-3代表了三代哈希标准，目前使用的比较多的是SHA-2系列。<br>　　SHA1是由NIST NSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为<strong>160bit</strong>的散列值，因此抗穷举(brute-force)性更好。SHA-1 设计时基于和MD4相同原理,并且模仿了该算法。SHA-1已被证明不具备“强抗碰撞性”，所以安全性不够高。<br>　　为了提高安全性，第二代SHA-2一共包含了SHA-224,SHA-256,SHA-384和SHA-512算法，他们跟SHA-1算法原理类似。<br>　　由于对MD5和SHA-1出现成功的破解，我们需要一个不同与之前算法，可替换的加密散列算法，也就是现在的SHA-3。</p>
+<h3 id="2-区块链上的哈希算法"><a href="#2-区块链上的哈希算法" class="headerlink" title="2. 区块链上的哈希算法"></a>2. 区块链上的哈希算法</h3><p>　　哈希算法被广泛的使用在构造和验证区块，交易的完整性上，由于哈希算法的四个特性，使得可以把任意的交易数据做成数据摘要，然后再一个一个链接起来，形成数据块的链式结构。<br>可以通过验证每个区块间接地验证交易，然后每个交易原数据也可以做成哈希数据摘要，用于验证交易数据的完整性，下图借用了比特币开发者文档中的图表达了区块链的基本数据结构。<br><img src="/2018/05/03/Hash加密以及应用/p1.jpeg" alt=""></p>
+<h3 id="3-在区块链中的应用"><a href="#3-在区块链中的应用" class="headerlink" title="3. 在区块链中的应用"></a>3. 在区块链中的应用</h3><p>在区路链中主要使用的是sha256加密算法。</p>
 <p>代码示例：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line"> <span class="string">"crypto/sha256"</span></span><br><span class="line"> <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="keyword">const</span> str = <span class="string">"hello"</span></span><br><span class="line"></span><br><span class="line">shar := shar256.New()</span><br><span class="line"></span><br><span class="line">shar.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">result := shar.Sum([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"%x \n"</span>,result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>打印输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">68656c6c6f2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</span><br></pre></td></tr></table></figure>
-<h4 id="2-1-最简单的挖矿实现"><a href="#2-1-最简单的挖矿实现" class="headerlink" title="2.1 最简单的挖矿实现"></a>2.1 最简单的挖矿实现</h4><p>对于一个区块来说有几个组成部分，在每个区块中，对整个区块链起决定作用的是区块头。区块头是由几个字段组成的。</p>
+<h4 id="2-1-最简单的挖矿实现"><a href="#2-1-最简单的挖矿实现" class="headerlink" title="2.1 最简单的挖矿实现"></a>2.1 最简单的挖矿实现</h4><p>　　对于一个区块来说有几个组成部分，在每个区块中，对整个区块链起决定作用的是区块头。区块头是由几个字段组成的。</p>
 <p>区块头描述：</p>
 <table>
 <thead>
@@ -306,15 +313,18 @@
 </tr>
 </tbody>
 </table>
-<p>将整个区块的信息进行sha256加密，知道加密信息符合某种规则以后，新的区块就产生了。</p>
-<p>在使用代码演示简单的区块的之前，需要说明产生新区块的条件是加密信息前几位必须是多个0。当然也可以是多个其他数字，这个多个其他数字就是难度。</p>
-<p>符合某个多位数字的条件函数实现：</p>
+<p>　　hashMerkleRoot Merkle名为梅克尔根，将区块头与区块体相关联，梅克尔根是通过交易事务计算出来的。挖矿的计算公式：</p>
+<blockquote>
+<p>SHA256(<br>  SHA256(version + prev_hash + merkle_root + ntine + nbits + nonce)<br>) &lt; TARGET</p>
+</blockquote>
+<p>　　在这些参数中，版本号是固定值，前一个区块的哈希值也是固定值，当前难度也是一个固定值要想改变这个公式的计算结果，能改动的参数就只有梅克尔根，区块时间戳和那个随机数。通过这样的参数来计算出符合条件的值，基本上也就只能靠暴力计算匹配，这种不断执行SHA256计算的过程很消耗算力，因此这个过程被称为<strong>挖矿</strong>。简单说，<strong>挖矿就是重复计算区块头的哈希值，不断修改该参数，直到与难度目标值匹配的一个过程。</strong></p>
+<p><strong>难度目标值</strong></p>
+<p>符合某个多相同位数字的条件函数实现：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidHasDifficulty</span><span class="params">(h <span class="keyword">string</span>, difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span>&#123;</span><br><span class="line">   b := <span class="built_in">len</span>(h)</span><br><span class="line">   i := <span class="number">0</span></span><br><span class="line">   <span class="keyword">for</span> i = <span class="number">0</span>; i &lt; b; i++ &#123;</span><br><span class="line">     <span class="keyword">if</span> h[i] != <span class="string">'0'</span>&#123;</span><br><span class="line">       <span class="keyword">break</span></span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> i &gt;= difficulty</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>简易区块实现：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidHasDifficulty</span><span class="params">(h <span class="keyword">string</span>,difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    b := <span class="built_in">len</span>(h)</span><br><span class="line">    i := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">0</span> ; i &lt; b; i ++ &#123;</span><br><span class="line">		<span class="keyword">if</span> h[i] != <span class="string">'0'</span> &#123;</span><br><span class="line">	     <span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i &gt;= difficulty</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	str := <span class="string">""</span> </span><br><span class="line">	<span class="comment">//模拟版本信息</span></span><br><span class="line">  versString := <span class="string">"01"</span></span><br><span class="line">  <span class="comment">//模拟前区块hash</span></span><br><span class="line">	hashPrev := <span class="string">"hashPrevBlock"</span></span><br><span class="line">  <span class="comment">//模拟时间戳</span></span><br><span class="line">	timeString := <span class="string">"2018-5-3"</span></span><br><span class="line">  <span class="comment">//模拟交易信息</span></span><br><span class="line">   transactionString := <span class="string">"xxx -&gt; yyy $1"</span></span><br><span class="line">   <span class="comment">//随机数</span></span><br><span class="line">   noceString := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  str = versString + hashPrev + timeString + transactionString</span><br><span class="line">  <span class="comment">//对随机数进行递增直到hash结果满足要求</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		resultHash := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">		str += <span class="keyword">string</span>(noceString)</span><br><span class="line">		hs := sha256.New()</span><br><span class="line">		hs.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line">		result := hs.Sum(<span class="literal">nil</span>)</span><br><span class="line">		resultHash = fmt.Sprintf(<span class="string">"%x"</span>,result)</span><br><span class="line">		<span class="comment">//简单判断生成新的区块的条件为hash前面有3个零</span></span><br><span class="line">		<span class="keyword">if</span> isValidHasDifficulty(resultHash , <span class="number">3</span>) &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">		&#125;</span><br><span class="line">      noceString++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidHasDifficulty</span><span class="params">(h <span class="keyword">string</span>,difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    b := <span class="built_in">len</span>(h)</span><br><span class="line">    i := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">0</span> ; i &lt; b; i ++ &#123;</span><br><span class="line">		<span class="keyword">if</span> h[i] != <span class="string">'0'</span> &#123;</span><br><span class="line">	     <span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i &gt;= difficulty</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	str := <span class="string">""</span> </span><br><span class="line">	<span class="comment">//模拟版本信息</span></span><br><span class="line">  versString := <span class="string">"01"</span></span><br><span class="line">  <span class="comment">//模拟前区块hash</span></span><br><span class="line">	hashPrev := <span class="string">"hashPrevBlock"</span></span><br><span class="line">  <span class="comment">//模拟时间戳</span></span><br><span class="line">	timeString := <span class="string">"2018-5-3"</span></span><br><span class="line">  <span class="comment">//模拟交易信息(梅克尔根的模拟)</span></span><br><span class="line">   transactionString := <span class="string">"xxx -&gt; yyy $1"</span></span><br><span class="line">   <span class="comment">//随机数</span></span><br><span class="line">   noceString := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  str = versString + hashPrev + timeString + transactionString</span><br><span class="line">  <span class="comment">//对随机数进行递增直到hash结果满足要求</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		resultHash := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">		str += <span class="keyword">string</span>(noceString)</span><br><span class="line">		hs := sha256.New()</span><br><span class="line">		hs.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line">		result := hs.Sum(<span class="literal">nil</span>)</span><br><span class="line">		resultHash = fmt.Sprintf(<span class="string">"%x"</span>,result)</span><br><span class="line">		<span class="comment">//简单判断生成新的区块的条件为hash前面有3个零</span></span><br><span class="line">		<span class="keyword">if</span> isValidHasDifficulty(resultHash , <span class="number">3</span>) &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">		&#125;</span><br><span class="line">      noceString++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>打印输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">538d690df902c8299a0488aabf29f9a6b290f1f135223cc9f61d57ff0844345c</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">902e0147db1467186f0faa24e35ed7bf1ead164ef268818c248f62151f872994</span><br><span class="line">f1f25af3091a8782998675d85f573e8361ec2a57938ba29980c1f2663bf572bc</span><br><span class="line">26768b9186c42774d4d6e17d970224a6ffeb8ed177bba95b3d5d6e4f30563b9e</span><br><span class="line">c02498dc1bee308eb67f29ea261fed9e26841e13254581f5a0acf915215eb565</span><br><span class="line">31ce77fbd8c8a4816b1e4919987dc8c57c7b23ab00f08eae614188f7b26e6d86</span><br><span class="line">//找到满足要求的hash</span><br><span class="line">0004d1c7300b0c1da55c9acb504badf5c7d1971b92ec2d94c817a35bceddd007</span><br></pre></td></tr></table></figure>
-<p>上面的循环中对noce递增以求寻找符合要求的hash值的过程即为<strong>挖矿</strong>。</p>
 
       
 
@@ -2547,11 +2557,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2571,6 +2581,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
@@ -2579,15 +2593,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2595,11 +2601,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2615,7 +2625,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2623,7 +2633,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+                <a href="javascript:void(0)" class="js-tag color2">搭建Dapp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
               </li>
              
               <li class="article-tag-list-item">
