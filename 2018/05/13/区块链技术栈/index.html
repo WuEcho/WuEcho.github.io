@@ -6,22 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuecho.com">
-  <title>Golang实现爬虫(一) | WuEcho的博客</title>
+  <title>区块链技术栈 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Golang实现爬虫(一)本爬虫项目使用的是珍爱网，先爬取http://www.zhenai.com/zhenghun中的城市列表。城市列表图如下： 在编码之前需要先下载两个包，来辅助完成对改地址的解析读取等操作，打开命令行控制器，输入以下指令获取第三方库的支持： 123go get golang.org/x/net/htmlgo get golang.org/x/text 等待下载完成 1234">
-<meta name="keywords" content="爬虫">
+  <meta name="description" content="区块链技术栈1.区块链是什么　　区块链本身只是一种数据的记录格式，就像平常使用的Excel表格，Word文档一样，按照一定的格式将我们的数据存储在电脑上。与传统的记录格式不同的是，区块链是将产生的数据按照一定的时间间隔，分成一个个的数据块记录，然后再根据数据块的先后关联串联起来，也就是区块链。　　区块链是一整套技术组合的代表，在这一组合技术的配合下才能焕发出惊人的能力。区块链系统有很多种，但是无论">
+<meta name="keywords" content="区块链简介">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Golang实现爬虫(一)">
-<meta property="og:url" content="http://www.wuecho.com/2018/05/04/Golang实现爬虫-一/index.html">
+<meta property="og:title" content="区块链技术栈">
+<meta property="og:url" content="http://www.wuecho.com/2018/05/13/区块链技术栈/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="Golang实现爬虫(一)本爬虫项目使用的是珍爱网，先爬取http://www.zhenai.com/zhenghun中的城市列表。城市列表图如下： 在编码之前需要先下载两个包，来辅助完成对改地址的解析读取等操作，打开命令行控制器，输入以下指令获取第三方库的支持： 123go get golang.org/x/net/htmlgo get golang.org/x/text 等待下载完成 1234">
+<meta property="og:description" content="区块链技术栈1.区块链是什么　　区块链本身只是一种数据的记录格式，就像平常使用的Excel表格，Word文档一样，按照一定的格式将我们的数据存储在电脑上。与传统的记录格式不同的是，区块链是将产生的数据按照一定的时间间隔，分成一个个的数据块记录，然后再根据数据块的先后关联串联起来，也就是区块链。　　区块链是一整套技术组合的代表，在这一组合技术的配合下才能焕发出惊人的能力。区块链系统有很多种，但是无论">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/04/Golang实现爬虫-一/p1.png">
-<meta property="og:updated_time" content="2018-05-04T15:14:43.178Z">
+<meta property="og:image" content="http://www.wuecho.com/2018/05/13/区块链技术栈/p1.png">
+<meta property="og:image" content="http://www.wuecho.com/2018/05/13/区块链技术栈/p2.png">
+<meta property="og:image" content="http://www.wuecho.com/2018/05/13/区块链技术栈/p3.png">
+<meta property="og:image" content="http://www.wuecho.com/2018/05/13/区块链技术栈/p4.png">
+<meta property="og:image" content="http://www.wuecho.com/2018/05/13/区块链技术栈/p5.png">
+<meta property="og:updated_time" content="2018-05-13T12:27:06.859Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Golang实现爬虫(一)">
-<meta name="twitter:description" content="Golang实现爬虫(一)本爬虫项目使用的是珍爱网，先爬取http://www.zhenai.com/zhenghun中的城市列表。城市列表图如下： 在编码之前需要先下载两个包，来辅助完成对改地址的解析读取等操作，打开命令行控制器，输入以下指令获取第三方库的支持： 123go get golang.org/x/net/htmlgo get golang.org/x/text 等待下载完成 1234">
-<meta name="twitter:image" content="http://www.wuecho.com/2018/05/04/Golang实现爬虫-一/p1.png">
+<meta name="twitter:title" content="区块链技术栈">
+<meta name="twitter:description" content="区块链技术栈1.区块链是什么　　区块链本身只是一种数据的记录格式，就像平常使用的Excel表格，Word文档一样，按照一定的格式将我们的数据存储在电脑上。与传统的记录格式不同的是，区块链是将产生的数据按照一定的时间间隔，分成一个个的数据块记录，然后再根据数据块的先后关联串联起来，也就是区块链。　　区块链是一整套技术组合的代表，在这一组合技术的配合下才能焕发出惊人的能力。区块链系统有很多种，但是无论">
+<meta name="twitter:image" content="http://www.wuecho.com/2018/05/13/区块链技术栈/p1.png">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -179,63 +183,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Golang实现爬虫-一" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-区块链技术栈" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Golang实现爬虫(一)
+      区块链技术栈
     </h1>
   
 
         
-        <a href="/2018/05/04/Golang实现爬虫-一/" class="archive-article-date">
-  	<time datetime="2018-05-04T10:27:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-04</time>
+        <a href="/2018/05/13/区块链技术栈/" class="archive-article-date">
+  	<time datetime="2018-05-13T03:54:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
 </a>
         
       </header>
       
-      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
-          <span class="btn-bg"></span>
-          <span class="btn-text">文章导航</span>
-      </p>
-      <div id="toc-article" class="toc-article">
-          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
-          <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang实现爬虫-一"><span class="toc-number">1.</span> <span class="toc-text">Golang实现爬虫(一)</span></a></li></ol>
-      </div>
-      <script type="text/javascript">
-          function showToc(){
-              var toc_article = document.getElementById("toc-article");
-              var show_toc_btn = document.getElementById("show-toc-btn");
-              toc_article.setAttribute("style","display:block");
-              show_toc_btn.setAttribute("style","display:none");
-          };
-          function showBtn(){
-              var toc_article = document.getElementById("toc-article");
-              var show_toc_btn = document.getElementById("show-toc-btn");
-              toc_article.setAttribute("style","display:none");
-              show_toc_btn.setAttribute("style","display:block");
-          };
-      </script>
-      
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Golang实现爬虫-一"><a href="#Golang实现爬虫-一" class="headerlink" title="Golang实现爬虫(一)"></a>Golang实现爬虫(一)</h1><p>本爬虫项目使用的是珍爱网，先爬取<code>http://www.zhenai.com/zhenghun</code>中的城市列表。<br>城市列表图如下：<br><img src="/2018/05/04/Golang实现爬虫-一/p1.png" alt=""></p>
-<p>在编码之前需要先下载两个包，来辅助完成对改地址的解析读取等操作，打开命令行控制器，输入以下指令获取第三方库的支持：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go get golang.org/x/net/html</span><br><span class="line"></span><br><span class="line">go get golang.org/x/text</span><br></pre></td></tr></table></figure>
-<p>等待下载完成</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/transform"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/encoding"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/html/charset"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mian</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="comment">//获取的数据</span></span><br><span class="line">   resp,err := http.Get(url:<span class="string">"http://www.zhenai.com/zhenghun"</span>)</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    panin(err)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//数据请求完毕需要进行关闭链接</span></span><br><span class="line">   <span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">   <span class="comment">//判断返回的状态码</span></span><br><span class="line">   <span class="keyword">if</span> resp.StatusCode != http.StatusOK&#123;</span><br><span class="line">    <span class="comment">//此处仅做简单示范，实际开发中需要对不同的状态码进行映射</span></span><br><span class="line">    fmt.Println(<span class="string">"状态码不正常"</span>,resp.StatusCode)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//动态获取编码格式</span></span><br><span class="line">   <span class="comment">//Go语言默认采用utf8编码，不获取编码的话可能会导致乱码</span></span><br><span class="line">   e := determinEncodeing(resp.Body)</span><br><span class="line">   <span class="comment">//将内容转化成utf8格式</span></span><br><span class="line">   utf8Obj := transform.NewReader(resp.Body, e.NewDecoder())</span><br><span class="line">   <span class="comment">//对获取的数据进行读取</span></span><br><span class="line">   all,err := ioutil.ReadAll(utf8obj)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">     <span class="built_in">panic</span>(<span class="literal">nil</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   fmt.Printf(<span class="string">"%s"</span>,all)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取编码格式</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">determinEncodeing</span><span class="params">(r io.Reader)</span> <span class="title">encoding</span>.<span class="title">Encoding</span></span> &#123;</span><br><span class="line"> bytes.err := bufio.NewReader(r).Peek(n:<span class="number">1024</span>)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">panic</span>(err)</span><br><span class="line"> &#125;</span><br><span class="line"> e,_,_ := charset.DeterminEncoding(bytes,contenType:<span class="string">""</span>)</span><br><span class="line"> <span class="keyword">return</span> e</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行代码输出结果（截取部分输出）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">&lt;article class=&quot;myhome-wrap frameW city-page&quot;&gt;</span><br><span class="line">	&lt;dl id=&quot;cityList&quot; class=&quot;city-list  clearfix&quot;&gt;</span><br><span class="line">			&lt;dt&gt;A&lt;/dt&gt;</span><br><span class="line">			&lt;dd&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aba&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿坝&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/akesu&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿克苏&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/alashanmeng&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿拉善盟&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aletai&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿勒泰&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/ali&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿里&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anhui&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安徽&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/ankang&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安康&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anqing&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安庆&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anshan&quot;</span><br><span class="line">									class=&quot;&quot;&gt;鞍山&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anshun&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安顺&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anyang&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安阳&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aomen&quot;</span><br><span class="line">			</span><br><span class="line">									class=&quot;&quot;&gt;北碚&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beichen&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北辰&lt;/a&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beihai&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北海&lt;/a&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beijing&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北京&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/benxi&quot;</span><br><span class="line">									class=&quot;&quot;&gt;本溪&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bijie&quot;</span><br><span class="line">									class=&quot;&quot;&gt;毕节&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/binhaixin&quot;</span><br><span class="line">									class=&quot;&quot;&gt;滨海新&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/binzhou&quot;</span><br><span class="line">									class=&quot;&quot;&gt;滨州&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bishan&quot;</span><br><span class="line">									class=&quot;&quot;&gt;璧山&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/boertala&quot;</span><br><span class="line">									class=&quot;&quot;&gt;博尔塔拉&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bozhou&quot;</span><br><span class="line">									class=&quot;&quot;&gt;亳州&lt;/a&gt;	</span><br><span class="line">							&lt;/article&gt;</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
-<p>　　由上面的打印信息可以看到已经获取到网页的信息，现在下一步是希望从一堆数据中捡取所有的符合条件的a便签，即含有城市的a便签，然后从a标签中获取城市以及对应的链接。</p>
-<p>在上面的代码基础上，进一步处理：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在上面代码的基础上添加</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line"> all,err := ioutil.ReadAll(utf8obj)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">     <span class="built_in">panic</span>(<span class="literal">nil</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">printAnode(all)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printAnode</span><span class="params">(s []<span class="keyword">byte</span>)</span></span>&#123;</span><br><span class="line"> <span class="comment">//正则表达式捡取所有城市信息的a标签</span></span><br><span class="line">	match := regexp.MustCompile(<span class="string">`&lt;a href="(http://www.zhenai.com/zhenghun/[a-z0-9].+)"[^&lt;].+&gt;([^&lt;].+)&lt;/a&gt;`</span>)</span><br><span class="line"><span class="comment">//将小括号里面的正则表达式检索到一个二维数组里面  -1代表所有</span></span><br><span class="line">	s1 := match.FindAllSubmatch(s, n:<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> s1 &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"城市：%s 链接:%s \n"</span>,v[<span class="number">2</span>],v[<span class="number">1</span>])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>部分打印信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">城市：阿坝   链接:http://www.zhenai.com/zhenghun/aba </span><br><span class="line">城市：阿克苏   链接:http://www.zhenai.com/zhenghun/akesu </span><br><span class="line">城市：阿拉善盟   链接:http://www.zhenai.com/zhenghun/alashanmeng </span><br><span class="line">城市：阿勒泰   链接:http://www.zhenai.com/zhenghun/aletai </span><br><span class="line">城市：阿里   链接:http://www.zhenai.com/zhenghun/ali </span><br><span class="line">城市：安徽   链接:http://www.zhenai.com/zhenghun/anhui </span><br><span class="line">城市：安康   链接:http://www.zhenai.com/zhenghun/ankang </span><br><span class="line">城市：安庆   链接:http://www.zhenai.com/zhenghun/anqing </span><br><span class="line">城市：鞍山   链接:http://www.zhenai.com/zhenghun/anshan </span><br><span class="line">城市：安顺   链接:http://www.zhenai.com/zhenghun/anshun </span><br><span class="line">城市：安阳   链接:http://www.zhenai.com/zhenghun/anyang </span><br><span class="line">城市：澳门   链接:http://www.zhenai.com/zhenghun/aomen </span><br><span class="line">城市：白城   链接:http://www.zhenai.com/zhenghun/baicheng1 </span><br><span class="line">城市：百色   链接:http://www.zhenai.com/zhenghun/baise </span><br><span class="line">城市：白山   链接:http://www.zhenai.com/zhenghun/baishan</span><br></pre></td></tr></table></figure>
+        <h1 id="区块链技术栈"><a href="#区块链技术栈" class="headerlink" title="区块链技术栈"></a>区块链技术栈</h1><h2 id="1-区块链是什么"><a href="#1-区块链是什么" class="headerlink" title="1.区块链是什么"></a>1.区块链是什么</h2><p>　　区块链本身只是一种<strong>数据的记录格式</strong>，就像平常使用的Excel表格，Word文档一样，按照一定的格式将我们的数据存储在电脑上。与传统的记录格式不同的是，区块链是将产生的数据按照一定的时间间隔，分成一个个的数据块记录，然后再根据数据块的先后关联串联起来，也就是<strong>区块链</strong>。<br>　　区块链是一整套技术组合的代表，在这一组合技术的配合下才能焕发出惊人的能力。区块链系统有很多种，但是无论什么样的区块链系统，其技术部件的组合都是类似的。<br>　　最基本的技术组合如下：<br>　　　　　　1. 共识机制<br>　　　　　　2. 密码算法<br>　　　　　　3. 网络路由<br>　　　　　　4. 脚本系统<br>　　　　　　5. 区块链账本</p>
+<p>　　各种系统本质上都是这个经典结构之上直接实现或者扩展实现。这些零件装配在一起，组成了一个区块链软件，运行起来后就称之为一个节点，多个这样的节点在不同的计算机上运行起来，就组成了网络，在这个网络中每个节点都是<strong>平等的</strong>，大家互相为对方提供服务，这种网络被称为<strong>点对点的对等网络</strong>。</p>
+<h3 id="1-1-区块链账本"><a href="#1-1-区块链账本" class="headerlink" title="1.1 区块链账本"></a>1.1 区块链账本</h3><p>　　区块链，就是区块+链，区块就是指数据块，每个数据块之间通过某个标志链接起来，从而形成一条链，如图：<br><img src="/2018/05/13/区块链技术栈/p1.png" alt=""><br>　　以比特币来说，大约每10分钟产生一个区块，<strong>区块中主要包含了交易事务数据以及区块的摘要信息</strong>。如下为比特币中区块链数据的组成示意图：<br><img src="/2018/05/13/区块链技术栈/p2.png" alt=""><br>　　从上图可以看到区块数据在逻辑上分成了<strong>区块头</strong>和<strong>区块体</strong>，每个区块头中通过<strong>梅克尔根</strong>关联了区块中众多的交易事务，每个区块之间通过区块头哈希值串联起来。在区块链系统中，一个节点产生的数据或者更改的数据发送到网络中的其他节点接受验证，而其他节点是不会验证通过一个被篡改的数据，因为跟自己的本地区块链账本数据匹配不起来，这是区块链数据<strong>不可篡改</strong>的一个很重要的设计。</p>
+<h3 id="1-2-共识机制"><a href="#1-2-共识机制" class="headerlink" title="1.2 共识机制"></a>1.2 共识机制</h3><p>　　共识就是大家达成一致的意思，区块链是一个分布式的对等网络结构，在这个结构中没有哪个节点是“老大”，所以没有办法让一个节点随意发布的信息让全部节点都同意认可。如何让每个节点通过一个规则将各自的数据保持一致是个很核心的问题。这个问题的解决方案就是制定一套共识算法。<br>　　公式算法其实就是一个规则，每个节点都按照这个规则去确认各自的数据。在区块链系统中，比较常用的公式算法有：<strong>Pow(Proof of Work 工作量证明)</strong>，<strong>PoS(Proof of Stake 权益证明)</strong>,<strong>DPoS(Delegate Proof of Stake 委托权益证明)</strong>,<strong>PBFT(Practical Byzantine Fault Tolerance 实用拜占庭容错算法)</strong>等。<br>　　区块链系统就是通过这种算法或者共识算法来使得网络中各个节点的账本数据达成一致的。
+　　</p>
+<h3 id="1-3-密码算法"><a href="#1-3-密码算法" class="headerlink" title="1.3 密码算法"></a>1.3 密码算法</h3><p>　　密码算法在区块链系统中的应用很多而且很巧妙，首先区块之间的链接，不是靠数据地址来关联，而是靠<strong>哈希值</strong>来关联的。区块链账本对每个区块都会计算出一个哈希值，称为<strong>区块哈希</strong>。通过区块哈希来串联区块，这有个很好的作用就是，如果有人篡改了其中某个区块数据，那么后面的数据都要进行修改。<br>　　除了整个区块会被计算哈希值外，区块中包含的每一笔事务数据也会被计算出一个哈希值，称为<strong>事务　哈希</strong>。<br>　　每个事务哈希都可以唯一的表示一个事务，对一个区块中所有的事务进行哈希计算后，可以得出一组事务哈希，再通过对这些事务哈希进行加工处理，最终会得出一颗哈希树的数据结构。哈希树的顶部就是树根，称为<strong>梅克尔根</strong>。通过每个梅克尔根就可以将整个区块中的事务约束起来，只要区块中的事务有任何改变，梅克尔根就会发生变化，利用这点可以确保<strong>区块数据的完整性</strong>。<br>　　密码算法在区块链系统中的应用不止这些，还包括通过密码算法来创建账户地址，签名交易事务等。</p>
+<h3 id="1-4-脚本系统"><a href="#1-4-脚本系统" class="headerlink" title="1.4 脚本系统"></a>1.4 脚本系统</h3><p>　　脚本就是指一组程序规则。脚本系统使得在区块链中可以实现各种各样的业务功能。区块链系统之所以能形成一个有价值的网络，依靠的就是脚本系统。</p>
+<h3 id="1-5-网络路由"><a href="#1-5-网络路由" class="headerlink" title="1.5 网络路由"></a>1.5 网络路由</h3><p>　　在分布式的网络结构中不存在一个指定服务器，各个节点没办法通过一个服务器来直接交换彼此的身份信息，就只能通过彼此联系并传播信息。在区块链系统中，这一功能一般会定义成一种协议，称为<strong>节点发现协议</strong>。<br>　　除了发现节点外，更重要的一个功能就是同步数据。节点要保持自己的账本数据是最新的，就必须时时更新自己的数据，通过向邻近节点发送数据请求来获得最新的数据，节点彼此都充当服务者和被服务者。</p>
+<h2 id="2-区块链的分类和架构"><a href="#2-区块链的分类和架构" class="headerlink" title="2. 区块链的分类和架构"></a>2. 区块链的分类和架构</h2><p>　　通过公式算法达成节点的账本数据一致。通过密码算法确保账本数据的不可篡改以及数据发送的安全性。通过脚本系统扩展账本数据的表达范畴。区块链系统就是一种特别设计的数据库系统或者分布式数据库系统，在这个数据库中可以存储数据货币，也可以存储逻辑更复杂的智能合约，以及范围更广阔的各种业务数据。</p>
+<h3 id="2-1-区块链架构"><a href="#2-1-区块链架构" class="headerlink" title="2.1 区块链架构"></a>2.1 区块链架构</h3><ol>
+<li><p>区块链1.0架构<br>　　在这个架构中分为核心节点和前端工具，核心节点中“矿工”功能主要承担两个任务：</p>
+<blockquote>
+<p>第一个：通过竞争获取区块数据的打包权后将内存池（发送在网络中但是还没有确认进区块的交易数据，属于待确认交易数据）中的交易数据打包进区块，并且广播给其他节点。<br>第二个：接受系统对打包行为的数字货币奖励，从而系统通过这种奖励方式完成新增货币的发行。</p>
+</blockquote>
+<p>架构如图：<br><img src="/2018/05/13/区块链技术栈/p3.png" alt="">  </p>
+<p>在前端工具中，钱包工具是提供给用户管理自己账户地址以及余额。浏览器则用来查看当前区块链网络中发生的数据情况。RPC客户端和命令行接口都是用来访问核心节点的功能的。核心节点相当于一个服务器，通过RPC服务提供功能调用接口。  </p>
+</li>
+<li><p>区块链2.0架构<br>　　区块链2.0架构的代表产品就是以太坊，结构如下图：<br>　　<img src="/2018/05/13/区块链技术栈/p4.png" alt=""><br>　　与1.0架构相比，最大的特点就是支持智能合约，在以太坊中，使用智能合约开发工具开发合约程序，并且编译为字节码，最终部署到以太坊的区块链账本中。部署后的智能合约是运行在虚拟机上的，称为“以太坊虚拟机”。正是通过这样的智能合约的实现，扩展了区块链系统的功能。
+　　</p>
+</li>
+<li>区块链3.0架构<br>　　在3.0架构中，超越了对数字货币或者金融的应用范畴，而将区块链技术作为一种泛解决方案。结构如下图：<br>　　<img src="/2018/05/13/区块链技术栈/p5.png" alt=""><br>　　在3.0架构中，数字货币不再是一个必选组件，如果需要可以通过智能合约的方式来实现数字货币。与之前相比，最大的特点就是增加一个网管控制，实际上就是增加了对安全保密的需求支持，并且通过数据审计加强对数据的可靠性管理。
+　　<h2 id="3-区块链分类"><a href="#3-区块链分类" class="headerlink" title="3. 区块链分类"></a>3. 区块链分类</h2></li>
+</ol>
+<h3 id="3-1-根据网络范围"><a href="#3-1-根据网络范围" class="headerlink" title="3.1 根据网络范围"></a>3.1 根据网络范围</h3><p>根据网络范围，可以划分为<strong>公有链</strong>，<strong>私有链</strong>，<strong>联盟链</strong>。</p>
+<ul>
+<li><p>公有链<br>公有链就是完全对外开放，任何人都可以任意使用，没有权限的设定，也没有身份认证之类，不但可以任意参与使用，而且发生的所有数据都可以任意查看，完全公开透明。<br><strong>特点：</strong>在公有链的环境中，节点数量是不固定的，节点的在线与否也是无法控制的，甚至节点是不是一个恶意节点也不能保证。</p>
+</li>
+<li><p>私有链<br>私有链就是指不对外开放，仅在组织内部使用系统，比如企业的票据管理，账务审计，供应链管理等，或者一些政务管理系统。私有链在使用过程中，通常是有注册要求的，即需要提交身份认证。<br><strong>特点：</strong>在私有链的环境中，节点数量和节点的状态通常是可控的，因此在私链中一般不需要通过竞争的方式筛选区块数据的打包者，可以采用更加节能环保的方式。</p>
+</li>
+<li><p>联盟链<br>联盟链的网络范围介于公有链和私有链之间，通常使用在多个成员角色的环境中。<br><strong>特点：</strong>联盟链一般用在明确的机构之间，因此与私有链一样，节点的数量和状态也是可控的，也是采用更加节能环保的共识机制。</p>
+</li>
+</ul>
+<h3 id="3-2-根据部署环境"><a href="#3-2-根据部署环境" class="headerlink" title="3.2 根据部署环境"></a>3.2 根据部署环境</h3><ul>
+<li><p>主链<br>主链就是部署在生产环境的真正的区块链系统，主链也可以说是由正式版客户端组成的区块链网络，只有主链才是会被真正推广使用的。区块链系统会由于种种原因导致分叉，比如挖矿的时候临时产生的小分叉，此时将最长的那条原始的链条称为主链。</p>
+</li>
+<li><p>测试链<br>就是开发者为了方便大家学习使用而提供的测试用途的区块链网络。</p>
+</li>
+</ul>
+<h3 id="3-3-根据对接类型"><a href="#3-3-根据对接类型" class="headerlink" title="3.3 根据对接类型"></a>3.3 根据对接类型</h3><ul>
+<li><p>单链</p>
+<p>能够单独运行的区块链系统都可以称为“单链”。</p>
+</li>
+<li><p>侧链</p>
+<p>侧链属于一种区块链系统的垮链技术，主要是由比特币侧链发起的。每一种区块链系统都有自己的优缺点，侧链就是一种将不同的链结合起来，打通信息孤岛，彼此互补。</p>
+</li>
+<li><p>互联链<br>从技术角度来讲，区块链系统之间的互联，可以彼此互补，每一类系统都会有长处和不足之处，彼此进行功能上的互补，如果说每一条链都是一条神经的话，一旦互联起来，就像是神经系统一般，将会给我们的社会发展带来更新层次的智能化。</p>
+</li>
+</ul>
 
       
 
@@ -280,7 +296,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">区块链简介</a>
         		</li>
       		
 		</ul>
@@ -292,7 +308,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
         		</li>
       		
 		</ul>
@@ -347,7 +363,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/05/04/Golang实现爬虫-一/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/05/13/区块链技术栈/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -361,18 +377,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/05/06/Golang实现爬虫-二/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Golang实现爬虫(二)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/05/04/正则表达式在Go中的使用/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">正则表达式在Go中的使用</div>
+    <a href="/2018/05/09/星云链Nebulas101-04-智能合约存储区/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">星云链Nebulas101 04 智能合约存储区</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -391,19 +398,6 @@
             </div>
         </div>
         
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang实现爬虫-一"><span class="toc-number">1.</span> <span class="toc-text">Golang实现爬虫(一)</span></a></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
         
     </div>
 </aside>
