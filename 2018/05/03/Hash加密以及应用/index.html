@@ -17,7 +17,8 @@
 <meta property="og:description" content="加密算法以及应用1. 什么是hash加密　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。 　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是一种将任意长度的消息压缩到某一固">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/05/03/Hash加密以及应用/p1.jpeg">
-<meta property="og:updated_time" content="2018-05-12T13:40:43.407Z">
+<meta property="og:image" content="http://www.wuecho.com/2018/05/03/Hash加密以及应用/p2.png">
+<meta property="og:updated_time" content="2018-05-14T12:53:08.886Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="加密算法以及应用">
 <meta name="twitter:description" content="加密算法以及应用1. 什么是hash加密　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。 　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是一种将任意长度的消息压缩到某一固">
@@ -198,7 +199,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#加密算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">加密算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是hash加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.1.1.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-在区块链中的应用"><span class="toc-number">1.1.2.</span> <span class="toc-text">3. 在区块链中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-最简单的挖矿实现"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">3.1 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#加密算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">加密算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是hash加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.1.1.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-区块哈希"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">2.1. 区块哈希</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-梅克尔根树"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">2.2 梅克尔根树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-公开密匙算法"><span class="toc-number">1.1.2.</span> <span class="toc-text">3. 公开密匙算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-公钥和私钥"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">3.1 公钥和私钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-RSA算法"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">3.2 RSA算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-椭圆曲线密码算法"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">3.3 椭圆曲线密码算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-编码-解码算法"><span class="toc-number">1.1.3.</span> <span class="toc-text">4. 编码/解码算法 　　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Base64"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">4.1 Base64</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Base58"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">4.2 Base58</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Base58Check"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">4.3 Base58Check</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-应用场景"><span class="toc-number">1.1.4.</span> <span class="toc-text">5. 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-在区块链中的应用"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">5.2 在区块链中的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-最简单的挖矿实现"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">5.3 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -236,12 +237,51 @@
 </ol>
 <p><strong>常用的hash算法：</strong><br>  1.MD4<br> 　 MD4(RFC 1320)是 MIT 的Ronald L. Rivest在 1990 年设计的，MD 是 Message Digest（消息摘要） 的缩写。它适用在32位字长的处理器上用高速软件实现——它是基于 32位操作数的位操作来实现的。<br>  2.MD5<br> 　 MD5(RFC 1321)是 Rivest 于1991年对MD4的改进版本。它对输入仍以512位分组，其输出是4个32位字的级联，与 MD4 相同。MD5比MD4来得复杂，并且速度较之要慢一点，但更安全，在抗分析和抗差分方面表现更好。MD5被证明不具有强抗碰撞性。<br>  3.SHA系列<br> 　 SHA(Secure Hash Algorithm)是一个Hash函数族，分为SHA-1,SHA-2,SHA-3代表了三代哈希标准，目前使用的比较多的是SHA-2系列。<br>　　SHA1是由NIST NSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为<strong>160bit</strong>的散列值，因此抗穷举(brute-force)性更好。SHA-1 设计时基于和MD4相同原理,并且模仿了该算法。SHA-1已被证明不具备“强抗碰撞性”，所以安全性不够高。<br>　　为了提高安全性，第二代SHA-2一共包含了SHA-224,SHA-256,SHA-384和SHA-512算法，他们跟SHA-1算法原理类似。<br>　　由于对MD5和SHA-1出现成功的破解，我们需要一个不同与之前算法，可替换的加密散列算法，也就是现在的SHA-3。</p>
 <h3 id="2-区块链上的哈希算法"><a href="#2-区块链上的哈希算法" class="headerlink" title="2. 区块链上的哈希算法"></a>2. 区块链上的哈希算法</h3><p>　　哈希算法被广泛的使用在构造和验证区块，交易的完整性上，由于哈希算法的四个特性，使得可以把任意的交易数据做成数据摘要，然后再一个一个链接起来，形成数据块的链式结构。<br>可以通过验证每个区块间接地验证交易，然后每个交易原数据也可以做成哈希数据摘要，用于验证交易数据的完整性，下图借用了比特币开发者文档中的图表达了区块链的基本数据结构。<br><img src="/2018/05/03/Hash加密以及应用/p1.jpeg" alt=""></p>
-<h3 id="3-在区块链中的应用"><a href="#3-在区块链中的应用" class="headerlink" title="3. 在区块链中的应用"></a>3. 在区块链中的应用</h3><p>在区路链中主要使用的是sha256加密算法。</p>
+<h4 id="2-1-区块哈希"><a href="#2-1-区块哈希" class="headerlink" title="2.1. 区块哈希"></a>2.1. 区块哈希</h4><p>　　区块哈希就是区块头进行哈希计算，得出某个区块的哈希值，用这个哈希值可以唯一确定某一个区块，区块与区块之间就是通过这个哈希值进行串联，从而形成了一个区块链的结构。</p>
+<h4 id="2-2-梅克尔根树"><a href="#2-2-梅克尔根树" class="headerlink" title="2.2 梅克尔根树"></a>2.2 梅克尔根树</h4><p>　　梅克尔根树在不同的区块链系统中有不同的细节，但本质是一样的，以比特币中的梅克尔根树来说明。比特币中的梅克尔根树称为<strong>二叉梅克尔根树</strong>，每一个区块都有自己的梅克尔树，<strong>是通过将区块中的交易事务哈希值两两结对计算出新的哈希值，然后哈希值两两结对进行哈希计算，递归循环，直到计算出最后一个根哈希值，这样的树即为梅克尔根树也称为哈希树。</strong>
+　　</p>
+<h3 id="3-公开密匙算法"><a href="#3-公开密匙算法" class="headerlink" title="3. 公开密匙算法"></a>3. 公开密匙算法</h3><h4 id="3-1-公钥和私钥"><a href="#3-1-公钥和私钥" class="headerlink" title="3.1 公钥和私钥"></a>3.1 公钥和私钥</h4><p>　　公钥和私钥是现代密码学分支<strong>非对称性加密</strong>里面的名词，对于一段需要保护的信息，通常使用公钥加密，用私钥解密，这种加密方法也成为<strong>公开密钥算法</strong>。<br>　　对称加密算法是应用较早的加密算法，技术成熟。在对称加密算法中，数据发信方将明文（原始数据）和加密密钥一起经过特殊加密算法处理后，将密文发送出去。收信方收到密文后，若想解读原文，则需要使用加密用过的密钥及相同算法的逆算法对密文进行解密。在<strong>对称加密算法</strong>中，使用的密钥<strong>只有一个</strong>，发收信双方都使用这个密钥对数据进行加密和解密。　<br>　　一般来说，公开密匙算法对于大幅度的原始数据加密的性能不会很高，因此如果是用于大段数据加密与解密，通常还是使用强度比较高的对称加密算法。
+　　</p>
+<h4 id="3-2-RSA算法"><a href="#3-2-RSA算法" class="headerlink" title="3.2 RSA算法"></a>3.2 RSA算法</h4><p>　　RSA加密算法是最常见的非对称加密算法。即用于加密，也用于数字签名，是目前最流行的公开密钥算法。RSA的公钥和私钥是一对大质数，从一个公钥和密文恢复明文的难度，等价于分解两个大质数之积。RSA的安全基于大数德尔因子分解，经历了各种攻击的考验，被普遍认为是目前最优秀的公钥方案之一。<br><strong>缺点：</strong></p>
+<ul>
+<li>产生密钥很麻烦，受限于质数产生的技术</li>
+<li>分组长度太大，运算代价高，速度慢</li>
+</ul>
+<h4 id="3-3-椭圆曲线密码算法"><a href="#3-3-椭圆曲线密码算法" class="headerlink" title="3.3 椭圆曲线密码算法"></a>3.3 椭圆曲线密码算法</h4><p>　　椭圆曲线密码算法是基于椭圆曲线数学的一种公钥密码算法。主要的安全性在于利用了椭圆曲线离散对数问题的困难性。</p>
+<h3 id="4-编码-解码算法"><a href="#4-编码-解码算法" class="headerlink" title="4. 编码/解码算法 　　"></a>4. 编码/解码算法 　　</h3><p>　</p>
+<h4 id="4-1-Base64"><a href="#4-1-Base64" class="headerlink" title="4.1 Base64"></a>4.1 Base64</h4><p>　　这是一种用64个字符来表示任意二进制数据的方法。字符编码表如下：<br><img src="/2018/05/03/Hash加密以及应用/p2.png" alt="">　<br>　　Base64编码主要用在传输，存储，表示二进制等领域，还可以用来加密。这种加密比较简单，也很容易解码。</p>
+<h4 id="4-2-Base58"><a href="#4-2-Base58" class="headerlink" title="4.2 Base58"></a>4.2 Base58</h4><p>　　Base58是基于58个字母和数字组成的，实际上就是Base64的一子集，Base58不包含以下Base64的字符：</p>
+<blockquote>
+<p>数字0<br>大写字母O<br>大写字母I<br>小写字母l</p>
+<ul>
+<li>与 /</li>
+</ul>
+</blockquote>
+<p>　　比特币使用的是改进版的Base8算法,是为了解决Base58编码的字符串没有完整性校验机制。即Base58Check。</p>
+<h4 id="4-3-Base58Check"><a href="#4-3-Base58Check" class="headerlink" title="4.3 Base58Check"></a>4.3 Base58Check</h4><p>　　在二进制数据的传输过程中，为了防止数据传输的错误，保护数据安全，通常会加一个校验码，通过校验码的配合可以发现数据是否被破坏或者是否在发送时输入错误了。<br>　　编码方式如下：进行编码前，在待编码的内容字符串中加入一个字节的版本信息，版本信息可以自行约定，比如比特币地址采用了0x00作为版本信息，然后再加入待编码内容字符串的哈希值，通常只要取得哈希值中的4个字节，加在一起再整体进行Base58编码。
+　　</p>
+<h3 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. 应用场景</h3><p>密码算法在区块链系统中的重要性，相当于整个体系的骨骼。应用场景如下：</p>
+<blockquote>
+<p>账户地址生成</p>
+</blockquote>
+<blockquote>
+<p>　　公开密钥算法的应用，首先生成一对密钥，由于公钥是可以公开的，因此可以作为自己对外的一个账号，而公钥必须和对应的私钥匹配才能验证通过，因此此种方式生成的地址，先天具备验证性。<br>　　<br>价值转移保卫</p>
+</blockquote>
+<blockquote>
+<p>　　公开密钥的重要用武之地，发送者使用自己的私钥进行签名，接收者可以使用发送者公开的那个公钥进行身份验证以确保不误。发送者不但使用了自己的私钥签名，还使用了接受者的公钥进行了一段关键的加密，只有接受者使用自己的私钥才能解开这个公钥，因此就能保证不被别人截获。就算截获也没有对应的私钥来解码。<br>　　<br>完整性证明</p>
+</blockquote>
+<blockquote>
+<p>　 哈希算法应用的主要场景，通过构建的交易哈希树来验证数据是否一致。<br> 　<br>零知识证明</p>
+</blockquote>
+<blockquote>
+<p>　要想证明自己拥有某笔资产或者拥有某个能力，要想证明自己具备对区块链上某一笔交易的所有权，只要解码一段与交易内容相关但又不泄露真正交易内容对的编码，能够解码成功就能证明所有权。</p>
+</blockquote>
+<h4 id="5-2-在区块链中的应用"><a href="#5-2-在区块链中的应用" class="headerlink" title="5.2 在区块链中的应用"></a>5.2 在区块链中的应用</h4><p>在区路链中主要使用的是sha256加密算法。</p>
 <p>代码示例：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line"> <span class="string">"crypto/sha256"</span></span><br><span class="line"> <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="keyword">const</span> str = <span class="string">"hello"</span></span><br><span class="line"></span><br><span class="line">shar := shar256.New()</span><br><span class="line"></span><br><span class="line">shar.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">result := shar.Sum([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"%x \n"</span>,result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>打印输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">68656c6c6f2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</span><br></pre></td></tr></table></figure>
-<h4 id="3-1-最简单的挖矿实现"><a href="#3-1-最简单的挖矿实现" class="headerlink" title="3.1 最简单的挖矿实现"></a>3.1 最简单的挖矿实现</h4><p>　　对于一个区块来说有几个组成部分，在每个区块中，对整个区块链起决定作用的是区块头。区块头是由几个字段组成的。</p>
+<h4 id="5-3-最简单的挖矿实现"><a href="#5-3-最简单的挖矿实现" class="headerlink" title="5.3 最简单的挖矿实现"></a>5.3 最简单的挖矿实现</h4><p>　　对于一个区块来说有几个组成部分，在每个区块中，对整个区块链起决定作用的是区块头。区块头是由几个字段组成的。</p>
 <p>区块头描述：</p>
 <table>
 <thead>
@@ -503,7 +543,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#加密算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">加密算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是hash加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.1.1.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-在区块链中的应用"><span class="toc-number">1.1.2.</span> <span class="toc-text">3. 在区块链中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-最简单的挖矿实现"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">3.1 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#加密算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">加密算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是hash加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.1.1.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-区块哈希"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">2.1. 区块哈希</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-梅克尔根树"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">2.2 梅克尔根树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-公开密匙算法"><span class="toc-number">1.1.2.</span> <span class="toc-text">3. 公开密匙算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-公钥和私钥"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">3.1 公钥和私钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-RSA算法"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">3.2 RSA算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-椭圆曲线密码算法"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">3.3 椭圆曲线密码算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-编码-解码算法"><span class="toc-number">1.1.3.</span> <span class="toc-text">4. 编码/解码算法 　　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Base64"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">4.1 Base64</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Base58"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">4.2 Base58</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Base58Check"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">4.3 Base58Check</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-应用场景"><span class="toc-number">1.1.4.</span> <span class="toc-text">5. 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-在区块链中的应用"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">5.2 在区块链中的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-最简单的挖矿实现"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">5.3 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -623,11 +663,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -651,11 +691,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -667,7 +711,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -675,19 +719,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -707,7 +747,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -715,11 +755,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">搭建Dapp</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -727,11 +763,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
