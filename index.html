@@ -172,6 +172,399 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言实现加密算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/16/Go语言实现加密算法/">Go语言实现加密算法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/16/Go语言实现加密算法/" class="archive-article-date">
+  	<time datetime="2018-05-16T09:36:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言实现加密算法"><a href="#Go语言实现加密算法" class="headerlink" title="Go语言实现加密算法"></a>Go语言实现加密算法</h1><h2 id="1-非对称加密"><a href="#1-非对称加密" class="headerlink" title="1 非对称加密"></a>1 非对称加密</h2><h3 id="1-1-Go中的sha256算法"><a href="#1-1-Go中的sha256算法" class="headerlink" title="1.1 Go中的sha256算法"></a>1.1 Go中的sha256算法</h3><p>go语言自带的库中有加密库库名<code>crypto</code>，<code>sha256</code>加密算法使用：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用自带的256 方式1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mySha256</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	 sum := sha256.Sum256([]<span class="keyword">byte</span>(<span class="string">"hello world"</span>))</span><br><span class="line"></span><br><span class="line">	 fmt.Printf(<span class="string">"%x"</span>,sum)</span><br><span class="line"></span><br><span class="line">	 fmt.Println()</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用自带的256 方式2</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mySha256Other</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	h := sha256.New()</span><br><span class="line">	h.Write([]<span class="keyword">byte</span>(<span class="string">"hello world"</span>))</span><br><span class="line">	fmt.Printf(<span class="string">"%x"</span>,h.Sum(<span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在项目中创建一个名为text的文本</span></span><br><span class="line"><span class="comment">//文本内容为 hello world</span></span><br><span class="line"><span class="comment">//将文件内容做256加密</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MyIOSha256</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//文件路径必须为绝对路径</span></span><br><span class="line">	f,err := os.Open(<span class="string">"/Users/wuxinyang/Desktop/MyGo/src/0516/demo002/text.txt"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">defer</span> f.Close()</span><br><span class="line"></span><br><span class="line">	h := sha256.New()</span><br><span class="line"></span><br><span class="line">	io.Copy(h,f)</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"%x"</span>,h.Sum(<span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">   mySha256()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line"></span><br><span class="line">	mySha2562()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line"></span><br><span class="line">	MyIOSha256()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行之后的打印输出为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9</span><br><span class="line">b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9</span><br><span class="line">b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-Go语言中的MD5"><a href="#1-2-Go语言中的MD5" class="headerlink" title="1.2 Go语言中的MD5"></a>1.2 Go语言中的MD5</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"crypto/md5"</span></span><br><span class="line">	<span class="string">"encoding/hex"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//MD5</span></span><br><span class="line"><span class="comment">//调用go环境中的MD5</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MyMD5</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	data := []<span class="keyword">byte</span>(<span class="string">"helloworld"</span>)</span><br><span class="line"></span><br><span class="line">	s := fmt.Sprintf(<span class="string">"%x"</span>,md5.Sum(data))</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line"></span><br><span class="line">    fmt.Println(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MyMD52</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	h := md5.New()</span><br><span class="line">	h.Write([]<span class="keyword">byte</span>(<span class="string">"helloworld"</span>))</span><br><span class="line">	<span class="comment">//16进制转字符串</span></span><br><span class="line">    s := hex.EncodeToString(h.Sum(<span class="literal">nil</span>))</span><br><span class="line"></span><br><span class="line">    fmt.Println()</span><br><span class="line">    fmt.Println(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="comment">//MD5</span></span><br><span class="line">	MyMD5()</span><br><span class="line"></span><br><span class="line">	MyMD52()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行之后输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fc5e038d38a57032085441e7fe7010b0</span><br><span class="line"></span><br><span class="line">fc5e038d38a57032085441e7fe7010b0</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-Go语言中的Ripemd160"><a href="#1-3-Go语言中的Ripemd160" class="headerlink" title="1.3 Go语言中的Ripemd160"></a>1.3 Go语言中的Ripemd160</h3><p>ripemd160加密算法也是hash加密，但是需要导入三方包。导入流程如下：<br>打开终端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src</span><br><span class="line">//mkdir golang.org  如果没有golang.org的话</span><br><span class="line">cd golang.org</span><br><span class="line">cd x</span><br><span class="line">git clone https://github.com/golang/crypto.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"golang.org/x/crypto/ripemd160"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MyRipemd160</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	hasher :=  ripemd160.New()</span><br><span class="line">	hasher.Write([]<span class="keyword">byte</span>(<span class="string">"hello world"</span>))</span><br><span class="line"></span><br><span class="line">	hashString := fmt.Sprintf(<span class="string">"%x"</span>,hasher.Sum(<span class="literal">nil</span>))</span><br><span class="line"></span><br><span class="line">  fmt.Println(hashString)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">//Ripemd160</span></span><br><span class="line">	MyRipemd160()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">98c615784ccb5fe5936fbc0cbe9dfdb408d92f0f</span><br></pre></td></tr></table></figure>
+<h2 id="2-对称加密算法"><a href="#2-对称加密算法" class="headerlink" title="2.对称加密算法"></a>2.对称加密算法</h2><h3 id="2-1-Go语言实现DES加密，以及解密"><a href="#2-1-Go语言实现DES加密，以及解密" class="headerlink" title="2.1 Go语言实现DES加密，以及解密"></a>2.1 Go语言实现DES加密，以及解密</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"crypto/cipher"</span></span><br><span class="line">	<span class="string">"crypto/des"</span></span><br><span class="line">	<span class="string">"encoding/base64"</span></span><br><span class="line">	<span class="string">"bytes"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//DES加密方法</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MyDesEncrypt</span><span class="params">(origData, key []<span class="keyword">byte</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	block, _ := des.NewCipher(key)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将明文按秘钥的长度做补码运算</span></span><br><span class="line">	origData = PKCS5Padding(origData, block.BlockSize())</span><br><span class="line"></span><br><span class="line">	<span class="comment">//设置加密方式</span></span><br><span class="line">	blockMode := cipher.NewCBCDecrypter(block, key)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建明文长度的字节数组</span></span><br><span class="line">	crypted := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="built_in">len</span>(origData))</span><br><span class="line"></span><br><span class="line">	<span class="comment">//加密明文</span></span><br><span class="line">	blockMode.CryptBlocks(crypted, origData)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将字节数组转换成字符串</span></span><br><span class="line">	fmt.Println(base64.StdEncoding.EncodeToString(crypted))</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现明文的补码</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PKCS5Padding</span><span class="params">(ciphertext []<span class="keyword">byte</span>, blockSize <span class="keyword">int</span>)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	padding := blockSize - <span class="built_in">len</span>(ciphertext)%blockSize</span><br><span class="line"></span><br><span class="line">	padtext := bytes.Repeat([]<span class="keyword">byte</span>&#123;<span class="keyword">byte</span>(padding)&#125;, padding)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">append</span>(ciphertext, padtext...)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//DES解密方法</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MyDESDecrypt</span><span class="params">(data <span class="keyword">string</span>, key []<span class="keyword">byte</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将字符串转换成字节数组</span></span><br><span class="line">	crypted, _ := base64.StdEncoding.DecodeString(data)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将字节秘钥转换成block快</span></span><br><span class="line">	block, _ := des.NewCipher(key)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//设置解密方式</span></span><br><span class="line">	blockMode := cipher.NewCBCEncrypter(block, key)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建密文大小的数组变量</span></span><br><span class="line">	origData := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="built_in">len</span>(crypted))</span><br><span class="line"></span><br><span class="line">	<span class="comment">//解密密文到数组origData中</span></span><br><span class="line">	blockMode.CryptBlocks(origData, crypted)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//去补码</span></span><br><span class="line">	origData = PKCS5UnPadding(origData)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//打印明文</span></span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(origData))</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现去补码</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PKCS5UnPadding</span><span class="params">(origData []<span class="keyword">byte</span>)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	length := <span class="built_in">len</span>(origData)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 去掉最后一个字节 unpadding 次</span></span><br><span class="line">	unpadding := <span class="keyword">int</span>(origData[length<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> origData[:(length - unpadding)]</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"Hello World!"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//声明秘钥,利用此秘钥实现明文的加密和密文的解密</span></span><br><span class="line">	key := []<span class="keyword">byte</span>(<span class="string">"12345678"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//加密</span></span><br><span class="line">	MyDesEncrypt([]<span class="keyword">byte</span>(<span class="string">"hello world"</span>), key)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//解密</span></span><br><span class="line">	MyDESDecrypt(<span class="string">"4Ducrt8n/7EfRBOkEUjD5w=="</span>, key)</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hello World!</span><br><span class="line">4Ducrt8n/7EfRBOkEUjD5w==</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">加密算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/16/Go语言实现加密算法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Go语言建立一个基本的分布式系统" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/15/Go语言建立一个基本的分布式系统/">Go语言建立一个基本的分布式系统</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/15/Go语言建立一个基本的分布式系统/" class="archive-article-date">
+  	<time datetime="2018-05-15T15:11:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言建立一个基本的分布式系统"><a href="#Go语言建立一个基本的分布式系统" class="headerlink" title="Go语言建立一个基本的分布式系统"></a>Go语言建立一个基本的分布式系统</h1><h2 id="1-建立分布式系统的前提准备"><a href="#1-建立分布式系统的前提准备" class="headerlink" title="1. 建立分布式系统的前提准备"></a>1. 建立分布式系统的前提准备</h2><p>要想使用go语言搭建一个简易版的分布式系统需要用的<code>zookeeper</code>，由于我使用的是mac电脑，所以<code>zookeeper</code>环境搭建只是基于mac的安装流程。</p>
+<h3 id="1-1-查看zookeeper信息"><a href="#1-1-查看zookeeper信息" class="headerlink" title="1.1 查看zookeeper信息"></a>1.1 查看zookeeper信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew info zookeeper</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">zookeeper: stable 3.4.12 (bottled), HEAD</span><br><span class="line">Centralized server for distributed coordination of services</span><br><span class="line">https://zookeeper.apache.org/</span><br><span class="line">/usr/local/Cellar/zookeeper/3.4.12 (243 files, 32.9MB) *</span><br><span class="line">  Poured from bottle on 2018-05-14 at 11:49:07</span><br><span class="line">From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/zookeeper.rb</span><br><span class="line">==&gt; Dependencies</span><br><span class="line">Optional: python@2 ✘</span><br><span class="line">==&gt; Options</span><br><span class="line">--with-perl</span><br><span class="line">	Build Perl bindings</span><br><span class="line">--with-python@2</span><br><span class="line">	Build with python@2 support</span><br><span class="line">--HEAD</span><br><span class="line">	Install HEAD version</span><br><span class="line">==&gt; Caveats</span><br><span class="line">To have launchd start zookeeper now and restart at login:</span><br><span class="line">  brew services start zookeeper</span><br><span class="line">Or, if you don&apos;t want/need a background service you can just run:</span><br><span class="line">  zkServer start</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-安装"><a href="#1-2-安装" class="headerlink" title="1.2 安装"></a>1.2 安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install zookeeper</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Updating Homebrew...</span><br><span class="line">==&gt; Auto-updated Homebrew!</span><br><span class="line">Updated 2 taps (homebrew/core, caskroom/cask).</span><br><span class="line">==&gt; Updated Formulae</span><br><span class="line">rocksdb ✔           goenv               mercurial           pgroonga</span><br><span class="line">ace                 grpc                nano                postgrest</span><br><span class="line">annie               gtksourceview@4     nsd                 proxytunnel</span><br><span class="line">aptly               imagemagick         open-mpi            raine</span><br><span class="line">armadillo           imagemagick@6       osm2pgrouting       rsyslog</span><br><span class="line">awscli              iso-codes           osquery             solr</span><br><span class="line">dash                jenkins             pam-u2f             source-to-image</span><br><span class="line">dcd                 jhiccup             paps                spigot</span><br><span class="line">dscanner            kompose             passenger           tippecanoe</span><br><span class="line">ethereum            kubernetes-helm     pdal                traefik</span><br><span class="line">fabric              libpqxx             pdsh                vtk</span><br><span class="line">fn                  libu2f-host         pegtl               wtf</span><br><span class="line">folly               maxwell             petsc</span><br><span class="line"></span><br><span class="line">==&gt; Renamed Formulae </span><br><span class="line">php71 -&gt; php@7.1</span><br><span class="line"></span><br><span class="line">==&gt; Downloading https://homebrew.bintray.com/bottles/zookeeper-3.</span><br><span class="line">############################################################## 100.0%</span><br><span class="line">==&gt; Pouring zookeeper-3.4.10.high_sierra.bottle.1.tar.gz</span><br><span class="line">==&gt; Caveats</span><br><span class="line">To have launchd start zookeeper now and restart at login:</span><br><span class="line">    brew services start zookeeper</span><br><span class="line">Or, if you don&apos;t want/need a background service you can just run:</span><br><span class="line">    zkServer start</span><br><span class="line">    </span><br><span class="line">==&gt; Summary</span><br><span class="line">/usr/local/etc/zookeeper/ 3.4.10: 241 files, 31.4MB</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-缺省配置文件查看"><a href="#1-3-缺省配置文件查看" class="headerlink" title="1.3 缺省配置文件查看"></a>1.3 缺省配置文件查看</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ cd /usr/local/etc/zookeeper</span><br><span class="line">$ ls</span><br><span class="line">defaults    zoo.cfg</span><br><span class="line">log4j.properties    zoo_sample.cfg</span><br><span class="line"></span><br><span class="line">$ cat zoo.cfg</span><br><span class="line"></span><br><span class="line"># The number of milliseconds of each tick</span><br><span class="line">tickTime=2000</span><br><span class="line"># The number of ticks that the initial</span><br><span class="line"># synchronization phase can take</span><br><span class="line">initLimit=10</span><br><span class="line"># The number of ticks that can pass between</span><br><span class="line"># sending a request and getting an acknowledgement</span><br><span class="line">syncLimit=5</span><br><span class="line"># the directory where the snapshot is stored.</span><br><span class="line"># do not use /tmp for storage, /tmp here is just</span><br><span class="line"># example sakes.</span><br><span class="line">dataDir=/usr/local/var/run/zookeeper/data</span><br><span class="line"># the port at which the clients will connect</span><br><span class="line">clientPort=2181</span><br><span class="line"># the maximum number of client connections.</span><br><span class="line"># increase this if you need to handle more clients</span><br><span class="line">#maxClientCnxns=60</span><br><span class="line">#</span><br><span class="line"># Be sure to read the maintenance section of the</span><br><span class="line"># administrator guide before turning on autopurge.</span><br><span class="line">#</span><br><span class="line"># http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance #</span><br><span class="line"># The number of snapshots to retain in dataDir</span><br><span class="line">#autopurge.snapRetainCount=3</span><br><span class="line"># Purge task interval in hours</span><br><span class="line"># Set to &quot;0&quot; to disable auto purge feature</span><br><span class="line">#autopurge.purgeInterval=1</span><br></pre></td></tr></table></figure>
+<h3 id="1-4-启动服务"><a href="#1-4-启动服务" class="headerlink" title="1.4 启动服务"></a>1.4 启动服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ zkServer</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/local/etc/zookeeper/zoo.cfg</span><br><span class="line">Usage: ./zkServer.sh &#123;start|start-foreground|stop|restart|status|upgrade|pri nt-cmd&#125;</span><br><span class="line"></span><br><span class="line">$ zkServer status</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/local/etc/zookeeper/zoo.cfg</span><br><span class="line">Error contacting service. It is probably not running.</span><br><span class="line"></span><br><span class="line">$ zkServer start</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/local/etc/zookeeper/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-查看zookeeper运行及状态"><a href="#1-5-查看zookeeper运行及状态" class="headerlink" title="1.5 查看zookeeper运行及状态"></a>1.5 查看zookeeper运行及状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ zkCli</span><br><span class="line">Connecting to localhost:2181</span><br><span class="line">Welcome to ZooKeeper!</span><br><span class="line">JLine support is enabled</span><br><span class="line">WATCHER::</span><br><span class="line">WatchedEvent state:SyncConnected type:None path:null</span><br><span class="line"></span><br><span class="line">[zk: localhost:2181(CONNECTED) 0] ls /</span><br><span class="line">[zookeeper]</span><br><span class="line">[zk: localhost:2181(CONNECTED) 2] ls /zookeeper</span><br><span class="line">[quota]</span><br><span class="line">[zk: localhost:2181(CONNECTED) 3] ls /zookeeper/quota</span><br><span class="line">[]</span><br><span class="line">[zk: localhost:2181(CONNECTED) 4]</span><br></pre></td></tr></table></figure>
+<h2 id="2-建立分布式系统"><a href="#2-建立分布式系统" class="headerlink" title="2 建立分布式系统"></a>2 建立分布式系统</h2><p>需要实现的分布式系统需要实现的功能：</p>
+<ul>
+<li>能够发送/接受请求和响应</li>
+<li>能够连接到集群</li>
+<li>如果无法连接到群集(是第一个节点)，则可以作为主节点启动节点</li>
+<li>每个节点唯一的标识</li>
+<li>能够在节点之间交换json数据包</li>
+<li>接受命令行参数中的所有信息</li>
+</ul>
+<p>创建名为<code>main.go</code>的go文件，go语言代码实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> ( <span class="string">"fmt"</span></span><br><span class="line">      <span class="string">"strconv"</span></span><br><span class="line">      <span class="string">"time"</span></span><br><span class="line">      <span class="string">"math/rand"</span></span><br><span class="line">      <span class="string">"net"</span></span><br><span class="line">      <span class="string">"flag"</span></span><br><span class="line">      <span class="string">"strings"</span></span><br><span class="line">      <span class="string">"encoding/json"</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">//􏰦􏰧􏰼􏰽􏰌􏱆􏰦􏰧􏰼􏰽􏰌􏱆􏰦􏰧􏰼􏰽􏰌􏱆􏰦􏰧􏰼􏰽􏰌􏱆节点数据信息 􏰦􏰧􏰼􏰽􏰌􏱆</span></span><br><span class="line"><span class="keyword">type</span> NodeInfo <span class="keyword">struct</span> &#123;</span><br><span class="line">     <span class="comment">// 􏰦􏰧节点ID，通过随机数生成􏰊􏱓􏱔􏱕􏱖􏰼􏱗􏱘</span></span><br><span class="line">     NodeId <span class="keyword">int</span>   <span class="string">`json:"nodeId"`</span></span><br><span class="line">     <span class="comment">// 节点􏰦􏰧IP地址􏱙􏱚</span></span><br><span class="line">     NodeIpAddr <span class="keyword">string</span>   <span class="string">`json:"nodeIpAddr"`</span></span><br><span class="line">     <span class="comment">// 节点端口 􏰦􏰧􏱛􏱜</span></span><br><span class="line">     Port <span class="keyword">string</span>   <span class="string">`json: "port"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 􏱇􏰦􏰧􏰼􏰽􏰌􏱆􏱝􏱞􏱟􏱠􏱡将节点数据信息格式化输出</span></span><br><span class="line"><span class="comment">//NodeInfo:&#123;nodeId: 89423,nodeIpAddr: 127.0.0.1/8,port: 8001&#125;</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(node *NodeInfo)</span> <span class="title">String</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"NodeInfo:&#123; nodeId:"</span> + strconv.Itoa(node.NodeId) + <span class="string">",nodeIpAddr:"</span> + node.NodeIpAddr + <span class="string">",port:"</span> + node.Port + <span class="string">"&#125;"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*添加一个节点到集群德尔一个请求或者响应的标准格式*/</span></span><br><span class="line"><span class="keyword">type</span> AddToClusterMessage <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 􏱩􏰦􏰧源节点</span></span><br><span class="line">    Source NodeInfo   <span class="string">`json:"source"`</span> </span><br><span class="line">    <span class="comment">// 􏱰􏰴􏰦􏰧目的节点</span></span><br><span class="line">    Dest NodeInfo     <span class="string">`json:"dest"`</span></span><br><span class="line">    <span class="comment">// 􏱱􏰥􏰦􏰧􏰘􏰑􏱏􏰏􏰐􏰴􏱲􏱆两个节点连接时发送的消息</span></span><br><span class="line">    Message <span class="keyword">string</span>    <span class="string">`json:"message"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*Request/Response 信息格式化输出*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(req AddToClusterMessage)</span> <span class="title">String</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="string">"AddToClusterMessage:&#123;\n source:"</span> + req.Source.String() + <span class="string">",\n dest: "</span> + req.Dest.String() + <span class="string">",\n message:"</span> + req.Message + <span class="string">" &#125;"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="comment">//解析命令行参数</span></span><br><span class="line">    makeMasterOnError := flag.Bool(<span class="string">"makeMasterOnError"</span>, <span class="literal">false</span>, <span class="string">"􏰜􏰝IP􏱙􏱚􏱵􏰲 􏰘􏰑􏰙􏰚􏰛􏱄􏰊􏱉􏱊􏱇􏱶􏰬􏰭Master􏰦􏰧."</span>)</span><br><span class="line">clusterip := flag.String(<span class="string">"clusterip"</span>, <span class="string">"127.0.0.1:8001"</span>, <span class="string">"􏱷􏱸􏰴􏰦􏰧􏰘􏰑􏱹􏰘 􏰑􏱺􏰥IP"</span>)</span><br><span class="line"></span><br><span class="line">    myport := flag.String(<span class="string">"myport"</span>, <span class="string">"8001"</span>, <span class="string">"ip address to run this node on.</span></span><br><span class="line"><span class="string"> default is 8001."</span>)</span><br><span class="line"> </span><br><span class="line">    flag.Parse() <span class="comment">//􏱳􏱴解析</span></span><br><span class="line">    </span><br><span class="line">    fmt.Println(*makeMasterOnError)</span><br><span class="line">    fmt.Println(*clusterip)</span><br><span class="line">    fmt.Println(*myport)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*为节点生成ID*/</span></span><br><span class="line">    rand.Seed(time.Now().UTC().UnixNano()) <span class="comment">//􏱻􏱼 种子</span></span><br><span class="line">    myid := rand.Intn(<span class="number">99999999</span>) <span class="comment">//随机</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取IP地址</span></span><br><span class="line">    myIp,_ := net.InterfaceAddrs()</span><br><span class="line">    fmt.Println(myIp[<span class="number">0</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建NodeInfo结构体对象</span></span><br><span class="line">    me := NodeInfo&#123;NodeId: myid, NodeIpAddr: myIp[<span class="number">0</span>].String(), Port: *myport&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//输出结构体数据信息</span></span><br><span class="line">    fmt.Println(me.String())</span><br><span class="line">    dest := NodeInfo&#123; NodeId: <span class="number">-1</span>, NodeIpAddr: strings.Split(*clusterip, <span class="string">":"</span>)[<span class="number">0</span>], Port: strings.Split(*clusterip, <span class="string">":"</span>)[<span class="number">1</span>]&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*尝试连接到集群，在已连接的情况下并且向集群发送请求*/</span></span><br><span class="line">    ableToConnect := connectToCluster(me, dest)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ableToConnect || (!ableToConnect &amp;&amp; *makeMasterOnError) &#123;</span><br><span class="line">        <span class="keyword">if</span> *makeMasterOnError &#123;</span><br><span class="line">        fmt.Println(<span class="string">"Will start this node as master."</span>)</span><br><span class="line">      &#125;</span><br><span class="line">        listenOnPort(me) </span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"Quitting system. Set makeMasterOnError flag to make the</span></span><br><span class="line"><span class="string"> node master."</span>, myid)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 这是发送请求时格式化json包有用的工具</span></span><br><span class="line"><span class="comment">* 这是非常重要的，如果不经过数据格式化，你最终发送的将是空白消息</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getAddToClusterMessage</span><span class="params">(source NodeInfo, dest NodeInfo, message <span class="keyword">string</span>)</span></span></span><br><span class="line"><span class="function"><span class="params">(AddToClusterMessage)</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> AddToClusterMessage&#123; Source: NodeInfo&#123;</span><br><span class="line">            NodeId: source.NodeId,</span><br><span class="line">            NodeIpAddr: source.NodeIpAddr,</span><br><span class="line">            Port: source.Port,</span><br><span class="line">        &#125;,</span><br><span class="line">        Dest: NodeInfo&#123;</span><br><span class="line">            NodeId: dest.NodeId,</span><br><span class="line">            NodeIpAddr: dest.NodeIpAddr,</span><br><span class="line">            Port: dest.Port,</span><br><span class="line">        &#125;,</span><br><span class="line">        Message: message,</span><br><span class="line">   &#125; </span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">connectToCluster</span><span class="params">(me NodeInfo, dest NodeInfo)</span> <span class="params">(<span class="keyword">bool</span>)</span></span>&#123;</span><br><span class="line">    <span class="comment">/* 􏰘􏰑􏰙连接到socket的相关细节信息􏰴􏲖􏲗􏲸􏰦􏰌􏱆 */</span></span><br><span class="line">    connOut, err := net.DialTimeout(<span class="string">"tcp"</span>, dest.NodeIpAddr + <span class="string">":"</span> + dest.Port</span><br><span class="line">, time.Duration(<span class="number">10</span>) * time.Second)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> _, ok := err.(net.Error); ok &#123;</span><br><span class="line">        fmt.Println(<span class="string">"􏲓􏰘􏰑􏰙􏰚􏰛未连接到集群"</span>, me.NodeId)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span> </span><br><span class="line">     &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"􏰘􏰑􏰙􏰚连接到集群，发送消息到节点"</span>)</span><br><span class="line">        text := <span class="string">"Hi nody..请添加我到集群 􏰓􏱫􏱬􏱉􏰙􏰚􏰛.."</span></span><br><span class="line">        requestMessage := getAddToClusterMessage(me, dest, text)</span><br><span class="line">        json.NewEncoder(connOut).Encode(&amp;requestMessage)</span><br><span class="line">        </span><br><span class="line">        decoder := json.NewDecoder(connOut)</span><br><span class="line">        <span class="keyword">var</span> responseMessage AddToClusterMessage</span><br><span class="line">        decoder.Decode(&amp;responseMessage) fmt.Println(<span class="string">"􏲹􏰙􏰼􏰽􏰖􏰗得到数据响应\n"</span> + </span><br><span class="line">         responseMessage.String())</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span> </span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">listenOnPort</span><span class="params">(me NodeInfo)</span></span>&#123;</span><br><span class="line">   <span class="comment">/* 􏲨􏲩􏲺􏱇􏰙􏱈􏰴􏱲􏱆监即将到来的信息 */</span></span><br><span class="line">  ln, _ := net.Listen(<span class="string">"tcp"</span>, fmt.Sprint(<span class="string">":"</span> + me.Port)) </span><br><span class="line">   <span class="comment">/* 接受连接􏰑􏰿􏰘􏰑 */</span></span><br><span class="line">  <span class="keyword">for</span> &#123;</span><br><span class="line">     connIn, err := ln.Accept() </span><br><span class="line">     <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">       <span class="keyword">if</span> _, ok := err.(net.Error); ok &#123;</span><br><span class="line">         fmt.Println(<span class="string">"Error received while listening."</span>, me.NodeId)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> requestMessage AddToClusterMessage</span><br><span class="line">        json.NewDecoder(connIn).Decode(&amp;requestMessage)</span><br><span class="line">        fmt.Println(<span class="string">"Got request:\n"</span> + requestMessage.String())             </span><br><span class="line">        text := <span class="string">"Sure buddy.. too easy.."</span></span><br><span class="line">        responseMessage := getAddToClusterMessage(me, requestMessage.Sou</span><br><span class="line">rce, text)</span><br><span class="line">        json.NewEncoder(connIn).Encode(&amp;responseMessage)</span><br><span class="line">        connIn.Close()</span><br><span class="line">     &#125;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-1-运行程序"><a href="#2-1-运行程序" class="headerlink" title="2.1 运行程序"></a>2.1 运行程序</h3><p>打开终端，打开项目目录输入指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ go install main</span><br><span class="line"></span><br><span class="line">$ main</span><br><span class="line"></span><br><span class="line">My details: NodeInfo:&#123; nodeId:53163002, nodeIpAddr:127.0.0.1/8, port:8001 &#125; 􏲒􏰍􏰘􏰑􏰙􏰚􏰛. 53163002</span><br><span class="line">Quitting system. Set makeMasterOnError flag to make the node master. 5316300 2</span><br><span class="line"></span><br><span class="line">􏱽􏱾􏲖</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-2-获取相关帮助信息"><a href="#2-2-获取相关帮助信息" class="headerlink" title="2.2 获取相关帮助信息"></a>2.2 获取相关帮助信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ -h</span><br><span class="line"></span><br><span class="line">Usage of ./bin/main:</span><br><span class="line">-clusterip string</span><br><span class="line">ip address of any node to connnect (default &quot;127.0.0.1:8001&quot;)</span><br><span class="line">-makeMasterOnError</span><br><span class="line">make this node master if unable to connect to the cluster ip provide</span><br><span class="line">  d.</span><br><span class="line">    -myport string</span><br><span class="line">ip address to run this node on. default is 8001. (default &quot;8001&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-启动节点"><a href="#2-3-启动节点" class="headerlink" title="2.3 启动节点"></a>2.3 启动节点</h3><h4 id="启动Node1主节点"><a href="#启动Node1主节点" class="headerlink" title="启动Node1主节点"></a>启动Node1主节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ main --makeMasterOnError</span><br><span class="line"></span><br><span class="line">My details: NodeInfo:&#123; nodeId:82381143, nodeIpAddr:127.0.0.1/8, port:8001 &#125; 􏲓􏰘􏰑􏰙􏰚􏰛. 82381143</span><br><span class="line">Will start this node as master.</span><br></pre></td></tr></table></figure>
+<h4 id="添加节点Node2到集群"><a href="#添加节点Node2到集群" class="headerlink" title="添加节点Node2到集群"></a>添加节点Node2到集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$main --myport 8002 --clusterip 127.0.0.1:8001</span><br></pre></td></tr></table></figure>
+<h4 id="添加节点Node3到集群"><a href="#添加节点Node3到集群" class="headerlink" title="添加节点Node3到集群"></a>添加节点Node3到集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$main --myport 8004 --clusterip 127.0.0.1:8001</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/15/Go语言建立一个基本的分布式系统/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Go语言实现链表-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/15/Go语言实现链表-二/">Go语言实现链表(二)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/15/Go语言实现链表-二/" class="archive-article-date">
+  	<time datetime="2018-05-15T12:28:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言实现链表"><a href="#Go语言实现链表" class="headerlink" title="Go语言实现链表"></a>Go语言实现链表</h1><p>对链表来说都是通过键值对来检索值，因此对于简单的链表实现基础上，对数据区，应该一对键值对。因此，新创建一个项目名为<code>hashLink</code>,在项目目录下创建两个文件夹，分别名为<code>linkNode</code>，<code>hashAlgorithm</code>,在<code>linkNode</code>文件夹下，创建名为<code>Node.go</code>的文件。<br><code>Node.go</code>文件内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> linkNodes</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明全局变量保存头结点</span></span><br><span class="line"><span class="keyword">var</span> headNode *Node</span><br><span class="line"><span class="keyword">var</span> curr *Node</span><br><span class="line"></span><br><span class="line"><span class="comment">//用结构体作为数据域的类型</span></span><br><span class="line"><span class="keyword">type</span> DM <span class="keyword">struct</span> &#123;</span><br><span class="line">	K <span class="keyword">string</span></span><br><span class="line">	V <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//节点类型</span></span><br><span class="line"><span class="keyword">type</span> Node <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">//数据域</span></span><br><span class="line">	Data  DM</span><br><span class="line">	NextNode *Node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//创建头结点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatHeadNode</span> <span class="params">(k <span class="keyword">string</span>,v <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">	<span class="comment">//设置数据域结构体中的键值对</span></span><br><span class="line">	node.Data.K = k</span><br><span class="line">	node.Data.V = v</span><br><span class="line">	node.NextNode = <span class="literal">nil</span></span><br><span class="line">	<span class="comment">//保存头结点以及当前节点</span></span><br><span class="line">	headNode = node</span><br><span class="line">	curr = node</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在指定的节点后面添加节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNode</span><span class="params">(k <span class="keyword">string</span>,v <span class="keyword">string</span>,curr *Node)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">	<span class="comment">//设置新节点中的数据域</span></span><br><span class="line">	newNode.Data.K = k</span><br><span class="line">	newNode.Data.V = v</span><br><span class="line">	newNode.NextNode = <span class="literal">nil</span></span><br><span class="line">    <span class="comment">//挂接节点</span></span><br><span class="line">	curr.NextNode = newNode</span><br><span class="line">    curr = newNode</span><br><span class="line">    <span class="keyword">return</span> newNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在指定的节点后面遍历链表</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ShowNode</span><span class="params">(n *Node)</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> node = n</span><br><span class="line">	fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">			fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算节点个数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NodeCnt</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> n  = <span class="number">1</span></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">for</span>  &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			n++</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//插入节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InsertNodeByIndex</span><span class="params">(index <span class="keyword">int</span>, data DM)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="comment">//添加新头节点</span></span><br><span class="line">		<span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		node.Data.K = data.K</span><br><span class="line">		node.Data.V = data.V</span><br><span class="line">		node.NextNode = headNode</span><br><span class="line">		headNode = node</span><br><span class="line"></span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> index &gt; NodeCnt()<span class="number">-1</span>&#123;</span><br><span class="line">     <span class="comment">//添加节点</span></span><br><span class="line">     AddNode(data.K,data.V,curr)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">//中间节点</span></span><br><span class="line">       <span class="keyword">var</span> n = headNode</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i:= <span class="number">0</span>; i &lt; index<span class="number">-1</span>;i++&#123;</span><br><span class="line">			n = n.NextNode</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		newNode.Data.K = data.K</span><br><span class="line">		newNode.Data.V = data.V</span><br><span class="line">		newNode.NextNode = n.NextNode</span><br><span class="line">		n.NextNode = newNode</span><br><span class="line">	&#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DeleteNodeByIndex</span><span class="params">(index <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">       headNode = node.NextNode</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>;i &lt; index<span class="number">-1</span>;i ++ &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.NextNode = node.NextNode.NextNode</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//更新指定下标的节点内容</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UpdataNodeByIndex</span><span class="params">(index <span class="keyword">int</span>,data DM)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span>  node  = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		headNode.Data.K = data.K</span><br><span class="line">		headNode.Data.V = data.V</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; index; i++&#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.Data.V = data.V</span><br><span class="line">		node.Data.K = data.K</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>hashAlgorithm</code>文件夹下创建名为<code>myHashMap.go</code>的文件，文件内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> hashAlgorithm</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"hashLink/linkNodes"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明全局数组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bultArr [<span class="number">16</span>]*linkNodes.Node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatBarrel</span><span class="params">()</span> <span class="params">([16]*linkNodes.Node)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> arr  = [<span class="number">16</span>]*linkNodes.Node&#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> i:= <span class="number">0</span>; i &lt; <span class="number">16</span> ; i ++ &#123;</span><br><span class="line">      arr[i] = linkNodes.CreatHeadNode(<span class="string">"头节点"</span>,<span class="string">"头节点"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	bultArr = arr</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将key装换成数组下标的散列算法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HashCode</span><span class="params">(key <span class="keyword">string</span>)</span><span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> index <span class="keyword">int</span> = <span class="number">0</span></span><br><span class="line">	index = <span class="keyword">int</span>(key[<span class="number">0</span>])</span><br><span class="line">	<span class="keyword">for</span> k := <span class="number">0</span>; k &lt; <span class="built_in">len</span>(key); k++ &#123;</span><br><span class="line">		<span class="comment">//1103515245 散列因子  类似于π</span></span><br><span class="line">		index *= (<span class="number">1103515245</span> + <span class="keyword">int</span>(key[k]))</span><br><span class="line">	&#125;</span><br><span class="line">	index &gt;&gt;= <span class="number">27</span></span><br><span class="line">	index &amp;= <span class="number">16</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> index</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//向数组中添加键值对</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddKeyValue</span><span class="params">(k <span class="keyword">string</span>, v <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">//计算建所对应的木桶下标</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> pos = HashCode(k)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获得木桶数组</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">var</span> head *linkNodes.Node = bultArr[pos]</span><br><span class="line"></span><br><span class="line">   <span class="comment">//向指定下标的头节点添加节点</span></span><br><span class="line"></span><br><span class="line">   linkNodes.AddNode(k, v, head)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取数据</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetValueByKey</span><span class="params">(k <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> pos = HashCode(k)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> head *linkNodes.Node = bultArr[pos]</span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过头节点便利链表</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//linkNodes.ShowNode(head)</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//查找对应下标下的链表，判断在key与节点中的key一致时打印</span></span><br><span class="line">	<span class="keyword">for</span>  &#123;</span><br><span class="line">		<span class="keyword">if</span> head.Data.K == k &#123;</span><br><span class="line">			fmt.Println(head.Data.V)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			head = head.NextNode</span><br><span class="line">			<span class="keyword">if</span> head.NextNode == <span class="literal">nil</span> &#123;</span><br><span class="line">			  <span class="comment">//break</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在文件夹下创建名为<code>main.go</code>的文件，文件内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"hashLink/hashAlgorithm"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(hashAlgorithm.HashCode(<span class="string">"abc"</span>))</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.CreatBarrel()</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.AddKeyValue(<span class="string">"abc"</span>,<span class="string">"hello"</span>)</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.AddKeyValue(<span class="string">"bcd"</span>,<span class="string">"world"</span>)</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.GetValueByKey(<span class="string">"abc"</span>)</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.GetValueByKey(<span class="string">"bcd"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行后打印如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hello</span><br><span class="line">world</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">链表</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/15/Go语言实现链表-二/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Go语言实现简易链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/15/Go语言实现简易链表/">Go语言实现简易链表</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/15/Go语言实现简易链表/" class="archive-article-date">
+  	<time datetime="2018-05-15T11:26:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言实现简易链表"><a href="#Go语言实现简易链表" class="headerlink" title="Go语言实现简易链表"></a>Go语言实现简易链表</h1><h2 id="1-单向链表"><a href="#1-单向链表" class="headerlink" title="1. 单向链表"></a>1. 单向链表</h2><p>　　<strong>单向链表</strong>是链表的一种，其特点是链表的链接方向是单向的，对链表的访问要通过顺序读取从头部开始；链表是使用指针进行构造的列表；因为链表是由一个个节点组装起来的；其中每个节点都有指针成员变量指向列表中的下一个节点；节点分为<strong>数据区</strong>和<strong>地址区</strong>链表就是由前一个地址区指向下一个地址区。
+　　</p>
+<h2 id="2-Go语言实现"><a href="#2-Go语言实现" class="headerlink" title="2. Go语言实现"></a>2. Go语言实现</h2><p>　　实现链表暂时先不应用哈希算法，对链表进行处理，只是对链表进行模拟。<br>　　创建项目文件名为<code>linkNodes</code>，在<code>linkNodes</code>文件夹下创建一个名为<code>Node.go</code>的文件，<code>Node.go</code>文件内部文件代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> linkNodes</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//声明全局变量保存头节点</span></span><br><span class="line"><span class="keyword">var</span> headNode *Node</span><br><span class="line"><span class="comment">//声明全局变量保存当前节点</span></span><br><span class="line"><span class="keyword">var</span> curr *Node</span><br><span class="line"></span><br><span class="line"><span class="comment">//节点类型</span></span><br><span class="line"><span class="keyword">type</span> Node <span class="keyword">struct</span> &#123;</span><br><span class="line">   <span class="comment">//数据域</span></span><br><span class="line">   Data  <span class="keyword">string</span></span><br><span class="line">   <span class="comment">//地址域</span></span><br><span class="line">   NextNode *Node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建头节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatHeadNode</span> <span class="params">(data <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">   node.Data = data</span><br><span class="line">   node.NextNode = <span class="literal">nil</span></span><br><span class="line">   <span class="comment">//保存头结点以及当前节点</span></span><br><span class="line">	headNode = node</span><br><span class="line">	curr = node</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加新节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNode</span><span class="params">(data <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">    newNode.Data = data</span><br><span class="line">    newNode.NextNode = ni</span><br><span class="line">    <span class="comment">//挂接节点</span></span><br><span class="line">    curr.NextNode = newNode</span><br><span class="line">    curr = newNode</span><br><span class="line">    <span class="keyword">return</span> newNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//遍历链表</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ShowNode</span><span class="params">()</span></span>  &#123;</span><br><span class="line">  <span class="comment">//从头节点开始遍历</span></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">			fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算节点个数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NodeCnt</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> n  = <span class="number">1</span></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">for</span>  &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			n++</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//插入节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InsertNodeByIndex</span><span class="params">(index <span class="keyword">int</span>, data <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="comment">//添加新头节点</span></span><br><span class="line">		<span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		node.Data = data</span><br><span class="line">		node.NextNode = headNode</span><br><span class="line">		headNode = node</span><br><span class="line">		</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> index &gt; NodeCnt()<span class="number">-1</span>&#123;</span><br><span class="line">     <span class="comment">//向尾部添加节点</span></span><br><span class="line">     AddNode(data)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">//中间插入节点</span></span><br><span class="line">     <span class="keyword">var</span> n = headNode</span><br><span class="line">     </span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; index<span class="number">-1</span>; i++&#123;</span><br><span class="line">			n = n.NextNode</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		newNode.Data = data</span><br><span class="line">		newNode.NextNode = n.NextNode</span><br><span class="line">		n.NextNode = newNode</span><br><span class="line">	&#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DeleteNodeByIndex</span><span class="params">(index <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">       headNode = node.NextNode</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>;i &lt; index<span class="number">-1</span>;i ++ &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.NextNode = node.NextNode.NextNode</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//更新指定下标的节点内容</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UpdataNodeByIndex</span><span class="params">(index <span class="keyword">int</span>,data <span class="keyword">string</span>)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		headNode.Data = data</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; index; i++&#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.Data = data</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`　　</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">在文件夹中创建名为`</span>main.<span class="keyword">go</span><span class="string">`的go文件，`</span>main.<span class="keyword">go</span><span class="string">`中代码如下：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span><span class="keyword">go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="comment">//引入自定义节点包</span></span><br><span class="line">	<span class="string">"MyHashMap/linkNodes"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">  <span class="comment">//创建头结点</span></span><br><span class="line">	linkNodes.CreatHeadNode(<span class="string">"头节点"</span>)</span><br><span class="line">  <span class="comment">//添加节点</span></span><br><span class="line">	linkNodes.AddNode(<span class="string">"第二个节点"</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.AddNode(<span class="string">"第三个节点"</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.AddNode(<span class="string">"第四个节点"</span>)</span><br><span class="line">  <span class="comment">//遍历节点</span></span><br><span class="line">	linkNodes.ShowNode()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line">  <span class="comment">///删除指定节点</span></span><br><span class="line">	linkNodes.DeleteNodeByIndex(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.ShowNode()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line">  <span class="comment">//更新指定节点</span></span><br><span class="line">	linkNodes.UpdataNodeByIndex(<span class="number">2</span>,<span class="string">"新的第三个节点"</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.ShowNode()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行之后的打印信息为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">头节点---第二个节点---第三个节点---第四个节点---</span><br><span class="line">头节点---第二个节点---第四个节点---</span><br><span class="line">头节点---第二个节点---新的第三个节点---</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">简易单向链表</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/15/Go语言实现简易链表/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-区块链的灵魂：共识算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -867,459 +1260,6 @@
 
 
   
-    <article id="post-星云链Nebulas101-01-编译安装星云链" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/08/星云链Nebulas101-01-编译安装星云链/">星云链Nebulas101 - 01 编译安装星云链</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/08/星云链Nebulas101-01-编译安装星云链/" class="archive-article-date">
-  	<time datetime="2018-05-08T14:42:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="01-编译安装星云链"><a href="#01-编译安装星云链" class="headerlink" title="01 编译安装星云链"></a>01 编译安装星云链</h1><h2 id="1-Golang环境"><a href="#1-Golang环境" class="headerlink" title="1. Golang环境"></a>1. Golang环境</h2><table>
-<thead>
-<tr>
-<th>Components</th>
-<th>Version</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://golang.org" target="_blank" rel="noopener">Golang</a></td>
-<td>&gt;=1.9.2</td>
-<td>The Go Programming Language</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Mac-OSX"><a href="#Mac-OSX" class="headerlink" title="Mac OSX"></a>Mac OSX</h3><p>在Mac OSX里，我们推荐使用Homebrew来安装Golang.</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install go</span><br></pre></td></tr></table></figure>
-<h4 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h4><p>export GOPATH=/path/to/workspace<br>提示: 在golang的开发中，GOPATH是必须的，它指定了我们使用golang开发的工作空间。所有的源码都应放在GOPATH之下。</p>
-<p>###Linux</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 下载</span><br><span class="line">wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz</span><br><span class="line"></span><br><span class="line"># extract</span><br><span class="line">tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz</span><br><span class="line"></span><br><span class="line"># environment variables</span><br><span class="line">export PATH=$PATH:/usr/local/go/bin</span><br><span class="line">export GOPATH=/path/to/workspace</span><br></pre></td></tr></table></figure>
-<h2 id="2-安装rocksdb依赖库"><a href="#2-安装rocksdb依赖库" class="headerlink" title="2. 安装rocksdb依赖库"></a>2. 安装rocksdb依赖库</h2><h3 id="Mac-OSX-1"><a href="#Mac-OSX-1" class="headerlink" title="Mac OSX"></a>Mac OSX</h3><p>可以直接通过<a href="https://brew.sh" target="_blank" rel="noopener">Homebrew</a>安装，运行<code>brew install rocksdb</code></p>
-<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><p>在linux环境下，由于ubuntu和centos系统的用户偏多，我们将分别介绍这两个主流环境下RocksDB的安装。</p>
-<h4 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h4><p>首先安装RocksDB所需依赖库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get -y install build-essential libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev</span><br></pre></td></tr></table></figure>
-<p>下载源码并编译安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/facebook/rocksdb.git</span><br><span class="line">cd rocksdb &amp; make shared_lib &amp;&amp; make install-shared</span><br><span class="line">Centos</span><br></pre></td></tr></table></figure>
-<h4 id="Centos"><a href="#Centos" class="headerlink" title="Centos"></a>Centos</h4><p>首先安装RocksDB所需依赖库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install epel-release &amp;&amp; yum -y update</span><br><span class="line">yum -y install gflags-devel snappy-devel zlib-devel bzip2-devel gcc-c++  libstdc++-devel</span><br></pre></td></tr></table></figure>
-<p>下载源码并编译安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/facebook/rocksdb.git</span><br><span class="line">cd rocksdb &amp; make shared_lib &amp;&amp; make install-shared</span><br></pre></td></tr></table></figure>
-<h2 id="3-安装Go依赖库"><a href="#3-安装Go依赖库" class="headerlink" title="3. 安装Go依赖库"></a>3. 安装Go依赖库</h2><p>在Go-Nebulas中，Go的三方库都通过来做管理<br>| Components | Version | Description |<br>| — | — | — |<br>| <a href="https://github.com/golang/dep" target="_blank" rel="noopener">Dep</a> | &gt;= 0.3.1 | Dep is a dependency management tool for Go. |</p>
-<h3 id="安装Dep工具"><a href="#安装Dep工具" class="headerlink" title="安装Dep工具"></a>安装Dep工具</h3><p>分别介绍Mac OSX和Linux下Dep的安装方法。</p>
-<h4 id="Mac-OSX-2"><a href="#Mac-OSX-2" class="headerlink" title="Mac OSX"></a>Mac OSX</h4><ul>
-<li>通过<a href="https://brew.sh" target="_blank" rel="noopener">Homebrew</a>直接安装并升级Dep</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install dep</span><br><span class="line">brew upgrade dep</span><br></pre></td></tr></table></figure>
-<h4 id="Linux-1"><a href="#Linux-1" class="headerlink" title="Linux"></a>Linux</h4><ul>
-<li>通过源码来安装Dep</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/bin/</span><br><span class="line">wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64</span><br><span class="line">ln -s dep-linux-amd64 dep</span><br></pre></td></tr></table></figure>
-<p><strong>下载Go三方库</strong></p>
-<p>切换到Go-Nebulas项目根目录，然后使用Dep来下载三方库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/nebulasio/go-nebulas</span><br><span class="line">make dep</span><br></pre></td></tr></table></figure>
-<p>提示: make dep将会下载很多依赖库。在部分地区，这个过程可能比较耗时。甚至是下到一半出现错误所以，可以点这里-&gt;<a href="http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz" target="_blank" rel="noopener">vendor.tar.gz</a>，下载压缩包。下载好之后，将压缩包解压，会出现名为<code>vendor</code>的文件夹将该文件夹直接复制粘贴到<code>$GOPATH/src/github.com/nebulasio/go-nebulas</code>路径下。</p>
-<h2 id="4-安装Chrome-V8依赖库"><a href="#4-安装Chrome-V8依赖库" class="headerlink" title="4. 安装Chrome V8依赖库"></a>4. 安装Chrome V8依赖库</h2><p>星云虚拟机目前依赖于Chrome的V8引擎，为了使用方便，星云链已经为Mac OSX和Linux编译好了V8的动态库。运行如下指令就可以完成安装。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/nebulasio/go-nebulas</span><br><span class="line">make deploy-v8</span><br></pre></td></tr></table></figure>
-<h2 id="5-编译可执行文件"><a href="#5-编译可执行文件" class="headerlink" title="5.编译可执行文件"></a>5.编译可执行文件</h2><p>完成所有上述依赖库的安装后，现在可以进入Go-Nebulas根目录编译星云链的可执行文件了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/nebulasio/go-nebulas</span><br><span class="line">make build</span><br></pre></td></tr></table></figure>
-<p>编译成功后，将会看到如下信息<br><img src="https://github.com/nebulasio/wiki/blob/master/tutorials/resources/101-01-make-build.png?raw=true" alt=""></p>
-<h2 id="6-运行星云链"><a href="#6-运行星云链" class="headerlink" title="6. 运行星云链"></a>6. 运行星云链</h2><p>###创世区块<br>在启动一个新的星云链前，我们必须定义创世区块的配置文件</p>
-<p>创世区块配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">meta &#123;</span><br><span class="line">  # 每条链的唯一标识</span><br><span class="line">  # 每个区块和交易只会属于一条唯一的链，保证安全性</span><br><span class="line">  chain_id: 100</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">consensus &#123;</span><br><span class="line">  # 在贡献度证明(PoD)被充分验证前，星云链采用DPoS共识算法</span><br><span class="line">  # DPoS共识中，21个人组成一个朝代</span><br><span class="line">  # 每隔一段时间都会切换朝代，每个朝代内，21个矿工轮流出块</span><br><span class="line">  # 由于DPoS只是过渡方案，所以暂时不开放给公众挖矿，即当前版本朝代不会发生变更</span><br><span class="line">  dpos &#123;</span><br><span class="line">    # 初始朝代，包含21个初始矿工地址</span><br><span class="line">    dynasty: [</span><br><span class="line">      [ miner address ],</span><br><span class="line">      ...</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 预分配的代币</span><br><span class="line">token_distribution [</span><br><span class="line">  &#123;</span><br><span class="line">    address: [ allocation address ]</span><br><span class="line">    value: [ amount of allocation tokens ]</span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>可以在根目录<code>conf/default/genesis.conf</code>下，找到一个完整的创世区块配置实例</p>
-<p>####配置文件</p>
-<p>在启动一个星云节点前，需要定义好该节点的配置文件。</p>
-<p>星云节点配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"># 网络配置</span><br><span class="line">network &#123;</span><br><span class="line">  # 对于全网第一个节点，不需要配置seed</span><br><span class="line">  # 否则，其他节点启动时需要配置seed，seed节点将会把网络中其他节点的路由信息同步给刚启动的节点</span><br><span class="line">  # 可以配置多个seed, [&quot;...&quot;, &quot;...&quot;]</span><br><span class="line">  seed: [&quot;/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP&quot;]</span><br><span class="line"></span><br><span class="line">  # 节点监听网络消息端口，可以配置多个</span><br><span class="line">  listen: [&quot;0.0.0.0:8680&quot;]</span><br><span class="line"></span><br><span class="line">  # 网络私钥，用于确认身份节点</span><br><span class="line">  # private_key: &quot;conf/network/id_ed25519&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 链配置</span><br><span class="line">chain &#123;</span><br><span class="line">  # 链的唯一标识</span><br><span class="line">  chain_id: 100</span><br><span class="line"></span><br><span class="line">  # 数据存储地址</span><br><span class="line">  datadir: &quot;data.db&quot;</span><br><span class="line"></span><br><span class="line">  # 账户keystore文件存储地址</span><br><span class="line">  keydir: &quot;keydir&quot;</span><br><span class="line"></span><br><span class="line">  # 创世区块配置</span><br><span class="line">  genesis: &quot;conf/default/genesis.conf&quot;</span><br><span class="line"></span><br><span class="line">  # 签名算法，请勿修改</span><br><span class="line">  signature_ciphers: [&quot;ECC_SECP256K1&quot;]</span><br><span class="line"></span><br><span class="line">  # 矿工地址，矿工的keystore文件需要放置在配置的keydir下</span><br><span class="line">  miner: &quot;n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq&quot;</span><br><span class="line"></span><br><span class="line">  # Coinbase地址，该地址用于接收矿工的挖矿奖励，可以和矿工地址一致</span><br><span class="line">  # 该地址的keystore无需暴露，不用放置在配置的keydir下</span><br><span class="line">  coinbase: &quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;</span><br><span class="line"></span><br><span class="line">  # 矿工地址的密码</span><br><span class="line">  passphrase: &quot;passphrase&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># API配置</span><br><span class="line">rpc &#123;</span><br><span class="line">    # GRPC服务端口</span><br><span class="line">    rpc_listen: [&quot;127.0.0.1:8684&quot;]</span><br><span class="line"></span><br><span class="line">    # HTTP服务端口</span><br><span class="line">    http_listen: [&quot;127.0.0.1:8685&quot;]</span><br><span class="line"></span><br><span class="line">    # 开放的API模块</span><br><span class="line">    # API模块包含所有和用户私钥无关的接口</span><br><span class="line">    # Admin模块包含所有和用户私钥相关的接口，需要慎重考虑该模块的访问权限</span><br><span class="line">    http_module: [&quot;api&quot;, &quot;admin&quot;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 日志配置</span><br><span class="line">app &#123;</span><br><span class="line">    # 日志级别: 支持[debug, info, warn, error, fatal]</span><br><span class="line">    log_level: &quot;info&quot;</span><br><span class="line"></span><br><span class="line">    # 日志存放位置</span><br><span class="line">    log_file: &quot;logs&quot;</span><br><span class="line"></span><br><span class="line">    # 是否打开crash report服务</span><br><span class="line">    enable_crash_report: false</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 监控服务配置</span><br><span class="line">stats &#123;</span><br><span class="line">    # 是否打开监控服务</span><br><span class="line">    enable_metrics: false</span><br><span class="line"></span><br><span class="line">    # 监控服务将数据上传到Influxdb</span><br><span class="line">    # 配置Influxdb的访问信息</span><br><span class="line">    influxdb: &#123;</span><br><span class="line">        host: &quot;http://localhost:8086&quot;</span><br><span class="line">        db: &quot;nebulas&quot;</span><br><span class="line">        user: &quot;admin&quot;</span><br><span class="line">        password: &quot;admin&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>更多示例可以参考<code>$GOPATH/src/github.com/nebulasio/go-nebulas/conf/</code></p>
-<h2 id="7-启动星云链"><a href="#7-启动星云链" class="headerlink" title="7.启动星云链"></a>7.启动星云链</h2><p>此时启动的星云链是本地的私有链，和官方的测试网和主网没有任何相互关联</p>
-<p><strong>启动你的第一个星云节点</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/nebulasio/go-nebulas</span><br><span class="line">./neb -c conf/default/config.conf</span><br></pre></td></tr></table></figure>
-<p>启动成功的话，将会看到如下信息，有Started Neblet的日志输出。<br><img src="https://github.com/nebulasio/wiki/blob/master/tutorials/resources/101-01-seed-node-start.png" alt=""></p>
-<p>默认情况下，使用配置文件conf/default/config.conf启动的节点不是矿工节点</p>
-<p>接下来，启动你的第一个矿工节点，它的seed节点即我们刚刚启动的第一个节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/nebulasio/go-nebulas</span><br><span class="line">./neb -c conf/example/miner.conf</span><br></pre></td></tr></table></figure>
-<p>在这个节点启动后，你会先看到如下信息，表示当前节点正在找种子节点同步。<br><img src="https://github.com/nebulasio/wiki/blob/master/tutorials/resources/101-01-start-sync.png" alt=""><br>等待一会儿，将会看到如下信息，表示当前节点已经连上了seed节点完成了同步。<br><img src="https://github.com/nebulasio/wiki/blob/master/tutorials/resources/101-01-finish-sync.png" alt=""></p>
-<p>再等待几分钟，你会看到如下信息，表示当前矿工节点挖出了第一个区块。<br><img src="https://github.com/nebulasio/wiki/raw/master/tutorials/resources/101-01-mint.png" alt=""></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">编译安装星云链</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/08/星云链Nebulas101-01-编译安装星云链/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Golang实现爬虫-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/06/Golang实现爬虫-二/">Golang实现爬虫(二)</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/06/Golang实现爬虫-二/" class="archive-article-date">
-  	<time datetime="2018-05-06T00:52:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-06</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Golang实现爬虫-二"><a href="#Golang实现爬虫-二" class="headerlink" title="Golang实现爬虫(二)"></a>Golang实现爬虫(二)</h1><p>介于之前的文章<code>Golang实现爬虫</code>，已经实现对城市数据的爬取，但是，仅仅是针对于实现功能，并没有对项目本身进行优化和处理。在实际开发中诸多模块可以其实是可以进行拆分。</p>
-<h2 id="1-代码优化原理"><a href="#1-代码优化原理" class="headerlink" title="1.代码优化原理"></a>1.代码优化原理</h2><p>对于实现某些功能的代码，可以抽离成一个单独的go文件，以引入的方式来调用，需要注意的是，抽离的函数需要首字母大写，来提供给外界使用。</p>
-<p>简单优化原理代码示例：<br>先创建一个新的工程，文件夹命名为<code>PrintHelloString</code>,再创建一个文件夹，命名为<code>before</code>,在<code>before</code>中创建一个名为<code>main</code>的go文件。<code>main.go</code>里面代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  fmt.Println(<span class="string">"hello world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello world</span><br></pre></td></tr></table></figure>
-<p>对上面的简单代码进行优化：<br>在<code>PrintHelloString</code>文件夹中创建有个新的文件夹命名为<code>after</code>，在<code>after</code>的文件夹中创建一个名为<code>helloFunc</code>的文件夹和名为<code>main</code>的go文件。在<code>helloFunc</code>文件夹中创建名为<code>helloFunc</code>的go文件，<code>helloFunc.go</code>文件中的代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> helloFunc</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HelloFunc</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Println(<span class="string">"优化后的hello world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>main.go</code>文件中的代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="comment">//引入函数</span></span><br><span class="line">  <span class="string">"PrintHelloString/after/helloFunc"</span></span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"> <span class="comment">//调用函数</span></span><br><span class="line">  helloFunc.HelloFunc()</span><br><span class="line">  fmt.Println(<span class="string">"----"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">优化后的hello world</span><br><span class="line">----</span><br></pre></td></tr></table></figure>
-<p>优化原理如上，对项目代码进行抽离优化</p>
-<h2 id="2-优化"><a href="#2-优化" class="headerlink" title="2.优化"></a>2.优化</h2><p>新建一个文件夹<code>fether</code>，在<code>fether</code>中创建三个文件夹，分别名为<code>engine</code>，<code>fether</code>，<code>zhenai</code>，从之前的代码结构分析，主要是网络连接,动态解码读取内容模块，对内容进行捡取模块。在<code>engine</code>文件夹中创建名为<code>engine</code>的go文件，和名为<code>request</code>的go文件。在<code>fether</code>文件夹中创建名为<code>fether</code>的go文件。在<code>zhenai</code>文件夹中创建名为<code>zhenai</code>的go文件。在<code>fether</code>文件夹下创建名为<code>main</code>的go文件。</p>
-<p>request.go文件内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> engine</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Request <span class="keyword">struct</span> &#123;</span><br><span class="line">     URL <span class="keyword">string</span></span><br><span class="line">     ParserFunc <span class="function"><span class="keyword">func</span><span class="params">(b []<span class="keyword">byte</span>)</span> </span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>fether.go文件内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> fether</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/encoding"</span></span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/encoding/unicode"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/html/charset"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/transform"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FetherData</span><span class="params">(url <span class="keyword">string</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    respond,err := http.Get(url)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>,err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">defer</span> respond.Body.Close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> respond.StatusCode != http.StatusOK &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>,fmt.Errorf(<span class="string">"error : error code is %d"</span>,respond.StatusCode)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	e := deterimEncoding(respond.Body)</span><br><span class="line"></span><br><span class="line">	r := transform.NewReader(respond.Body,e.NewDecoder())</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ioutil.ReadAll(r)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deterimEncoding</span><span class="params">(r io.Reader)</span> <span class="title">encoding</span>.<span class="title">Encoding</span></span> &#123;</span><br><span class="line">	bytes ,err := bufio.NewReader(r).Peek(<span class="number">1024</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> unicode.UTF8</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	e,_,_ := charset.DetermineEncoding(bytes,<span class="string">""</span>)</span><br><span class="line">	<span class="keyword">return</span> e</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>enginer.go文件内容如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Engine</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"0503P/0503-fether-final/fether"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Run</span><span class="params">(r Request)</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">   all,err := fether.FetherData(r.URL)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">       <span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	r.ParserFunc(all)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>zhenai.go文件内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zhenai</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"regexp"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> regexpString = <span class="string">`&lt;a href="(http://www.zhenai.com/zhenghun/[a-z0-9]+)"[^&gt;].+&gt;([^&lt;].+)&lt;/a&gt;`</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CityListParsr</span><span class="params">(b []<span class="keyword">byte</span>)</span></span>  &#123;</span><br><span class="line">	retch := regexp.MustCompile(regexpString)</span><br><span class="line">	bytes := retch.FindAllSubmatch(b,<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,m := <span class="keyword">range</span> bytes &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"City:%s  URL:%s\n"</span>, m[<span class="number">2</span>], m[<span class="number">1</span>])</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其中main.go文件内容如下：<br>main文件组合几个文件</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fether/zhenai"</span></span><br><span class="line">	<span class="string">"fether/engine"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	Engine.Run(Engine.Request&#123;</span><br><span class="line">		<span class="string">"http://www.zhenai.com/zhenghun"</span>,</span><br><span class="line">		zhenai.CityListParsr,</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/06/Golang实现爬虫-二/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Golang实现爬虫-一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/04/Golang实现爬虫-一/">Golang实现爬虫(一)</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/04/Golang实现爬虫-一/" class="archive-article-date">
-  	<time datetime="2018-05-04T10:27:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-04</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Golang实现爬虫-一"><a href="#Golang实现爬虫-一" class="headerlink" title="Golang实现爬虫(一)"></a>Golang实现爬虫(一)</h1><p>本爬虫项目使用的是珍爱网，先爬取<code>http://www.zhenai.com/zhenghun</code>中的城市列表。<br>城市列表图如下：<br><img src="/2018/05/04/Golang实现爬虫-一/p1.png" alt=""></p>
-<p>在编码之前需要先下载两个包，来辅助完成对改地址的解析读取等操作，打开命令行控制器，输入以下指令获取第三方库的支持：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go get golang.org/x/net/html</span><br><span class="line"></span><br><span class="line">go get golang.org/x/text</span><br></pre></td></tr></table></figure>
-<p>等待下载完成</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/transform"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/encoding"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/html/charset"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mian</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="comment">//获取的数据</span></span><br><span class="line">   resp,err := http.Get(url:<span class="string">"http://www.zhenai.com/zhenghun"</span>)</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    panin(err)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//数据请求完毕需要进行关闭链接</span></span><br><span class="line">   <span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">   <span class="comment">//判断返回的状态码</span></span><br><span class="line">   <span class="keyword">if</span> resp.StatusCode != http.StatusOK&#123;</span><br><span class="line">    <span class="comment">//此处仅做简单示范，实际开发中需要对不同的状态码进行映射</span></span><br><span class="line">    fmt.Println(<span class="string">"状态码不正常"</span>,resp.StatusCode)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//动态获取编码格式</span></span><br><span class="line">   <span class="comment">//Go语言默认采用utf8编码，不获取编码的话可能会导致乱码</span></span><br><span class="line">   e := determinEncodeing(resp.Body)</span><br><span class="line">   <span class="comment">//将内容转化成utf8格式</span></span><br><span class="line">   utf8Obj := transform.NewReader(resp.Body, e.NewDecoder())</span><br><span class="line">   <span class="comment">//对获取的数据进行读取</span></span><br><span class="line">   all,err := ioutil.ReadAll(utf8obj)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">     <span class="built_in">panic</span>(<span class="literal">nil</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   fmt.Printf(<span class="string">"%s"</span>,all)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取编码格式</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">determinEncodeing</span><span class="params">(r io.Reader)</span> <span class="title">encoding</span>.<span class="title">Encoding</span></span> &#123;</span><br><span class="line"> bytes.err := bufio.NewReader(r).Peek(n:<span class="number">1024</span>)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">panic</span>(err)</span><br><span class="line"> &#125;</span><br><span class="line"> e,_,_ := charset.DeterminEncoding(bytes,contenType:<span class="string">""</span>)</span><br><span class="line"> <span class="keyword">return</span> e</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行代码输出结果（截取部分输出）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">&lt;article class=&quot;myhome-wrap frameW city-page&quot;&gt;</span><br><span class="line">	&lt;dl id=&quot;cityList&quot; class=&quot;city-list  clearfix&quot;&gt;</span><br><span class="line">			&lt;dt&gt;A&lt;/dt&gt;</span><br><span class="line">			&lt;dd&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aba&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿坝&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/akesu&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿克苏&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/alashanmeng&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿拉善盟&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aletai&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿勒泰&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/ali&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿里&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anhui&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安徽&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/ankang&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安康&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anqing&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安庆&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anshan&quot;</span><br><span class="line">									class=&quot;&quot;&gt;鞍山&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anshun&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安顺&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anyang&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安阳&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aomen&quot;</span><br><span class="line">			</span><br><span class="line">									class=&quot;&quot;&gt;北碚&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beichen&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北辰&lt;/a&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beihai&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北海&lt;/a&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beijing&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北京&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/benxi&quot;</span><br><span class="line">									class=&quot;&quot;&gt;本溪&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bijie&quot;</span><br><span class="line">									class=&quot;&quot;&gt;毕节&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/binhaixin&quot;</span><br><span class="line">									class=&quot;&quot;&gt;滨海新&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/binzhou&quot;</span><br><span class="line">									class=&quot;&quot;&gt;滨州&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bishan&quot;</span><br><span class="line">									class=&quot;&quot;&gt;璧山&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/boertala&quot;</span><br><span class="line">									class=&quot;&quot;&gt;博尔塔拉&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bozhou&quot;</span><br><span class="line">									class=&quot;&quot;&gt;亳州&lt;/a&gt;	</span><br><span class="line">							&lt;/article&gt;</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
-<p>　　由上面的打印信息可以看到已经获取到网页的信息，现在下一步是希望从一堆数据中捡取所有的符合条件的a便签，即含有城市的a便签，然后从a标签中获取城市以及对应的链接。</p>
-<p>在上面的代码基础上，进一步处理：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在上面代码的基础上添加</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line"> all,err := ioutil.ReadAll(utf8obj)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">     <span class="built_in">panic</span>(<span class="literal">nil</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">printAnode(all)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printAnode</span><span class="params">(s []<span class="keyword">byte</span>)</span></span>&#123;</span><br><span class="line"> <span class="comment">//正则表达式捡取所有城市信息的a标签</span></span><br><span class="line">	match := regexp.MustCompile(<span class="string">`&lt;a href="(http://www.zhenai.com/zhenghun/[a-z0-9].+)"[^&lt;].+&gt;([^&lt;].+)&lt;/a&gt;`</span>)</span><br><span class="line"><span class="comment">//将小括号里面的正则表达式检索到一个二维数组里面  -1代表所有</span></span><br><span class="line">	s1 := match.FindAllSubmatch(s, n:<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> s1 &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"城市：%s 链接:%s \n"</span>,v[<span class="number">2</span>],v[<span class="number">1</span>])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>部分打印信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">城市：阿坝   链接:http://www.zhenai.com/zhenghun/aba </span><br><span class="line">城市：阿克苏   链接:http://www.zhenai.com/zhenghun/akesu </span><br><span class="line">城市：阿拉善盟   链接:http://www.zhenai.com/zhenghun/alashanmeng </span><br><span class="line">城市：阿勒泰   链接:http://www.zhenai.com/zhenghun/aletai </span><br><span class="line">城市：阿里   链接:http://www.zhenai.com/zhenghun/ali </span><br><span class="line">城市：安徽   链接:http://www.zhenai.com/zhenghun/anhui </span><br><span class="line">城市：安康   链接:http://www.zhenai.com/zhenghun/ankang </span><br><span class="line">城市：安庆   链接:http://www.zhenai.com/zhenghun/anqing </span><br><span class="line">城市：鞍山   链接:http://www.zhenai.com/zhenghun/anshan </span><br><span class="line">城市：安顺   链接:http://www.zhenai.com/zhenghun/anshun </span><br><span class="line">城市：安阳   链接:http://www.zhenai.com/zhenghun/anyang </span><br><span class="line">城市：澳门   链接:http://www.zhenai.com/zhenghun/aomen </span><br><span class="line">城市：白城   链接:http://www.zhenai.com/zhenghun/baicheng1 </span><br><span class="line">城市：百色   链接:http://www.zhenai.com/zhenghun/baise </span><br><span class="line">城市：白山   链接:http://www.zhenai.com/zhenghun/baishan</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/04/Golang实现爬虫-一/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-正则表达式在Go中的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/04/正则表达式在Go中的使用/">正则表达式在Go中的使用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/04/正则表达式在Go中的使用/" class="archive-article-date">
-  	<time datetime="2018-05-04T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-04</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="正则表达式在Go中的使用"><a href="#正则表达式在Go中的使用" class="headerlink" title="正则表达式在Go中的使用"></a>正则表达式在Go中的使用</h1><p>正则表达式的相关内容想查询本博客的文章<code>正则表达式</code>，对于正则表达式在Go语言的应用：</p>
-<p>需要引入：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="comment">//正则表达式需要引入</span></span><br><span class="line">	<span class="string">"regexp"</span></span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>代码示例：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"> <span class="string">"regexp"</span></span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> text = <span class="string">"my email is emailforecho@163.com"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">//对于go语言中不存在的转义符号需要使用 \\ 双反斜线</span></span><br><span class="line">  <span class="comment">// match := regexp.MustCompile("[a-zA-Z0-9]+@.+\\.com")</span></span><br><span class="line">  <span class="comment">//也可以使用表示字符串的``来使用</span></span><br><span class="line">  match := regexp.MustComile(str:<span class="string">`[a-zA-Z0-9]+@.+\.com`</span>)</span><br><span class="line">      </span><br><span class="line">  <span class="comment">//判断emailforecho@163.com是否存在与text里面</span></span><br><span class="line">  isExist := match.MatchString(text)</span><br><span class="line">  fmt.Println(isExist)</span><br><span class="line">  <span class="comment">//返回正则表达式匹配的字符串</span></span><br><span class="line">  s := match.FindString(text)</span><br><span class="line">  fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">emailforecho@163.com</span><br></pre></td></tr></table></figure>
-<p>查找匹配正则表达式的函数还有很多：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func (re *Regexp) Find(b []byte) []byte</span><br><span class="line"></span><br><span class="line">func (*Regexp) FindAll</span><br><span class="line"></span><br><span class="line">func (*Regexp) FindAllString</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">正则表达式Go语言应用</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/04/正则表达式在Go中的使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1421,15 +1361,27 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1449,11 +1401,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1461,7 +1413,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1469,7 +1421,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1477,15 +1429,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1493,11 +1437,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1538,6 +1490,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
               </li>
             
             <div class="clearfix"></div>
