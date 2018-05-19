@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="http://www.wuecho.com">
   <title>编译Openssl | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="##1. 提前准备工作 去https://www.openssl.org网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本 解压openssl开发包文件 ###2. 在终端下操作如下 进入刚才解压的文件夹，如图所示  -设定Openssl 安装路径，( –prefix )参数为欲安装之目录，执行如下命令： ​     ./config –prefix=/usr/loca">
+  <meta name="description" content="1. 提前准备工作去https://www.openssl.org网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本 解压openssl开发包文件 2. 在终端下操作如下进入刚才解压的文件夹，如图所示  -设定Openssl 安装路径，( –prefix )参数为欲安装之目录，执行如下命令： ​     ./config –prefix=/usr/local/opens">
 <meta name="keywords" content="编译Openssl">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编译Openssl">
 <meta property="og:url" content="http://www.wuecho.com/2018/05/18/编译Openssl/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="##1. 提前准备工作 去https://www.openssl.org网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本 解压openssl开发包文件 ###2. 在终端下操作如下 进入刚才解压的文件夹，如图所示  -设定Openssl 安装路径，( –prefix )参数为欲安装之目录，执行如下命令： ​     ./config –prefix=/usr/loca">
+<meta property="og:description" content="1. 提前准备工作去https://www.openssl.org网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本 解压openssl开发包文件 2. 在终端下操作如下进入刚才解压的文件夹，如图所示  -设定Openssl 安装路径，( –prefix )参数为欲安装之目录，执行如下命令： ​     ./config –prefix=/usr/local/opens">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/2018_4_4.png">
 <meta property="og:image" content="http://om1c35wrq.bkt.clouddn.com/1522819297%281%29.png">
-<meta property="og:updated_time" content="2018-05-18T04:34:36.251Z">
+<meta property="og:updated_time" content="2018-05-19T10:34:29.261Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="编译Openssl">
-<meta name="twitter:description" content="##1. 提前准备工作 去https://www.openssl.org网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本 解压openssl开发包文件 ###2. 在终端下操作如下 进入刚才解压的文件夹，如图所示  -设定Openssl 安装路径，( –prefix )参数为欲安装之目录，执行如下命令： ​     ./config –prefix=/usr/loca">
+<meta name="twitter:description" content="1. 提前准备工作去https://www.openssl.org网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本 解压openssl开发包文件 2. 在终端下操作如下进入刚才解压的文件夹，如图所示  -设定Openssl 安装路径，( –prefix )参数为欲安装之目录，执行如下命令： ​     ./config –prefix=/usr/local/opens">
 <meta name="twitter:image" content="http://om1c35wrq.bkt.clouddn.com/2018_4_4.png">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
@@ -199,7 +199,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-提前准备工作"><span class="toc-number">1.</span> <span class="toc-text">1. 提前准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-在终端下操作如下"><span class="toc-number">1.1.</span> <span class="toc-text">2. 在终端下操作如下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-执行命令-config-t"><span class="toc-number">1.2.</span> <span class="toc-text">3.执行命令./config -t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-执行make命令，编译Openssl，编译需要等待一定的时间。"><span class="toc-number">1.3.</span> <span class="toc-text">4.执行make命令，编译Openssl，编译需要等待一定的时间。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-执行make-install，安装-Openssl，安装也需要一定的时间。"><span class="toc-number">1.4.</span> <span class="toc-text">5.执行make install，安装 Openssl，安装也需要一定的时间。</span></a></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -219,18 +219,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>##1. 提前准备工作</p>
-<p>去<a href="https://www.openssl.org" target="_blank" rel="noopener">https://www.openssl.org</a>网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本</p>
+        <h2 id="1-提前准备工作"><a href="#1-提前准备工作" class="headerlink" title="1. 提前准备工作"></a>1. 提前准备工作</h2><p>去<a href="https://www.openssl.org" target="_blank" rel="noopener">https://www.openssl.org</a>网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本</p>
 <p>解压openssl开发包文件</p>
-<p>###2. 在终端下操作如下</p>
-<p>进入刚才解压的文件夹，如图所示</p>
+<h3 id="2-在终端下操作如下"><a href="#2-在终端下操作如下" class="headerlink" title="2. 在终端下操作如下"></a>2. 在终端下操作如下</h3><p>进入刚才解压的文件夹，如图所示</p>
 <p><img src="http://om1c35wrq.bkt.clouddn.com/2018_4_4.png" alt=""></p>
 <p>-设定Openssl 安装路径，( <strong>–prefix</strong> )参数为欲安装之目录，执行如下命令：</p>
 <p>​     ./config –prefix=/usr/local/openssl</p>
-<p>###3.执行命令./config -t</p>
-<p>###4.执行make命令，编译Openssl，编译需要等待一定的时间。</p>
-<p>###5、执行make install，安装 Openssl，安装也需要一定的时间。</p>
-<p>安装完成后,openssl 会被安装到/usr/local/openssl 目录，包括头文件目录 </p>
+<h3 id="3-执行命令-config-t"><a href="#3-执行命令-config-t" class="headerlink" title="3.执行命令./config -t"></a>3.执行命令./config -t</h3><h3 id="4-执行make命令，编译Openssl，编译需要等待一定的时间。"><a href="#4-执行make命令，编译Openssl，编译需要等待一定的时间。" class="headerlink" title="4.执行make命令，编译Openssl，编译需要等待一定的时间。"></a>4.执行make命令，编译Openssl，编译需要等待一定的时间。</h3><h3 id="5-执行make-install，安装-Openssl，安装也需要一定的时间。"><a href="#5-执行make-install，安装-Openssl，安装也需要一定的时间。" class="headerlink" title="5.执行make install，安装 Openssl，安装也需要一定的时间。"></a>5.执行make install，安装 Openssl，安装也需要一定的时间。</h3><p>安装完成后,openssl 会被安装到/usr/local/openssl 目录，包括头文件目录 </p>
 <p><img src="http://om1c35wrq.bkt.clouddn.com/1522819297%281%29.png" alt=""></p>
 <p>进入lib后，libssl.a和libcrypto.a则为编译后的库文件</p>
 
@@ -396,7 +391,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    目录，不存在的…
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-提前准备工作"><span class="toc-number">1.</span> <span class="toc-text">1. 提前准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-在终端下操作如下"><span class="toc-number">1.1.</span> <span class="toc-text">2. 在终端下操作如下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-执行命令-config-t"><span class="toc-number">1.2.</span> <span class="toc-text">3.执行命令./config -t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-执行make命令，编译Openssl，编译需要等待一定的时间。"><span class="toc-number">1.3.</span> <span class="toc-text">4.执行make命令，编译Openssl，编译需要等待一定的时间。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-执行make-install，安装-Openssl，安装也需要一定的时间。"><span class="toc-number">1.4.</span> <span class="toc-text">5.执行make install，安装 Openssl，安装也需要一定的时间。</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
