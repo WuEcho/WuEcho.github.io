@@ -9,7 +9,7 @@
   <title>区块链的骨骼：密码算法以及应用 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="区块链的骨骼：密码算法以及应用1. 什么是hash加密　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度(64位十六进制)的输出，该输出就是散列值。 　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是">
-<meta name="keywords" content="Hash,sha256,及应用">
+<meta name="keywords" content="Hash,sha256,及应用,密码学">
 <meta property="og:type" content="article">
 <meta property="og:title" content="区块链的骨骼：密码算法以及应用">
 <meta property="og:url" content="http://www.wuecho.com/2018/05/03/Hash加密以及应用/index.html">
@@ -17,8 +17,10 @@
 <meta property="og:description" content="区块链的骨骼：密码算法以及应用1. 什么是hash加密　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度(64位十六进制)的输出，该输出就是散列值。 　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/05/03/Hash加密以及应用/p1.jpeg">
+<meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/20180117-112927.png">
+<meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/20180117-120937.png">
 <meta property="og:image" content="http://www.wuecho.com/2018/05/03/Hash加密以及应用/p2.png">
-<meta property="og:updated_time" content="2018-05-16T01:42:57.455Z">
+<meta property="og:updated_time" content="2018-05-18T04:58:05.750Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区块链的骨骼：密码算法以及应用">
 <meta name="twitter:description" content="区块链的骨骼：密码算法以及应用1. 什么是hash加密　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度(64位十六进制)的输出，该输出就是散列值。 　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是">
@@ -199,7 +201,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的骨骼：密码算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">区块链的骨骼：密码算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. 什么是hash加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-区块哈希"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">2.1 区块哈希</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-梅克尔根树"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">2.2 梅克尔根树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-公开密匙算法"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. 公开密匙算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-公钥和私钥"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">3.1 公钥和私钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-RSA算法"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">3.2 RSA算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-椭圆曲线密码算法"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">3.3 椭圆曲线密码算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-编码-解码算法"><span class="toc-number">1.0.4.</span> <span class="toc-text">4. 编码/解码算法 　　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Base64"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">4.1 Base64</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Base58"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">4.2 Base58</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Base58Check"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">4.3 Base58Check</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-应用场景"><span class="toc-number">1.0.5.</span> <span class="toc-text">5. 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-在区块链中的应用"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">5.2 在区块链中的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-最简单的挖矿实现"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">5.3 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的骨骼：密码算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">区块链的骨骼：密码算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. 什么是hash加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-区块哈希"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">2.1 区块哈希</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-梅克尔根树"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">2.2 梅克尔根树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-公开密匙算法"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. 公开密匙算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-公钥和私钥"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">3.1 公钥和私钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-RSA算法"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">3.2 RSA算法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RSA加密"><span class="toc-number">1.0.3.2.1.</span> <span class="toc-text">RSA加密</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#RSA解密"><span class="toc-number">1.0.3.2.2.</span> <span class="toc-text">RSA解密</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#生成密钥对"><span class="toc-number">1.0.3.2.3.</span> <span class="toc-text">生成密钥对</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-求N"><span class="toc-number">1.0.3.2.3.1.</span> <span class="toc-text">1. 求N</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-求L"><span class="toc-number">1.0.3.2.3.2.</span> <span class="toc-text">2. 求L</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-求E"><span class="toc-number">1.0.3.2.3.3.</span> <span class="toc-text">3. 求E</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-求D"><span class="toc-number">1.0.3.2.3.4.</span> <span class="toc-text">4. 求D</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#中间人攻击-man-in-the-middle-attack"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">中间人攻击( man-in-the-middle attack )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-椭圆曲线密码算法"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">3.3 椭圆曲线密码算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-编码-解码算法"><span class="toc-number">1.0.4.</span> <span class="toc-text">4. 编码/解码算法 　　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Base64"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">4.1 Base64</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Base58"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">4.2 Base58</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Base58Check"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">4.3 Base58Check</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-应用场景"><span class="toc-number">1.0.5.</span> <span class="toc-text">5. 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-在区块链中的应用"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">5.2 在区块链中的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-最简单的挖矿实现"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">5.3 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -252,6 +254,84 @@
 <li>作用1：公钥加密私钥解密</li>
 <li>作用2：私钥签名公钥验证</li>
 </ul>
+<p><strong>加密原理：</strong></p>
+<h5 id="RSA加密"><a href="#RSA加密" class="headerlink" title="RSA加密"></a>RSA加密</h5><p>　　在RSA中，明文、密钥和密文都是数字。RSA的加密过程可以用下列公式来表达：</p>
+<p><strong>密文=明文<sup>E</sup> mod N</strong> (RSA加密)</p>
+<p>　　RSA的密文是对代表明文的数字的E次方求mod N的结果。就是将明文和自己做E次乘法,然后将其结果除以N求余数，这个余数就是密文。</p>
+<h5 id="RSA解密"><a href="#RSA解密" class="headerlink" title="RSA解密"></a>RSA解密</h5><p>　　RSA的解密和加密一样简单，可以用下面的公式来表达:</p>
+<p><strong>明文=密文 <sup>D</sup> mod N</strong> ( RSA解密)</p>
+<p>表示密文的数字的D次方求 mod N就可以得到明文。</p>
+<p>　　这里所使用的数字N和加密时使用的数字N是相同的，数 <code>D</code> 和数 <code>N</code> 组合起来就是RSA的解密密钥，因此D和N的组合就是私钥。<br>　　在RSA中，加密和解密的形式是相同的。加密是求“明文的E次方的 mod<br>N”，而解密则是求“密文的D次方的 mod N”。</p>
+<h5 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h5><p>　　由于E和N是公钥，D和N是私钥，因此求E、D和N这三个数就是生成密钥对。RSA密钥对的生成步骤如下：</p>
+<ol>
+<li>求N</li>
+<li>求L( L是仅在生成密钥对的过程中使用的数)</li>
+<li>求E</li>
+<li>求D</li>
+</ol>
+<h6 id="1-求N"><a href="#1-求N" class="headerlink" title="1. 求N"></a>1. 求N</h6><p>　　首先准备两个很大的质数。这两个很大的质数为p和q。p和q太小的话，密码会变得容易破译，但太大的话计算时间又会变得很长。</p>
+<p>判断一个数是不是质数并不是看它能不能分解质因数，而是通过数学上的判断方法来完成。</p>
+<p>准备好两个很大的质数之后，我们将这两个数相乘，其结果就是数N。也就是说，数 N 可以用下列公式来表达：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N = p x q (p、q为质数)</span><br></pre></td></tr></table></figure>
+<h6 id="2-求L"><a href="#2-求L" class="headerlink" title="2. 求L"></a>2. 求L</h6><p><code>L</code> 这个数在RSA的加密和解密过程中都不出现，它只出现在生成密钥对的过程中。</p>
+<p><code>L</code> 是 <code>p-1</code> 和 <code>q-1</code> 的最小公倍数( least common multiple, lcm )。</p>
+<p>如果用lcm(X, Y) 来表示 “X和Y的最小公倍数”，则L可以写成下列形式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L= lcm(p-1,q-1) ( L是p-1和q-1的最小公倍数)</span><br></pre></td></tr></table></figure>
+<h6 id="3-求E"><a href="#3-求E" class="headerlink" title="3. 求E"></a>3. 求E</h6><p>　　E是一个比1大、比L小的数。此外，E和L的最大公约数( greatest common divisor, gcd)必须为1。</p>
+<p>如果用gcd(X, Y)来表示X和Y的最大公约数，则E和L之间存在下列关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 &lt; E &lt; L</span><br><span class="line">gcd(E,L)= 1</span><br></pre></td></tr></table></figure>
+<h6 id="4-求D"><a href="#4-求D" class="headerlink" title="4. 求D"></a>4. 求D</h6><p>数D是由数E计算得到的。D、E和L之间必须具备下列关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 &lt; D &lt; L</span><br><span class="line">E x D mod L = 1</span><br></pre></td></tr></table></figure>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/20180117-112927.png" alt=""></p>
+<p><strong>示例：</strong></p>
+<ul>
+<li><strong>求N</strong></li>
+</ul>
+<p>首先我们准备两个质数p、q,这里我们选择17和19,它们都是质数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">N = p x q</span><br><span class="line">  = 17 x 19</span><br><span class="line">  = 323</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>求L</strong></li>
+</ul>
+<p>L是p-1和q- 1的最小公倍数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">L = lcm(p-1,q-1)</span><br><span class="line">  = lcm(16, 18)</span><br><span class="line">  = 144</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>求E</strong></li>
+</ul>
+<p>E和L的最大公约数必须是1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcd(E,L)=1</span><br></pre></td></tr></table></figure>
+<p>满足条件的E有很多，例如下面这些数都可以。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5,7,11,13,17,19,23,25,29,31,...</span><br></pre></td></tr></table></figure>
+<p>　　这些数好像都是质数，但其实并不是这样的，比如25就不是质数。这些数称为和 L “互质的数”，也就是相对于L是质数的意思。我们选择5来作为E。</p>
+<p>E=5, N=323 就是公钥。</p>
+<ul>
+<li><strong>求D</strong></li>
+</ul>
+<p>D必须满足下列条件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E x D mod L=l</span><br></pre></td></tr></table></figure>
+<p>D = 29可以满足上面的条件，因为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E x D mod L = 5 x 29 mod 144</span><br><span class="line">            = 145 mod 144</span><br><span class="line">            =1</span><br></pre></td></tr></table></figure>
+<p>我们已经成功生成了密钥对，即:</p>
+<p><strong>公钥</strong>: <code>E=5 N=323</code><br><strong>私钥</strong>: <code>D=29 N=323</code></p>
+<p>公钥(E,N)=(5,323)是可以任意公开的，但是私钥(D,N)= (29,323)必须妥善保管。</p>
+<ul>
+<li><strong>加密</strong></li>
+</ul>
+<p>要加密的明文必须是小于N的数，也就是小于323的数，我们假设要加密的明文是123，加密时使用的是公钥 <code>E=5、N=323</code>。</p>
+<blockquote>
+<p>明文<sup>E</sup> mod N = 123<sup>5</sup> mod 323 = 255</p>
+</blockquote>
+<p>因此密文就是 255。</p>
+<ul>
+<li><strong>解密</strong></li>
+</ul>
+<p>我们对密文225进行解密。解密时使用的是私钥D=29、N=323。</p>
+<blockquote>
+<p>密文 <sup>29</sup> mod N = 225<sup>29</sup> mod 323 = 123</p>
+</blockquote>
+<p><strong>攻击方式：</strong></p>
+<h4 id="中间人攻击-man-in-the-middle-attack"><a href="#中间人攻击-man-in-the-middle-attack" class="headerlink" title="中间人攻击( man-in-the-middle attack )"></a>中间人攻击( man-in-the-middle attack )</h4><p>　　中间人攻击虽然不能破译RSA,但却是一种针对机密性的有效攻击。所谓中间人攻击，就是主动攻击者Mallory混入发送者和接收者的中间，对发送者伪装成<br>接收者，对接收者伪装成发送者的攻击方式，在这里，Mallory就是“中间人”。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/20180117-120937.png" alt=""></p>
+<p>　　这种攻击不仅针对RSA,而是可以针对任何公钥密码。在这个过程中，公钥密码并没有被破译，所有的密码算法也都正常工作并确保了机密性。然而，所谓的机密性并非在Alice和Bob之间，而是在Alice和Mallory之间，以及Mallory和Bob之间成立的。仅靠公钥密码本身,是无法防御中间人攻击的。<br>要防御中间人攻击，还需要一种手段来确认所收到的公钥是否真的属于Bob,这种手段称为认证。在这种情况下，可以使用公钥的证书。</p>
 <h4 id="3-3-椭圆曲线密码算法"><a href="#3-3-椭圆曲线密码算法" class="headerlink" title="3.3 椭圆曲线密码算法"></a>3.3 椭圆曲线密码算法</h4><p>　　椭圆曲线密码算法是基于椭圆曲线数学的一种公钥密码算法。主要的安全性在于利用了椭圆曲线离散对数问题的困难性。是RSA加密算法的升级版。</p>
 <h3 id="4-编码-解码算法"><a href="#4-编码-解码算法" class="headerlink" title="4. 编码/解码算法 　　"></a>4. 编码/解码算法 　　</h3><p>　</p>
 <h4 id="4-1-Base64"><a href="#4-1-Base64" class="headerlink" title="4.1 Base64"></a>4.1 Base64</h4><p>　　这是一种用64个字符来表示任意二进制数据的方法。字符编码表如下：<br><img src="/2018/05/03/Hash加密以及应用/p2.png" alt="">　<br>　　Base64编码主要用在传输，存储，表示二进制等领域，还可以用来加密。这种加密比较简单，也很容易解码。</p>
@@ -431,6 +511,10 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hash,sha256,及应用</a>
         		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
+        		</li>
       		
 		</ul>
 	</div>
@@ -548,7 +632,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的骨骼：密码算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">区块链的骨骼：密码算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. 什么是hash加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-区块哈希"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">2.1 区块哈希</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-梅克尔根树"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">2.2 梅克尔根树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-公开密匙算法"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. 公开密匙算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-公钥和私钥"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">3.1 公钥和私钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-RSA算法"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">3.2 RSA算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-椭圆曲线密码算法"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">3.3 椭圆曲线密码算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-编码-解码算法"><span class="toc-number">1.0.4.</span> <span class="toc-text">4. 编码/解码算法 　　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Base64"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">4.1 Base64</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Base58"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">4.2 Base58</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Base58Check"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">4.3 Base58Check</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-应用场景"><span class="toc-number">1.0.5.</span> <span class="toc-text">5. 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-在区块链中的应用"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">5.2 在区块链中的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-最简单的挖矿实现"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">5.3 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的骨骼：密码算法以及应用"><span class="toc-number">1.</span> <span class="toc-text">区块链的骨骼：密码算法以及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是hash加密"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. 什么是hash加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-区块链上的哈希算法"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. 区块链上的哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-区块哈希"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">2.1 区块哈希</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-梅克尔根树"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">2.2 梅克尔根树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-公开密匙算法"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. 公开密匙算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-公钥和私钥"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">3.1 公钥和私钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-RSA算法"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">3.2 RSA算法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RSA加密"><span class="toc-number">1.0.3.2.1.</span> <span class="toc-text">RSA加密</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#RSA解密"><span class="toc-number">1.0.3.2.2.</span> <span class="toc-text">RSA解密</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#生成密钥对"><span class="toc-number">1.0.3.2.3.</span> <span class="toc-text">生成密钥对</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-求N"><span class="toc-number">1.0.3.2.3.1.</span> <span class="toc-text">1. 求N</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-求L"><span class="toc-number">1.0.3.2.3.2.</span> <span class="toc-text">2. 求L</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-求E"><span class="toc-number">1.0.3.2.3.3.</span> <span class="toc-text">3. 求E</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-求D"><span class="toc-number">1.0.3.2.3.4.</span> <span class="toc-text">4. 求D</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#中间人攻击-man-in-the-middle-attack"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">中间人攻击( man-in-the-middle attack )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-椭圆曲线密码算法"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">3.3 椭圆曲线密码算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-编码-解码算法"><span class="toc-number">1.0.4.</span> <span class="toc-text">4. 编码/解码算法 　　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Base64"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">4.1 Base64</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Base58"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">4.2 Base58</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Base58Check"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">4.3 Base58Check</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-应用场景"><span class="toc-number">1.0.5.</span> <span class="toc-text">5. 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-在区块链中的应用"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">5.2 在区块链中的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-最简单的挖矿实现"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">5.3 最简单的挖矿实现</span></a></li></ol></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -660,31 +744,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">指针</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -692,7 +752,39 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -704,7 +796,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -712,7 +804,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -720,15 +812,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -736,7 +824,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -744,7 +836,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -752,7 +848,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -772,15 +876,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">智能合约存储区</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -796,7 +896,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color3">智能合约存储区</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
             
             <div class="clearfix"></div>
