@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="WuEcho的博客">
 <meta property="og:description" content="Go语言实现RSA加密解密1. 生成公钥私钥要想使用openssl生成公钥，私钥，需要先配置好openssl，打开终端。 1.1 openssl生成私钥1openssl genrsa -out rsa_private_key.pem 1024 1.2 openssl生成公钥1openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_ke">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-18T09:03:27.364Z">
+<meta property="og:updated_time" content="2018-05-20T07:42:47.659Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go语言实现RSA加密解密">
 <meta name="twitter:description" content="Go语言实现RSA加密解密1. 生成公钥私钥要想使用openssl生成公钥，私钥，需要先配置好openssl，打开终端。 1.1 openssl生成私钥1openssl genrsa -out rsa_private_key.pem 1024 1.2 openssl生成公钥1openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_ke">
@@ -196,7 +196,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现RSA加密解密"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现RSA加密解密</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-生成公钥私钥"><span class="toc-number">1.1.</span> <span class="toc-text">1. 生成公钥私钥</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-openssl生成私钥"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 openssl生成私钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-openssl生成公钥"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 openssl生成公钥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-实现-RSA-加密解密"><span class="toc-number">1.2.</span> <span class="toc-text">2. 实现 RSA 加密解密</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现RSA加密解密"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现RSA加密解密</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-生成公钥私钥"><span class="toc-number">1.1.</span> <span class="toc-text">1. 生成公钥私钥</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-openssl生成私钥"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 openssl生成私钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-openssl生成公钥"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 openssl生成公钥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-实现-RSA-加密解密"><span class="toc-number">1.2.</span> <span class="toc-text">2. 实现 RSA 加密解密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-实现方式一"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 实现方式一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-通过代码生成公钥私钥实现加密解密"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 通过代码生成公钥私钥实现加密解密</span></a></li></ol></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -219,7 +219,12 @@
         <h1 id="Go语言实现RSA加密解密"><a href="#Go语言实现RSA加密解密" class="headerlink" title="Go语言实现RSA加密解密"></a>Go语言实现RSA加密解密</h1><h2 id="1-生成公钥私钥"><a href="#1-生成公钥私钥" class="headerlink" title="1. 生成公钥私钥"></a>1. 生成公钥私钥</h2><p>要想使用<code>openssl</code>生成公钥，私钥，需要先配置好<code>openssl</code>，<br>打开终端。</p>
 <h3 id="1-1-openssl生成私钥"><a href="#1-1-openssl生成私钥" class="headerlink" title="1.1 openssl生成私钥"></a>1.1 openssl生成私钥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out rsa_private_key.pem 1024</span><br></pre></td></tr></table></figure>
 <h3 id="1-2-openssl生成公钥"><a href="#1-2-openssl生成公钥" class="headerlink" title="1.2 openssl生成公钥"></a>1.2 openssl生成公钥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem</span><br></pre></td></tr></table></figure>
-<h2 id="2-实现-RSA-加密解密"><a href="#2-实现-RSA-加密解密" class="headerlink" title="2. 实现 RSA 加密解密"></a>2. 实现 RSA 加密解密</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">package main  </span><br><span class="line">  </span><br><span class="line">import (  </span><br><span class="line">    &quot;crypto/rand&quot;  </span><br><span class="line">    &quot;crypto/rsa&quot;  </span><br><span class="line">    &quot;crypto/x509&quot;  </span><br><span class="line">    &quot;encoding/base64&quot;  </span><br><span class="line">    &quot;encoding/pem&quot;  </span><br><span class="line">    &quot;errors&quot;  </span><br><span class="line">    &quot;fmt&quot;  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line">// 可通过openssl产生  </span><br><span class="line">//openssl genrsa -out rsa_private_key.pem 1024  </span><br><span class="line">var privateKey = []byte(`  </span><br><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIICXQIBAAKBgQDfw1/P15GQzGGYvNwVmXIGGxea8Pb2wJcF7ZW7tmFdLSjOItn9</span><br><span class="line">kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQolDOkEzNP0B8XKm+Lxy4giwwR5</span><br><span class="line">LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TUGQD6QzKY1Y8xS+FoQQIDAQAB</span><br><span class="line">AoGAbSNg7wHomORm0dWDzvEpwTqjl8nh2tZyksyf1I+PC6BEH8613k04UfPYFUg1</span><br><span class="line">0F2rUaOfr7s6q+BwxaqPtz+NPUotMjeVrEmmYM4rrYkrnd0lRiAxmkQUBlLrCBiF</span><br><span class="line">u+bluDkHXF7+TUfJm4AZAvbtR2wO5DUAOZ244FfJueYyZHECQQD+V5/WrgKkBlYy</span><br><span class="line">XhioQBXff7TLCrmMlUziJcQ295kIn8n1GaKzunJkhreoMbiRe0hpIIgPYb9E57tT</span><br><span class="line">/mP/MoYtAkEA4Ti6XiOXgxzV5gcB+fhJyb8PJCVkgP2wg0OQp2DKPp+5xsmRuUXv</span><br><span class="line">720oExv92jv6X65x631VGjDmfJNb99wq5QJBAMSHUKrBqqizfMdOjh7z5fLc6wY5</span><br><span class="line">M0a91rqoFAWlLErNrXAGbwIRf3LN5fvA76z6ZelViczY6sKDjOxKFVqL38ECQG0S</span><br><span class="line">pxdOT2M9BM45GJjxyPJ+qBuOTGU391Mq1pRpCKlZe4QtPHioyTGAAMd4Z/FX2MKb</span><br><span class="line">3in48c0UX5t3VjPsmY0CQQCc1jmEoB83JmTHYByvDpc8kzsD8+GmiPVrausrjj4p</span><br><span class="line">y2DQpGmUic2zqCxl6qXMpBGtFEhrUbKhOiVOJbRNGvWW</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br><span class="line">`)  </span><br><span class="line">  </span><br><span class="line">//openssl  </span><br><span class="line">//openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem  </span><br><span class="line">var publicKey = []byte(`  </span><br><span class="line">-----BEGIN PUBLIC KEY-----</span><br><span class="line">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDfw1/P15GQzGGYvNwVmXIGGxea</span><br><span class="line">8Pb2wJcF7ZW7tmFdLSjOItn9kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQol</span><br><span class="line">DOkEzNP0B8XKm+Lxy4giwwR5LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TU</span><br><span class="line">GQD6QzKY1Y8xS+FoQQIDAQAB</span><br><span class="line">-----END PUBLIC KEY-----	</span><br><span class="line">`)  </span><br><span class="line">  </span><br><span class="line">// 加密  </span><br><span class="line">func RsaEncrypt(origData []byte) ([]byte, error) &#123;  </span><br><span class="line">    //解密pem格式的公钥  </span><br><span class="line">    block, _ := pem.Decode(publicKey)  </span><br><span class="line">    if block == nil &#123;  </span><br><span class="line">        return nil, errors.New(&quot;public key error&quot;)  </span><br><span class="line">    &#125;  </span><br><span class="line">    // 解析公钥  </span><br><span class="line">    pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)  </span><br><span class="line">    if err != nil &#123;  </span><br><span class="line">        return nil, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    // 类型断言  </span><br><span class="line">    pub := pubInterface.(*rsa.PublicKey)  </span><br><span class="line">    //加密  </span><br><span class="line">    return rsa.EncryptPKCS1v15(rand.Reader, pub, origData)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">// 解密  </span><br><span class="line">func RsaDecrypt(ciphertext []byte) ([]byte, error) &#123;  </span><br><span class="line">    //解密  </span><br><span class="line">    block, _ := pem.Decode(privateKey)  </span><br><span class="line">    if block == nil &#123;  </span><br><span class="line">        return nil, errors.New(&quot;private key error!&quot;)  </span><br><span class="line">    &#125;  </span><br><span class="line">    //解析PKCS1格式的私钥  </span><br><span class="line">    priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)  </span><br><span class="line">    if err != nil &#123;  </span><br><span class="line">        return nil, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    // 解密  </span><br><span class="line">    return rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">func main() &#123;  </span><br><span class="line">    data, _ := RsaEncrypt([]byte(&quot;hello world&quot;))  </span><br><span class="line">    fmt.Println(base64.StdEncoding.EncodeToString(data))  </span><br><span class="line">    origData, _ := RsaDecrypt(data)  </span><br><span class="line">    fmt.Println(string(origData))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-实现-RSA-加密解密"><a href="#2-实现-RSA-加密解密" class="headerlink" title="2. 实现 RSA 加密解密"></a>2. 实现 RSA 加密解密</h2><h3 id="2-1-实现方式一"><a href="#2-1-实现方式一" class="headerlink" title="2.1 实现方式一"></a>2.1 实现方式一</h3><p>通过本地生成公钥私钥来实现加密解密</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"crypto/rand"</span>  </span><br><span class="line">    <span class="string">"crypto/rsa"</span>  </span><br><span class="line">    <span class="string">"crypto/x509"</span>  </span><br><span class="line">    <span class="string">"encoding/base64"</span>  </span><br><span class="line">    <span class="string">"encoding/pem"</span>  </span><br><span class="line">    <span class="string">"errors"</span>  </span><br><span class="line">    <span class="string">"fmt"</span>  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 可通过openssl产生  </span></span><br><span class="line"><span class="comment">//openssl genrsa -out rsa_private_key.pem 1024  </span></span><br><span class="line"><span class="keyword">var</span> privateKey = []<span class="keyword">byte</span>(<span class="string">`  </span></span><br><span class="line"><span class="string">-----BEGIN RSA PRIVATE KEY-----</span></span><br><span class="line"><span class="string">MIICXQIBAAKBgQDfw1/P15GQzGGYvNwVmXIGGxea8Pb2wJcF7ZW7tmFdLSjOItn9</span></span><br><span class="line"><span class="string">kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQolDOkEzNP0B8XKm+Lxy4giwwR5</span></span><br><span class="line"><span class="string">LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TUGQD6QzKY1Y8xS+FoQQIDAQAB</span></span><br><span class="line"><span class="string">AoGAbSNg7wHomORm0dWDzvEpwTqjl8nh2tZyksyf1I+PC6BEH8613k04UfPYFUg1</span></span><br><span class="line"><span class="string">0F2rUaOfr7s6q+BwxaqPtz+NPUotMjeVrEmmYM4rrYkrnd0lRiAxmkQUBlLrCBiF</span></span><br><span class="line"><span class="string">u+bluDkHXF7+TUfJm4AZAvbtR2wO5DUAOZ244FfJueYyZHECQQD+V5/WrgKkBlYy</span></span><br><span class="line"><span class="string">XhioQBXff7TLCrmMlUziJcQ295kIn8n1GaKzunJkhreoMbiRe0hpIIgPYb9E57tT</span></span><br><span class="line"><span class="string">/mP/MoYtAkEA4Ti6XiOXgxzV5gcB+fhJyb8PJCVkgP2wg0OQp2DKPp+5xsmRuUXv</span></span><br><span class="line"><span class="string">720oExv92jv6X65x631VGjDmfJNb99wq5QJBAMSHUKrBqqizfMdOjh7z5fLc6wY5</span></span><br><span class="line"><span class="string">M0a91rqoFAWlLErNrXAGbwIRf3LN5fvA76z6ZelViczY6sKDjOxKFVqL38ECQG0S</span></span><br><span class="line"><span class="string">pxdOT2M9BM45GJjxyPJ+qBuOTGU391Mq1pRpCKlZe4QtPHioyTGAAMd4Z/FX2MKb</span></span><br><span class="line"><span class="string">3in48c0UX5t3VjPsmY0CQQCc1jmEoB83JmTHYByvDpc8kzsD8+GmiPVrausrjj4p</span></span><br><span class="line"><span class="string">y2DQpGmUic2zqCxl6qXMpBGtFEhrUbKhOiVOJbRNGvWW</span></span><br><span class="line"><span class="string">-----END RSA PRIVATE KEY-----</span></span><br><span class="line"><span class="string">`</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//openssl  </span></span><br><span class="line"><span class="comment">//openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem  </span></span><br><span class="line"><span class="keyword">var</span> publicKey = []<span class="keyword">byte</span>(<span class="string">`  </span></span><br><span class="line"><span class="string">-----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDfw1/P15GQzGGYvNwVmXIGGxea</span></span><br><span class="line"><span class="string">8Pb2wJcF7ZW7tmFdLSjOItn9kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQol</span></span><br><span class="line"><span class="string">DOkEzNP0B8XKm+Lxy4giwwR5LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TU</span></span><br><span class="line"><span class="string">GQD6QzKY1Y8xS+FoQQIDAQAB</span></span><br><span class="line"><span class="string">-----END PUBLIC KEY-----	</span></span><br><span class="line"><span class="string">`</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 加密  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RsaEncrypt</span><span class="params">(origData []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;  </span><br><span class="line">    <span class="comment">//解密pem格式的公钥  </span></span><br><span class="line">    block, _ := pem.Decode(publicKey)  </span><br><span class="line">    <span class="keyword">if</span> block == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">"public key error"</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 解析公钥  </span></span><br><span class="line">    pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 类型断言  </span></span><br><span class="line">    pub := pubInterface.(*rsa.PublicKey)  </span><br><span class="line">    <span class="comment">//加密  </span></span><br><span class="line">    <span class="keyword">return</span> rsa.EncryptPKCS1v15(rand.Reader, pub, origData)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 解密  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RsaDecrypt</span><span class="params">(ciphertext []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;  </span><br><span class="line">    <span class="comment">//解密  </span></span><br><span class="line">    block, _ := pem.Decode(privateKey)  </span><br><span class="line">    <span class="keyword">if</span> block == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">"private key error!"</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//解析PKCS1格式的私钥  </span></span><br><span class="line">    priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 解密  </span></span><br><span class="line">    <span class="keyword">return</span> rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    data, _ := RsaEncrypt([]<span class="keyword">byte</span>(<span class="string">"hello world"</span>))  </span><br><span class="line">    fmt.Println(base64.StdEncoding.EncodeToString(data))  </span><br><span class="line">    origData, _ := RsaDecrypt(data)  </span><br><span class="line">    fmt.Println(<span class="keyword">string</span>(origData))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-通过代码生成公钥私钥实现加密解密"><a href="#2-2-通过代码生成公钥私钥实现加密解密" class="headerlink" title="2.2 通过代码生成公钥私钥实现加密解密"></a>2.2 通过代码生成公钥私钥实现加密解密</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"crypto/rsa"</span></span><br><span class="line">	<span class="string">"crypto/rand"</span></span><br><span class="line">	<span class="string">"crypto/md5"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"encoding/base64"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//利用rsa的方法生成公钥私钥</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//生成私钥</span></span><br><span class="line">	pirv,_ := rsa.GenerateKey(rand.Reader,<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">//生成公钥</span></span><br><span class="line">	pub := &amp;pirv.PublicKey</span><br><span class="line"></span><br><span class="line">	<span class="comment">//定义明文</span></span><br><span class="line">	plainText := []<span class="keyword">byte</span>(<span class="string">"hello"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//加密</span></span><br><span class="line">	cipherText,_ := rsa.EncryptOAEP(md5.New(),rand.Reader,pub,plainText,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	fmt.Println(base64.StdEncoding.EncodeToString(cipherText))</span><br><span class="line"></span><br><span class="line">  plainText,_ = rsa.DecryptOAEP(md5.New(),rand.Reader,pirv,cipherText,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">  fmt.Println(<span class="keyword">string</span>(plainText))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nr2Sfc74BXiIvgdUOlGIjv/UkWWIRA/i/74YC32ij7X+TmP2ue+RYsTV161HfBEKMdUcsLrSxjlgbQFmbX8bUPTgEvOjw/JehWNJU2tEai70POX68YCt04apC3uKkGU33opnsSgPS9A54LnBKppkHiE+mzs8Oz9qtEQVv2xT9EM=</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/WuEcho/EncryptionFuncation.git" target="_blank" rel="noopener">demo示例链接</a></p>
 
       
 
@@ -345,6 +350,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2018/05/20/Go语言实现数字验签/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Go语言实现数字验签
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/05/18/编译Openssl/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">编译Openssl</div>
@@ -374,7 +388,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现RSA加密解密"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现RSA加密解密</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-生成公钥私钥"><span class="toc-number">1.1.</span> <span class="toc-text">1. 生成公钥私钥</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-openssl生成私钥"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 openssl生成私钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-openssl生成公钥"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 openssl生成公钥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-实现-RSA-加密解密"><span class="toc-number">1.2.</span> <span class="toc-text">2. 实现 RSA 加密解密</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现RSA加密解密"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现RSA加密解密</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-生成公钥私钥"><span class="toc-number">1.1.</span> <span class="toc-text">1. 生成公钥私钥</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-openssl生成私钥"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 openssl生成私钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-openssl生成公钥"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 openssl生成公钥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-实现-RSA-加密解密"><span class="toc-number">1.2.</span> <span class="toc-text">2. 实现 RSA 加密解密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-实现方式一"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 实现方式一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-通过代码生成公钥私钥实现加密解密"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 通过代码生成公钥私钥实现加密解密</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -490,23 +504,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -514,11 +512,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -550,11 +568,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -586,19 +604,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -630,7 +648,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -638,11 +656,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>

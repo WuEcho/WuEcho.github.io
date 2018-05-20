@@ -172,6 +172,139 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-区块链技术栈" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/13/区块链技术栈/">区块链技术栈</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/13/区块链技术栈/" class="archive-article-date">
+  	<time datetime="2018-05-13T03:54:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="区块链技术栈"><a href="#区块链技术栈" class="headerlink" title="区块链技术栈"></a>区块链技术栈</h1><h2 id="1-区块链是什么"><a href="#1-区块链是什么" class="headerlink" title="1.区块链是什么"></a>1.区块链是什么</h2><p>　　区块链本身只是一种<strong>数据的记录格式</strong>，就像平常使用的Excel表格，Word文档一样，按照一定的格式将我们的数据存储在电脑上。与传统的记录格式不同的是，区块链是将产生的数据按照一定的时间间隔，分成一个个的数据块记录，然后再根据数据块的先后关联串联起来，也就是<strong>区块链</strong>。<br>　　区块链是一整套技术组合的代表，在这一组合技术的配合下才能焕发出惊人的能力。区块链系统有很多种，但是无论什么样的区块链系统，其技术部件的组合都是类似的。<br>　　最基本的技术组合如下：<br>　　　　　　1. 共识机制<br>　　　　　　2. 密码算法<br>　　　　　　3. 网络路由<br>　　　　　　4. 脚本系统<br>　　　　　　5. 区块链账本</p>
+<p>　　各种系统本质上都是这个经典结构之上直接实现或者扩展实现。这些零件装配在一起，组成了一个区块链软件，运行起来后就称之为一个节点，多个这样的节点在不同的计算机上运行起来，就组成了网络，在这个网络中每个节点都是<strong>平等的</strong>，大家互相为对方提供服务，这种网络被称为<strong>点对点的对等网络</strong>。</p>
+<h3 id="1-1-区块链账本"><a href="#1-1-区块链账本" class="headerlink" title="1.1 区块链账本"></a>1.1 区块链账本</h3><p>　　区块链，就是区块+链，区块就是指数据块，每个数据块之间通过某个标志链接起来，从而形成一条链，如图：<br><img src="/2018/05/13/区块链技术栈/p1.png" alt=""><br>　　以比特币来说，大约每10分钟产生一个区块，<strong>区块中主要包含了交易事务数据以及区块的摘要信息</strong>。如下为比特币中区块链数据的组成示意图：<br><img src="/2018/05/13/区块链技术栈/p2.png" alt=""><br>　　从上图可以看到区块数据在逻辑上分成了<strong>区块头</strong>和<strong>区块体</strong>，每个区块头中通过<strong>梅克尔根</strong>关联了区块中众多的交易事务，每个区块之间通过区块头哈希值串联起来。在区块链系统中，一个节点产生的数据或者更改的数据发送到网络中的其他节点接受验证，而其他节点是不会验证通过一个被篡改的数据，因为跟自己的本地区块链账本数据匹配不起来，这是区块链数据<strong>不可篡改</strong>的一个很重要的设计。</p>
+<h3 id="1-2-共识机制"><a href="#1-2-共识机制" class="headerlink" title="1.2 共识机制"></a>1.2 共识机制</h3><p>　　共识就是大家达成一致的意思，区块链是一个分布式的对等网络结构，在这个结构中没有哪个节点是“老大”，所以没有办法让一个节点随意发布的信息让全部节点都同意认可。如何让每个节点通过一个规则将各自的数据保持一致是个很核心的问题。这个问题的解决方案就是制定一套共识算法。<br>　　共识算法其实就是一个规则，每个节点都按照这个规则去确认各自的数据。在区块链系统中，比较常用的共识算法有：<strong>Pow(Proof of Work 工作量证明)</strong>，<strong>PoS(Proof of Stake 权益证明)</strong>,<strong>DPoS(Delegate Proof of Stake 委托权益证明)</strong>,<strong>PBFT(Practical Byzantine Fault Tolerance 实用拜占庭容错算法)</strong>等。<br>　　区块链系统就是通过这种算法或者共识算法来使得网络中各个节点的账本数据达成一致的。
+　　</p>
+<h3 id="1-3-密码算法"><a href="#1-3-密码算法" class="headerlink" title="1.3 密码算法"></a>1.3 密码算法</h3><p>　　密码算法在区块链系统中的应用很多而且很巧妙，首先区块之间的链接，不是靠数据地址来关联，而是靠<strong>哈希值</strong>来关联的。区块链账本对每个区块都会计算出一个哈希值，称为<strong>区块哈希</strong>。通过区块哈希来串联区块，这有个很好的作用就是，如果有人篡改了其中某个区块数据，那么后面的数据都要进行修改。<br>　　除了整个区块会被计算哈希值外，区块中包含的每一笔事务数据也会被计算出一个哈希值，称为<strong>事务　哈希</strong>。<br>　　每个事务哈希都可以唯一的表示一个事务，对一个区块中所有的事务进行哈希计算后，可以得出一组事务哈希，再通过对这些事务哈希进行加工处理，最终会得出一颗哈希树的数据结构。哈希树的顶部就是树根，称为<strong>梅克尔根</strong>。通过每个梅克尔根就可以将整个区块中的事务约束起来，只要区块中的事务有任何改变，梅克尔根就会发生变化，利用这点可以确保<strong>区块数据的完整性</strong>。<br>　　密码算法在区块链系统中的应用不止这些，还包括通过密码算法来创建账户地址，签名交易事务等。</p>
+<h3 id="1-4-脚本系统"><a href="#1-4-脚本系统" class="headerlink" title="1.4 脚本系统"></a>1.4 脚本系统</h3><p>　　脚本就是指一组程序规则。脚本系统使得在区块链中可以实现各种各样的业务功能。区块链系统之所以能形成一个有价值的网络，依靠的就是脚本系统。</p>
+<h3 id="1-5-网络路由"><a href="#1-5-网络路由" class="headerlink" title="1.5 网络路由"></a>1.5 网络路由</h3><p>　　在分布式的网络结构中不存在一个指定服务器，各个节点没办法通过一个服务器来直接交换彼此的身份信息，就只能通过彼此联系并传播信息。在区块链系统中，这一功能一般会定义成一种协议，称为<strong>节点发现协议</strong>。<br>　　除了发现节点外，更重要的一个功能就是同步数据。节点要保持自己的账本数据是最新的，就必须时时更新自己的数据，通过向邻近节点发送数据请求来获得最新的数据，节点彼此都充当服务者和被服务者。</p>
+<h2 id="2-区块链的分类和架构"><a href="#2-区块链的分类和架构" class="headerlink" title="2. 区块链的分类和架构"></a>2. 区块链的分类和架构</h2><p>　　通过公式算法达成节点的账本数据一致。通过密码算法确保账本数据的不可篡改以及数据发送的安全性。通过脚本系统扩展账本数据的表达范畴。区块链系统就是一种特别设计的数据库系统或者分布式数据库系统，在这个数据库中可以存储数据货币，也可以存储逻辑更复杂的智能合约，以及范围更广阔的各种业务数据。</p>
+<h3 id="2-1-区块链架构"><a href="#2-1-区块链架构" class="headerlink" title="2.1 区块链架构"></a>2.1 区块链架构</h3><ol>
+<li><p>区块链1.0架构<br>　　在这个架构中分为核心节点和前端工具，核心节点中“矿工”功能主要承担两个任务：</p>
+<blockquote>
+<p>第一个：通过竞争获取区块数据的打包权后将内存池（发送在网络中但是还没有确认进区块的交易数据，属于待确认交易数据）中的交易数据打包进区块，并且广播给其他节点。<br>第二个：接受系统对打包行为的数字货币奖励，从而系统通过这种奖励方式完成新增货币的发行。</p>
+</blockquote>
+<p>架构如图：<br><img src="/2018/05/13/区块链技术栈/p3.png" alt="">  </p>
+<p>在前端工具中，钱包工具是提供给用户管理自己账户地址以及余额。浏览器则用来查看当前区块链网络中发生的数据情况。RPC客户端和命令行接口都是用来访问核心节点的功能的。核心节点相当于一个服务器，通过RPC服务提供功能调用接口。  </p>
+</li>
+<li><p>区块链2.0架构<br>　　区块链2.0架构的代表产品就是以太坊，结构如下图：<br>　　<img src="/2018/05/13/区块链技术栈/p4.png" alt=""><br>　　与1.0架构相比，最大的特点就是支持智能合约，在以太坊中，使用智能合约开发工具开发合约程序，并且编译为字节码，最终部署到以太坊的区块链账本中。部署后的智能合约是运行在虚拟机上的，称为“以太坊虚拟机”。正是通过这样的智能合约的实现，扩展了区块链系统的功能。
+　　</p>
+</li>
+<li>区块链3.0架构<br>　　在3.0架构中，超越了对数字货币或者金融的应用范畴，而将区块链技术作为一种泛解决方案。结构如下图：<br>　　<img src="/2018/05/13/区块链技术栈/p5.png" alt=""><br>　　在3.0架构中，数字货币不再是一个必选组件，如果需要可以通过智能合约的方式来实现数字货币。与之前相比，最大的特点就是增加一个网管控制，实际上就是增加了对安全保密的需求支持，并且通过数据审计加强对数据的可靠性管理。
+　　<h2 id="3-区块链分类"><a href="#3-区块链分类" class="headerlink" title="3. 区块链分类"></a>3. 区块链分类</h2></li>
+</ol>
+<h3 id="3-1-根据网络范围"><a href="#3-1-根据网络范围" class="headerlink" title="3.1 根据网络范围"></a>3.1 根据网络范围</h3><p>根据网络范围，可以划分为<strong>公有链</strong>，<strong>私有链</strong>，<strong>联盟链</strong>。</p>
+<ul>
+<li><p>公有链<br>公有链就是完全对外开放，任何人都可以任意使用，没有权限的设定，也没有身份认证之类，不但可以任意参与使用，而且发生的所有数据都可以任意查看，完全公开透明。<br><strong>特点：</strong>在公有链的环境中，节点数量是不固定的，节点的在线与否也是无法控制的，甚至节点是不是一个恶意节点也不能保证。</p>
+</li>
+<li><p>私有链<br>私有链就是指不对外开放，仅在组织内部使用系统，比如企业的票据管理，账务审计，供应链管理等，或者一些政务管理系统。私有链在使用过程中，通常是有注册要求的，即需要提交身份认证。<br><strong>特点：</strong>在私有链的环境中，节点数量和节点的状态通常是可控的，因此在私链中一般不需要通过竞争的方式筛选区块数据的打包者，可以采用更加节能环保的方式。</p>
+</li>
+<li><p>联盟链<br>联盟链的网络范围介于公有链和私有链之间，通常使用在多个成员角色的环境中。<br><strong>特点：</strong>联盟链一般用在明确的机构之间，因此与私有链一样，节点的数量和状态也是可控的，也是采用更加节能环保的共识机制。</p>
+</li>
+</ul>
+<h3 id="3-2-根据部署环境"><a href="#3-2-根据部署环境" class="headerlink" title="3.2 根据部署环境"></a>3.2 根据部署环境</h3><ul>
+<li><p>主链<br>主链就是部署在生产环境的真正的区块链系统，主链也可以说是由正式版客户端组成的区块链网络，只有主链才是会被真正推广使用的。区块链系统会由于种种原因导致分叉，比如挖矿的时候临时产生的小分叉，此时将最长的那条原始的链条称为主链。</p>
+</li>
+<li><p>测试链<br>就是开发者为了方便大家学习使用而提供的测试用途的区块链网络。</p>
+</li>
+</ul>
+<h3 id="3-3-根据对接类型"><a href="#3-3-根据对接类型" class="headerlink" title="3.3 根据对接类型"></a>3.3 根据对接类型</h3><ul>
+<li><p>单链</p>
+<p>能够单独运行的区块链系统都可以称为“单链”。</p>
+</li>
+<li><p>侧链</p>
+<p>侧链属于一种区块链系统的垮链技术，主要是由比特币侧链发起的。每一种区块链系统都有自己的优缺点，侧链就是一种将不同的链结合起来，打通信息孤岛，彼此互补。</p>
+</li>
+<li><p>互联链<br>从技术角度来讲，区块链系统之间的互联，可以彼此互补，每一类系统都会有长处和不足之处，彼此进行功能上的互补，如果说每一条链都是一条神经的话，一旦互联起来，就像是神经系统一般，将会给我们的社会发展带来更新层次的智能化。</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">区块链简介</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/13/区块链技术栈/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-星云链Nebulas101-04-智能合约存储区" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1357,339 +1490,6 @@
 
 
   
-    <article id="post-Hash加密以及应用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/03/Hash加密以及应用/">区块链的骨骼：密码算法以及应用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/03/Hash加密以及应用/" class="archive-article-date">
-  	<time datetime="2018-05-03T07:56:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-03</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="区块链的骨骼：密码算法以及应用"><a href="#区块链的骨骼：密码算法以及应用" class="headerlink" title="区块链的骨骼：密码算法以及应用"></a>区块链的骨骼：密码算法以及应用</h1><h3 id="1-什么是hash加密"><a href="#1-什么是hash加密" class="headerlink" title="1. 什么是hash加密"></a>1. 什么是hash加密</h3><p>　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把<strong>任意长度</strong>的输入（又叫做预映射， pre-image），通过散列算法，变换成<strong>固定长度(64位十六进制)</strong>的输出，该输出就是散列值。</p>
-<p>　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是<strong>一种将任意长度的消息压缩到某一固定长度的消息摘要的函数</strong>。</p>
-<p>　　哈希表就是一种以 键-值(key-indexed) 存储数据的结构，我们只要输入待查找的值即key，即可查找到其对应的值。哈希的思路很简单，如果所有的键都是整数，那么就可以使用一个简单的无序数组来实现：将键作为索引，值即为其对应的值，这样就可以快速访问任意键的值。</p>
-<p>　　在Hash表中，<strong>记录在表中的位置和其关键字之间存在着一种确定的关系</strong>。这样我们就能预先知道所查关键字在表中的位置，从而直接通过下标找到记录。使ASL趋近与0.</p>
-<p><strong>hash的特点：</strong> </p>
-<ol>
-<li>不定长度的输入输出长度一定</li>
-<li>同一输入输出结果相同</li>
-</ol>
-<p><strong>hash的四种特性：</strong></p>
-<ol>
-<li>原像不可逆。 原像不可逆是指对于任意给定的h，都无法依据h自身的信息推导出z。</li>
-<li>难题友好性。难题友好性通俗的理解就是如果要得到难题的答案，只能暴力枚举。</li>
-<li>发散性。 发散性是指对于任意的z，即使只改动非常少的信息那么修改之前的hash值和修改之后的hash值就会大相径庭。</li>
-<li>抗碰撞性。 抗碰撞性是指对于任意两个不相同的z，那么他们对应的hash值也不相同。如果对于任意的y不等于z，则HASH(y)不等于HASH(z)。满足上述定义哈希特性的算法，称作具有<strong>严格抗碰撞性。</strong>如果给定一个z，都无法找到另外一个z<sup>`</sup>使得其他值也等于h，满足这样的哈希特性的算法就有<strong>弱抗碰撞法。</strong></li>
-</ol>
-<p><strong>常用的hash算法：</strong><br>  1.MD4<br> 　 MD4(RFC 1320)是 MIT 的Ronald L. Rivest在 1990 年设计的，MD 是 Message Digest（消息摘要） 的缩写。它适用在32位字长的处理器上用高速软件实现——它是基于 32位操作数的位操作来实现的。<br>  2.MD5<br> 　 MD5(RFC 1321)是 Rivest 于1991年对MD4的改进版本。它对输入仍以512位分组，其输出是4个32位字的级联，与 MD4 相同。MD5比MD4来得复杂，并且速度较之要慢一点，但更安全，在抗分析和抗差分方面表现更好。MD5被证明不具有强抗碰撞性。<br>  3.SHA系列<br> 　 SHA(Secure Hash Algorithm)是一个Hash函数族，分为SHA-1,SHA-2,SHA-3代表了三代哈希标准，目前使用的比较多的是SHA-2系列。<br>　　SHA1是由NIST NSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为<strong>160bit</strong>的散列值，因此抗穷举(brute-force)性更好。SHA-1 设计时基于和MD4相同原理,并且模仿了该算法。SHA-1已被证明不具备“强抗碰撞性”，所以安全性不够高。<br>　　为了提高安全性，第二代SHA-2一共包含了SHA-224,SHA-256,SHA-384和SHA-512算法，他们跟SHA-1算法原理类似。<br>　　由于对MD5和SHA-1出现成功的破解，我们需要一个不同与之前算法，可替换的加密散列算法，也就是现在的SHA-3。</p>
-<h3 id="2-区块链上的哈希算法"><a href="#2-区块链上的哈希算法" class="headerlink" title="2. 区块链上的哈希算法"></a>2. 区块链上的哈希算法</h3><p>　　哈希算法被广泛的使用在构造和验证区块，交易的完整性上，由于哈希算法的四个特性，使得可以把任意的交易数据做成数据摘要，然后再一个一个链接起来，形成数据块的链式结构。<br>可以通过验证每个区块间接地验证交易，然后每个交易原数据也可以做成哈希数据摘要，用于验证交易数据的完整性，下图借用了比特币开发者文档中的图表达了区块链的基本数据结构。<br><img src="/2018/05/03/Hash加密以及应用/p1.jpeg" alt=""></p>
-<h4 id="2-1-区块哈希"><a href="#2-1-区块哈希" class="headerlink" title="2.1 区块哈希"></a>2.1 区块哈希</h4><p>　　区块哈希就是区块头进行哈希计算，得出某个区块的哈希值，用这个哈希值可以唯一确定某一个区块，区块与区块之间就是通过这个哈希值进行串联，从而形成了一个区块链的结构。</p>
-<h4 id="2-2-梅克尔根树"><a href="#2-2-梅克尔根树" class="headerlink" title="2.2 梅克尔根树"></a>2.2 梅克尔根树</h4><p>　　梅克尔根树在不同的区块链系统中有不同的细节，但本质是一样的，以比特币中的梅克尔根树来说明。比特币中的梅克尔根树称为<strong>二叉梅克尔根树</strong>，每一个区块都有自己的梅克尔树，<strong>是通过将区块中的交易事务哈希值两两结对计算出新的哈希值，然后哈希值两两结对进行哈希计算，递归循环，直到计算出最后一个根哈希值，这样的树即为梅克尔根树也称为哈希树。</strong>
-　　</p>
-<h3 id="3-公开密匙算法"><a href="#3-公开密匙算法" class="headerlink" title="3. 公开密匙算法"></a>3. 公开密匙算法</h3><h4 id="3-1-公钥和私钥"><a href="#3-1-公钥和私钥" class="headerlink" title="3.1 公钥和私钥"></a>3.1 公钥和私钥</h4><p>　　公钥和私钥是现代密码学分支<strong>非对称性加密</strong>里面的名词，对于一段需要保护的信息，同时产生公钥和私钥，公钥可以公开，私钥自己保存。通常使用公钥加密，用私钥解密，这种加密方法也成为<strong>公开密钥算法</strong>。<br>　　对称加密算法是应用较早的加密算法，技术成熟。在对称加密算法中，数据发信方将明文（原始数据）和加密密钥一起经过特殊加密算法处理后，将密文发送出去。收信方收到密文后，若想解读原文，则需要使用加密用过的密钥及相同算法的逆算法对密文进行解密。<br>　　在<strong>对称加密算法</strong>中，使用的密钥<strong>只有一个</strong>，发收信双方都使用这个密钥对数据进行加密和解密。对称加密比较出名的算法为AES,DES。　<br>　　一般来说，公开密匙算法对于大幅度的原始数据加密的性能不会很高，因此如果是用于大段数据加密与解密，通常还是使用强度比较高的对称加密算法。
-　　</p>
-<h4 id="3-2-RSA算法"><a href="#3-2-RSA算法" class="headerlink" title="3.2 RSA算法"></a>3.2 RSA算法</h4><p>　　RSA加密算法是最常见的非对称加密算法。即用于加密，也用于数字签名，是目前最流行的公开密钥算法。RSA的公钥和私钥是一对大质数，从一个公钥和密文恢复明文的难度，等价于分解两个大质数之积。RSA的安全基于大数德尔因子分解，经历了各种攻击的考验，被普遍认为是目前最优秀的公钥方案之一。<br><strong>缺点：</strong></p>
-<ul>
-<li>产生密钥很麻烦，受限于质数产生的技术</li>
-<li>分组长度太大，运算代价高，速度慢</li>
-</ul>
-<p><strong>作用：</strong></p>
-<ul>
-<li>作用1：公钥加密私钥解密</li>
-<li>作用2：私钥签名公钥验证</li>
-</ul>
-<p><strong>加密原理：</strong></p>
-<h5 id="RSA加密"><a href="#RSA加密" class="headerlink" title="RSA加密"></a>RSA加密</h5><p>　　在RSA中，明文、密钥和密文都是数字。RSA的加密过程可以用下列公式来表达：</p>
-<p><strong>密文=明文<sup>E</sup> mod N</strong> (RSA加密)</p>
-<p>　　RSA的密文是对代表明文的数字的E次方求mod N的结果。就是将明文和自己做E次乘法,然后将其结果除以N求余数，这个余数就是密文。</p>
-<h5 id="RSA解密"><a href="#RSA解密" class="headerlink" title="RSA解密"></a>RSA解密</h5><p>　　RSA的解密和加密一样简单，可以用下面的公式来表达:</p>
-<p><strong>明文=密文 <sup>D</sup> mod N</strong> ( RSA解密)</p>
-<p>表示密文的数字的D次方求 mod N就可以得到明文。</p>
-<p>　　这里所使用的数字N和加密时使用的数字N是相同的，数 <code>D</code> 和数 <code>N</code> 组合起来就是RSA的解密密钥，因此D和N的组合就是私钥。<br>　　在RSA中，加密和解密的形式是相同的。加密是求“明文的E次方的 mod<br>N”，而解密则是求“密文的D次方的 mod N”。</p>
-<h5 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h5><p>　　由于E和N是公钥，D和N是私钥，因此求E、D和N这三个数就是生成密钥对。RSA密钥对的生成步骤如下：</p>
-<ol>
-<li>求N</li>
-<li>求L( L是仅在生成密钥对的过程中使用的数)</li>
-<li>求E</li>
-<li>求D</li>
-</ol>
-<h6 id="1-求N"><a href="#1-求N" class="headerlink" title="1. 求N"></a>1. 求N</h6><p>　　首先准备两个很大的质数。这两个很大的质数为p和q。p和q太小的话，密码会变得容易破译，但太大的话计算时间又会变得很长。</p>
-<p>判断一个数是不是质数并不是看它能不能分解质因数，而是通过数学上的判断方法来完成。</p>
-<p>准备好两个很大的质数之后，我们将这两个数相乘，其结果就是数N。也就是说，数 N 可以用下列公式来表达：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N = p x q (p、q为质数)</span><br></pre></td></tr></table></figure>
-<h6 id="2-求L"><a href="#2-求L" class="headerlink" title="2. 求L"></a>2. 求L</h6><p><code>L</code> 这个数在RSA的加密和解密过程中都不出现，它只出现在生成密钥对的过程中。</p>
-<p><code>L</code> 是 <code>p-1</code> 和 <code>q-1</code> 的最小公倍数( least common multiple, lcm )。</p>
-<p>如果用lcm(X, Y) 来表示 “X和Y的最小公倍数”，则L可以写成下列形式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L= lcm(p-1,q-1) ( L是p-1和q-1的最小公倍数)</span><br></pre></td></tr></table></figure>
-<h6 id="3-求E"><a href="#3-求E" class="headerlink" title="3. 求E"></a>3. 求E</h6><p>　　E是一个比1大、比L小的数。此外，E和L的最大公约数( greatest common divisor, gcd)必须为1。</p>
-<p>如果用gcd(X, Y)来表示X和Y的最大公约数，则E和L之间存在下列关系。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 &lt; E &lt; L</span><br><span class="line">gcd(E,L)= 1</span><br></pre></td></tr></table></figure>
-<h6 id="4-求D"><a href="#4-求D" class="headerlink" title="4. 求D"></a>4. 求D</h6><p>数D是由数E计算得到的。D、E和L之间必须具备下列关系。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 &lt; D &lt; L</span><br><span class="line">E x D mod L = 1</span><br></pre></td></tr></table></figure>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/20180117-112927.png" alt=""></p>
-<p><strong>示例：</strong></p>
-<ul>
-<li><strong>求N</strong></li>
-</ul>
-<p>首先我们准备两个质数p、q,这里我们选择17和19,它们都是质数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">N = p x q</span><br><span class="line">  = 17 x 19</span><br><span class="line">  = 323</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>求L</strong></li>
-</ul>
-<p>L是p-1和q- 1的最小公倍数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">L = lcm(p-1,q-1)</span><br><span class="line">  = lcm(16, 18)</span><br><span class="line">  = 144</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>求E</strong></li>
-</ul>
-<p>E和L的最大公约数必须是1。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcd(E,L)=1</span><br></pre></td></tr></table></figure>
-<p>满足条件的E有很多，例如下面这些数都可以。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5,7,11,13,17,19,23,25,29,31,...</span><br></pre></td></tr></table></figure>
-<p>　　这些数好像都是质数，但其实并不是这样的，比如25就不是质数。这些数称为和 L “互质的数”，也就是相对于L是质数的意思。我们选择5来作为E。</p>
-<p>E=5, N=323 就是公钥。</p>
-<ul>
-<li><strong>求D</strong></li>
-</ul>
-<p>D必须满足下列条件:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E x D mod L=l</span><br></pre></td></tr></table></figure>
-<p>D = 29可以满足上面的条件，因为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E x D mod L = 5 x 29 mod 144</span><br><span class="line">            = 145 mod 144</span><br><span class="line">            =1</span><br></pre></td></tr></table></figure>
-<p>我们已经成功生成了密钥对，即:</p>
-<p><strong>公钥</strong>: <code>E=5 N=323</code><br><strong>私钥</strong>: <code>D=29 N=323</code></p>
-<p>公钥(E,N)=(5,323)是可以任意公开的，但是私钥(D,N)= (29,323)必须妥善保管。</p>
-<ul>
-<li><strong>加密</strong></li>
-</ul>
-<p>要加密的明文必须是小于N的数，也就是小于323的数，我们假设要加密的明文是123，加密时使用的是公钥 <code>E=5、N=323</code>。</p>
-<blockquote>
-<p>明文<sup>E</sup> mod N = 123<sup>5</sup> mod 323 = 255</p>
-</blockquote>
-<p>因此密文就是 255。</p>
-<ul>
-<li><strong>解密</strong></li>
-</ul>
-<p>我们对密文225进行解密。解密时使用的是私钥D=29、N=323。</p>
-<blockquote>
-<p>密文 <sup>29</sup> mod N = 225<sup>29</sup> mod 323 = 123</p>
-</blockquote>
-<p><strong>攻击方式：</strong></p>
-<h4 id="中间人攻击-man-in-the-middle-attack"><a href="#中间人攻击-man-in-the-middle-attack" class="headerlink" title="中间人攻击( man-in-the-middle attack )"></a>中间人攻击( man-in-the-middle attack )</h4><p>　　中间人攻击虽然不能破译RSA,但却是一种针对机密性的有效攻击。所谓中间人攻击，就是主动攻击者Mallory混入发送者和接收者的中间，对发送者伪装成<br>接收者，对接收者伪装成发送者的攻击方式，在这里，Mallory就是“中间人”。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/20180117-120937.png" alt=""></p>
-<p>　　这种攻击不仅针对RSA,而是可以针对任何公钥密码。在这个过程中，公钥密码并没有被破译，所有的密码算法也都正常工作并确保了机密性。然而，所谓的机密性并非在Alice和Bob之间，而是在Alice和Mallory之间，以及Mallory和Bob之间成立的。仅靠公钥密码本身,是无法防御中间人攻击的。<br>要防御中间人攻击，还需要一种手段来确认所收到的公钥是否真的属于Bob,这种手段称为认证。在这种情况下，可以使用公钥的证书。</p>
-<h4 id="3-3-椭圆曲线密码算法"><a href="#3-3-椭圆曲线密码算法" class="headerlink" title="3.3 椭圆曲线密码算法"></a>3.3 椭圆曲线密码算法</h4><p>　　椭圆曲线密码算法是基于椭圆曲线数学的一种公钥密码算法。主要的安全性在于利用了椭圆曲线离散对数问题的困难性。是RSA加密算法的升级版。</p>
-<h3 id="4-编码-解码算法"><a href="#4-编码-解码算法" class="headerlink" title="4. 编码/解码算法 　　"></a>4. 编码/解码算法 　　</h3><p>　</p>
-<h4 id="4-1-Base64"><a href="#4-1-Base64" class="headerlink" title="4.1 Base64"></a>4.1 Base64</h4><p>　　这是一种用64个字符来表示任意二进制数据的方法。字符编码表如下：<br><img src="/2018/05/03/Hash加密以及应用/p2.png" alt="">　<br>　　Base64编码主要用在传输，存储，表示二进制等领域，还可以用来加密。这种加密比较简单，也很容易解码。</p>
-<h4 id="4-2-Base58"><a href="#4-2-Base58" class="headerlink" title="4.2 Base58"></a>4.2 Base58</h4><p>　　Base58是基于58个字母和数字组成的，实际上就是Base64的一子集，Base58不包含以下Base64的字符：</p>
-<blockquote>
-<p>数字0<br>大写字母O<br>大写字母I<br>小写字母l</p>
-<ul>
-<li>与 /</li>
-</ul>
-</blockquote>
-<p>　　比特币使用的是改进版的Base8算法,是为了解决Base58编码的字符串没有完整性校验机制。即Base58Check。</p>
-<h4 id="4-3-Base58Check"><a href="#4-3-Base58Check" class="headerlink" title="4.3 Base58Check"></a>4.3 Base58Check</h4><p>　　在二进制数据的传输过程中，为了防止数据传输的错误，保护数据安全，通常会加一个校验码，通过校验码的配合可以发现数据是否被破坏或者是否在发送时输入错误了。<br>　　编码方式如下：进行编码前，在待编码的内容字符串中加入一个字节的版本信息，版本信息可以自行约定，比如比特币地址采用了0x00作为版本信息，然后再加入待编码内容字符串的哈希值，通常只要取得哈希值中的4个字节，加在一起再整体进行Base58编码。
-　　</p>
-<h3 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. 应用场景</h3><p>密码算法在区块链系统中的重要性，相当于整个体系的骨骼。应用场景如下：</p>
-<blockquote>
-<p>账户地址生成</p>
-</blockquote>
-<blockquote>
-<p>　　公开密钥算法的应用，首先生成一对密钥，由于公钥是可以公开的，因此可以作为自己对外的一个账号，而公钥必须和对应的私钥匹配才能验证通过，因此此种方式生成的地址，先天具备验证性。<br>　　<br>价值转移保卫</p>
-</blockquote>
-<blockquote>
-<p>　 公开密钥的重要用武之地，发送者使用自己的私钥进行签名，接收者可以使用发送者公开的那个公钥进行身份验证以确保不误。发送者不但使用了自己的私钥签名，还使用了接受者的公钥进行了一段关键的加密，只有接受者使用自己的私钥才能解开这个公钥，因此就能保证不被别人截获。就算截获也没有对应的私钥来解码。<br>　　<br>完整性证明</p>
-</blockquote>
-<blockquote>
-<p>　 哈希算法应用的主要场景，通过构建的交易哈希树来验证数据是否一致。<br> 　<br>零知识证明</p>
-</blockquote>
-<blockquote>
-<p>　 要想证明自己拥有某笔资产或者拥有某个能力，要想证明自己具备对区块链上某一笔交易的所有权，只要解码一段与交易内容相关但又不泄露真正交易内容对的编码，能够解码成功就能证明所有权。</p>
-</blockquote>
-<h4 id="5-2-在区块链中的应用"><a href="#5-2-在区块链中的应用" class="headerlink" title="5.2 在区块链中的应用"></a>5.2 在区块链中的应用</h4><p>在区路链中主要使用的是sha256加密算法。</p>
-<p>代码示例：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line"> <span class="string">"crypto/sha256"</span></span><br><span class="line"> <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="keyword">const</span> str = <span class="string">"hello"</span></span><br><span class="line"></span><br><span class="line">shar := shar256.New()</span><br><span class="line"></span><br><span class="line">shar.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">result := shar.Sum([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"%x \n"</span>,result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">68656c6c6f2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</span><br></pre></td></tr></table></figure>
-<h4 id="5-3-最简单的挖矿实现"><a href="#5-3-最简单的挖矿实现" class="headerlink" title="5.3 最简单的挖矿实现"></a>5.3 最简单的挖矿实现</h4><p>　　对于一个区块来说有几个组成部分，在每个区块中，对整个区块链起决定作用的是区块头。区块头是由几个字段组成的。</p>
-<p>区块头描述：</p>
-<table>
-<thead>
-<tr>
-<th>数据项</th>
-<th>目的</th>
-<th>更新时间</th>
-<th>字节大小</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Version（版本）</td>
-<td>区块版本号</td>
-<td>更新软件后，指定了一个新的版本号</td>
-<td>4</td>
-</tr>
-<tr>
-<td>hashPrevBlock（前一区块的hash）</td>
-<td>前一区块的256位hash值</td>
-<td>新的区块进来时</td>
-<td>32</td>
-</tr>
-<tr>
-<td>hashMerkleRoot Merkle(根节点hash值)</td>
-<td>基于一个区块中所有交易的256位hash值</td>
-<td>接受一个交易时</td>
-<td>32</td>
-</tr>
-<tr>
-<td>Time（时间戳）</td>
-<td>从1970-01-01 00:00 UTC开始到现在，以秒为单位的当前时间戳</td>
-<td>每几秒就更新</td>
-<td>4</td>
-</tr>
-<tr>
-<td>Bits(当前目标的hash值)</td>
-<td>压缩格式的当前目标hash值</td>
-<td>当挖矿难度调整时</td>
-<td>4</td>
-</tr>
-<tr>
-<td>Nonce(随机数)</td>
-<td>从0开始32位随机数</td>
-<td>产生hash时(每次产生hash随机数时都要增长)</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
-<p>一个区块的区块结构如下：</p>
-<table>
-<thead>
-<tr>
-<th>数据项</th>
-<th>描述</th>
-<th>长度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Magic no(魔法数)</td>
-<td>总是0xD9B4BEF9</td>
-<td>4字节</td>
-</tr>
-<tr>
-<td>Blocksize(区块大小)</td>
-<td>到区块结束的字节长度</td>
-<td>4字节</td>
-</tr>
-<tr>
-<td>Blockheader(区块头)</td>
-<td>包含6个数据项</td>
-<td>80字节</td>
-</tr>
-<tr>
-<td>Transaction counter(交易量)</td>
-<td>正整数v1 = varint</td>
-<td>1-9字节</td>
-</tr>
-<tr>
-<td>Transactions(交易)</td>
-<td>交易列表（非空）</td>
-<td><transaction counter="">–许多交易</transaction></td>
-</tr>
-</tbody>
-</table>
-<p>　　hashMerkleRoot Merkle名为梅克尔根，将区块头与区块体相关联，梅克尔根是通过交易事务计算出来的。挖矿的计算公式：</p>
-<blockquote>
-<p>SHA256(<br>  SHA256(version + prev_hash + merkle_root + ntine + nbits + nonce)<br>) &lt; TARGET</p>
-</blockquote>
-<p>　　在这些参数中，版本号是固定值，前一个区块的哈希值也是固定值，当前难度也是一个固定值要想改变这个公式的计算结果，能改动的参数就只有梅克尔根，区块时间戳和那个随机数。通过这样的参数来计算出符合条件的值，基本上也就只能靠暴力计算匹配，这种不断执行SHA256计算的过程很消耗算力，因此这个过程被称为<strong>挖矿</strong>。简单说，<strong>挖矿就是重复计算区块头的哈希值，不断修改该参数，直到与难度目标值匹配的一个过程。</strong></p>
-<p><strong>难度目标值</strong></p>
-<p>符合某个多相同位数字的条件函数实现：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidHasDifficulty</span><span class="params">(h <span class="keyword">string</span>, difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span>&#123;</span><br><span class="line">   b := <span class="built_in">len</span>(h)</span><br><span class="line">   i := <span class="number">0</span></span><br><span class="line">   <span class="keyword">for</span> i = <span class="number">0</span>; i &lt; b; i++ &#123;</span><br><span class="line">     <span class="keyword">if</span> h[i] != <span class="string">'0'</span>&#123;</span><br><span class="line">       <span class="keyword">break</span></span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> i &gt;= difficulty</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简易区块实现：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidHasDifficulty</span><span class="params">(h <span class="keyword">string</span>,difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    b := <span class="built_in">len</span>(h)</span><br><span class="line">    i := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">0</span> ; i &lt; b; i ++ &#123;</span><br><span class="line">		<span class="keyword">if</span> h[i] != <span class="string">'0'</span> &#123;</span><br><span class="line">	     <span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i &gt;= difficulty</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	str := <span class="string">""</span> </span><br><span class="line">	<span class="comment">//模拟版本信息</span></span><br><span class="line">  versString := <span class="string">"01"</span></span><br><span class="line">  <span class="comment">//模拟前区块hash</span></span><br><span class="line">	hashPrev := <span class="string">"hashPrevBlock"</span></span><br><span class="line">  <span class="comment">//模拟时间戳</span></span><br><span class="line">	timeString := <span class="string">"2018-5-3"</span></span><br><span class="line">  <span class="comment">//模拟交易信息(梅克尔根的模拟)</span></span><br><span class="line">   transactionString := <span class="string">"xxx -&gt; yyy $1"</span></span><br><span class="line">   <span class="comment">//随机数</span></span><br><span class="line">   noceString := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  str = versString + hashPrev + timeString + transactionString</span><br><span class="line">  <span class="comment">//对随机数进行递增直到hash结果满足要求</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		resultHash := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">		str += <span class="keyword">string</span>(noceString)</span><br><span class="line">		hs := sha256.New()</span><br><span class="line">		hs.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line">		result := hs.Sum(<span class="literal">nil</span>)</span><br><span class="line">		resultHash = fmt.Sprintf(<span class="string">"%x"</span>,result)</span><br><span class="line">		<span class="comment">//简单判断生成新的区块的条件为hash前面有3个零</span></span><br><span class="line">		<span class="keyword">if</span> isValidHasDifficulty(resultHash , <span class="number">3</span>) &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">		&#125;</span><br><span class="line">      noceString++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">538d690df902c8299a0488aabf29f9a6b290f1f135223cc9f61d57ff0844345c</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">902e0147db1467186f0faa24e35ed7bf1ead164ef268818c248f62151f872994</span><br><span class="line">f1f25af3091a8782998675d85f573e8361ec2a57938ba29980c1f2663bf572bc</span><br><span class="line">26768b9186c42774d4d6e17d970224a6ffeb8ed177bba95b3d5d6e4f30563b9e</span><br><span class="line">c02498dc1bee308eb67f29ea261fed9e26841e13254581f5a0acf915215eb565</span><br><span class="line">31ce77fbd8c8a4816b1e4919987dc8c57c7b23ab00f08eae614188f7b26e6d86</span><br><span class="line">//找到满足要求的hash</span><br><span class="line">0004d1c7300b0c1da55c9acb504badf5c7d1971b92ec2d94c817a35bceddd007</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hash,sha256,及应用</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/03/Hash加密以及应用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1791,23 +1591,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1815,11 +1599,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1851,11 +1655,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1887,19 +1691,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1931,7 +1735,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1939,11 +1743,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>
