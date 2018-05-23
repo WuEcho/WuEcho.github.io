@@ -344,7 +344,7 @@
 <li>3 ） 遗漏容错: 它比崩溃容错多了一个限制，就是一定要“非健忘”。非健忘是指这个节点崩溃之前能把状态完整的保存在持久存储上，启动之后可以再次按照以前的状态继续执行和通信。</li>
 <li>4 ） 崩溃停止容错: 它比遗漏容错多了一个故障发生后要停止响应的要求。即，一旦发生故障，这个节点就不会再和其他节点有任何交互，崩溃即停止。</li>
 </ul>
-<h2 id="3-共识算法"><a href="#3-共识算法" class="headerlink" title="3. 共识算法"></a>3. 共识算法</h2><p>在有错误的进程存在并且有可能出现网络分区的情况下，FLP定理堵死了在传统计算机算法体系下提出解决方案的可能性，因此引入以下机制：</p>
+<h2 id="3-共识算法"><a href="#3-共识算法" class="headerlink" title="3. 共识算法"></a>3. 共识算法</h2><p>　　在有错误的进程存在并且有可能出现网络分区的情况下，FLP定理堵死了在传统计算机算法体系下提出解决方案的可能性，因此引入以下机制：</p>
 <ul>
 <li>1 ）<strong>激励机制(incentive)</strong>比如在拜占庭将军问题中给忠诚的将军以奖励。这里引进了博弈论的概念：我们不再把节点或者说将军分成公正/恶意（忠诚/背叛）两方，认为每个节点的行为是由激励机制决定的。如果激励机制设置得当，考虑到每个节点都有最大化自己利益的倾向，大部分的节点都会遵守规则，成为公正的节点。</li>
 <li><p>2 ）<strong>随机性(randomness)</strong>在所有将军中随机地指定一名将军做决定。根据什么规则指定做决定的将军，对应到金融系统里，就是如何决定谁有记账权。</p>
@@ -359,7 +359,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="3-1-Paxos算法"><a href="#3-1-Paxos算法" class="headerlink" title="3.1 Paxos算法"></a>3.1 Paxos算法</h3><p>Paxos算法解决的是非拜占庭问题，即分布式系统中的节点存在故障，但是不存在恶意节点的场景。在这种情况下如何达成共识。<br>在Paxos模型中使用了如下的角色：</p>
+<h3 id="3-1-Paxos算法"><a href="#3-1-Paxos算法" class="headerlink" title="3.1 Paxos算法"></a>3.1 Paxos算法</h3><p>　　Paxos算法解决的是非拜占庭问题，即分布式系统中的节点存在故障，但是不存在恶意节点的场景。在这种情况下如何达成共识。<br>在Paxos模型中使用了如下的角色：</p>
 <table>
 <thead>
 <tr>
@@ -395,19 +395,19 @@
 <p>这种情况，首先避免了单点故障，但是却麻烦了许多，解决问题提出了两个方案：：<br>  1 ）与第一种情况相近，选出一个提案者，约定在某一时间内，只允许一个提案通过，可以设置一些竞争规则或者按照一个时间序列的排列选择，最后选出一个提案者。<br>  2 ）与第二种情况相近，允许有多个提案者，但是当节点收到多份议案后，通过某个规则选出一份提案，也就保持只接受一份。</p>
 <p>  在实际中，必然是多对多的情况，Paxos中为了解决问题，引入了称为“两阶段提交”的方案。就是“准备”和“提交”两个阶段：<strong>准备阶段解决大家对哪个提案进行投票的问题， 提交阶段解决确认最终值的问题</strong></p>
 <h3 id="3-2-Raft算法"><a href="#3-2-Raft算法" class="headerlink" title="3.2 Raft算法"></a>3.2 Raft算法</h3><p>由于Paxos太难理解，太难实现，Raft算法应运而生，Reft是一个强Leader的共识协议，(非拜占庭问题)详解：</p>
-<h4 id="1-角色"><a href="#1-角色" class="headerlink" title="1. 角色"></a>1. 角色</h4><p>Raft把集群中的节点分为三种状态：Leader、 Follower 、Candidate，理所当然每种状态负责的任务也是不一样的，Raft运行时提供服务的时候只存在Leader与Follower两种状态；<br>　　Leader（领导者）：负责日志的同步管理，处理来自客户端的请求，与Follower保持这heartBeat的联系；<br>　　Follower（追随者）：刚启动时所有节点为Follower状态，响应Leader的日志同步请求，响应Candidate的请求，把请求到Follower的事务转发给Leader；<br>　　Candidate（候选者）：负责选举投票，Raft刚启动时由一个节点从Follower转为Candidate发起选举，选举出Leader后从Candidate转为Leader状态；</p>
+<h4 id="1-角色"><a href="#1-角色" class="headerlink" title="1. 角色"></a>1. 角色</h4><p>　　Raft把集群中的节点分为三种状态：Leader、 Follower 、Candidate，理所当然每种状态负责的任务也是不一样的，Raft运行时提供服务的时候只存在Leader与Follower两种状态；<br>　　Leader（领导者）：负责日志的同步管理，处理来自客户端的请求，与Follower保持这heartBeat的联系；<br>　　Follower（追随者）：刚启动时所有节点为Follower状态，响应Leader的日志同步请求，响应Candidate的请求，把请求到Follower的事务转发给Leader；<br>　　Candidate（候选者）：负责选举投票，Raft刚启动时由一个节点从Follower转为Candidate发起选举，选举出Leader后从Candidate转为Leader状态；</p>
 <p><img src="/2018/05/14/区块链的灵魂：共识算法/p4.png" alt=""></p>
 <h4 id="2-Term"><a href="#2-Term" class="headerlink" title="2. Term"></a>2. Term</h4><p>　　在Raft中使用了一个可以理解为周期（第几届、任期）的概念，用Term作为一个周期，每个Term都是一个连续递增的编号，每一轮选举都是一个Term周期，在一个Term中只能产生一个Leader；先简单描述下Term的变化流程： Raft开始时所有Follower的Term为1，其中一个Follower逻辑时钟到期后转换为Candidate，Term加1这是Term为2（任期），然后开始选举，这时候有几种情况会使Term发生改变：<br>　　1：如果当前Term为2的任期内没有选举出Leader或出现异常，则Term递增，开始新一任期选举<br>　　2：当这轮Term为2的周期选举出Leader后，过后Leader宕掉了，然后其他Follower转为Candidate，Term递增，开始新一任期选举<br>　　3：当Leader或Candidate发现自己的Term比别的Follower小时Leader或Candidate将转为Follower，Term递增<br>　　4：当Follower的Term比别的Term小时Follower也将更新Term保持与其他Follower一致；<br>　　可以说每次Term的递增都将发生新一轮的选举，Raft保证一个Term只有一个Leader，在Raft正常运转中所有的节点的Term都是一致的，如果节点不发生故障一个Term（任期）会一直保持下去，当某节点收到的请求中Term比当前Term小时则拒绝该请求；</p>
 <h4 id="3-选举（Election）"><a href="#3-选举（Election）" class="headerlink" title="3. 选举（Election）"></a>3. 选举（Election）</h4><p>　　Raft的选举由定时器来触发，每个节点的选举定时器时间都是不一样的，开始时状态都为Follower某个节点定时器触发选举后Term递增，状态由Follower转为Candidate，向其他节点发起RequestVote RPC请求，这时候有三种可能的情况发生：<br>　　1：该RequestVote请求接收到n/2+1（过半数）个节点的投票，从Candidate转为Leader，向其他节点发送heartBeat以保持Leader的正常运转<br>　　2：在此期间如果收到其他节点发送过来的AppendEntries RPC请求，如该节点的Term大则当前节点转为Follower，否则保持Candidate拒绝该请求<br>　　3：Election timeout发生则Term递增，重新发起选举<br>　　在一个Term期间每个节点只能投票一次，所以当有多个Candidate存在时就会出现每个Candidate发起的选举都存在接收到的投票数都不过半的问题，这时每个Candidate都将Term递增、重启定时器并重新发起选举，由于每个节点中定时器的时间都是随机的，所以就不会多次存在有多个Candidate同时发起投票的问题。<br>　　有这么几种情况会发起选举，1：Raft初次启动，不存在Leader，发起选举；2：Leader宕机或Follower没有接收到Leader的heartBeat，发生election timeout从而发起选举;</p>
-<h3 id="3-3-PBFT算法"><a href="#3-3-PBFT算法" class="headerlink" title="3.3 PBFT算法"></a>3.3 PBFT算法</h3><p>在PBFT算法中，至多可以容忍不超过系统全节点数量的1/3的拜占庭节点“背叛”，即如果有超过2/3的节点正常，整个系统就可以正常工作。(解决拜占庭容错问题)<br>在PBFT算法中，每个副本有3个状态：pre-prepare,prepared和commited。消息也有三种状态：pre-prepare,prepare和committed。收到pre-prepare消息并且接受就进入prepared状态。收到commit消息并且接受就进入committed状态。</p>
+<h3 id="3-3-PBFT算法"><a href="#3-3-PBFT算法" class="headerlink" title="3.3 PBFT算法"></a>3.3 PBFT算法</h3><p>　　在PBFT算法中，至多可以容忍不超过系统全节点数量的1/3的拜占庭节点“背叛”，即如果有超过2/3的节点正常，整个系统就可以正常工作。(解决拜占庭容错问题)<br>在PBFT算法中，每个副本有3个状态：pre-prepare,prepared和commited。消息也有三种状态：pre-prepare,prepare和committed。收到pre-prepare消息并且接受就进入prepared状态。收到commit消息并且接受就进入committed状态。</p>
 <p>PBFT算法的主要优点如下：</p>
 <ul>
 <li>PBFT算法共识各节点由业务的参与方或者监管方组成，安全性与稳定性由业务相关方保证</li>
 <li>共识的时延大约在2~5秒，基本达到商用实时处理的要求</li>
 <li>共识效率高，可满足高频交易量的需求</li>
 </ul>
-<p>PBFT及其改进算法非常适合联盟链的应用场景。改进主要集中在：1.修改底层网络拓扑的要求，使用P2P网络；2.可以动态的调整节点数量；3.减少协议使用的消息数量等。</p>
-<h3 id="3-4-工作量证明-——-PoW"><a href="#3-4-工作量证明-——-PoW" class="headerlink" title="3.4 工作量证明 —— PoW"></a>3.4 工作量证明 —— PoW</h3><p>工作量证明(Proof of Work 简称PoW)协议如下：</p>
+<p>　　PBFT及其改进算法非常适合联盟链的应用场景。改进主要集中在：1.修改底层网络拓扑的要求，使用P2P网络；2.可以动态的调整节点数量；3.减少协议使用的消息数量等。</p>
+<h3 id="3-4-工作量证明-——-PoW"><a href="#3-4-工作量证明-——-PoW" class="headerlink" title="3.4 工作量证明 —— PoW"></a>3.4 工作量证明 —— PoW</h3><p>　　工作量证明(Proof of Work 简称PoW)，基本概念为：通过计算一个数值（ nonce ），使得拼揍上交易数据后内容的 Hash 值满足规定的上限。在节点成功找到满足的Hash值之后，会马上对全网进行广播打包区块，网络的节点收到广播打包区块，会立刻对其进行验证。协议如下：</p>
 <ul>
 <li>向所有的节点广播新的交易</li>
 <li>每个节点把收到的交易放进块中</li>
@@ -416,7 +416,7 @@
 <li>其他节点将该区块的哈希值放入下一个他们创建的区块中，表示他们承认这个区块</li>
 </ul>
 <p>PoW共识协议的优点是：<strong>完全去中心化，节点自由进出</strong><br>缺点是：<strong>浪费资源，共识达成的周期长</strong></p>
-<h3 id="3-5-股权权益证明-——-PoS"><a href="#3-5-股权权益证明-——-PoS" class="headerlink" title="3.5 股权权益证明 —— PoS"></a>3.5 股权权益证明 —— PoS</h3><p>股权权益证明(Proof of Stack 简称PoS)，基本概念为：选择生成新的区块的机会应和股权的大小成比例。PoS算法是针对PoW算法的缺点的改进。<br>PoS运行的机制大致如下：</p>
+<h3 id="3-5-股权权益证明-——-PoS"><a href="#3-5-股权权益证明-——-PoS" class="headerlink" title="3.5 股权权益证明 —— PoS"></a>3.5 股权权益证明 —— PoS</h3><p>　　股权权益证明(Proof of Stack 简称PoS)，基本概念为：在PoS中，块是已经铸造好的，铸造的过程是基于每个节点(Node)愿意作为抵押的令牌(Token)数量。如果验证者愿意提供更多的令牌作为抵押品，他们就有更大的机会记账下一个区块并获得奖励。PoS算法是针对PoW算法的缺点的改进。<br>PoS运行的机制大致如下：</p>
 <ul>
 <li>加入PoS机制的都是持币人，称为验证者(validator)</li>
 <li>PoS算法在这些验证者里挑一个给予权利生成新区块，挑选顺序依据持币的多少</li>
@@ -424,8 +424,59 @@
 <li>以此类推以区块链中最长的链为准</li>
 </ul>
 <p><strong>POS与PoW有个很大的区别：</strong>在PoS机制下，持币是有利息的。PoS模式下，引入了币龄的概念，每个币每天产生1币龄，如过挖出了一个PoS区块，币龄就会被清空为0。每清空365币龄，会从区块中获得一定利息。</p>
-<p><strong>与PoW相比的优点：</strong>PoS不需要为了生产新区快而大量的消耗电力，一定程度上缩短了共识达成的时间。<br><strong>缺点是：</strong>PoS还是需要挖矿的</p>
-<h3 id="3-6-委托权益人证明机制-——-DPoS"><a href="#3-6-委托权益人证明机制-——-DPoS" class="headerlink" title="3.6 委托权益人证明机制 —— DPoS"></a>3.6 委托权益人证明机制 —— DPoS</h3><p>委托权益人证明机制(Delegated Proof of Stake 简称DPoS)是PoS算法的改进。DPoS共识算法就是讲PoS共识算法中的记账者转换为指定节点数组成的小圈子，而不是所有人都可以参与记账，节点个数取决于设计。区块链的正常运转依赖于见证人(Delegates),见证人是由全网节点投票产生，见证人也是记账节点的实际控制人。</p>
+<p><strong>与PoW相比的优点：</strong>PoS不需要为了生产新区快而大量的消耗电力，一定程度上缩短了共识达成的时间。更去中心化。避免紧缩。<br><strong>缺点是：</strong>PoS机制的加密货币，信用基础不够牢固。纯PoS机制的加密货币，只能通过IPO的方式发行，这就导致“少数人”（通常是开发者）获得大量成本极低的加密货币，在利益面前，很难保证他们不会大量抛售。</p>
+<h3 id="3-5-1-PoS-潜在攻击方法"><a href="#3-5-1-PoS-潜在攻击方法" class="headerlink" title="3.5.1 PoS 潜在攻击方法"></a>3.5.1 PoS 潜在攻击方法</h3><h4 id="账本分叉问题-Nothing-at-Stake-Problem"><a href="#账本分叉问题-Nothing-at-Stake-Problem" class="headerlink" title="账本分叉问题 ( Nothing at Stake Problem )"></a>账本分叉问题 ( Nothing at Stake Problem )</h4><p>　　在 PoW 机制中，当账本出现分叉时，对 PoW 这种算力敏感的算法，矿工必须选择一个方向进行挖矿。而在 PoS 这种算力不敏感的时候，PoS 矿工往往会两个方向都挖，以争取实现利益最大化。当多数矿工都在两条链上一起挖矿的时候，就会很容易出现双重支付攻击。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-123430.png" alt=""></p>
+<h4 id="冷启动问题-Initial-Distribution-Problem"><a href="#冷启动问题-Initial-Distribution-Problem" class="headerlink" title="冷启动问题 ( Initial Distribution Problem )"></a>冷启动问题 ( Initial Distribution Problem )</h4><p>　　PoS 机制中，由于持币量会对挖矿难度产生影响。因此，当一个基于 PoS 体系代币系统启动时，就会面临早期获得代币的持有者，没有动力去花费或者转移代币给第三方。同时，持有越多的币，越容易挖到矿，这样就产生了代币初始流通性问题。</p>
+<p>　　解决方案：早起几个版本，通过 PoW 机制来创建货币，而非 PoS。由于 PoW 本身的性质，矿工在挖矿过程中往往需要资金来升级硬件，所以会让矿工手中的币流通起来。</p>
+<h4 id="长距离攻击-Long-Range-Attack"><a href="#长距离攻击-Long-Range-Attack" class="headerlink" title="长距离攻击 ( Long-Range Attack )"></a>长距离攻击 ( Long-Range Attack )</h4><p>　　PoS 中，产生每个 Block 的速度相对 PoW 快了很多。因此，少数不怀好意的节点会想着把整个区块链共识账本全部重写。这在 PoW 中是经典的 51% 问题，即：当某一个节点控制了 51% 及以上算力，就有能力篡改账本，但达到 51% 算力是件极其困难的事情。而在 PoS 中缺乏对算力的约束，那么就存在潜在可能篡改账本。</p>
+<p>　　解决方案：同步时，限制最大能接受的分叉节点数量。</p>
+<h4 id="贿赂攻击（Bribe-Attack）"><a href="#贿赂攻击（Bribe-Attack）" class="headerlink" title="贿赂攻击（Bribe Attack）"></a>贿赂攻击（Bribe Attack）</h4><p>贿赂攻击流程如下：<br>攻击者购买某个商品或服务<br>商户开始等待网络确认这笔交易<br>此时，攻击者开始在网络中首次宣称，对目前相对最长的不包含这次交易的主链进行奖励。<br>当主链足够长时，攻击者开始放出更大的奖励，奖励那些在包含此次交易的链条中挖矿的矿工。<br>六次确认达成后，放弃奖励。<br>货物到手，同时放弃攻击者选中的链条。<br>因此，只要此次贿赂攻击的成本小于货物或者服务费用，此次攻击就是成功的。相比之下，PoW 机制中贿赂攻击就需要贿赂大多数矿工，因此成本极高，难以实现。</p>
+<h4 id="币龄加和攻击-（-Coin-Age-Accumulation-Attack-）"><a href="#币龄加和攻击-（-Coin-Age-Accumulation-Attack-）" class="headerlink" title="币龄加和攻击 （ Coin Age Accumulation Attack ）"></a>币龄加和攻击 （ Coin Age Accumulation Attack ）</h4><p>在最早的 Peercoin 版本中，挖矿难度不仅与当前账户余额有关，也与每个币的持币时间挂钩。</p>
+<p>H(H(B<sub>prev</sub>),A,t) ≤ balance(A)mAge(coins)</p>
+<p>这就导致，部分节点在等待足够长时间后，就有能力利用 Age 的增加来控制整个网络，产生非常显著的影响。</p>
+<p>解决方案：限制 CoinAge 的最大值。</p>
+<h4 id="预计算攻击-Precomputing-Attack"><a href="#预计算攻击-Precomputing-Attack" class="headerlink" title="预计算攻击 ( Precomputing Attack)"></a>预计算攻击 ( Precomputing Attack)</h4><p>　　当 PoS 中的某一节点占有了一定量的算力后，PoS 中占有特定算力的节点，就有能力通过控制 H <sub>prev</sub><br>来使自己所在算力范围有能力去计算 </p>
+<p>H(H(B<sub>prev</sub>),A,t) ≤ balance(A)m</p>
+<h3 id="3-6-委托权益人证明机制-——-DPoS"><a href="#3-6-委托权益人证明机制-——-DPoS" class="headerlink" title="3.6 委托权益人证明机制 —— DPoS"></a>3.6 委托权益人证明机制 —— DPoS</h3><p>　　委托权益人证明机制(Delegated Proof of Stake 简称DPoS)是PoS算法的改进。DPoS是由被社区选举的可信帐户（受托人，得票数排行前101位）来创建区块。为了成为正式受托人，用户要去社区拉票，获得足够多用户的信任。用户根据自己持有的加密货币数量占总量的百分比来投票。DPoS机制类似于股份制公司，普通股民进不了董事会，要投票选举代表（受托人）代他们做决策。</p>
+<p>　　这101个受托人可以理解为101个矿池，而这101个矿池彼此的权利是完全相等的。那些握着加密货币的用户可以随时通过投票更换这些代表（矿池），只要他们提供的算力不稳定，计算机宕机、或者试图利用手中的权力作恶，他们将会立刻被愤怒的选民门踢出整个系统，而后备代表可以随时顶上去</p>
+<h4 id="3-6-1-DPoS的伪代码实现"><a href="#3-6-1-DPoS的伪代码实现" class="headerlink" title="3.6.1 DPoS的伪代码实现"></a>3.6.1 DPoS的伪代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for round i //分成很多个round，round无限持续</span><br><span class="line">   dlist_i = get N delegates sort by votes //根据投票结果选出得票率最高的N个受托人</span><br><span class="line">   dlist_i = shuffle(dlist_i) //随机改变顺序</span><br><span class="line">   loop //round完了，退出循环</span><br><span class="line">       slot = global_time_offset / block_interval</span><br><span class="line">       pos = slot % N</span><br><span class="line">       if dlist_i[pos] exists in this node //delegate在这个节点</span><br><span class="line">           generateBlock(keypair of dlist_i[pos]) //产生block</span><br><span class="line">       else</span><br><span class="line">           skip</span><br></pre></td></tr></table></figure>
+<h4 id="3-6-2-DPoS-运行机制"><a href="#3-6-2-DPoS-运行机制" class="headerlink" title="3.6.2 DPoS 运行机制"></a>3.6.2 DPoS 运行机制</h4><p>DPoS 的运作机制如下：</p>
+<ol>
+<li><p>所有持币者先选出受托人负责签署区块：选举过程比较类似由股东会选举出董事会（101人代表），代替股东会做出日常营运决策。授权董事会后，决策会更有效率 （相较于PoW每10分钟产生一个区块，DPoS每3秒钟即可产生一个区块。）</p>
+</li>
+<li><p>与PoW相同，DPoS的规则也是最长链胜出。其中每个受托人必须按照生产排程，轮流产生区块，拿一间工厂作为比方，假设排程排定A、Ｂ、Ｃ分别轮早、中、晚班生产，Ａ在晚上是无法刷门禁卡进入厂房生产的，同样地，C在早班时段也是无法进厂房的。</p>
+<p> <img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-150338.png" alt=""></p>
+</li>
+<li><p>今天有一些恶意的节点生产了分叉区块，假设Ａ、Ｃ都是诚实的节点，只有B节点是恶意的，由于B产生区块的速度（每9秒只能产生1个）慢于A、Ｃ合力产生区块的速度（每9秒产生2个），根据最长链胜出的规则，诚实的节点还是会胜出。</p>
+<p> <img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-150411.png" alt=""></p>
+</li>
+<li><p>同理，因为一个节点要产生重复两个区块的速度必定慢于诚实区块产生的速度，所以根据最长链胜出的规则，诚实的节点还是会胜出。</p>
+<p> <img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-150425.png" alt=""></p>
+</li>
+<li><p>如果今天A、Ｂ、Ｃ三个受托人的网络有段时间是碎片化、各自为政的呢？在短期内的确有可能三链并行，但一旦网络连结恢复，短链自然会向最长的链回归。</p>
+<p> <img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-150435.png" alt=""></p>
+</li>
+</ol>
+<p>　　因为受托可签署人数为奇数，所以两大派系势均力敌僵持不下的情况不会维持太久，最终势必会有其中一方的链更长。</p>
+<h4 id="3-6-3-对恶意节点的惩罚"><a href="#3-6-3-对恶意节点的惩罚" class="headerlink" title="3.6.3 对恶意节点的惩罚"></a>3.6.3 对恶意节点的惩罚</h4><p>　　注册成为候选受托人需要支付一笔保证金，就像是参与民意代表选举前缴纳的保证金一样，一般来说担任受托人约两周后才可达到损益平衡，这促进了受托人的稳定性，确保至少会挖满两周的矿。</p>
+<p>　　惩罚机制为：不按排程产生区块的节点将在下一轮被投票剔除，也会被没收之前缴纳的保证金。</p>
+<h4 id="3-6-4-DPoS的优缺点"><a href="#3-6-4-DPoS的优缺点" class="headerlink" title="3.6.4 DPoS的优缺点"></a>3.6.4 DPoS的优缺点</h4><p><strong>优点：</strong></p>
+<ol>
+<li><p>能耗更低。DPoS机制将节点数量进一步减少到101个，在保证网络安全的前提下，整个网络的能耗进一步降低，网络运行成本最低。</p>
+</li>
+<li><p>更加去中心化。目前，对于比特币而言，个人挖矿已经不现实了，比特币的算力都集中在几个大的矿池手里，每个矿池都是中心化的，就像DPoS的一个受托人，因此DPoS机制的加密货币更加去中心化。PoS机制的加密货币（比如未来币），要求用户开着客户端，事实上用户并不会天天开着电脑，因此真正的网络节点是由几个股东保持的，去中心化程度也不能与DPoS机制的加密货币相比。</p>
+</li>
+<li><p>更快的确认速度。每个块的时间为10秒，一笔交易（在得到6-10个确认后）大概1分钟，一个完整的101个块的周期大概仅仅需要16分钟。而比特币（PoW机制）产生一个区块需要10分钟，一笔交易完成（6个区块确认后）需要1个小时。点点币（PoS机制）确认一笔交易大概也需要1小时。</p>
+</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li><p>投票的积极性并不高。绝大多数持股人（90％+）从未参与投票。这是因为投票需要时间、精力以及技能，而这恰恰是大多数投资者所缺乏的。</p>
+</li>
+<li><p>对于坏节点的处理存在诸多困难。社区选举不能及时有效的阻止一些破坏节点的出现，给网络造成安全隐患。</p>
+</li>
+</ol>
 
       
 
