@@ -20,12 +20,13 @@
 <meta property="og:image" content="http://www.wuecho.com/2018/05/14/区块链的灵魂：共识算法/p2.png">
 <meta property="og:image" content="http://www.wuecho.com/2018/05/14/区块链的灵魂：共识算法/p3.png">
 <meta property="og:image" content="http://www.wuecho.com/2018/05/14/区块链的灵魂：共识算法/p4.png">
+<meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/20180122-102350.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-123430.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150338.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150411.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150425.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150435.png">
-<meta property="og:updated_time" content="2018-05-23T11:35:10.747Z">
+<meta property="og:updated_time" content="2018-05-24T01:29:14.209Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区块链的灵魂：共识算法">
 <meta name="twitter:description" content="区块链的灵魂: 共识算法1. 分布式系统的一致性　　所谓一致性就是指数据要完整，要同步。区块链系统本质就是一个分布式应用软件。分布式系统的首要问题就是如何解决一致性问题，也就是如何在多个独立的节点之间达成共识。注意：所说的一致，并不代表一定要结果正确，所有节点都达成失败状态也是一种一致。　　分布式系统存在的问题如下：  分布式系统本身可能出现故障 分布式系统之间的通信可能有故障，或者有巨大的延迟">
@@ -96,7 +97,7 @@
 		<nav class="header-nav">
 			<div class="social">
 				
-					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+					<a class="github" target="_blank" href="https://github.com/WuEcho" title="github"><i class="icon-github"></i></a>
 		        
 					<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
 		        
@@ -143,7 +144,7 @@
 			<nav class="header-nav">
 				<div class="social">
 					
-						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+						<a class="github" target="_blank" href="https://github.com/WuEcho" title="github"><i class="icon-github"></i></a>
 			        
 						<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
 			        
@@ -206,7 +207,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的灵魂-共识算法"><span class="toc-number">1.</span> <span class="toc-text">区块链的灵魂: 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-分布式系统的一致性"><span class="toc-number">1.1.</span> <span class="toc-text">1. 分布式系统的一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-一致性问题"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 一致性问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-有关分布式系统的两个原理：FLP与CAP"><span class="toc-number">1.2.</span> <span class="toc-text">2. 有关分布式系统的两个原理：FLP与CAP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-FLP原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 FLP原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CAP定理"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 CAP定理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C和P是可以互相调整的，有两种情况："><span class="toc-number">1.2.2.0.1.</span> <span class="toc-text">C和P是可以互相调整的，有两种情况：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-分布式中难题：拜占庭将军问题"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 分布式中难题：拜占庭将军问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-共识算法"><span class="toc-number">1.3.</span> <span class="toc-text">3. 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Paxos算法"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 Paxos算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Raft算法"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 Raft算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-角色"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">1. 角色</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Term"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">2. Term</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-选举（Election）"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">3. 选举（Election）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-PBFT算法"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 PBFT算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-工作量证明-——-PoW"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 工作量证明 —— PoW</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-股权权益证明-——-PoS"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 股权权益证明 —— PoS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-PoS-潜在攻击方法"><span class="toc-number">1.3.6.</span> <span class="toc-text">3.5.1 PoS 潜在攻击方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#账本分叉问题-Nothing-at-Stake-Problem"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">账本分叉问题 ( Nothing at Stake Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#冷启动问题-Initial-Distribution-Problem"><span class="toc-number">1.3.6.2.</span> <span class="toc-text">冷启动问题 ( Initial Distribution Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#长距离攻击-Long-Range-Attack"><span class="toc-number">1.3.6.3.</span> <span class="toc-text">长距离攻击 ( Long-Range Attack )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#贿赂攻击（Bribe-Attack）"><span class="toc-number">1.3.6.4.</span> <span class="toc-text">贿赂攻击（Bribe Attack）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#币龄加和攻击-（-Coin-Age-Accumulation-Attack-）"><span class="toc-number">1.3.6.5.</span> <span class="toc-text">币龄加和攻击 （ Coin Age Accumulation Attack ）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#预计算攻击-Precomputing-Attack"><span class="toc-number">1.3.6.6.</span> <span class="toc-text">预计算攻击 ( Precomputing Attack)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-委托权益人证明机制-——-DPoS"><span class="toc-number">1.3.7.</span> <span class="toc-text">3.6 委托权益人证明机制 —— DPoS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-1-DPoS的伪代码实现"><span class="toc-number">1.3.7.1.</span> <span class="toc-text">3.6.1 DPoS的伪代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-2-DPoS-运行机制"><span class="toc-number">1.3.7.2.</span> <span class="toc-text">3.6.2 DPoS 运行机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-3-对恶意节点的惩罚"><span class="toc-number">1.3.7.3.</span> <span class="toc-text">3.6.3 对恶意节点的惩罚</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-4-DPoS的优缺点"><span class="toc-number">1.3.7.4.</span> <span class="toc-text">3.6.4 DPoS的优缺点</span></a></li></ol></li></ol></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的灵魂-共识算法"><span class="toc-number">1.</span> <span class="toc-text">区块链的灵魂: 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-分布式系统的一致性"><span class="toc-number">1.1.</span> <span class="toc-text">1. 分布式系统的一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-一致性问题"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 一致性问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-有关分布式系统的两个原理：FLP与CAP"><span class="toc-number">1.2.</span> <span class="toc-text">2. 有关分布式系统的两个原理：FLP与CAP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-FLP原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 FLP原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CAP定理"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 CAP定理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C和P是可以互相调整的，有两种情况："><span class="toc-number">1.2.2.0.1.</span> <span class="toc-text">C和P是可以互相调整的，有两种情况：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-分布式中难题：拜占庭将军问题"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 分布式中难题：拜占庭将军问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-共识算法"><span class="toc-number">1.3.</span> <span class="toc-text">3. 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Paxos算法"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 Paxos算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Raft算法"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 Raft算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-角色"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">1. 角色</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Term"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">2. Term</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-选举（Election）"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">3. 选举（Election）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-PBFT算法"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 PBFT算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-1-什么是实用拜占庭容错系统"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.3.1 什么是实用拜占庭容错系统</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-2-PBFT的一致性协议"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.3.2 PBFT的一致性协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-工作量证明-——-PoW"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 工作量证明 —— PoW</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-股权权益证明-——-PoS"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 股权权益证明 —— PoS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-PoS-潜在攻击方法"><span class="toc-number">1.3.6.</span> <span class="toc-text">3.5.1 PoS 潜在攻击方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#账本分叉问题-Nothing-at-Stake-Problem"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">账本分叉问题 ( Nothing at Stake Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#冷启动问题-Initial-Distribution-Problem"><span class="toc-number">1.3.6.2.</span> <span class="toc-text">冷启动问题 ( Initial Distribution Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#长距离攻击-Long-Range-Attack"><span class="toc-number">1.3.6.3.</span> <span class="toc-text">长距离攻击 ( Long-Range Attack )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#贿赂攻击（Bribe-Attack）"><span class="toc-number">1.3.6.4.</span> <span class="toc-text">贿赂攻击（Bribe Attack）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#币龄加和攻击-（-Coin-Age-Accumulation-Attack-）"><span class="toc-number">1.3.6.5.</span> <span class="toc-text">币龄加和攻击 （ Coin Age Accumulation Attack ）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#预计算攻击-Precomputing-Attack"><span class="toc-number">1.3.6.6.</span> <span class="toc-text">预计算攻击 ( Precomputing Attack)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-委托权益人证明机制-——-DPoS"><span class="toc-number">1.3.7.</span> <span class="toc-text">3.6 委托权益人证明机制 —— DPoS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-1-DPoS的伪代码实现"><span class="toc-number">1.3.7.1.</span> <span class="toc-text">3.6.1 DPoS的伪代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-2-DPoS-运行机制"><span class="toc-number">1.3.7.2.</span> <span class="toc-text">3.6.2 DPoS 运行机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-3-对恶意节点的惩罚"><span class="toc-number">1.3.7.3.</span> <span class="toc-text">3.6.3 对恶意节点的惩罚</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-4-DPoS的优缺点"><span class="toc-number">1.3.7.4.</span> <span class="toc-text">3.6.4 DPoS的优缺点</span></a></li></ol></li></ol></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -341,14 +342,41 @@
 <p><img src="/2018/05/14/区块链的灵魂：共识算法/p4.png" alt=""></p>
 <h4 id="2-Term"><a href="#2-Term" class="headerlink" title="2. Term"></a>2. Term</h4><p>　　在Raft中使用了一个可以理解为周期（第几届、任期）的概念，用Term作为一个周期，每个Term都是一个连续递增的编号，每一轮选举都是一个Term周期，在一个Term中只能产生一个Leader；先简单描述下Term的变化流程： Raft开始时所有Follower的Term为1，其中一个Follower逻辑时钟到期后转换为Candidate，Term加1这是Term为2（任期），然后开始选举，这时候有几种情况会使Term发生改变：<br>　　1：如果当前Term为2的任期内没有选举出Leader或出现异常，则Term递增，开始新一任期选举<br>　　2：当这轮Term为2的周期选举出Leader后，过后Leader宕掉了，然后其他Follower转为Candidate，Term递增，开始新一任期选举<br>　　3：当Leader或Candidate发现自己的Term比别的Follower小时Leader或Candidate将转为Follower，Term递增<br>　　4：当Follower的Term比别的Term小时Follower也将更新Term保持与其他Follower一致；<br>　　可以说每次Term的递增都将发生新一轮的选举，Raft保证一个Term只有一个Leader，在Raft正常运转中所有的节点的Term都是一致的，如果节点不发生故障一个Term（任期）会一直保持下去，当某节点收到的请求中Term比当前Term小时则拒绝该请求；</p>
 <h4 id="3-选举（Election）"><a href="#3-选举（Election）" class="headerlink" title="3. 选举（Election）"></a>3. 选举（Election）</h4><p>　　Raft的选举由定时器来触发，每个节点的选举定时器时间都是不一样的，开始时状态都为Follower某个节点定时器触发选举后Term递增，状态由Follower转为Candidate，向其他节点发起RequestVote RPC请求，这时候有三种可能的情况发生：<br>　　1：该RequestVote请求接收到n/2+1（过半数）个节点的投票，从Candidate转为Leader，向其他节点发送heartBeat以保持Leader的正常运转<br>　　2：在此期间如果收到其他节点发送过来的AppendEntries RPC请求，如该节点的Term大则当前节点转为Follower，否则保持Candidate拒绝该请求<br>　　3：Election timeout发生则Term递增，重新发起选举<br>　　在一个Term期间每个节点只能投票一次，所以当有多个Candidate存在时就会出现每个Candidate发起的选举都存在接收到的投票数都不过半的问题，这时每个Candidate都将Term递增、重启定时器并重新发起选举，由于每个节点中定时器的时间都是随机的，所以就不会多次存在有多个Candidate同时发起投票的问题。<br>　　有这么几种情况会发起选举，1：Raft初次启动，不存在Leader，发起选举；2：Leader宕机或Follower没有接收到Leader的heartBeat，发生election timeout从而发起选举;</p>
-<h3 id="3-3-PBFT算法"><a href="#3-3-PBFT算法" class="headerlink" title="3.3 PBFT算法"></a>3.3 PBFT算法</h3><p>　　在PBFT算法中，至多可以容忍不超过系统全节点数量的1/3的拜占庭节点“背叛”，即如果有超过2/3的节点正常，整个系统就可以正常工作。(解决拜占庭容错问题)<br>在PBFT算法中，每个副本有3个状态：pre-prepare,prepared和commited。消息也有三种状态：pre-prepare,prepare和committed。收到pre-prepare消息并且接受就进入prepared状态。收到commit消息并且接受就进入committed状态。</p>
+<p><a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">动画演示流程示例</a></p>
+<h3 id="3-3-PBFT算法"><a href="#3-3-PBFT算法" class="headerlink" title="3.3 PBFT算法"></a>3.3 PBFT算法</h3><h4 id="3-3-1-什么是实用拜占庭容错系统"><a href="#3-3-1-什么是实用拜占庭容错系统" class="headerlink" title="3.3.1 什么是实用拜占庭容错系统"></a>3.3.1 什么是实用拜占庭容错系统</h4><p>实用拜占庭容错系统是一类“状态机”拜占庭系统（这里的状态机可以理解为“系统状态”，以区块链记账为例，系统每新增一个区块，账本就更新到一个新的状态。前面讲过，拜占庭容错系统是一个强一致性协议，每次记账后系统都会达成新的状态。），要求系统所有节点共同维护一个状态，所有节点采取的行动一致。</p>
+<p><strong>实用拜占庭容错系统需要运行三类基本协议</strong>：</p>
+<ul>
+<li><strong>一致性协议</strong>：解决如何达成共识</li>
+<li><strong>检查点协议</strong>：类似于操作系统的还原点</li>
+<li><strong>视图更换协议</strong>：系统的每个服务器节点在同样的配置信息下工作，该配置信息被称为“视图”。配置信息由主节点确定，主节点更换，视图也随之变化。</li>
+</ul>
 <p>PBFT算法的主要优点如下：</p>
 <ul>
 <li>PBFT算法共识各节点由业务的参与方或者监管方组成，安全性与稳定性由业务相关方保证</li>
 <li>共识的时延大约在2~5秒，基本达到商用实时处理的要求</li>
 <li>共识效率高，可满足高频交易量的需求</li>
 </ul>
-<p>　　PBFT及其改进算法非常适合联盟链的应用场景。改进主要集中在：1.修改底层网络拓扑的要求，使用P2P网络；2.可以动态的调整节点数量；3.减少协议使用的消息数量等。</p>
+<p>　　PBFT及其改进算法非常适合联盟链的应用场景。改进主要集中在：1.修改底层网络拓扑的要求，使用P2P网络；2.可以动态的调整节点数量；3.减少协议使用的消息数量等。
+　　</p>
+<h4 id="3-3-2-PBFT的一致性协议"><a href="#3-3-2-PBFT的一致性协议" class="headerlink" title="3.3.2 PBFT的一致性协议"></a>3.3.2 PBFT的一致性协议</h4><p>　  在PBFT算法中，至多可以容忍不超过系统全节点数量的1/3的拜占庭节点“背叛”，即如果有超过2/3的节点正常，整个系统就可以正常工作。(解决拜占庭容错问题)<br>　　在PBFT算法中，每个副本有3个状态：pre-prepare,prepared和commited。消息也有三种状态：pre-prepare,prepare和committed。收到pre-prepare消息并且接受就进入prepared状态。收到commit消息并且接受就进入committed状态。<br>　　PBFT系统通常假设故障节点个数为m个，而整个服务节点数为3m+1个。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/20180122-102350.png" alt=""></p>
+<p>上图显示了一个简化的 PBFT 的协议通信模式，其中C为客户端，N0~N3为服务节点，N0为主节点，N3为故障节点。协议的节本过程如下：</p>
+<ol>
+<li><p><strong>Request</strong>：客户端发送请求，激活主节点的服务操作</p>
+</li>
+<li><p>当主节点接收请求后，启动三阶段的协议以向各从节点广播请求</p>
+<ul>
+<li><p>Pre-Prepare：主节点给请求赋值一个序列号n，广播序号分配消息和请求消息，并构造PRE-PREPARE消息给各从节点</p>
+</li>
+<li><p>Prepare：从节点接收PRE-PREPARE消息，并向其他服务节点广播PREPARE消息</p>
+</li>
+<li><p>Commit：各节点对视图内的请求和次序进行验证后，广播COMMIT消息，执行收到的客户端的请求并给客户端以响应</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Reply</strong>：客户端等待来自不同节点的响应，若有m+1个响应相同，则该响应即为运算的结果</p>
+</li>
+</ol>
 <h3 id="3-4-工作量证明-——-PoW"><a href="#3-4-工作量证明-——-PoW" class="headerlink" title="3.4 工作量证明 —— PoW"></a>3.4 工作量证明 —— PoW</h3><p>　　工作量证明(Proof of Work 简称PoW)，基本概念为：通过计算一个数值（ nonce ），使得拼揍上交易数据后内容的 Hash 值满足规定的上限。在节点成功找到满足的Hash值之后，会马上对全网进行广播打包区块，网络的节点收到广播打包区块，会立刻对其进行验证。协议如下：</p>
 <ul>
 <li>向所有的节点广播新的交易</li>
@@ -582,7 +610,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的灵魂-共识算法"><span class="toc-number">1.</span> <span class="toc-text">区块链的灵魂: 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-分布式系统的一致性"><span class="toc-number">1.1.</span> <span class="toc-text">1. 分布式系统的一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-一致性问题"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 一致性问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-有关分布式系统的两个原理：FLP与CAP"><span class="toc-number">1.2.</span> <span class="toc-text">2. 有关分布式系统的两个原理：FLP与CAP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-FLP原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 FLP原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CAP定理"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 CAP定理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C和P是可以互相调整的，有两种情况："><span class="toc-number">1.2.2.0.1.</span> <span class="toc-text">C和P是可以互相调整的，有两种情况：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-分布式中难题：拜占庭将军问题"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 分布式中难题：拜占庭将军问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-共识算法"><span class="toc-number">1.3.</span> <span class="toc-text">3. 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Paxos算法"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 Paxos算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Raft算法"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 Raft算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-角色"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">1. 角色</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Term"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">2. Term</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-选举（Election）"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">3. 选举（Election）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-PBFT算法"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 PBFT算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-工作量证明-——-PoW"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 工作量证明 —— PoW</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-股权权益证明-——-PoS"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 股权权益证明 —— PoS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-PoS-潜在攻击方法"><span class="toc-number">1.3.6.</span> <span class="toc-text">3.5.1 PoS 潜在攻击方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#账本分叉问题-Nothing-at-Stake-Problem"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">账本分叉问题 ( Nothing at Stake Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#冷启动问题-Initial-Distribution-Problem"><span class="toc-number">1.3.6.2.</span> <span class="toc-text">冷启动问题 ( Initial Distribution Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#长距离攻击-Long-Range-Attack"><span class="toc-number">1.3.6.3.</span> <span class="toc-text">长距离攻击 ( Long-Range Attack )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#贿赂攻击（Bribe-Attack）"><span class="toc-number">1.3.6.4.</span> <span class="toc-text">贿赂攻击（Bribe Attack）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#币龄加和攻击-（-Coin-Age-Accumulation-Attack-）"><span class="toc-number">1.3.6.5.</span> <span class="toc-text">币龄加和攻击 （ Coin Age Accumulation Attack ）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#预计算攻击-Precomputing-Attack"><span class="toc-number">1.3.6.6.</span> <span class="toc-text">预计算攻击 ( Precomputing Attack)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-委托权益人证明机制-——-DPoS"><span class="toc-number">1.3.7.</span> <span class="toc-text">3.6 委托权益人证明机制 —— DPoS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-1-DPoS的伪代码实现"><span class="toc-number">1.3.7.1.</span> <span class="toc-text">3.6.1 DPoS的伪代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-2-DPoS-运行机制"><span class="toc-number">1.3.7.2.</span> <span class="toc-text">3.6.2 DPoS 运行机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-3-对恶意节点的惩罚"><span class="toc-number">1.3.7.3.</span> <span class="toc-text">3.6.3 对恶意节点的惩罚</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-4-DPoS的优缺点"><span class="toc-number">1.3.7.4.</span> <span class="toc-text">3.6.4 DPoS的优缺点</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区块链的灵魂-共识算法"><span class="toc-number">1.</span> <span class="toc-text">区块链的灵魂: 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-分布式系统的一致性"><span class="toc-number">1.1.</span> <span class="toc-text">1. 分布式系统的一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-一致性问题"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 一致性问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-有关分布式系统的两个原理：FLP与CAP"><span class="toc-number">1.2.</span> <span class="toc-text">2. 有关分布式系统的两个原理：FLP与CAP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-FLP原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 FLP原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CAP定理"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 CAP定理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C和P是可以互相调整的，有两种情况："><span class="toc-number">1.2.2.0.1.</span> <span class="toc-text">C和P是可以互相调整的，有两种情况：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-分布式中难题：拜占庭将军问题"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 分布式中难题：拜占庭将军问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-共识算法"><span class="toc-number">1.3.</span> <span class="toc-text">3. 共识算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Paxos算法"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 Paxos算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Raft算法"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 Raft算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-角色"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">1. 角色</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Term"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">2. Term</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-选举（Election）"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">3. 选举（Election）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-PBFT算法"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 PBFT算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-1-什么是实用拜占庭容错系统"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.3.1 什么是实用拜占庭容错系统</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-2-PBFT的一致性协议"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.3.2 PBFT的一致性协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-工作量证明-——-PoW"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 工作量证明 —— PoW</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-股权权益证明-——-PoS"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 股权权益证明 —— PoS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-PoS-潜在攻击方法"><span class="toc-number">1.3.6.</span> <span class="toc-text">3.5.1 PoS 潜在攻击方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#账本分叉问题-Nothing-at-Stake-Problem"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">账本分叉问题 ( Nothing at Stake Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#冷启动问题-Initial-Distribution-Problem"><span class="toc-number">1.3.6.2.</span> <span class="toc-text">冷启动问题 ( Initial Distribution Problem )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#长距离攻击-Long-Range-Attack"><span class="toc-number">1.3.6.3.</span> <span class="toc-text">长距离攻击 ( Long-Range Attack )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#贿赂攻击（Bribe-Attack）"><span class="toc-number">1.3.6.4.</span> <span class="toc-text">贿赂攻击（Bribe Attack）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#币龄加和攻击-（-Coin-Age-Accumulation-Attack-）"><span class="toc-number">1.3.6.5.</span> <span class="toc-text">币龄加和攻击 （ Coin Age Accumulation Attack ）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#预计算攻击-Precomputing-Attack"><span class="toc-number">1.3.6.6.</span> <span class="toc-text">预计算攻击 ( Precomputing Attack)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-委托权益人证明机制-——-DPoS"><span class="toc-number">1.3.7.</span> <span class="toc-text">3.6 委托权益人证明机制 —— DPoS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-1-DPoS的伪代码实现"><span class="toc-number">1.3.7.1.</span> <span class="toc-text">3.6.1 DPoS的伪代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-2-DPoS-运行机制"><span class="toc-number">1.3.7.2.</span> <span class="toc-text">3.6.2 DPoS 运行机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-3-对恶意节点的惩罚"><span class="toc-number">1.3.7.3.</span> <span class="toc-text">3.6.3 对恶意节点的惩罚</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-4-DPoS的优缺点"><span class="toc-number">1.3.7.4.</span> <span class="toc-text">3.6.4 DPoS的优缺点</span></a></li></ol></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -702,19 +730,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -726,6 +754,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
@@ -734,11 +770,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -782,7 +818,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -790,15 +826,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -806,11 +838,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -818,7 +846,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -826,7 +854,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">

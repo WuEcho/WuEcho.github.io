@@ -6,35 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuecho.com">
-  <title>树和二叉树 | WuEcho的博客</title>
+  <title>Go语言中的远程过程调用协议RPC | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="树与二叉树1.树的概念树的递归定义：树是由n(n &amp;gt;= 0)个节节点点组成有限集合。如果n=0,成为空树；如果n&amp;gt;0,则：  有一个特定的称之为根(root)的节点，它只有直接后继，但没有直接前驱； 除根以外的其他节点划分为m(m &amp;gt;= 0)个互不相干的有限集合T0,T1,,,,Tm-1,每个集合又是一棵树，并且称之为根的子树。   树的逻辑结构  除了根节点外，每个节点有且仅有">
-<meta name="keywords" content="树和二叉树">
+  <meta name="description" content="Go语言中的远程过程调用协议RPC1. 什么是RPC　　RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。 　　 2">
+<meta name="keywords" content="RPC,Golang">
 <meta property="og:type" content="article">
-<meta property="og:title" content="树和二叉树">
-<meta property="og:url" content="http://www.wuecho.com/2018/05/02/树和二叉树/index.html">
+<meta property="og:title" content="Go语言中的远程过程调用协议RPC">
+<meta property="og:url" content="http://www.wuecho.com/2018/05/24/Go语言中的远程过程调用协议RPC/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="树与二叉树1.树的概念树的递归定义：树是由n(n &amp;gt;= 0)个节节点点组成有限集合。如果n=0,成为空树；如果n&amp;gt;0,则：  有一个特定的称之为根(root)的节点，它只有直接后继，但没有直接前驱； 除根以外的其他节点划分为m(m &amp;gt;= 0)个互不相干的有限集合T0,T1,,,,Tm-1,每个集合又是一棵树，并且称之为根的子树。   树的逻辑结构  除了根节点外，每个节点有且仅有">
+<meta property="og:description" content="Go语言中的远程过程调用协议RPC1. 什么是RPC　　RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。 　　 2">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p1.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p1.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p2.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p3.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p4.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p5.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p6.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p7.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p8.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p9.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p9.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p9.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p10.png">
-<meta property="og:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p11.png">
-<meta property="og:updated_time" content="2018-05-04T02:02:56.115Z">
+<meta property="og:updated_time" content="2018-05-25T05:12:22.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="树和二叉树">
-<meta name="twitter:description" content="树与二叉树1.树的概念树的递归定义：树是由n(n &amp;gt;= 0)个节节点点组成有限集合。如果n=0,成为空树；如果n&amp;gt;0,则：  有一个特定的称之为根(root)的节点，它只有直接后继，但没有直接前驱； 除根以外的其他节点划分为m(m &amp;gt;= 0)个互不相干的有限集合T0,T1,,,,Tm-1,每个集合又是一棵树，并且称之为根的子树。   树的逻辑结构  除了根节点外，每个节点有且仅有">
-<meta name="twitter:image" content="http://www.wuecho.com/2018/05/02/树和二叉树/p1.png">
+<meta name="twitter:title" content="Go语言中的远程过程调用协议RPC">
+<meta name="twitter:description" content="Go语言中的远程过程调用协议RPC1. 什么是RPC　　RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。 　　 2">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -186,20 +171,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-树和二叉树" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Go语言中的远程过程调用协议RPC" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      树和二叉树
+      Go语言中的远程过程调用协议RPC
     </h1>
   
 
         
-        <a href="/2018/05/02/树和二叉树/" class="archive-article-date">
-  	<time datetime="2018-05-02T12:28:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-02</time>
+        <a href="/2018/05/24/Go语言中的远程过程调用协议RPC/" class="archive-article-date">
+  	<time datetime="2018-05-24T12:21:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
 </a>
         
       </header>
@@ -211,7 +196,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#树与二叉树"><span class="toc-number">1.</span> <span class="toc-text">树与二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-树的概念"><span class="toc-number">1.1.</span> <span class="toc-text">1.树的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-树的表示"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 树的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-树的基本常用术语"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 树的基本常用术语</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-二叉树"><span class="toc-number">1.2.</span> <span class="toc-text">2. 二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-二叉树的性质"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 二叉树的性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-满二叉树和完全二叉树"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 满二叉树和完全二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-二叉树的遍历"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 二叉树的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-前序遍历二叉树"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">2.3.1 前序遍历二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-中序遍历二叉树"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">2.3.2 中序遍历二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-3-后序遍历二叉树"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">2.3.3 后序遍历二叉树</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-在二叉树中查找指定节点"><span class="toc-number">1.3.</span> <span class="toc-text">3. 在二叉树中查找指定节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-统计二叉树叶子节点的个数"><span class="toc-number">1.4.</span> <span class="toc-text">4. 统计二叉树叶子节点的个数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-构造二叉树"><span class="toc-number">1.5.</span> <span class="toc-text">5. 构造二叉树</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言中的远程过程调用协议RPC"><span class="toc-number">1.</span> <span class="toc-text">Go语言中的远程过程调用协议RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是RPC"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是RPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-go语言中如何使用RPC"><span class="toc-number">1.2.</span> <span class="toc-text">2. go语言中如何使用RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-http链接使用rpc"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 http链接使用rpc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-利用json方式连接"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 利用json方式连接</span></a></li></ol></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -231,84 +216,29 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="树与二叉树"><a href="#树与二叉树" class="headerlink" title="树与二叉树"></a>树与二叉树</h1><h2 id="1-树的概念"><a href="#1-树的概念" class="headerlink" title="1.树的概念"></a>1.树的概念</h2><p><strong>树的递归定义：</strong>树是由n(n &gt;= 0)个节节点点组成有限集合。如果n=0,成为空树；如果n&gt;0,则：</p>
-<ul>
-<li>有一个特定的称之为<strong>根(root)</strong>的节点，它只有直接后继，但没有直接前驱；</li>
-<li>除根以外的其他节点划分为m(m &gt;= 0)个互不相干的有限集合T<sub>0</sub>,T<sub>1</sub>,,,,T<sub>m-1</sub>,每个集合又是一棵树，并且称之为根的<strong>子树</strong>。</li>
-</ul>
-<blockquote>
-<p>树的逻辑结构</p>
-<ul>
-<li><p>除了根节点外，每个节点有且仅有一个直接前驱。</p>
-</li>
-<li><p>所有节点可以有多个直接后继。</p>
-</li>
-</ul>
-</blockquote>
-<p><img src="/2018/05/02/树和二叉树/p1.png" alt=""></p>
-<h3 id="1-1-树的表示"><a href="#1-1-树的表示" class="headerlink" title="1.1 树的表示"></a>1.1 树的表示</h3><ul>
-<li><p>树形表示法。这是树的最基本的表示，使用一颗倒置的树表示树结构，非常直观和形象。<br><img src="/2018/05/02/树和二叉树/p1.png" alt=""></p>
-</li>
-<li><p>文氏图表示法。使用集合以及集合的包含关系描述树结构。<br><img src="/2018/05/02/树和二叉树/p2.png" alt=""></p>
-</li>
-<li><p>凹入表示法。使用线段的伸缩描述树结构。<br><img src="/2018/05/02/树和二叉树/p3.png" alt=""></p>
-</li>
-<li><p>括号表达法。将树的根节点写在括号的左边，除根节点之外的其余节点写在括号中并用逗号间隔来描述树结构。</p>
-<blockquote>
-<p>A(B(E,F),C(G(J)),D(H,I(K,L,M)))</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="1-2-树的基本常用术语"><a href="#1-2-树的基本常用术语" class="headerlink" title="1.2 树的基本常用术语"></a>1.2 树的基本常用术语</h3><p><strong>度：</strong> 一个节点的子树的个数称为该<strong>节点的度</strong>。度为零的节点称为<strong>叶子节点</strong>。度不为零的节点称为<strong>分支节点</strong>。树中所有节点的度的最大值为<strong>树的度</strong><br><img src="/2018/05/02/树和二叉树/p4.png" alt=""></p>
-<h2 id="2-二叉树"><a href="#2-二叉树" class="headerlink" title="2. 二叉树"></a>2. 二叉树</h2><p>定义：一颗二叉树是节点的一个有限集合，该集合或为空，或者是由一个根节点加上两课分别称为左子树和右子树，互不相交的二叉树组成。</p>
-<p>二叉树的五种不同形态<br><img src="/2018/05/02/树和二叉树/p5.png" alt=""></p>
-<p><strong>注意：</strong>二叉树与度为2的树是有区别的，二叉树度小于等于2，度为2的树度等于2。二叉树是有序的，而度为2的树是无序的。</p>
-<p>分别有0个，1个，2个，3个，4个节点的不同二叉树如下:<br><img src="/2018/05/02/树和二叉树/p6.png" alt=""></p>
-<h3 id="2-1-二叉树的性质"><a href="#2-1-二叉树的性质" class="headerlink" title="2.1 二叉树的性质"></a>2.1 二叉树的性质</h3><ul>
-<li>在二叉树的第i层最多有2<sup>i-1</sup>个节点。(i &gt;= 1)</li>
-<li>深度为<strong>K</strong>的二叉树至多有2<sup>i-1</sup>个节点。(k &gt;= 1)</li>
-<li>对任何一颗二叉树，若其<strong>叶节点</strong>个数为<strong>n<sup>0</sup></strong>,<strong>度为2</strong>的节点个数为<strong>n<sup>2</sup></strong>，则有<strong>n<sub>0</sub> = n<sub>2</sub> + 1</strong>。</li>
-</ul>
-<h3 id="2-2-满二叉树和完全二叉树"><a href="#2-2-满二叉树和完全二叉树" class="headerlink" title="2.2 满二叉树和完全二叉树"></a>2.2 满二叉树和完全二叉树</h3><p><strong>满二叉树：</strong>深度为<strong>k</strong>且有2<sup>k-1</sup>个节点所有分支节点的度为2，n<sub>1</sub> = 0，叶子节点都在最下一层。<br><img src="/2018/05/02/树和二叉树/p7.png" alt=""></p>
-<p><strong>完全二叉树：</strong>叶子节点都在最下两层，且最下一层集中在最左边。<br><img src="/2018/05/02/树和二叉树/p8.png" alt=""></p>
-<h3 id="2-3-二叉树的遍历"><a href="#2-3-二叉树的遍历" class="headerlink" title="2.3 二叉树的遍历"></a>2.3 二叉树的遍历</h3><p><strong>树的遍历：</strong>就是按某种次序访问树中的所有节点，要求每个节点访问一次且仅访问一次。</p>
-<p><strong>遍历二叉树三方面工作:</strong> </p>
-<ol>
-<li>访问<strong>根</strong>节点记作<strong>D</strong></li>
-<li>遍历根的<strong>左</strong>子树记作<strong>L</strong></li>
-<li><p>遍历根的<strong>右</strong>子树记作<strong>R</strong></p>
-<p>可能的遍历次序有：<br>前序  DLR  镜像  DRL<br>中序  LDR  镜像  RDL<br>后序  LRD  镜像  RLD</p>
-</li>
-</ol>
-<h4 id="2-3-1-前序遍历二叉树"><a href="#2-3-1-前序遍历二叉树" class="headerlink" title="2.3.1 前序遍历二叉树"></a>2.3.1 前序遍历二叉树</h4><ul>
-<li>若二叉树非空，则 <ul>
-<li>访问根节点(D)</li>
-<li>前序遍历左子树(L)</li>
-<li>前序遍历右子树(R)<br><img src="/2018/05/02/树和二叉树/p9.png" alt=""><br>前序遍历序列：D L R<br>a-&gt;b-&gt;d-&gt;e-&gt;c-&gt;f-&gt;g</li>
-</ul>
-</li>
-</ul>
-<h4 id="2-3-2-中序遍历二叉树"><a href="#2-3-2-中序遍历二叉树" class="headerlink" title="2.3.2 中序遍历二叉树"></a>2.3.2 中序遍历二叉树</h4><ul>
-<li>若二叉树非空，则<ul>
-<li>中序遍历左子树(L)</li>
-<li>访问根节点(D)</li>
-<li>中序遍历右子树(R)<br><img src="/2018/05/02/树和二叉树/p9.png" alt=""><br>中序遍历序列：L D R<br>d-&gt;b-&gt;e-&gt;a-&gt;c-&gt;g-&gt;f</li>
-</ul>
-</li>
-</ul>
-<h4 id="2-3-3-后序遍历二叉树"><a href="#2-3-3-后序遍历二叉树" class="headerlink" title="2.3.3 后序遍历二叉树"></a>2.3.3 后序遍历二叉树</h4><ul>
-<li>若二叉树非空，则<ul>
-<li>后序遍历左子树(L)</li>
-<li>后序遍历右子树(R)</li>
-<li>访问根节点(D)<br><img src="/2018/05/02/树和二叉树/p9.png" alt=""><br>后序遍历序列: L R D<br>d-&gt;e-&gt;b-&gt;g-&gt;f-&gt;c-&gt;a   </li>
-</ul>
-</li>
-</ul>
-<h2 id="3-在二叉树中查找指定节点"><a href="#3-在二叉树中查找指定节点" class="headerlink" title="3. 在二叉树中查找指定节点"></a>3. 在二叉树中查找指定节点</h2><p><img src="/2018/05/02/树和二叉树/p10.png" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">find(BTNode *b,elemtype x)&#123;</span><br><span class="line">  if(b == NULL)</span><br><span class="line">    return NULL;//空树</span><br><span class="line">  if(b -&gt;data == x)</span><br><span class="line">    return b;//查询成功</span><br><span class="line">    </span><br><span class="line">  p = find(b-&gt;lchild,x);//查找左子树</span><br><span class="line">  if(p == NULL)</span><br><span class="line">    p = find(b-&gt;rchild,x);</span><br><span class="line">  return p;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="4-统计二叉树叶子节点的个数"><a href="#4-统计二叉树叶子节点的个数" class="headerlink" title="4. 统计二叉树叶子节点的个数"></a>4. 统计二叉树叶子节点的个数</h2><p><img src="/2018/05/02/树和二叉树/p11.png" alt=""></p>
-<h2 id="5-构造二叉树"><a href="#5-构造二叉树" class="headerlink" title="5. 构造二叉树"></a>5. 构造二叉树</h2><p>由二叉树的前序序列和中序序列可唯一的确定一颗二叉树。</p>
-<p>构造二叉树立的基本思想:建立根节点，分别构造左，右子树。</p>
+        <h1 id="Go语言中的远程过程调用协议RPC"><a href="#Go语言中的远程过程调用协议RPC" class="headerlink" title="Go语言中的远程过程调用协议RPC"></a>Go语言中的远程过程调用协议RPC</h1><h2 id="1-什么是RPC"><a href="#1-什么是RPC" class="headerlink" title="1. 什么是RPC"></a>1. 什么是RPC</h2><p>　　RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。
+　　</p>
+<h2 id="2-go语言中如何使用RPC"><a href="#2-go语言中如何使用RPC" class="headerlink" title="2. go语言中如何使用RPC"></a>2. go语言中如何使用RPC</h2><p>我并不清楚其他语言中如何使用RPC来实现计算机间的通信以及互相调用，在go语言当中RPC有相应的包文件可以调用相关函数来实现。使用一台电脑来模拟两台电脑互相通信，调用方法，创建新的项目名为<code>rpcdemo</code>，在<code>rpcdemo</code>文件夹下创建名为<code>rpcSever</code>的文件夹，里面创建名为<code>rpcSever.go</code>的go文件，来模仿提供方法给别的机器调用的服务端，再在<code>rpcdemo</code>文件夹下创建名为<code>rpcClient</code>的文件夹，文件夹下创建名为<code>rpcClient.go</code>的go文件，来模仿连接到服务端的客户端，并调用服务端中提供的方法。</p>
+<h3 id="2-1-http链接使用rpc"><a href="#2-1-http链接使用rpc" class="headerlink" title="2.1 http链接使用rpc"></a>2.1 http链接使用rpc</h3><p><code>rpcSever.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明传递参数结构体以及类对象的结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义参数类型</span></span><br><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明对象</span></span><br><span class="line"><span class="keyword">type</span> Rect <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对外提供的公共方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义公共方法  (本机以外的电脑也可以调用)</span></span><br><span class="line"><span class="comment">//error 是必须的    ret为指针的地址   </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Area</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	*ret = p.Width * p.Width</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//周长</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Perimeter</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	*ret = (p.Width + p.Height)*<span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//注册服务</span></span><br><span class="line">	rect := <span class="built_in">new</span>(Rect)</span><br><span class="line">	rpc.Register(rect)</span><br><span class="line">	<span class="comment">//开辟端口让别的机器可以调用</span></span><br><span class="line">	rpc.HandleHTTP()</span><br><span class="line">	err := http.ListenAndServe(<span class="string">":9090"</span>,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>rpcClient.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>参数的结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//链接远程RPC   此处"127.0.0.1:9090"为要连接的服务器的ip地址</span></span><br><span class="line">	rp,err := rpc.DialHTTP(<span class="string">"tcp"</span>,<span class="string">"127.0.0.1:9090"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//从服务器接收过来的值</span></span><br><span class="line">	ret := <span class="number">0</span></span><br><span class="line">	<span class="comment">//调用方法</span></span><br><span class="line">	e := rp.Call(<span class="string">"Rect.Area"</span>,Param&#123;<span class="number">100</span>,<span class="number">100</span>&#125;,&amp;ret)</span><br><span class="line">	<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(e)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(ret)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用IDE分别打开<code>rpcClient</code>文件和<code>rpcSever</code>文件，先运行<code>rpcSever.go</code>文件然后在运行<code>rpcClient.go</code>文件</p>
+<p>然后在<code>rpcClient.go</code>的输出端看到输出为10000。</p>
+<p><a href="https://github.com/WuEcho/RPCDemo.git" target="_blank" rel="noopener">Go语言使用RCP示例</a></p>
+<h3 id="2-2-利用json方式连接"><a href="#2-2-利用json方式连接" class="headerlink" title="2.2 利用json方式连接"></a>2.2 利用json方式连接</h3><p>项目结构，文件同样如上，<br><code>rpcSever.go</code>文件内容如下：</p>
 
       
 
@@ -353,7 +283,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">树和二叉树</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RPC</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Golang</a>
         		</li>
       		
 		</ul>
@@ -365,7 +299,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
         		</li>
       		
 		</ul>
@@ -420,7 +354,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/05/02/树和二叉树/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/05/24/Go语言中的远程过程调用协议RPC/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -434,18 +368,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/05/02/Golang数据结构-二叉搜索树/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Golang数据结构: 二叉搜索树
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/04/30/数据库设计的三大范式/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">数据库设计的三大范式</div>
+    <a href="/2018/05/22/Go语言实现PoS共识算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Go语言实现PoS共识算法</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -472,7 +397,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#树与二叉树"><span class="toc-number">1.</span> <span class="toc-text">树与二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-树的概念"><span class="toc-number">1.1.</span> <span class="toc-text">1.树的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-树的表示"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 树的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-树的基本常用术语"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 树的基本常用术语</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-二叉树"><span class="toc-number">1.2.</span> <span class="toc-text">2. 二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-二叉树的性质"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 二叉树的性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-满二叉树和完全二叉树"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 满二叉树和完全二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-二叉树的遍历"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 二叉树的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-前序遍历二叉树"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">2.3.1 前序遍历二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-中序遍历二叉树"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">2.3.2 中序遍历二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-3-后序遍历二叉树"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">2.3.3 后序遍历二叉树</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-在二叉树中查找指定节点"><span class="toc-number">1.3.</span> <span class="toc-text">3. 在二叉树中查找指定节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-统计二叉树叶子节点的个数"><span class="toc-number">1.4.</span> <span class="toc-text">4. 统计二叉树叶子节点的个数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-构造二叉树"><span class="toc-number">1.5.</span> <span class="toc-text">5. 构造二叉树</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言中的远程过程调用协议RPC"><span class="toc-number">1.</span> <span class="toc-text">Go语言中的远程过程调用协议RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是RPC"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是RPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-go语言中如何使用RPC"><span class="toc-number">1.2.</span> <span class="toc-text">2. go语言中如何使用RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-http链接使用rpc"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 http链接使用rpc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-利用json方式连接"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 利用json方式连接</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
