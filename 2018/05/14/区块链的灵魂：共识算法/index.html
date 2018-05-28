@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150411.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150425.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150435.png">
-<meta property="og:updated_time" content="2018-05-26T03:11:39.998Z">
+<meta property="og:updated_time" content="2018-05-26T08:18:12.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区块链的灵魂：共识算法">
 <meta name="twitter:description" content="区块链的灵魂: 共识算法1. 分布式系统的一致性　　所谓一致性就是指数据要完整，要同步。区块链系统本质就是一个分布式应用软件。分布式系统的首要问题就是如何解决一致性问题，也就是如何在多个独立的节点之间达成共识。注意：所说的一致，并不代表一定要结果正确，所有节点都达成失败状态也是一种一致。　　分布式系统存在的问题如下：  分布式系统本身可能出现故障 分布式系统之间的通信可能有故障，或者有巨大的延迟">
@@ -357,7 +357,7 @@
 <li><p>其他的服务器成为领导者</p>
 <p>  如果在等待选举期间，candidate接收到其他server要成为leader的RPC，分两种情况处理：</p>
 <ul>
-<li>如果leader的term大于或等于自身的term，那么改<code>candidate</code> 会转成<code>follower</code> 状态</li>
+<li>如果leader的term大于或等于自身的term，那么该<code>candidate</code> 会转成<code>follower</code> 状态</li>
 <li>如果leader的term小于自身的term，那么会拒绝该 <code>leader</code>，并继续保持<code>candidate</code> 状态</li>
 </ul>
 </li>
@@ -371,7 +371,7 @@
 </li>
 </ul>
 <h4 id="3-Log-replication-日志复制"><a href="#3-Log-replication-日志复制" class="headerlink" title="3. Log replication (日志复制)"></a>3. Log replication (日志复制)</h4><p>　　当选出 <code>leader</code> 后，它会开始接受客户端请求，每个请求会带有一个指令，可以被回放到状态机中。<code>leader</code> 把指令追加成一个<code>log entry</code>，然后通过AppendEntries RPC并行的发送给其他的server，当改entry被多数派server复制后，<code>leader</code> 会把该entry回放到状态机中，然后把结果返回给客户端。</p>
-<p>当 <code>follower</code> 宕机或者运行较慢时，<code>leader</code> 会无限地重发AppendEntries给这些follower，直到所有的follower都复制了该log entry。</p>
+<p>　　当 <code>follower</code> 宕机或者运行较慢时，<code>leader</code> 会无限地重发AppendEntries给这些follower，直到所有的follower都复制了该log entry。</p>
 <p>raft的log replication保证以下性质(Log Matching Property)：</p>
 <ul>
 <li><p>如果两个log entry有相同的index和term，那么它们存储相同的指令</p>
@@ -806,7 +806,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -818,19 +830,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -898,7 +906,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -906,15 +914,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+                <a href="javascript:void(0)" class="js-tag color4">分布式一致性系统</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">etcd</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -922,11 +934,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -938,11 +954,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
               </li>
              
               <li class="article-tag-list-item">
