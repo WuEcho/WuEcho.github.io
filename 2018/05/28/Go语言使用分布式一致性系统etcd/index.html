@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://www.wuecho.com">
   <title>Go语言使用分布式一致性系统etcd | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Go语言使用分布式一致性系统etcd预想在go语言中使用etcd系统，需要下载安装etcd文件包进行支持，并且打开etcd服务。内容请参考分布式一致性键值存储系统-etcd。">
+  <meta name="description" content="Go语言使用分布式一致性系统etcd(单机版)　　预想在go语言中使用etcd系统，需要下载安装etcd文件包进行支持，并且打开etcd服务。内容请参考分布式一致性键值存储系统-etcd。　　创建新项目，项目名称为etcdDemo,项目目录下创建名为etcdProject，再在etcdProject文件夹下创建etcd.go的go文件，其内容如下：　　　　构造etcd函数 引入头文件： 12345">
 <meta name="keywords" content="Go语言使用etcd,分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go语言使用分布式一致性系统etcd">
 <meta property="og:url" content="http://www.wuecho.com/2018/05/28/Go语言使用分布式一致性系统etcd/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="Go语言使用分布式一致性系统etcd预想在go语言中使用etcd系统，需要下载安装etcd文件包进行支持，并且打开etcd服务。内容请参考分布式一致性键值存储系统-etcd。">
+<meta property="og:description" content="Go语言使用分布式一致性系统etcd(单机版)　　预想在go语言中使用etcd系统，需要下载安装etcd文件包进行支持，并且打开etcd服务。内容请参考分布式一致性键值存储系统-etcd。　　创建新项目，项目名称为etcdDemo,项目目录下创建名为etcdProject，再在etcdProject文件夹下创建etcd.go的go文件，其内容如下：　　　　构造etcd函数 引入头文件： 12345">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-28T05:57:00.060Z">
+<meta property="og:updated_time" content="2018-05-29T11:50:35.274Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go语言使用分布式一致性系统etcd">
-<meta name="twitter:description" content="Go语言使用分布式一致性系统etcd预想在go语言中使用etcd系统，需要下载安装etcd文件包进行支持，并且打开etcd服务。内容请参考分布式一致性键值存储系统-etcd。">
+<meta name="twitter:description" content="Go语言使用分布式一致性系统etcd(单机版)　　预想在go语言中使用etcd系统，需要下载安装etcd文件包进行支持，并且打开etcd服务。内容请参考分布式一致性键值存储系统-etcd。　　创建新项目，项目名称为etcdDemo,项目目录下创建名为etcdProject，再在etcdProject文件夹下创建etcd.go的go文件，其内容如下：　　　　构造etcd函数 引入头文件： 12345">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -196,7 +196,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言使用分布式一致性系统etcd"><span class="toc-number">1.</span> <span class="toc-text">Go语言使用分布式一致性系统etcd</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言使用分布式一致性系统etcd-单机版"><span class="toc-number">1.</span> <span class="toc-text">Go语言使用分布式一致性系统etcd(单机版)</span></a></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -216,7 +216,41 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Go语言使用分布式一致性系统etcd"><a href="#Go语言使用分布式一致性系统etcd" class="headerlink" title="Go语言使用分布式一致性系统etcd"></a>Go语言使用分布式一致性系统etcd</h1><p>预想在go语言中使用etcd系统，需要下载安装<strong>etcd</strong>文件包进行支持，并且打开etcd服务。内容请参考<a href="">分布式一致性键值存储系统-etcd</a>。</p>
+        <h1 id="Go语言使用分布式一致性系统etcd-单机版"><a href="#Go语言使用分布式一致性系统etcd-单机版" class="headerlink" title="Go语言使用分布式一致性系统etcd(单机版)"></a>Go语言使用分布式一致性系统etcd(单机版)</h1><p>　　预想在go语言中使用etcd系统，需要下载安装<strong>etcd</strong>文件包进行支持，并且打开etcd服务。内容请参考<a href="http://www.wuecho.com/2018/05/28/分布式一致性键值存储系统-etcd/">分布式一致性键值存储系统-etcd</a>。<br>　　创建新项目，项目名称为<code>etcdDemo</code>,项目目录下创建名为<code>etcdProject</code>，再在<code>etcdProject</code>文件夹下创建<code>etcd.go</code>的go文件，其内容如下：　　<br>　　<br><strong>构造etcd函数</strong></p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> etcdProject</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/coreos/etcd/clientv3"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"github.com/coreos/etcd/mvcc/mvccpb"</span></span><br><span class="line">	<span class="string">"context"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>创建访问etcd的对象：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatCli</span><span class="params">(endPoint []<span class="keyword">string</span>,dialTimeout <span class="keyword">int</span>)</span> <span class="params">(* clientv3.Client,error)</span></span> &#123;</span><br><span class="line">	cli, err := clientv3.New(clientv3.Config&#123;</span><br><span class="line">		Endpoints: endPoint,</span><br><span class="line">		DialTimeout: time.Duration(dialTimeout) * time.Second,</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>,err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> cli,err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建的etcd对象需要进行关闭：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Close</span><span class="params">(cli * clientv3.Client)</span></span>  &#123;</span><br><span class="line">	<span class="comment">//关闭</span></span><br><span class="line">	 cli.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>插入数据：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//插入数据</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PutValue</span><span class="params">(cli *clientv3.Client,key ,value <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	_,err := cli.Put(context.TODO(),key,value)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询数据：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetValue</span><span class="params">(cli *clientv3.Client, key <span class="keyword">string</span>)</span>[] *<span class="title">mvccpb</span>.<span class="title">KeyValue</span></span> &#123;</span><br><span class="line">	resp,err := cli.Get(context.TODO(),key)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">//返回查询结果</span></span><br><span class="line">		<span class="keyword">return</span> resp.Kvs</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>删除数据：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DelValue</span><span class="params">(cli *clientv3.Client,key <span class="keyword">string</span>)</span> <span class="title">int64</span></span> &#123;</span><br><span class="line">	delRes,err := cli.Delete(context.TODO(),key)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> delRes.Deleted</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照前缀删除某些数据：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DelValueByPrefix</span><span class="params">(cli *clientv3.Client,key <span class="keyword">string</span>)</span> <span class="title">int64</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	resp,err := cli.Delete(context.TODO(),key,clientv3.WithPrefix())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> resp.Deleted</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照前缀查询数据：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetValueByPrefix</span><span class="params">(cli *clientv3.Client,key <span class="keyword">string</span>)</span> []*<span class="title">mvccpb</span>.<span class="title">KeyValue</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	resp,err := cli.Get(context.TODO(),key,clientv3.WithPrefix())</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> resp.Kvs</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>事务：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//取key对应value 进行比较如果相等那么就执行then后面的代码，，如果不相等就执行else后面的代码</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">OfficeDeal</span><span class="params">(cli *clientv3.Client,key, value, otherValue <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	_,err1 := cli.Txn(context.TODO()).</span><br><span class="line">		If(clientv3.Compare(clientv3.Value(key),<span class="string">"="</span>,value)).</span><br><span class="line">		Then(clientv3.OpPut(key,value)).</span><br><span class="line">		Else(clientv3.OpPut(key,otherValue)).Commit()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err1 != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err1)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>监看某一键值:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WatchKey</span><span class="params">(cli *clientv3.Client,key <span class="keyword">string</span>)</span> []<span class="title">byte</span></span>&#123;</span><br><span class="line">	rch := cli.Watch(context.Background(),key)</span><br><span class="line">	<span class="keyword">for</span> wresp := <span class="keyword">range</span> rch&#123;</span><br><span class="line">		<span class="keyword">for</span> _,ev := <span class="keyword">range</span> wresp.Events&#123;</span><br><span class="line">			fmt.Printf(<span class="string">"watch foo ----%s  %q : %q \n"</span>,ev.Type,ev.Kv.Key,ev.Kv.Value)</span><br><span class="line">			<span class="keyword">return</span> ev.Kv.Value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>监看某个带有特定前缀的键：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WatchKeyWithPrefix</span><span class="params">(cli *clientv3.Client,prefixKey <span class="keyword">string</span>)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line">	rch := cli.Watch(context.Background(),prefixKey,clientv3.WithPrefix())</span><br><span class="line">	<span class="keyword">for</span> wresp := <span class="keyword">range</span> rch&#123;</span><br><span class="line">		<span class="keyword">for</span> _,ev := <span class="keyword">range</span> wresp.Events&#123;</span><br><span class="line">			fmt.Printf(<span class="string">"watch foo ----%s  %q : %q \n"</span>,ev.Type,ev.Kv.Key,ev.Kv.Value)</span><br><span class="line">			<span class="keyword">return</span> ev.Kv.Value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>监看某一范围内键值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WatchKeyWithRang</span><span class="params">(cli *clientv3.Client,beginKey,endKey <span class="keyword">string</span>)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	rch := cli.Watch(context.Background(),beginKey,clientv3.WithRange(endKey))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> wresp := <span class="keyword">range</span> rch&#123;</span><br><span class="line">		<span class="keyword">for</span> _,ev := <span class="keyword">range</span> wresp.Events&#123;</span><br><span class="line">			fmt.Printf(<span class="string">"watch foo ----%s  %q : %q \n"</span>,ev.Type,ev.Kv.Key,ev.Kv.Value)</span><br><span class="line">			<span class="keyword">return</span> ev.Kv.Value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>周期存取键值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CycleSetKeyValueWithTime</span><span class="params">(cli *clientv3.Client,timeOut <span class="keyword">int64</span>,tempKey,tempValue <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	resp,err := cli.Grant(context.TODO(),timeOut)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span>&#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_,err = cli.Put(context.TODO(),tempKey,tempValue,clientv3.WithLease(resp.ID))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用封装函数，对节点进行操作，在项目目录<code>etcdDemo</code>下创建名为<code>main.go</code>的go文件，<code>main.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"etcdDemo/etcdProject"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">  <span class="string">"time"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>主函数内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//构建服务</span></span><br><span class="line"> etcd,err := etcdProject.CreatCli([]<span class="keyword">string</span>&#123;<span class="string">"127.0.0.1:2379"</span>&#125;,<span class="number">2</span>)</span><br><span class="line"><span class="comment">// 延迟关闭</span></span><br><span class="line"> <span class="keyword">defer</span> etcd.Close()</span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err)</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">//存放</span></span><br><span class="line"> ptr := etcdProject.PutValue(etcd,<span class="string">"abc"</span>,<span class="string">"123"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"存放是否成功"</span>,ptr)</span><br><span class="line"> <span class="comment">//查询</span></span><br><span class="line"> gtr := etcdProject.GetValue(etcd,<span class="string">"abc"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"查询结果"</span>,gtr)</span><br><span class="line"> <span class="comment">//删除</span></span><br><span class="line"> etcdProject.DelValue(etcd,<span class="string">"abc"</span>)</span><br><span class="line"></span><br><span class="line"> gtr = etcdProject.GetValue(etcd,<span class="string">"abc"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"查询结果"</span>,gtr)</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//存放</span></span><br><span class="line"> ptr = etcdProject.PutValue(etcd,<span class="string">"abcdef"</span>,<span class="string">"1234"</span>)</span><br><span class="line"> <span class="comment">//查询带有“abcd”前缀的key</span></span><br><span class="line"> gtbP := etcdProject.GetValueByPrefix(etcd,<span class="string">"abcd"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"查询结果"</span>,gtbP)</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//删除带有“abc”前缀的key</span></span><br><span class="line"> dt := etcdProject.DelValueByPrefix(etcd,<span class="string">"abc"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"删除是否成功"</span>,dt)</span><br><span class="line"> <span class="comment">//查询</span></span><br><span class="line"> gtr = etcdProject.GetValue(etcd,<span class="string">"abcdef"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"查询结果"</span>,gtr)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> <span class="comment">//事务</span></span><br><span class="line"> ofDeal := etcdProject.OfficeDeal(etcd,<span class="string">"abc"</span>,<span class="string">"123"</span>,<span class="string">"456"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"事务是否成功"</span>,ofDeal)</span><br><span class="line"></span><br><span class="line"> gtr = etcdProject.GetValue(etcd,<span class="string">"abc"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"查询结果"</span>,gtr)</span><br><span class="line"></span><br><span class="line"> ofDeal = etcdProject.OfficeDeal(etcd,<span class="string">"abc"</span>,<span class="string">"456"</span>,<span class="string">"345"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"事务是否成功"</span>,ofDeal)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> <span class="comment">//周期</span></span><br><span class="line"> cySetkv := etcdProject.CycleSetKeyValueWithTime(etcd,<span class="number">10</span>,<span class="string">"haha"</span>,<span class="string">"balbal"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"周期是否成功"</span>,cySetkv)</span><br><span class="line"></span><br><span class="line"> gv := etcdProject.GetValue(etcd,<span class="string">"haha"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"周期结束之前"</span>,gv)</span><br><span class="line"></span><br><span class="line"> time.Sleep(<span class="number">11</span> * time.Second)</span><br><span class="line"></span><br><span class="line"> gv = etcdProject.GetValue(etcd,<span class="string">"haha"</span>)</span><br><span class="line"></span><br><span class="line"> fmt.Println(<span class="string">"周期结束之后"</span>,gv)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> <span class="comment">//监看键值</span></span><br><span class="line"> <span class="keyword">var</span> cha  <span class="keyword">chan</span> <span class="keyword">bool</span> </span><br><span class="line"> <span class="comment">//键值监看需要在多线程中操作</span></span><br><span class="line"> <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">   m :=  etcdProject.WatchKey(etcd,<span class="string">"abc"</span>)</span><br><span class="line">   fmt.Println(<span class="string">"监看键值"</span>,<span class="keyword">string</span>(m))</span><br><span class="line">   cha&lt;-<span class="literal">true</span></span><br><span class="line"> &#125;()</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//监看带有“a”前缀的键值</span></span><br><span class="line"> <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">   i := etcdProject.WatchKeyWithPrefix(etcd,<span class="string">"a"</span>)</span><br><span class="line">   fmt.Println(<span class="string">"监看带有前缀的键"</span>,<span class="keyword">string</span>(i))</span><br><span class="line">   cha&lt;-<span class="literal">true</span></span><br><span class="line"> &#125;()</span><br><span class="line"> </span><br><span class="line"> &lt;-cha</span><br><span class="line"> &lt;-cha</span><br></pre></td></tr></table></figure>
+<p>应该打印结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">存放是否成功 true</span><br><span class="line">查询结果 [key:&quot;abc&quot; create_revision:112 mod_revision:119 version:6 value:&quot;123&quot; ]</span><br><span class="line">查询结果 []</span><br><span class="line">查询结果 [key:&quot;abcdef&quot; create_revision:132 mod_revision:132 version:1 value:&quot;1234&quot; ]</span><br><span class="line">删除是否成功 1</span><br><span class="line">查询结果 []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">事务是否成功 true</span><br><span class="line">查询结果 [key:&quot;abc&quot; create_revision:178 mod_revision:179 version:2 value:&quot;123&quot; ]</span><br><span class="line">事务是否成功 true</span><br><span class="line">查询结果 [key:&quot;abc&quot; create_revision:178 mod_revision:180 version:3 value:&quot;345&quot; ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">周期是否成功 true</span><br><span class="line">周期结束之前 [key:&quot;haha&quot; create_revision:215 mod_revision:215 version:1 value:&quot;balbal&quot; lease:7587830532531726201 ]</span><br><span class="line">//这里会延迟11s</span><br><span class="line">周期结束之后 []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">watch foo ----PUT  &quot;abc&quot; : &quot;1234&quot; </span><br><span class="line">监看键值 1234</span><br><span class="line">watch foo ----PUT  &quot;abc&quot; : &quot;121&quot; </span><br><span class="line">监看带有前缀的键 121</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/WuEcho/etcdDemo" target="_blank" rel="noopener">Go语言使用分布式一致性系统etcd单机访问demo</a></p>
 
       
 
@@ -346,6 +380,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2018/05/29/etcd部署多个服务器集群/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          etcd部署多个服务器集群
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/05/28/分布式一致性键值存储系统-etcd/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">分布式一致性键值存储系统--etcd</div>
@@ -375,7 +418,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言使用分布式一致性系统etcd"><span class="toc-number">1.</span> <span class="toc-text">Go语言使用分布式一致性系统etcd</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言使用分布式一致性系统etcd-单机版"><span class="toc-number">1.</span> <span class="toc-text">Go语言使用分布式一致性系统etcd(单机版)</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -491,15 +534,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -519,14 +570,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
@@ -543,11 +586,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -555,11 +598,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -591,19 +634,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -615,15 +646,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -635,15 +682,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
               </li>
              
               <li class="article-tag-list-item">

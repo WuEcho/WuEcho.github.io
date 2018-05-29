@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuecho.com">
-  <title>Tag: 正则表达式 | WuEcho的博客</title>
+  <title>etcd部署多个服务器集群 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一个区块链，iOS开发攻城狮">
-<meta name="keywords" content="区块链">
-<meta property="og:type" content="website">
-<meta property="og:title" content="WuEcho的博客">
-<meta property="og:url" content="http://www.wuecho.com/tags/正则表达式/index.html">
+  <meta name="description" content="etcd部署多个服务器集群1. 启动服务etcd系统的提前准备清楚参考分布式一致性键值存储系统–etcd(终端命令)。要想启动分布式系统必须停止之前的单机版的服务终端。 每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IP 123456789TOKEN=token-01CLUSTER_STATE=newNAME_1=machine-1NAME_2=mach">
+<meta name="keywords" content="搭建多服务器集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="etcd部署多个服务器集群">
+<meta property="og:url" content="http://www.wuecho.com/2018/05/29/etcd部署多个服务器集群/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="一个区块链，iOS开发攻城狮">
+<meta property="og:description" content="etcd部署多个服务器集群1. 启动服务etcd系统的提前准备清楚参考分布式一致性键值存储系统–etcd(终端命令)。要想启动分布式系统必须停止之前的单机版的服务终端。 每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IP 123456789TOKEN=token-01CLUSTER_STATE=newNAME_1=machine-1NAME_2=mach">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-29T13:03:25.828Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WuEcho的博客">
-<meta name="twitter:description" content="一个区块链，iOS开发攻城狮">
+<meta name="twitter:title" content="etcd部署多个服务器集群">
+<meta name="twitter:description" content="etcd部署多个服务器集群1. 启动服务etcd系统的提前准备清楚参考分布式一致性键值存储系统–etcd(终端命令)。要想启动分布式系统必须停止之前的单机版的服务终端。 每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IP 123456789TOKEN=token-01CLUSTER_STATE=newNAME_1=machine-1NAME_2=mach">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -170,71 +171,244 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-etcd部署多个服务器集群" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/04/正则表达式/" class="archive-article-date">
-  	<time datetime="2018-05-04T02:30:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-04</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/04/正则表达式/">正则表达式</a>
+    <h1 class="article-title" itemprop="name">
+      etcd部署多个服务器集群
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/05/29/etcd部署多个服务器集群/" class="archive-article-date">
+  	<time datetime="2018-05-29T12:11:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-29</time>
+</a>
+        
+      </header>
+      
+      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+      </p>
+      <div id="toc-article" class="toc-article">
+          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#etcd部署多个服务器集群"><span class="toc-number">1.</span> <span class="toc-text">etcd部署多个服务器集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-启动服务"><span class="toc-number">1.1.</span> <span class="toc-text">1. 启动服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-测试验证"><span class="toc-number">1.2.</span> <span class="toc-text">2. 测试验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-操作"><span class="toc-number">1.3.</span> <span class="toc-text">3. 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-存储数据"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 存储数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-根据前缀查询"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 根据前缀查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-删除"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-事务写入"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 事务写入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-watch"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 watch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-更多操作"><span class="toc-number">1.4.</span> <span class="toc-text">4 更多操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-代码操作"><span class="toc-number">1.5.</span> <span class="toc-text">5 代码操作</span></a></li></ol></li></ol>
+      </div>
+      <script type="text/javascript">
+          function showToc(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:block");
+              show_toc_btn.setAttribute("style","display:none");
+          };
+          function showBtn(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:none");
+              show_toc_btn.setAttribute("style","display:block");
+          };
+      </script>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="etcd部署多个服务器集群"><a href="#etcd部署多个服务器集群" class="headerlink" title="etcd部署多个服务器集群"></a>etcd部署多个服务器集群</h1><h2 id="1-启动服务"><a href="#1-启动服务" class="headerlink" title="1. 启动服务"></a>1. 启动服务</h2><p>etcd系统的提前准备清楚参考<a href="http://www.wuecho.com/2018/05/28/分布式一致性键值存储系统-etcd/">分布式一致性键值存储系统–etcd(终端命令)</a>。<br>要想启动分布式系统必须停止之前的单机版的服务终端。</p>
+<p>每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TOKEN=token-01</span><br><span class="line">CLUSTER_STATE=new</span><br><span class="line">NAME_1=machine-1</span><br><span class="line">NAME_2=machine-2</span><br><span class="line">NAME_3=machine-3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">CLUSTER=$&#123;NAME_1&#125;=http://$&#123;HOST_1&#125;:2380,$&#123;NAME_2&#125;=http://$&#123;HOST_2&#125;:2380,$&#123;NAME_3&#125;=http://$&#123;HOST_3&#125;:2380</span><br></pre></td></tr></table></figure>
+<p><strong>machine 1</strong> 执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 1</span><br><span class="line">THIS_NAME=$&#123;NAME_1&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_1&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>machine 2</strong> 执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 2</span><br><span class="line">THIS_NAME=$&#123;NAME_2&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_2&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>machine 3</strong> 执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 3</span><br><span class="line">THIS_NAME=$&#123;NAME_3&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_3&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-测试验证"><a href="#2-测试验证" class="headerlink" title="2. 测试验证"></a>2. 测试验证</h2><p>检测服务器运行是否正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line">export ETCDCTL_API=3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
+<h2 id="3-操作"><a href="#3-操作" class="headerlink" title="3. 操作"></a>3. 操作</h2><h3 id="3-1-存储数据"><a href="#3-1-存储数据" class="headerlink" title="3.1 存储数据"></a>3.1 存储数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put foo &quot;Hello World!&quot;</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS get foo</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS --write-out=&quot;json&quot; get foo</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-根据前缀查询"><a href="#3-2-根据前缀查询" class="headerlink" title="3.2 根据前缀查询"></a>3.2 根据前缀查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put web1 value1</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put web2 value2</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put web3 value3</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS get web --prefix</span><br><span class="line"></span><br><span class="line">web1</span><br><span class="line">value1</span><br><span class="line">web2</span><br><span class="line">value2</span><br><span class="line">web3</span><br><span class="line">value3</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-删除"><a href="#3-3-删除" class="headerlink" title="3.3 删除"></a>3.3 删除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put key myvalue</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS del key</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put k1 value1</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put k2 value2</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS del k --prefix</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-事务写入"><a href="#3-4-事务写入" class="headerlink" title="3.4 事务写入"></a>3.4 事务写入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS put user1 bad</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive</span><br><span class="line"></span><br><span class="line">compares:</span><br><span class="line">// 输入以下内容，输入结束按 两次回车</span><br><span class="line">value(&quot;user1&quot;) = &quot;bad&quot;      </span><br><span class="line"></span><br><span class="line">//如果 user1 = bad，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != bad，则执行 put user1 good</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 good</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 success</span><br><span class="line">SUCCESS</span><br><span class="line"></span><br><span class="line">user1</span><br><span class="line">bad</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive</span><br><span class="line">compares:</span><br><span class="line">value(&quot;user1&quot;) = &quot;111&quot;  </span><br><span class="line"></span><br><span class="line">// 如果 user1 = 111，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != 111，则执行 put user1 2222</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 2222</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 failure</span><br><span class="line">FAILURE</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS get user1</span><br><span class="line">user1</span><br><span class="line">2222</span><br></pre></td></tr></table></figure>
+<h3 id="3-5-watch"><a href="#3-5-watch" class="headerlink" title="3.5 watch"></a>3.5 watch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 当 stock1 的数值改变（ put 方法）的时候，watch 会收到通知</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS watch stock1</span><br><span class="line"></span><br><span class="line">// 新打开终端</span><br><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line">export ETCDCTL_API=3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock1 1000</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS watch stock --prefix</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock1 10</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock2 20</span><br></pre></td></tr></table></figure>
+<h2 id="4-更多操作"><a href="#4-更多操作" class="headerlink" title="4 更多操作"></a>4 更多操作</h2><p><a href="https://coreos.com/etcd/docs/latest/demo.html" target="_blank" rel="noopener">了解更多操作</a></p>
+<h2 id="5-代码操作"><a href="#5-代码操作" class="headerlink" title="5 代码操作"></a>5 代码操作</h2><p>注：要想使用代码来存取查询操作，需要对构建的etcd对象ip地址进行修改。</p>
+<p><a href="https://github.com/WuEcho/etcdDemo.git" target="_blank" rel="noopener">Go语言使用etcd实现分布式集群demo示例</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢您的投食<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/weixin.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">正则表达式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">搭建多服务器集群</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuecho.com/2018/05/29/etcd部署多个服务器集群/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/05/28/Go语言使用分布式一致性系统etcd/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Go语言使用分布式一致性系统etcd</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#etcd部署多个服务器集群"><span class="toc-number">1.</span> <span class="toc-text">etcd部署多个服务器集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-启动服务"><span class="toc-number">1.1.</span> <span class="toc-text">1. 启动服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-测试验证"><span class="toc-number">1.2.</span> <span class="toc-text">2. 测试验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-操作"><span class="toc-number">1.3.</span> <span class="toc-text">3. 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-存储数据"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 存储数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-根据前缀查询"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 根据前缀查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-删除"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-事务写入"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 事务写入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-watch"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 watch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-更多操作"><span class="toc-number">1.4.</span> <span class="toc-text">4 更多操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-代码操作"><span class="toc-number">1.5.</span> <span class="toc-text">5 代码操作</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -257,9 +431,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

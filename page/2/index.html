@@ -172,6 +172,207 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-密码算法加密原理及攻击方式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/17/密码算法加密原理及攻击方式/">密码算法加密原理及攻击方式</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/17/密码算法加密原理及攻击方式/" class="archive-article-date">
+  	<time datetime="2018-05-17T07:51:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-17</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="密码算法加密原理及攻击方式"><a href="#密码算法加密原理及攻击方式" class="headerlink" title="密码算法加密原理及攻击方式"></a>密码算法加密原理及攻击方式</h1><h2 id="1-密码算法分类"><a href="#1-密码算法分类" class="headerlink" title="1. 密码算法分类"></a>1. 密码算法分类</h2><p>密码算法可以分为<strong>分组密码</strong>和<strong>流密码</strong>两种</p>
+<ul>
+<li><p><strong>分组密码（block cipher）</strong>是每次只能处理特定长度的一块数据的一类密码算法，这里的“一块”就称为分组（block）。一个分组的比特数就称为分组长度（block lenght）。</p>
+<p>  例如 DES和3DES的分组长度都是64比特。AES的分组长度为128比特。</p>
+</li>
+<li><p><strong>流密码（stream cipher）</strong>是对数据流进行连续处理的一类密码算法。流密码中一般以1比特、8比特、或32比特等为单位进行加密和解密。</p>
+</li>
+</ul>
+<p>　　分组密码处理完一个分组就结束了，因此不需要通过内部状态来记录加密的进度；相对地，流密码是对一串数据进行连续处理，因此需要保持内部状态。</p>
+<h2 id="2-加密模式"><a href="#2-加密模式" class="headerlink" title="2. 加密模式"></a>2. 加密模式</h2><p>　　分组密码算法只能加密固定长度的分组，但是我们需要加密的明文长度可能会超过分组密码的分组长度，这时就需要对分组密码算法进行迭代，以便将一段很长的明文全部加密。而迭代的方法就称为分组密码的模式（mode）。</p>
+<ul>
+<li>ECB模式：Electronic CodeBook mode（电子密码模式）</li>
+<li>CBC模式：Cipher Block Chaining mode（密码分组链接模式）</li>
+<li>CFB模式：Cipher FeedBack mode（密文反馈模式）</li>
+<li>OFB模式：Output FeedBack mode（输出反馈模式）</li>
+<li>CTR模式：CounTeR mode（计数器模式）</li>
+</ul>
+<h3 id="2-1-ECB模式"><a href="#2-1-ECB模式" class="headerlink" title="2.1 ECB模式"></a>2.1 ECB模式</h3><p>　　在ECB模式中，将明文分组加密之后的结果直接成为密文分组。当最后一个明文分组的内容小于分组长度时，需要用一些特定的数据进行填充（padding）。</p>
+<p><strong>明文分组</strong>：是指分组密码算法中作为加密对象的明文。<br><strong>密文分组</strong>：是指使用分组密码算法中将明文分组加密之后所生成的密文。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-192036.png" alt=""></p>
+<p>　　使用 ECB 模式加密时，相同的明文分组会转换为相同的密文分组，也就是说，我们可以将其理解为是一个巨大的“明文分组-&gt;密文分组”的对应表，因此 ECB 模式也称为 <strong>电子密码本模式</strong>。</p>
+<h4 id="ECB模式的特点"><a href="#ECB模式的特点" class="headerlink" title="ECB模式的特点"></a>ECB模式的特点</h4><p>　　ECB模式是所有模式中最简单的一种。ECB的明文分组与密文分组是一一对应的关系，因此，如果明文中存在多个相同的明文分组，则这些明文分组最终都会将被转换为相同的密文分组。这样一来，只要观察一下密文，就可以知道明文中存在怎样的重复组合，并可以以此为线索来破译密码，因此ECB模式是存在风险的。</p>
+<h4 id="对ECB模式的攻击"><a href="#对ECB模式的攻击" class="headerlink" title="对ECB模式的攻击"></a>对ECB模式的攻击</h4><p>　　假如存在主动攻击者Mallory，它能够改变密文分组的顺序。当接收者对密文进行解密时，由于密文分组的顺序被改变了，因此相应的明文分组的顺序也会改变。也就是说，攻击者Mallory无需破译密码就能够操纵明文。</p>
+<p>列举一个银行转账的简单例子，假设某银行转账数据由以下3个分组构成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">分组1 = 付款人的银行账号</span><br><span class="line">分组2 = 收款人的银行账号</span><br><span class="line">分组3 = 转转金额</span><br></pre></td></tr></table></figure>
+<p>我们可以制作一个“从 A 账号 向 B账号转账1000元”的数据，用16进制数据表示如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">明文分组1 = 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 （付款人：A）</span><br><span class="line"></span><br><span class="line">明文分组2 = 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30  （收款人： B）</span><br><span class="line"></span><br><span class="line">明文分组3 = 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  （转账金额： 1000）</span><br></pre></td></tr></table></figure>
+<p>经过 ECB模式进行加密，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">密文分组1 = 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C （付款人：*）</span><br><span class="line"></span><br><span class="line">密文分组2 = 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F （收款人： *）</span><br><span class="line"></span><br><span class="line">密文分组3 = 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E （转账金额： **）</span><br></pre></td></tr></table></figure>
+<p>如果攻击者 Mallory 将密文分组1 和 2 内容对调，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">密文分组1 = 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F （付款人： *）</span><br><span class="line"></span><br><span class="line">密文分组2 = 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C （收款人：*）</span><br><span class="line"></span><br><span class="line">密文分组3 = 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E （转账金额： **）</span><br></pre></td></tr></table></figure>
+<p>　　那请求内容从A向B转账1000，变成了B向A转账1000。我们可以看出ECB模式的缺点是可以在不破译密文的情况下操纵明文。</p>
+<h3 id="2-2-CBC模式"><a href="#2-2-CBC模式" class="headerlink" title="2.2 CBC模式"></a>2.2 CBC模式</h3><p>　　CBC模式，全称Cipher Block Chaining模式，译为密文分组链接模式，即加密算法的输入是上一个密文分组和下一个明文分组的异或。因为是将上一个密文分组和下一个明文分组的内容混合加密，因此可以避免ECB模式的缺陷。当加密第一个明文分组时，由于不存在上一个密文分组，因此需要准备与分组等长的初始化向量IV，来代替上一个密文分组。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-201449.png" alt=""></p>
+<p>　　<strong>初始化向量</strong>：当加密第一个明文分组时，由于不存在“前一个密文分组”，因此需要事先准备一个长度为一个分组的比特序列来代替“前一个密文分组”，这个比特序列称为初始化向量，通常缩写为IV。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func NewCBCEncrypter(b Block, iv []byte) BlockMode</span><br></pre></td></tr></table></figure>
+<p>当我们使用 CBC模式的时候，需要传入 iv（初始化向量）</p>
+<h4 id="CBC模式的特点"><a href="#CBC模式的特点" class="headerlink" title="CBC模式的特点"></a>CBC模式的特点</h4><ul>
+<li><p>明文分组在加密之前一定会与“前一个密文分组”进行XOR运算，因此即便明文分组1和2的值是相等的，密文分组1和2的值也不一定是相等的。这样ECB模式的缺陷在CBC模式中就不存在了。</p>
+</li>
+<li><p>在CBC模式中，无法单独对一个中间的明文分组进行加密。例如，如果要生成密文分组3，则至少需要凑齐明文分组1、2、3才行。</p>
+</li>
+<li><p>如果密文分组中有一些比特缺失了，即便只缺失了1比特，那么缺失比特的位置之后的密文分组也就全部无法解密了。</p>
+</li>
+</ul>
+<h4 id="对CBC模式的攻击"><a href="#对CBC模式的攻击" class="headerlink" title="对CBC模式的攻击"></a>对CBC模式的攻击</h4><p>　　假设主动攻击者Mallory的目的是通过修改密文来操纵解密后的明文。如果Mallory能够对初始化向量中任意比特进行反转，则解密后得到的明文分组中相应的比特也会被反转。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-202558.png" alt=""></p>
+<h3 id="2-3-CFB模式"><a href="#2-3-CFB模式" class="headerlink" title="2.3 CFB模式"></a>2.3 CFB模式</h3><p>　　CFB模式，全称Cipher FeedBack模式，译为密文反馈模式，即上一个密文分组作为加密算法的输入，输出与明文异或作为下一个分组的密文。在CFB模式中，明文分组和密文分组之间只有一次异或。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-203020.png" alt=""></p>
+<p>　　CFB模式与一次性密码本相似，都是通过将明文与随机比特序列进行异或运算来生成密文。但由于CFB模式中密码算法的输出是通过计算得到的，并非真正的随机数，因此不具备一次性密码本那样理论上不可破译的性质。CFB模式可以看做使用分组方式实现流密码的方式。</p>
+<h4 id="对CFB模式的攻击"><a href="#对CFB模式的攻击" class="headerlink" title="对CFB模式的攻击"></a>对CFB模式的攻击</h4><p>　　对CFB模式可以实施 <strong>重放攻击（replay attack）</strong></p>
+<p>　　有一天 A 向 B 发送了一条消息，这条消息由4个密文分组组成，攻击者将后3个密文分组保存下来，第二天，A又向 B 发送内容不同的4个密文分组，攻击者将后3个密文分组进行替换。解密的时候就会发现第一个可以解密正确，第2个会出现错误，而第3个和第4个则变成攻击者替换的内容。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-204000.png" alt=""></p>
+<h3 id="2-4-OFB模式"><a href="#2-4-OFB模式" class="headerlink" title="2.4 OFB模式"></a>2.4 OFB模式</h3><p>　　OFB模式，全称Output Feedback模式，译为输出反馈模式。OFB模式与CFB模式类似，只是加密算法的输入是上一次加密的输出。</p>
+<p>　　OFB模式不是通过密码算法对明文直接进行加密的，而是通过将“<strong>明文分组</strong>”和“<strong>密码算法的输出</strong>”进行XOR来产生“密文分组”的。</p>
+<p>　　OFB模式加密和处理解密逻辑相同，明文与密钥流异或生成密文，密文与密钥流异或生成明文。<br>　　<br><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-204818.png" alt=""><br>　　<br><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-204840.png" alt=""></p>
+<h3 id="2-5-CTR模式"><a href="#2-5-CTR模式" class="headerlink" title="2.5 CTR模式"></a>2.5 CTR模式</h3><p>　　CTR模式，全称Counter模式，译为计数器模式。CTR模式中，每个分组对应一个逐次累加的计数器，并通过对计数器进行加密来生成密钥流。也即最终的密文分组是通过将计数器加密得到的比特序列，与明文分组进行异或运算得到的。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-205323.png" alt=""></p>
+<h4 id="CTR模式的特点"><a href="#CTR模式的特点" class="headerlink" title="CTR模式的特点"></a>CTR模式的特点</h4><ul>
+<li><p>CTR模式的加密和解密使用了完全相同的结构，因此在程序实现上比较容易。这一特点和同为流密码的OFB模式是一样的。</p>
+</li>
+<li><p>CTR模式中可以以任意顺序对分组进行加密和解密，因此在加密和解密时需要用到的“计数器”的值可以由nonce和分组序号直接计算出来。能够以任意顺序处理分组，就以为着能够实现并行计算。在支持并行计算的系统中，CTR模式的速度是非常快的。</p>
+</li>
+</ul>
+<h4 id="错误与机密性"><a href="#错误与机密性" class="headerlink" title="错误与机密性"></a>错误与机密性</h4><ul>
+<li><p>假设CTR模式的密文分组中有一个比特被反转了，则解密后明文分组中仅有与之对应的比特会被反转，这一错误不会放大，这一弱点和OFB模式是相同的。</p>
+</li>
+<li><p>在OFB模式中，如果对密钥流的一个分组进行加密后其结果碰巧和加密前是相同的，那么这一分组之后的密钥流就会变成同一值的不断反复。在CTR模式中就不存在这一问题。</p>
+</li>
+</ul>
+<h2 id="3-分组密码模式比较"><a href="#3-分组密码模式比较" class="headerlink" title="3. 分组密码模式比较"></a>3. 分组密码模式比较</h2><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>优点</th>
+<th>缺点</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ECB模式</td>
+<td>简单<br> 快速<br> 支持并行运算</td>
+<td>明文中的重复排列反映在密文中<br> 通过删除、替换密文分组可以对明文进行操作 <br> 对包含某些比特错误的密文进行解密时对应的分组会出错 <br> 不能抵御重放攻击</td>
+<td>不应使用</td>
+</tr>
+<tr>
+<td>CBC模式</td>
+<td>明文的重复排列不会反映在密文中<br> 支持并行运算（仅解密）<br> 能够解密任意密文分组</td>
+<td>对包含某些错误比特的密文进行解密时，第一个分组的全部比特以及后一个分组的相应比特会出错<br> 加密不支持并行运算</td>
+<td>CRYPRTREC推荐 《应用密码学》推荐</td>
+</tr>
+<tr>
+<td>CFB模式</td>
+<td>不需要填充<br> 支持并行计算（仅解密）<br> 能够解密任意密文分组</td>
+<td>加密不支持并行计算<br> 对包含某些错误比特的密文进行解密时，第一个分组的全部比特以及后一个分组的相应比特会出错<br> 不能抵御重放攻击</td>
+<td>CRYPRTREC推荐</td>
+</tr>
+<tr>
+<td>OFB模式</td>
+<td>不需要填充<br> 可事先进行加密、解密的准备 <br> 加密、解密使用相同结构 <br> 对包含某些错误比特的密文进行解密时，只有明文中相对应的比特会出错</td>
+<td>不支持并行计算 <br> 主动攻击者反转密文分组中的某些比特时，明文分组中相对应的比特也会被反转</td>
+<td>CRYPRTREC推荐</td>
+</tr>
+<tr>
+<td>CTR模式</td>
+<td>不需要填充<br> 可事先进行加密、解密的准备 <br> 加密、解密使用相同结构 <br> 对包含某些错误比特的密文进行解密时，只有明文中相对应的比特会出错 <br> 支持并行计算（加密、解密）</td>
+<td>主动攻击者反转密文分组中的某些比特时，明文分组中相对应的比特也会被反转</td>
+<td>CRYPRTREC推荐 《应用密码学》推荐</td>
+</tr>
+</tbody>
+</table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码算法加密原理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/17/密码算法加密原理及攻击方式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言实现加密算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1555,152 +1756,6 @@
 
 
   
-    <article id="post-星云链Nebulas101-02-发送交易" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/08/星云链Nebulas101-02-发送交易/">星云链Nebulas101 - 02 发送交易</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/08/星云链Nebulas101-02-发送交易/" class="archive-article-date">
-  	<time datetime="2018-05-08T14:42:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="02-发送交易"><a href="#02-发送交易" class="headerlink" title="02 发送交易"></a>02 发送交易</h1><p><strong>Nebulas提供了三种方式去发送交易：</strong></p>
-<ol>
-<li>签名 &amp; 发送</li>
-<li>密码 &amp; 发送</li>
-<li>解锁 &amp; 发送</li>
-</ol>
-<p>发送者账户</p>
-<p>在这里，将会使用配置文件<code>conf/default/genesis.conf</code>中预分配过代币的账户中选择一个作为发送者账户，默认选择<code>n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE</code>。</p>
-<p>接受者账户</p>
-<p>我们使用如下指令创建一个全新的账户来做接受者，请记住输入的密码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./neb account new</span><br><span class="line">Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.</span><br><span class="line">Passphrase:</span><br><span class="line">Repeat passphrase:</span><br><span class="line">Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>提示：你创建的新账户和上面可能不一样，请以你创建的账户做为接受者继续接下来的实验</p>
-</blockquote>
-<p>新账户的keystore文件将会被放置在$GOPATH/src/github.com/nebulasio/go-nebulas/keydir/内。</p>
-<h2 id="1-启动私有链"><a href="#1-启动私有链" class="headerlink" title="1.启动私有链"></a>1.启动私有链</h2><h3 id="1-1-启动种子节点"><a href="#1-1-启动种子节点" class="headerlink" title="1.1 启动种子节点"></a>1.1 启动种子节点</h3><p>首先，我们启动本地私有链的第一个节点，它可以作为其他节点的种子节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./neb -c conf/default/config.conf</span><br></pre></td></tr></table></figure>
-<h3 id="1-2-启动矿工节点"><a href="#1-2-启动矿工节点" class="headerlink" title="1.2 启动矿工节点"></a>1.2 启动矿工节点</h3><p>接着，我们启动一个矿工节点接入本地私有链，这个节点之后将会产生新的区块。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./neb -c conf/example/miner.conf</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>多久会生成一个新的区块?</p>
-<p>在星云链上, 在贡献度证明（Proof-of-Devotion， <a href="https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf" target="_blank" rel="noopener">技术白皮书</a>中有详细描述）被充分验证前，DPoS<br>被选择作为一个过渡方案。在采用DPoS共识算法中，总共有21个矿工，每个矿工会轮流每15s出一个<br>新区块。<br>在目前的测试环境中，由于只启动了21个矿工中的一个，所以需要等待15*21s才会出一个新区<br>块。</p>
-</blockquote>
-<p>一旦一个新区块被挖出，挖块奖励将会被自动发送到当前矿工配置的Coinbase账户中，在<code>conf/example/miner.conf</code>里，该账户就是<code>n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE</code></p>
-<h2 id="2-星云链交互"><a href="#2-星云链交互" class="headerlink" title="2.星云链交互"></a>2.星云链交互</h2><p>星云链提供给开发者HTTP API, RPC API和CLI来和运行中的星云节点交互。在教程中，我们将会基于HTTP API（<a href="https://github.com/nebulasio/wiki/blob/master/rpc.md" target="_blank" rel="noopener">API Module</a> | <a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md" target="_blank" rel="noopener">Admin Module</a>）来介绍三种发送交易的方法。</p>
-<blockquote>
-<p>提示：星云链的HTTP服务默认端口号为8685</p>
-</blockquote>
-<p>首先，在发送新交易前，我们检查下发送者账户的状态</p>
-<h3 id="2-1-检查账户状态"><a href="#2-1-检查账户状态" class="headerlink" title="2.1 检查账户状态"></a>2.1 检查账户状态</h3><p>每个交易如果需要上链，都需要给矿工缴纳一部分手续费，所以发送者账户中需要有一部分钱才能成功发送交易。一般一个普通转账交易，手续费在0.000000002NAS左右，非常少。</p>
-<p>我们可以通过API Module中的<code>/v1/user/accountstate</code>接口来获取发送者账户<code>n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE</code>的账户信息，检查下是否有足够的钱支付上链手续费。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d &apos;&#123;&quot;address&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">//输出</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;balance&quot;:&quot;5000000000000000000000000&quot;,&quot;nonce&quot;:&quot;0&quot;,&quot;type&quot;:87&#125;&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>提示：Type用于标记账户类型。88表示该账户为智能合约账户，部署一个合约之后，就可以得到一个合约<br>账户。87表示非合约账户，我们通过./neb account new创建的账户就是非合约账户，用户存储链上资<br>产。</p>
-<p>提示：Nonce用于标记账户发起的所有交易的顺序。同一个账户，每发起一个新的交易，Nonce就加一，<br>初始为0，第一个交易的Nonce为1。</p>
-</blockquote>
-<p>如我们所见，发送者账户在预分配后拥有5000000000000000000000000(5 * 10^24)个代币，1个NAS是1000000000000000000（10^18）个代币，用于支付交易上链的手续费绰绰有余。</p>
-<p>然后我们检查接受者账户的状态。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d &apos;&#123;&quot;address&quot;:&quot;n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy&quot;&#125;&apos;</span><br><span class="line">//输出</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;balance&quot;:&quot;0&quot;,&quot;nonce&quot;:&quot;0&quot;,&quot;type&quot;:87&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>如期望的那样，新账户没有任何代币</p>
-<h3 id="2-2-发送交易"><a href="#2-2-发送交易" class="headerlink" title="2.2 发送交易"></a>2.2 发送交易</h3><h4 id="2-2-1-签名-amp-发送"><a href="#2-2-1-签名-amp-发送" class="headerlink" title="2.2.1 签名 &amp; 发送"></a>2.2.1 签名 &amp; 发送</h4><p>使用这种方式，我们可以在离线环境下先使用私钥签名好交易，然后把签好名的交易在联网的机器上发出。这是最安全的发送交易的方式，私钥可以完全离线保存，不触网。<a href="https://github.com/nebulasio/web-wallet" target="_blank" rel="noopener">Web-Wallet</a>正是基于<a href="https://github.com/nebulasio/neb.js" target="_blank" rel="noopener">Neb.js</a>采用这种方法发送的交易。</p>
-<p>首先，我们使用<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#signtransactionwithpassphrase" target="_blank" rel="noopener">Admin Module</a>中的<code>v1/admin/sign</code>接口给准备发的交易签名，得到交易的二进制数据。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/sign -d &apos;&#123;&quot;transaction&quot;:&#123;&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;, &quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:1,&quot;gasPrice&quot;:&quot;1000000&quot;,&quot;gasLimit&quot;:&quot;2000000&quot;&#125;, &quot;passphrase&quot;:&quot;passphrase&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">//打印</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;data&quot;:&quot;CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA=&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>提示：在发送交易时，对于同一个账户，只有当他Nonce为N的交易上链后，Nonce为N+1的交易才能上<br>链，有严格的顺序，Nonce必须严格加1。可以通过<a href="https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate" target="_blank" rel="noopener">GetAccountState</a>接口查看最新的Nonce。</p>
-</blockquote>
-<p>然后，将签好名的交易原始数据提交到本地私有链里的星云节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/user/rawtransaction -d &apos;&#123;&quot;data&quot;:&quot;CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA=&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">//打印</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;txhash&quot;:&quot;1b8cc3f977256c4d620b7d72f531bc19f10eb13a05ff24a8a792cd5da53a1277&quot;,&quot;contract_address&quot;:&quot;&quot;&#125;&#125;⏎</span><br></pre></td></tr></table></figure>
-<h4 id="2-2-2-密码-amp-发送"><a href="#2-2-2-密码-amp-发送" class="headerlink" title="2.2.2 密码 &amp; 发送"></a>2.2.2 密码 &amp; 发送</h4><p>如果你信任一个星云节点帮你保存keystore文件，你可以使用第二种方法发送交易。</p>
-<p>首先，上传你的keystore文件到你信任的星云节点的keydir文件夹下。如果在节点在本地，可以使用如下指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /path/to/keystore.json /path/to/keydir/</span><br></pre></td></tr></table></figure></p>
-<p>然后，我们发送交易的同时，带上我们keystore的密码，在被信任的节点使用<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransactionwithpassphrase" target="_blank" rel="noopener">SendTransactionWithPassphrase</a>接口上一次性完成签名和发送过程。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d &apos;&#123;&quot;transaction&quot;:&#123;&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;, &quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:2,&quot;gasPrice&quot;:&quot;1000000&quot;,&quot;gasLimit&quot;:&quot;2000000&quot;&#125;,&quot;passphrase&quot;:&quot;passphrase&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;txhash&quot;:&quot;3cdd38a66c8f399e2f28134e0eb556b292e19d48439f6afde384ca9b60c27010&quot;,&quot;contract_address&quot;:&quot;&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>提示：因为我们在之前使用n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE发送了一个Nonce为1的交易，<br>所以这里新的交易的Nonce应该增加1，变成2再提交。</p>
-</blockquote>
-<h4 id="2-2-3-解锁-amp-发送"><a href="#2-2-3-解锁-amp-发送" class="headerlink" title="2.2.3 解锁 &amp; 发送"></a>2.2.3 解锁 &amp; 发送</h4><p>这是最危险的发送交易的方法。除非你完全信任一个星云节点，否则不要使用这种方法来发送交易。</p>
-<p>首先，上传你的keystore文件到你信任的星云节点的keydir文件夹下。如果在节点在本地，可以使用如下指令。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /path/to/keystore.json /path/to/keydir/</span><br></pre></td></tr></table></figure>
-<p>然后，使用你的keystore文件的密码，在指定的时间范围来在被信任的节点上使用<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount" target="_blank" rel="noopener">Unlock</a>接口解锁账户。时间单位为纳秒，300000000000为300s。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/account/unlock -d &apos;&#123;&quot;address&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;passphrase&quot;:&quot;passphrase&quot;,&quot;duration&quot;:&quot;300000000000&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;result&quot;:true&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>一旦一个账户在节点上被解锁，任何可以访问该机器<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction" target="_blank" rel="noopener">SendTransaction</a>接口的人，都可以直接使用该账户的身份发送交易。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/transaction -d &apos;&#123;&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;, &quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:3,&quot;gasPrice&quot;:&quot;1000000&quot;,&quot;gasLimit&quot;:&quot;2000000&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;txhash&quot;:&quot;8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf&quot;,&quot;contract_address&quot;:&quot;&quot;&#125;&#125;⏎</span><br></pre></td></tr></table></figure>
-<h3 id="2-4-交易收据"><a href="#2-4-交易收据" class="headerlink" title="2.4 交易收据"></a>2.4 交易收据</h3><p>不论使用的哪一种方法发送交易，我们都会得到两个返回值，<code>txhash</code>和<code>contract_address</code>。其中<code>txhash</code>为交易hash，是一个交易的唯一标识。如果当前交易是一个部署合约的交易，<code>contract_address</code>将会是合约地址，调用合约时都会使用这个地址，是合约的唯一标识。我们将在编写并运行智能合约中介绍如何发送部署合约的交易</p>
-<p>使用<code>txhash</code>我们可以查看交易收据，知道当前交易的状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d &apos;&#123;&quot;hash&quot;:&quot;8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;hash&quot;:&quot;8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf&quot;,&quot;chainId&quot;:100,&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;,&quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:&quot;3&quot;,&quot;timestamp&quot;:&quot;1524667888&quot;,&quot;type&quot;:&quot;binary&quot;,&quot;data&quot;:null,&quot;gas_price&quot;:&quot;1000000&quot;,&quot;gas_limit&quot;:&quot;2000000&quot;,&quot;contract_address&quot;:&quot;&quot;,&quot;status&quot;:1,&quot;gas_used&quot;:&quot;20000&quot;&#125;&#125;⏎</span><br></pre></td></tr></table></figure></p>
-<p>这里的<code>status</code>可能有三种状态值，0，1和2。</p>
-<ul>
-<li>0: 交易失败. 表示当前交易已经上链，但是执行失败了。可能是因为部署合约或者调用合约参数错误。</li>
-<li>1: 交易成功. 表示当前交易已经上链，而且执行成功了。</li>
-<li>2: 交易待定. 表示当前交易还没有上链。可能是因为当前交易还没有被打包；如果长时间处于当前状态，可能是因为当前交易的发送者账户的余额不够支付上链手续费。</li>
-</ul>
-<h3 id="2-5-复查接受者账户余额"><a href="#2-5-复查接受者账户余额" class="headerlink" title="2.5 复查接受者账户余额"></a>2.5 复查接受者账户余额</h3><p>我们复查一下接受者账户上的钱是否已经到账了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d &apos;&#123;&quot;address&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;balance&quot;:&quot;3000000000000000000&quot;,&quot;nonce&quot;:&quot;0&quot;,&quot;type&quot;:87&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>我们用三种方式分别发送了一笔转账，每笔转一个NAS，所以这里看到接受者账户中已经有了3个NAS，即3000000000000000000个代币</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">发送交易</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/08/星云链Nebulas101-02-发送交易/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1802,15 +1857,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1830,14 +1893,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
@@ -1854,11 +1909,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1866,11 +1921,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1902,19 +1957,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1926,15 +1969,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1946,15 +2005,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
               </li>
              
               <li class="article-tag-list-item">

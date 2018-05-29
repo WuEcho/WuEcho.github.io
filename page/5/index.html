@@ -172,6 +172,143 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言中的方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/28/Go语言中的方法/">Go语言中的方法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/28/Go语言中的方法/" class="archive-article-date">
+  	<time datetime="2018-04-28T08:58:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="方法（method）"><a href="#方法（method）" class="headerlink" title="方法（method）"></a>方法（method）</h1><h2 id="1-1-什么是方法"><a href="#1-1-什么是方法" class="headerlink" title="1.1 什么是方法"></a>1.1 什么是方法</h2><p>　　Go 语言中同时有函数和方法。一个方法就是一个包含了接受者的函数，接受者可以是命名类型或者结构体类型的一个值或者是一个指针。所有给定类型的方法属于该类型的方法集<br>　　<br>　　- Go中虽没有class，依旧有method<br>　　- 只能为同一个包中的类型定义方法<br>　　- 不存在方法重载<br>　　- 可以使用值或指针来调用方法，编译器会自动完成转换<br>　　- 通过显示说明receiver来实现与某个类型的组合<br>　　- receiver可以是类型的值或者指针<br>　　- 如果外部结构和嵌入结构存在同名方法，则优先调用外部结构的方法<br>　　- 类型别名不会拥有底层类型所附带的方法<br>　　- 方法可以调用结构中的非公开字段</p>
+<h2 id="1-2-方法的语法"><a href="#1-2-方法的语法" class="headerlink" title="1.2 方法的语法"></a>1.2 方法的语法</h2><p>定义方法的语法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//   receiver</span></span><br><span class="line"><span class="comment">//      ↓</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Type)</span> <span class="title">methodName</span><span class="params">(parameter list)</span></span> &#123;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Employee <span class="keyword">struct</span> &#123;  </span><br><span class="line">    name     <span class="keyword">string</span></span><br><span class="line">    salary   <span class="keyword">int</span></span><br><span class="line">    currency <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> displaySalary() method has Employee as the receiver type</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e Employee)</span> <span class="title">displaySalary</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Printf(<span class="string">"Salary of %s is %s%d"</span>, e.name, e.currency, e.salary)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    emp1 := Employee &#123;</span><br><span class="line">        name:     <span class="string">"Sam Adolf"</span>,</span><br><span class="line">        salary:   <span class="number">5000</span>,</span><br><span class="line">        currency: <span class="string">"$"</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    emp1.displaySalary() <span class="comment">//Calling displaySalary() method of Employee type</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>可以定义相同的方法名</strong></p>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"math"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Rectangle <span class="keyword">struct</span> &#123;</span><br><span class="line">	width, height <span class="keyword">float64</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Circle <span class="keyword">struct</span> &#123;</span><br><span class="line">	radius <span class="keyword">float64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r Rectangle)</span> <span class="title">area</span><span class="params">()</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> r.width * r.height</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//该 method 属于 Circle 类型对象中的方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Circle)</span> <span class="title">area</span><span class="params">()</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> c.radius * c.radius * math.Pi</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r1 := Rectangle&#123;<span class="number">12</span>, <span class="number">2</span>&#125;</span><br><span class="line">	c1 := Circle&#123;<span class="number">10</span>&#125;</span><br><span class="line">	fmt.Println(<span class="string">"Area of r1 is: "</span>, r1.area())</span><br><span class="line">	fmt.Println(<span class="string">"Area of c1 is: "</span>, c1.area())</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Area of r1 is:  24</span><br><span class="line">Area of c1 is:  314.1592653589793</span><br></pre></td></tr></table></figure>
+<ul>
+<li>虽然method的名字一模一样，但是如果接收者不一样，那么method就不一样</li>
+<li>method里面可以访问接收者的字段</li>
+<li>调用method通过.访问，就像struct里面访问字段一样 </li>
+</ul>
+<h2 id="1-3-变量作用域"><a href="#1-3-变量作用域" class="headerlink" title="1.3 变量作用域"></a>1.3 变量作用域</h2><p>作用域为已声明标识符所表示的常量、类型、变量、函数或包在源代码中的作用范围。</p>
+<p>Go 语言中变量可以在三个地方声明：</p>
+<ul>
+<li>函数内定义的变量称为局部变量</li>
+<li>函数外定义的变量称为全局变量</li>
+<li>函数定义中的变量称为形式参数</li>
+</ul>
+<p><strong>局部变量</strong></p>
+<p>在函数体内声明的变量称之为局部变量，它们的作用域只在函数体内，参数和返回值变量也是局部变量。</p>
+<p><strong>全局变量</strong></p>
+<p>在函数体外声明的变量称之为全局变量，首字母大写全局变量可以在整个包甚至外部包（被导出后）使用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 声明全局变量 */</span></span><br><span class="line"><span class="keyword">var</span> g <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 声明局部变量 */</span></span><br><span class="line">   <span class="keyword">var</span> a, b <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 初始化参数 */</span></span><br><span class="line">   a = <span class="number">10</span></span><br><span class="line">   b = <span class="number">20</span></span><br><span class="line">   g = a + b</span><br><span class="line"></span><br><span class="line">   fmt.Printf(<span class="string">"结果： a = %d, b = %d and g = %d\n"</span>, a, b, g)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>结果</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">结果： a = <span class="number">10</span>, b = <span class="number">20</span> and g = <span class="number">30</span></span><br></pre></td></tr></table></figure>
+<p><strong>形式参数</strong></p>
+<p>形式参数会作为函数的局部变量来使用</p>
+<h2 id="1-4-类型重命名与方法相结合"><a href="#1-4-类型重命名与方法相结合" class="headerlink" title="1.4 类型重命名与方法相结合"></a>1.4 类型重命名与方法相结合</h2><p>示例<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> “fmt”</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> TZ <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> a TZ</span><br><span class="line">   a.Print()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a *TZ)</span><span class="title">Print</span><span class="params">()</span></span>&#123;</span><br><span class="line">   fmt.Println(<span class="string">"TZ"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TZ</span><br></pre></td></tr></table></figure>
+<p><strong>ps:这里需要说明的是，尽管使用的是类型重命名，但是并不会将该类型的属性以及方法携带过来，与结构体的嵌套不同。尽管本质上两个类型可能是同一个，但是重命名以后类型还是不同的，需要进行类型转换</strong></p>
+<h2 id="1-5-method继承"><a href="#1-5-method继承" class="headerlink" title="1.5 method继承"></a>1.5 method继承</h2><p>method是可以继承的，如果匿名字段实现了一个method，那么包含这个匿名字段的struct也能调用该method<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Human <span class="keyword">struct</span> &#123;</span><br><span class="line">	name  <span class="keyword">string</span></span><br><span class="line">	age   <span class="keyword">int</span></span><br><span class="line">	phone <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</span><br><span class="line">	Human  <span class="comment">//匿名字段</span></span><br><span class="line">	school <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Employee <span class="keyword">struct</span> &#123;</span><br><span class="line">	Human   <span class="comment">//匿名字段</span></span><br><span class="line">	company <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *Human)</span> <span class="title">SayHi</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"Hi, I am %s you can call me on %s\n"</span>, h.name, h.phone)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	mark := Student&#123;Human&#123;<span class="string">"Mark"</span>, <span class="number">25</span>, <span class="string">"222-222-YYYY"</span>&#125;, <span class="string">"MIT"</span>&#125;</span><br><span class="line">	sam := Employee&#123;Human&#123;<span class="string">"Sam"</span>, <span class="number">45</span>, <span class="string">"111-888-XXXX"</span>&#125;, <span class="string">"Golang Inc"</span>&#125;</span><br><span class="line">	mark.SayHi()</span><br><span class="line">	sam.SayHi()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hi, I am Mark you can call me on <span class="number">222</span><span class="number">-222</span>-YYYY</span><br><span class="line">Hi, I am Sam you can call me on <span class="number">111</span><span class="number">-888</span>-XXXX</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-method重写"><a href="#1-6-method重写" class="headerlink" title="1.6 method重写"></a>1.6 method重写</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Human <span class="keyword">struct</span> &#123;</span><br><span class="line">	name  <span class="keyword">string</span></span><br><span class="line">	age   <span class="keyword">int</span></span><br><span class="line">	phone <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</span><br><span class="line">	Human  <span class="comment">//匿名字段</span></span><br><span class="line">	school <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Employee <span class="keyword">struct</span> &#123;</span><br><span class="line">	Human   <span class="comment">//匿名字段</span></span><br><span class="line">	company <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Human定义method</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *Human)</span> <span class="title">SayHi</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"Hi, I am %s you can call me on %s\n"</span>, h.name, h.phone)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Employee的method重写Human的method</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e *Employee)</span> <span class="title">SayHi</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"Hi, I am %s, I work at %s. Call me on %s\n"</span>, e.name,</span><br><span class="line">		e.company, e.phone) <span class="comment">//Yes you can split into 2 lines here.</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	mark := Student&#123;Human&#123;<span class="string">"Mark"</span>, <span class="number">25</span>, <span class="string">"222-222-YYYY"</span>&#125;, <span class="string">"MIT"</span>&#125;</span><br><span class="line">	sam := Employee&#123;Human&#123;<span class="string">"Sam"</span>, <span class="number">45</span>, <span class="string">"111-888-XXXX"</span>&#125;, <span class="string">"Golang Inc"</span>&#125;</span><br><span class="line">	mark.SayHi()</span><br><span class="line">	sam.SayHi()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hi, I am Mark you can call me on <span class="number">222</span><span class="number">-222</span>-YYYY</span><br><span class="line">Hi, I am Sam, I work at Golang Inc. Call me on <span class="number">111</span><span class="number">-888</span>-XXXX</span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法是可以继承和重写的</li>
+<li>存在继承关系时，按照就近原则，进行调用</li>
+</ul>
+<h2 id="1-7-Method-Value-和-Method-Expression"><a href="#1-7-Method-Value-和-Method-Expression" class="headerlink" title="1.7 Method Value 和 Method Expression"></a>1.7 Method Value 和 Method Expression</h2><ol>
+<li>Method Value:类似于类方法的调用方式，即x.方法名称()的方式</li>
+<li>Method Expression:通过类型调用方法的方式调用，类型名称.方法名称(参数)</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> TZ <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a TZ</span><br><span class="line">  <span class="comment">//1.Method Value</span></span><br><span class="line">  a.Print()</span><br><span class="line">  <span class="comment">//2.Method Expression</span></span><br><span class="line">  (*TZ).Print(&amp;a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a *TZ)</span> <span class="title">Print</span><span class="params">()</span></span>&#123;</span><br><span class="line">  fmt.Println(<span class="string">"TZ"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TZ</span><br><span class="line">TZ</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">方法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/28/Go语言中的方法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言的结构体" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1709,15 +1846,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1737,14 +1882,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
@@ -1761,11 +1898,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1773,11 +1910,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1809,19 +1946,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1833,15 +1958,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1853,15 +1994,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
               </li>
              
               <li class="article-tag-list-item">
