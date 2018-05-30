@@ -193,7 +193,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="etcd本机手动测试集群及member操作"><a href="#etcd本机手动测试集群及member操作" class="headerlink" title="etcd本机手动测试集群及member操作"></a>etcd本机手动测试集群及member操作</h1><p>使用终端进入到<code>$GOPATH/src/github.com/coreos/etcd</code>目录下，再进入<code>bin</code>目录下使用如下指令：</p>
+        <h1 id="etcd本机手动测试集群及member操作和代码调用"><a href="#etcd本机手动测试集群及member操作和代码调用" class="headerlink" title="etcd本机手动测试集群及member操作和代码调用"></a>etcd本机手动测试集群及member操作和代码调用</h1><p>使用终端进入到<code>$GOPATH/src/github.com/coreos/etcd</code>目录下，再进入<code>bin</code>目录下使用如下指令：</p>
 <h2 id="1-启动节点"><a href="#1-启动节点" class="headerlink" title="1. 启动节点"></a>1. 启动节点</h2><p><strong>节点1</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd0 --initial-advertise-peer-urls http://127.0.0.1:2380 --listen-peer-urls http://127.0.0.1:2380 --listen-client-urls http://127.0.0.1:2379 --advertise-client-urls http://127.0.0.1:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480,cd2=http://127.0.0.1:2580 --initial-cluster-state new</span><br></pre></td></tr></table></figure>
 <p>在开启另一个终端，进入到相同的目录下：</p>
@@ -348,6 +348,10 @@
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">搭建多服务器集群</a>
         		</li>
