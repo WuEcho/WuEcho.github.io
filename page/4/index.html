@@ -172,6 +172,360 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-数据库设计的三大范式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/30/数据库设计的三大范式/">数据库设计的三大范式</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/30/数据库设计的三大范式/" class="archive-article-date">
+  	<time datetime="2018-04-30T00:05:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-30</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="数据库设计三大范式"><a href="#数据库设计三大范式" class="headerlink" title="数据库设计三大范式"></a>数据库设计三大范式</h1><h2 id="1-什么是范式"><a href="#1-什么是范式" class="headerlink" title="1.什么是范式"></a>1.什么是范式</h2><p>　　范式（Normal Form）:通常所用到的只是前三个范式，即：第一范式(1NF),第二范式(2NF),第三范式(3NF)</p>
+<p>　　为了建立冗余较小，结构合理的数据库，设计数据库时必须遵循一定的规则。在关系型数据库中这种规则就称为<strong>范式</strong>。范式是符合某一种设计要求的总结。要想设计一个结构合理的关系型数据库，必须满足一定的范式。</p>
+<h2 id="2-三大范式"><a href="#2-三大范式" class="headerlink" title="2.三大范式"></a>2.三大范式</h2><p><strong>1.第一范式（确保每列保持原子性）</strong><br>　　第一范式是最基本的范式，如果数据库表中的<strong>所有字段值都是不可分解的原子值</strong>，就说明该数据库表满足了第一范式。</p>
+<p>　　第一范式的合理遵循需要根据系统的<strong>实际需求</strong>来定。比如某些数据库系列中需要用到“地址”这个属性，本来直接将“地址”属性设计成一个数据库表的字段就行。但是如果系统经常会访问“地址”属性中的“城市”部分，那么就要将“地址”这个属性重新拆分为省份，城市，详细地址等多个部分进行存储，这样在对地址中某一部分操作的时候将非常方便。这样的设计才算满足了数据库的第一范式，如下：</p>
+<p>用户信息表</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>姓名</th>
+<th>性别</th>
+<th>年龄</th>
+<th>联系电话</th>
+<th>省份</th>
+<th>城市</th>
+<th>详细地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>张红欣</td>
+<td>男</td>
+<td>26</td>
+<td>0378-23459876</td>
+<td>河南</td>
+<td>开封</td>
+<td>朝阳区新华路23号</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四平</td>
+<td>女</td>
+<td>32</td>
+<td>0751-65432584</td>
+<td>广州</td>
+<td>广东</td>
+<td>白云区天明路148号</td>
+</tr>
+<tr>
+<td>3</td>
+<td>刘志国</td>
+<td>男</td>
+<td>21</td>
+<td>0371-87678901</td>
+<td>河南</td>
+<td>郑州</td>
+<td>二七区大学路198号</td>
+</tr>
+<tr>
+<td>4</td>
+<td>郭小明</td>
+<td>女</td>
+<td>27</td>
+<td>0371-18276126</td>
+<td>河南</td>
+<td>郑州</td>
+<td>新郑市薛店北街218号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第二范式(确保表中的每列都和主键相关)</strong></p>
+<p>　　第二范式在第一范式的基础上更进一层楼。第二范式需要确保数据库表中的每一列都和主键相关，而不能只与主键的某一部分相关(主要针对联合主键而言)。<strong>也就是说，在一个数据库表中，一个表中只能保存一种数据，不可以把多种数据保存在同一张数据表中。</strong></p>
+<p>　　比如要设计一个订单信息，因为订单中可能会有多种商品，所以要将订单号和商品编号作为数据库表的联合主键，如下表：</p>
+<p>订单信息</p>
+<table>
+<thead>
+<tr>
+<th>订单编号</th>
+<th>商品编号</th>
+<th>商品名称</th>
+<th>数量</th>
+<th>单位</th>
+<th>价格</th>
+<th>客户</th>
+<th>所属单位</th>
+<th>联系方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>001</td>
+<td>1</td>
+<td>挖掘机</td>
+<td>1</td>
+<td>台</td>
+<td>1200000</td>
+<td>张三</td>
+<td>上海xx</td>
+<td>020-1234576</td>
+</tr>
+<tr>
+<td>001</td>
+<td>2</td>
+<td>冲击钻</td>
+<td>8</td>
+<td>把</td>
+<td>230</td>
+<td>张三</td>
+<td>上海xx</td>
+<td>020-1234576</td>
+</tr>
+<tr>
+<td>002</td>
+<td>3</td>
+<td>铲车</td>
+<td>2</td>
+<td>辆</td>
+<td>980000</td>
+<td>李四</td>
+<td>北京公司</td>
+<td>010-1237511</td>
+</tr>
+</tbody>
+</table>
+<p>　　这样就产生了一个问题：这个表中是以订单编号和商品编号作为联合主键。这样在该表中商品名称，单位，商品价格等信息不与该表的主键相关，而仅仅是与商品编号有关。所以违反了第二范式设计原则。</p>
+<p>　　如果把这个订单信息表进行拆分，把商品信息分离到另一个表中，把订单项目表也分离到另一个表中，就解决了上面的问题，如下：</p>
+<p>订单信息表</p>
+<table>
+<thead>
+<tr>
+<th>订单编号</th>
+<th>客户</th>
+<th>所属单位</th>
+<th>联系方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>001</td>
+<td>张三</td>
+<td>上海xx</td>
+<td>020-1234576</td>
+</tr>
+<tr>
+<td>002</td>
+<td>李四</td>
+<td>北京公司</td>
+<td>010-1237511</td>
+</tr>
+</tbody>
+</table>
+<p>订单项目表</p>
+<table>
+<thead>
+<tr>
+<th>订单编号</th>
+<th>商品编号</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>001</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>001</td>
+<td>2</td>
+<td>8</td>
+</tr>
+<tr>
+<td>002</td>
+<td>3</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>商品信息表</p>
+<table>
+<thead>
+<tr>
+<th>商品编号</th>
+<th>商品名称</th>
+<th>单位</th>
+<th>商品价格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>挖掘机</td>
+<td>台</td>
+<td>1200000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>冲击钻</td>
+<td>个</td>
+<td>230</td>
+</tr>
+<tr>
+<td>3</td>
+<td>铲车</td>
+<td>辆</td>
+<td>98000</td>
+</tr>
+</tbody>
+</table>
+<p>　　这样设计，在很大程度上减少了数据库冗余。如果要获取订单的商品信息，使用商品编号到商品信息表中查询即可。</p>
+<p><strong>3.第三范式(确保每列都和主键列直接相关，而不是间接相关)</strong></p>
+<p>　　第三范式需要确保数据表中的<strong>每一列数据都和主键直接相关，而不能间接相关。</strong></p>
+<p>　　比如在设计一个订单数据表的时候，可以将客户编号作为一个外键和订单表建立相应的关系。而不可以在订单表中添加关于客户其他信息（比如姓名，所属公司等）的字段。如下面这两个表所示的设计就是一个满足第三范式的数据库表。</p>
+<p>订单信息表</p>
+<table>
+<thead>
+<tr>
+<th>订单编号</th>
+<th>订单项目</th>
+<th>负责人</th>
+<th>业务员</th>
+<th>订单数量</th>
+<th>客户编号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>001</td>
+<td>挖掘机</td>
+<td>刘明</td>
+<td>李东明</td>
+<td>1台</td>
+<td>1</td>
+</tr>
+<tr>
+<td>002</td>
+<td>冲击钻</td>
+<td>李刚</td>
+<td>霍新峰</td>
+<td>8个</td>
+<td>2</td>
+</tr>
+<tr>
+<td>003</td>
+<td>铲车</td>
+<td>郭新一</td>
+<td>艾美丽</td>
+<td>2辆</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>客户信息表</p>
+<table>
+<thead>
+<tr>
+<th>客户编号</th>
+<th>客户名称</th>
+<th>所属公司</th>
+<th>联系方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>李聪</td>
+<td>五一建设</td>
+<td>13253661015</td>
+</tr>
+<tr>
+<td>2</td>
+<td>刘新明</td>
+<td>个体经营</td>
+<td>13285746958</td>
+</tr>
+</tbody>
+</table>
+<p>　　这样在查询订单信息的时候，就可以使用客户编号来应用客户信息表中的记录，也不必在订单信息表中多次输入客户信息的内容，减少了数据冗余。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">三大范式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/DataBase//" class="article-tag-list-link color4">DataBase</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/30/数据库设计的三大范式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-MySQL与Golang交互" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2038,128 +2392,6 @@
 
 
   
-    <article id="post-Go语言的接口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/28/Go语言的接口/">Go语言的接口</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/28/Go语言的接口/" class="archive-article-date">
-  	<time datetime="2018-04-28T11:50:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-28</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><h2 id="1-什么是接口"><a href="#1-什么是接口" class="headerlink" title="1.什么是接口"></a>1.什么是接口</h2><p>　　面向对象世界中的接口的一般定义是“接口定义对象的行为”。它只指定对象应该做什么。实现这种行为的方法(实现细节)是针对对象的。</p>
-<p>　　在Go中，接口是一组方法签名。当类型为接口中的所有方法提供定义时，它被称为实现接口。它与OOP非常相似。接口指定了类型应该具有的方法，类型决定了如何实现这些方法。</p>
-<blockquote>
-<p> 它把所有的具有共性的方法定义在一起，任何其他类型只要实现了这些方法就是实现了这个接口</p>
-<p> 接口定义了一组方法，如果某个对象实现了某个接口的所有方法，则此对象就实现了该接口。</p>
-<p> 接口是一个或多个方法签名的集合</p>
-<p> 接口只有方法声明没有实现，没有数据字段</p>
-<p> 接口可以匿名嵌入其他接口或者嵌入结构中</p>
-<p> 将对象赋值给接口时，会发生拷贝，而接口内部存储的是指向这个复制品的指针</p>
-<p> 只有当接口存储的类型和对象都为nil是，接口才等于nil</p>
-<p> 接口同样支持匿名字段方法</p>
-<p> 接口也可是实现类似oop中的多态</p>
-<p> 空接口可以作为任何类型数据的容器</p>
-</blockquote>
-<h2 id="1-2-接口的定义语法"><a href="#1-2-接口的定义语法" class="headerlink" title="1.2 接口的定义语法"></a>1.2 接口的定义语法</h2><p>定义接口</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 定义接口 */</span></span><br><span class="line"><span class="keyword">type</span> interface_name <span class="keyword">interface</span> &#123;</span><br><span class="line">   method_name1 [return_type]</span><br><span class="line">   method_name2 [return_type]</span><br><span class="line">   method_name3 [return_type]</span><br><span class="line">   ...</span><br><span class="line">   method_namen [return_type]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 定义结构体 */</span></span><br><span class="line"><span class="keyword">type</span> struct_name <span class="keyword">struct</span> &#123;</span><br><span class="line">   <span class="comment">/* variables */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 实现接口方法 */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(struct_name_variable struct_name)</span> <span class="title">method_name1</span><span class="params">()</span> [<span class="title">return_type</span>]</span> &#123;</span><br><span class="line">   <span class="comment">/* 方法实现 */</span></span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(struct_name_variable struct_name)</span> <span class="title">method_namen</span><span class="params">()</span> [<span class="title">return_type</span>]</span> &#123;</span><br><span class="line">   <span class="comment">/* 方法实现*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Phone <span class="keyword">interface</span> &#123;</span><br><span class="line">    call()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> NokiaPhone <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(nokiaPhone NokiaPhone)</span> <span class="title">call</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"I am Nokia, I can call you!"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IPhone <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(iPhone IPhone)</span> <span class="title">call</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"I am iPhone, I can call you!"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> phone Phone</span><br><span class="line"></span><br><span class="line">    phone = <span class="built_in">new</span>(NokiaPhone)</span><br><span class="line">    phone.call()</span><br><span class="line"></span><br><span class="line">    phone = <span class="built_in">new</span>(IPhone)</span><br><span class="line">    phone.call()</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">I am Nokia, I can call you!</span><br><span class="line">I am iPhone, I can call you!</span><br></pre></td></tr></table></figure>
-<h2 id="1-3-接口嵌套"><a href="#1-3-接口嵌套" class="headerlink" title="1.3 接口嵌套"></a>1.3 接口嵌套</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> USB <span class="keyword">interface</span>&#123;</span><br><span class="line">  Name() <span class="keyword">string</span></span><br><span class="line">  <span class="comment">//接口嵌套</span></span><br><span class="line">  Connecter</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Connecter <span class="keyword">interface</span>&#123;</span><br><span class="line">   Connect()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> PhoneConnecter <span class="keyword">struct</span>&#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Name</span><span class="params">()</span> <span class="title">string</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pc.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Connect</span><span class="params">()</span></span>&#123;</span><br><span class="line">    fmt.Printf(<span class="string">"%s is connect \n"</span>,pc.name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DisConnect</span><span class="params">(pc USB)</span></span>&#123;</span><br><span class="line">    fmt.Printf(<span class="string">"phone is disconnect \n"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> a USB = PhoneConnecter&#123;name:<span class="string">"iphone"</span>&#125;</span><br><span class="line">   a.Connect()</span><br><span class="line">   DisConnect(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iphone is connect</span><br><span class="line">phone is disconnect</span><br></pre></td></tr></table></figure>
-<h2 id="1-4-类型断言以及接口转换"><a href="#1-4-类型断言以及接口转换" class="headerlink" title="1.4 类型断言以及接口转换"></a>1.4 类型断言以及接口转换</h2><p><strong>类型断言</strong></p>
-<ul>
-<li>通过类型断言的ok pattern可以判断接口中的数据类型</li>
-<li>使用type switch则可针对空接口进行比较全面的类型判断</li>
-</ul>
-<p><strong>接口转换</strong></p>
-<ul>
-<li>可以将拥有超集的接口转换为子集的接口</li>
-</ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> USB <span class="keyword">interface</span>&#123;</span><br><span class="line">  Name() <span class="keyword">string</span></span><br><span class="line">  <span class="comment">//接口嵌套</span></span><br><span class="line">  Connecter</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Connecter <span class="keyword">interface</span>&#123;</span><br><span class="line">   Connect()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> PhoneConnecter <span class="keyword">struct</span>&#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Name</span><span class="params">()</span> <span class="title">string</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pc.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Connect</span><span class="params">()</span></span>&#123;</span><br><span class="line">    fmt.Printf(<span class="string">"%s is connect \n"</span>,pc.name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DisConnect</span><span class="params">(pc USB)</span></span>&#123;</span><br><span class="line"><span class="comment">//这里对传进来的类型进行判断 采用多返回值，当ok参数为true时才执行</span></span><br><span class="line">  <span class="keyword">if</span> v,ok := pc.(PhoneConnecter);ok&#123;</span><br><span class="line">    fmt.Printf(<span class="string">"phone is disconnect \n"</span>)</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> a USB = PhoneConnecter&#123;name:<span class="string">"iphone"</span>&#125;</span><br><span class="line">   a.Connect()</span><br><span class="line">   DisConnect(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="1-5-空接口可以作为任何接口的基类"><a href="#1-5-空接口可以作为任何接口的基类" class="headerlink" title="1.5 空接口可以作为任何接口的基类"></a>1.5 空接口可以作为任何接口的基类</h2><p><strong>空接口</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"><span class="comment">//空接口</span></span><br><span class="line"><span class="keyword">type</span> empty <span class="keyword">interface</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> USB <span class="keyword">interface</span>&#123;</span><br><span class="line">  Name() <span class="keyword">string</span></span><br><span class="line">  <span class="comment">//接口嵌套</span></span><br><span class="line">  Connecter</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Connecter <span class="keyword">interface</span>&#123;</span><br><span class="line">   Connect()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> PhoneConnecter <span class="keyword">struct</span>&#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Name</span><span class="params">()</span> <span class="title">string</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pc.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Connect</span><span class="params">()</span></span>&#123;</span><br><span class="line">    fmt.Printf(<span class="string">"%s is connect \n"</span>,pc.name)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将接受类型写成任意接口类型</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DisConnect</span><span class="params">(pc <span class="keyword">interface</span>&#123;&#125;)</span></span>&#123;</span><br><span class="line">   <span class="keyword">switch</span> pc.(<span class="keyword">type</span>)&#123;</span><br><span class="line">   <span class="keyword">case</span> PhoneConnecter:</span><br><span class="line">       fmt.Printf(<span class="string">"phone name is %s"</span>, pc.(PhoneConnecter).name)</span><br><span class="line">   <span class="keyword">default</span>:</span><br><span class="line">       fmt.Println(<span class="string">"unknow phone"</span>)    </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> a USB = PhoneConnecter&#123;name:<span class="string">"iphone"</span>&#125;</span><br><span class="line">   a.Connect()</span><br><span class="line">   DisConnect(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>类型转换</strong><br>接口之间可以互相嵌套，从嵌套关系上来讲，他们之间的类型转换是单向的，即包含嵌套的借口可以向下装换成被嵌套的接口，而被嵌套的借口不可以向上转换为嵌套的借口类型</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> USB <span class="keyword">interface</span>&#123;</span><br><span class="line">  Name() <span class="keyword">string</span></span><br><span class="line">  <span class="comment">//接口嵌套</span></span><br><span class="line">  Connecter</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Connecter <span class="keyword">interface</span>&#123;</span><br><span class="line">   Connect()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> PhoneConnecter <span class="keyword">struct</span>&#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Name</span><span class="params">()</span> <span class="title">string</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pc.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pc PhoneConnecter)</span><span class="title">Connect</span><span class="params">()</span></span>&#123;</span><br><span class="line">    fmt.Printf(<span class="string">"%s is connect \n"</span>,pc.name)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将接受类型写成任意接口类型</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DisConnect</span><span class="params">(pc <span class="keyword">interface</span>&#123;&#125;)</span></span>&#123;</span><br><span class="line">   <span class="keyword">switch</span> pc.(<span class="keyword">type</span>)&#123;</span><br><span class="line">   <span class="keyword">case</span> PhoneConnecter:</span><br><span class="line">       fmt.Printf(<span class="string">"phone name is %s"</span>, pc.(PhoneConnecter).name)</span><br><span class="line">   <span class="keyword">default</span>:</span><br><span class="line">       fmt.Println(<span class="string">"unknow phone"</span>)    </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> pcConnect = PhoneConnecter&#123;<span class="string">"iphone"</span>&#125;</span><br><span class="line">   <span class="comment">//类型转换</span></span><br><span class="line">   <span class="keyword">var</span> a = Connecter(pcConnect)</span><br><span class="line">   a.Connect()</span><br><span class="line">   DisConnect(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">接口</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/28/Go语言的接口/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -2265,23 +2497,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2293,7 +2521,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
+                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2309,11 +2541,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2325,11 +2557,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2361,6 +2593,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
               </li>
              
@@ -2373,31 +2625,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2405,7 +2633,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2417,7 +2649,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2425,11 +2657,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2437,15 +2673,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2453,11 +2681,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>
