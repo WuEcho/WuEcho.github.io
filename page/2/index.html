@@ -172,6 +172,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言实现RSA加密解密" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/18/Go语言实现RSA加密解密/">Go语言实现RSA加密解密</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/18/Go语言实现RSA加密解密/" class="archive-article-date">
+  	<time datetime="2018-05-18T05:13:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-18</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言实现RSA加密解密"><a href="#Go语言实现RSA加密解密" class="headerlink" title="Go语言实现RSA加密解密"></a>Go语言实现RSA加密解密</h1><h2 id="1-生成公钥私钥"><a href="#1-生成公钥私钥" class="headerlink" title="1. 生成公钥私钥"></a>1. 生成公钥私钥</h2><p>要想使用<code>openssl</code>生成公钥，私钥，需要先配置好<code>openssl</code>，<br>打开终端。</p>
+<h3 id="1-1-openssl生成私钥"><a href="#1-1-openssl生成私钥" class="headerlink" title="1.1 openssl生成私钥"></a>1.1 openssl生成私钥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out rsa_private_key.pem 1024</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-openssl生成公钥"><a href="#1-2-openssl生成公钥" class="headerlink" title="1.2 openssl生成公钥"></a>1.2 openssl生成公钥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem</span><br></pre></td></tr></table></figure>
+<h2 id="2-实现-RSA-加密解密"><a href="#2-实现-RSA-加密解密" class="headerlink" title="2. 实现 RSA 加密解密"></a>2. 实现 RSA 加密解密</h2><h3 id="2-1-实现方式一"><a href="#2-1-实现方式一" class="headerlink" title="2.1 实现方式一"></a>2.1 实现方式一</h3><p>通过本地生成公钥私钥来实现加密解密</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"crypto/rand"</span>  </span><br><span class="line">    <span class="string">"crypto/rsa"</span>  </span><br><span class="line">    <span class="string">"crypto/x509"</span>  </span><br><span class="line">    <span class="string">"encoding/base64"</span>  </span><br><span class="line">    <span class="string">"encoding/pem"</span>  </span><br><span class="line">    <span class="string">"errors"</span>  </span><br><span class="line">    <span class="string">"fmt"</span>  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 可通过openssl产生  </span></span><br><span class="line"><span class="comment">//openssl genrsa -out rsa_private_key.pem 1024  </span></span><br><span class="line"><span class="keyword">var</span> privateKey = []<span class="keyword">byte</span>(<span class="string">`  </span></span><br><span class="line"><span class="string">-----BEGIN RSA PRIVATE KEY-----</span></span><br><span class="line"><span class="string">MIICXQIBAAKBgQDfw1/P15GQzGGYvNwVmXIGGxea8Pb2wJcF7ZW7tmFdLSjOItn9</span></span><br><span class="line"><span class="string">kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQolDOkEzNP0B8XKm+Lxy4giwwR5</span></span><br><span class="line"><span class="string">LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TUGQD6QzKY1Y8xS+FoQQIDAQAB</span></span><br><span class="line"><span class="string">AoGAbSNg7wHomORm0dWDzvEpwTqjl8nh2tZyksyf1I+PC6BEH8613k04UfPYFUg1</span></span><br><span class="line"><span class="string">0F2rUaOfr7s6q+BwxaqPtz+NPUotMjeVrEmmYM4rrYkrnd0lRiAxmkQUBlLrCBiF</span></span><br><span class="line"><span class="string">u+bluDkHXF7+TUfJm4AZAvbtR2wO5DUAOZ244FfJueYyZHECQQD+V5/WrgKkBlYy</span></span><br><span class="line"><span class="string">XhioQBXff7TLCrmMlUziJcQ295kIn8n1GaKzunJkhreoMbiRe0hpIIgPYb9E57tT</span></span><br><span class="line"><span class="string">/mP/MoYtAkEA4Ti6XiOXgxzV5gcB+fhJyb8PJCVkgP2wg0OQp2DKPp+5xsmRuUXv</span></span><br><span class="line"><span class="string">720oExv92jv6X65x631VGjDmfJNb99wq5QJBAMSHUKrBqqizfMdOjh7z5fLc6wY5</span></span><br><span class="line"><span class="string">M0a91rqoFAWlLErNrXAGbwIRf3LN5fvA76z6ZelViczY6sKDjOxKFVqL38ECQG0S</span></span><br><span class="line"><span class="string">pxdOT2M9BM45GJjxyPJ+qBuOTGU391Mq1pRpCKlZe4QtPHioyTGAAMd4Z/FX2MKb</span></span><br><span class="line"><span class="string">3in48c0UX5t3VjPsmY0CQQCc1jmEoB83JmTHYByvDpc8kzsD8+GmiPVrausrjj4p</span></span><br><span class="line"><span class="string">y2DQpGmUic2zqCxl6qXMpBGtFEhrUbKhOiVOJbRNGvWW</span></span><br><span class="line"><span class="string">-----END RSA PRIVATE KEY-----</span></span><br><span class="line"><span class="string">`</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//openssl  </span></span><br><span class="line"><span class="comment">//openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem  </span></span><br><span class="line"><span class="keyword">var</span> publicKey = []<span class="keyword">byte</span>(<span class="string">`  </span></span><br><span class="line"><span class="string">-----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDfw1/P15GQzGGYvNwVmXIGGxea</span></span><br><span class="line"><span class="string">8Pb2wJcF7ZW7tmFdLSjOItn9kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQol</span></span><br><span class="line"><span class="string">DOkEzNP0B8XKm+Lxy4giwwR5LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TU</span></span><br><span class="line"><span class="string">GQD6QzKY1Y8xS+FoQQIDAQAB</span></span><br><span class="line"><span class="string">-----END PUBLIC KEY-----	</span></span><br><span class="line"><span class="string">`</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 加密  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RsaEncrypt</span><span class="params">(origData []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;  </span><br><span class="line">    <span class="comment">//解密pem格式的公钥  </span></span><br><span class="line">    block, _ := pem.Decode(publicKey)  </span><br><span class="line">    <span class="keyword">if</span> block == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">"public key error"</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 解析公钥  </span></span><br><span class="line">    pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 类型断言  </span></span><br><span class="line">    pub := pubInterface.(*rsa.PublicKey)  </span><br><span class="line">    <span class="comment">//加密  </span></span><br><span class="line">    <span class="keyword">return</span> rsa.EncryptPKCS1v15(rand.Reader, pub, origData)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 解密  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RsaDecrypt</span><span class="params">(ciphertext []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;  </span><br><span class="line">    <span class="comment">//解密  </span></span><br><span class="line">    block, _ := pem.Decode(privateKey)  </span><br><span class="line">    <span class="keyword">if</span> block == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">"private key error!"</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//解析PKCS1格式的私钥  </span></span><br><span class="line">    priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 解密  </span></span><br><span class="line">    <span class="keyword">return</span> rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    data, _ := RsaEncrypt([]<span class="keyword">byte</span>(<span class="string">"hello world"</span>))  </span><br><span class="line">    fmt.Println(base64.StdEncoding.EncodeToString(data))  </span><br><span class="line">    origData, _ := RsaDecrypt(data)  </span><br><span class="line">    fmt.Println(<span class="keyword">string</span>(origData))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-通过代码生成公钥私钥实现加密解密"><a href="#2-2-通过代码生成公钥私钥实现加密解密" class="headerlink" title="2.2 通过代码生成公钥私钥实现加密解密"></a>2.2 通过代码生成公钥私钥实现加密解密</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"crypto/rsa"</span></span><br><span class="line">	<span class="string">"crypto/rand"</span></span><br><span class="line">	<span class="string">"crypto/md5"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"encoding/base64"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//利用rsa的方法生成公钥私钥</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//生成私钥</span></span><br><span class="line">	pirv,_ := rsa.GenerateKey(rand.Reader,<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">//生成公钥</span></span><br><span class="line">	pub := &amp;pirv.PublicKey</span><br><span class="line"></span><br><span class="line">	<span class="comment">//定义明文</span></span><br><span class="line">	plainText := []<span class="keyword">byte</span>(<span class="string">"hello"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//加密</span></span><br><span class="line">	cipherText,_ := rsa.EncryptOAEP(md5.New(),rand.Reader,pub,plainText,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	fmt.Println(base64.StdEncoding.EncodeToString(cipherText))</span><br><span class="line"></span><br><span class="line">  plainText,_ = rsa.DecryptOAEP(md5.New(),rand.Reader,pirv,cipherText,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">  fmt.Println(<span class="keyword">string</span>(plainText))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nr2Sfc74BXiIvgdUOlGIjv/UkWWIRA/i/74YC32ij7X+TmP2ue+RYsTV161HfBEKMdUcsLrSxjlgbQFmbX8bUPTgEvOjw/JehWNJU2tEai70POX68YCt04apC3uKkGU33opnsSgPS9A54LnBKppkHiE+mzs8Oz9qtEQVv2xT9EM=</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/WuEcho/EncryptionFuncation.git" target="_blank" rel="noopener">demo示例链接</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">RSA加密解密</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/18/Go语言实现RSA加密解密/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-编译Openssl" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -351,11 +445,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">hash加密原理</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">hash加密原理</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
         		</li>
       		
 		</ul>
@@ -1318,6 +1412,7 @@
 <li>其他节点将该区块的哈希值放入下一个他们创建的区块中，表示他们承认这个区块</li>
 </ul>
 <p>PoW共识协议的优点是：<strong>完全去中心化，节点自由进出</strong><br>缺点是：<strong>浪费资源，共识达成的周期长</strong></p>
+<p><strong>代码示例：</strong><br><a href="https://github.com/WuEcho/PoWDemo" target="_blank" rel="noopener">Go语言实现PoW共识算法</a></p>
 <h3 id="3-5-股权权益证明-——-PoS"><a href="#3-5-股权权益证明-——-PoS" class="headerlink" title="3.5 股权权益证明 —— PoS"></a>3.5 股权权益证明 —— PoS</h3><p>　　股权权益证明(Proof of Stack 简称PoS)，基本概念为：在PoS中，块是已经铸造好的，铸造的过程是基于每个节点(Node)愿意作为抵押的令牌(Token)数量。如果验证者愿意提供更多的令牌作为抵押品，他们就有更大的机会记账下一个区块并获得奖励。PoS算法是针对PoW算法的缺点的改进。<br>PoS运行的机制大致如下：</p>
 <ul>
 <li>加入PoS机制的都是持币人，称为验证者(validator)</li>
@@ -1327,8 +1422,7 @@
 </ul>
 <p><strong>POS与PoW有个很大的区别：</strong>在PoS机制下，持币是有利息的。PoS模式下，引入了币龄的概念，每个币每天产生1币龄，如过挖出了一个PoS区块，币龄就会被清空为0。每清空365币龄，会从区块中获得一定利息。</p>
 <p><strong>与PoW相比的优点：</strong>PoS不需要为了生产新区快而大量的消耗电力，一定程度上缩短了共识达成的时间。更去中心化。避免紧缩。<br><strong>缺点是：</strong>PoS机制的加密货币，信用基础不够牢固。纯PoS机制的加密货币，只能通过IPO的方式发行，这就导致“少数人”（通常是开发者）获得大量成本极低的加密货币，在利益面前，很难保证他们不会大量抛售。</p>
-<h3 id="3-5-1-PoS-潜在攻击方法"><a href="#3-5-1-PoS-潜在攻击方法" class="headerlink" title="3.5.1 PoS 潜在攻击方法"></a>3.5.1 PoS 潜在攻击方法</h3><h4 id="账本分叉问题-Nothing-at-Stake-Problem"><a href="#账本分叉问题-Nothing-at-Stake-Problem" class="headerlink" title="账本分叉问题 ( Nothing at Stake Problem )"></a>账本分叉问题 ( Nothing at Stake Problem )</h4><p>　　在 PoW 机制中，当账本出现分叉时，对 PoW 这种算力敏感的算法，矿工必须选择一个方向进行挖矿。而在 PoS 这种算力不敏感的时候，PoS 矿工往往会两个方向都挖，以争取实现利益最大化。当多数矿工都在两条链上一起挖矿的时候，就会很容易出现双重支付攻击。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-123430.png" alt=""></p>
+<h3 id="3-5-1-PoS-潜在攻击方法"><a href="#3-5-1-PoS-潜在攻击方法" class="headerlink" title="3.5.1 PoS 潜在攻击方法"></a>3.5.1 PoS 潜在攻击方法</h3><h4 id="账本分叉问题-Nothing-at-Stake-Problem"><a href="#账本分叉问题-Nothing-at-Stake-Problem" class="headerlink" title="账本分叉问题 ( Nothing at Stake Problem )"></a>账本分叉问题 ( Nothing at Stake Problem )</h4><p>　　在 PoW 机制中，当账本出现分叉时，对 PoW 这种算力敏感的算法，矿工必须选择一个方向进行挖矿。而在 PoS 这种算力不敏感的时候，PoS 矿工往往会两个方向都挖，以争取实现利益最大化。当多数矿工都在两条链上一起挖矿的时候，就会很容易出现双重支付攻击。<br><img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-123430.png" alt=""></p>
 <h4 id="冷启动问题-Initial-Distribution-Problem"><a href="#冷启动问题-Initial-Distribution-Problem" class="headerlink" title="冷启动问题 ( Initial Distribution Problem )"></a>冷启动问题 ( Initial Distribution Problem )</h4><p>　　PoS 机制中，由于持币量会对挖矿难度产生影响。因此，当一个基于 PoS 体系代币系统启动时，就会面临早期获得代币的持有者，没有动力去花费或者转移代币给第三方。同时，持有越多的币，越容易挖到矿，这样就产生了代币初始流通性问题。</p>
 <p>　　解决方案：早起几个版本，通过 PoW 机制来创建货币，而非 PoS。由于 PoW 本身的性质，矿工在挖矿过程中往往需要资金来升级硬件，所以会让矿工手中的币流通起来。</p>
 <h4 id="长距离攻击-Long-Range-Attack"><a href="#长距离攻击-Long-Range-Attack" class="headerlink" title="长距离攻击 ( Long-Range Attack )"></a>长距离攻击 ( Long-Range Attack )</h4><p>　　PoS 中，产生每个 Block 的速度相对 PoW 快了很多。因此，少数不怀好意的节点会想着把整个区块链共识账本全部重写。这在 PoW 中是经典的 51% 问题，即：当某一个节点控制了 51% 及以上算力，就有能力篡改账本，但达到 51% 算力是件极其困难的事情。而在 PoS 中缺乏对算力的约束，那么就存在潜在可能篡改账本。</p>
@@ -1340,6 +1434,7 @@
 <p>解决方案：限制 CoinAge 的最大值。</p>
 <h4 id="预计算攻击-Precomputing-Attack"><a href="#预计算攻击-Precomputing-Attack" class="headerlink" title="预计算攻击 ( Precomputing Attack)"></a>预计算攻击 ( Precomputing Attack)</h4><p>　　当 PoS 中的某一节点占有了一定量的算力后，PoS 中占有特定算力的节点，就有能力通过控制 H <sub>prev</sub><br>来使自己所在算力范围有能力去计算 </p>
 <p>H(H(B<sub>prev</sub>),A,t) ≤ balance(A)m</p>
+<p><strong>代码示例：</strong><br><a href="https://github.com/WuEcho/PoSDemo" target="_blank" rel="noopener">Go语言实现PoS共识算法</a></p>
 <h3 id="3-6-委托权益人证明机制-——-DPoS"><a href="#3-6-委托权益人证明机制-——-DPoS" class="headerlink" title="3.6 委托权益人证明机制 —— DPoS"></a>3.6 委托权益人证明机制 —— DPoS</h3><p>　　委托权益人证明机制(Delegated Proof of Stake 简称DPoS)是PoS算法的改进。DPoS是由被社区选举的可信帐户（受托人，得票数排行前101位）来创建区块。为了成为正式受托人，用户要去社区拉票，获得足够多用户的信任。用户根据自己持有的加密货币数量占总量的百分比来投票。DPoS机制类似于股份制公司，普通股民进不了董事会，要投票选举代表（受托人）代他们做决策。</p>
 <p>　　这101个受托人可以理解为101个矿池，而这101个矿池彼此的权利是完全相等的。那些握着加密货币的用户可以随时通过投票更换这些代表（矿池），只要他们提供的算力不稳定，计算机宕机、或者试图利用手中的权力作恶，他们将会立刻被愤怒的选民门踢出整个系统，而后备代表可以随时顶上去</p>
 <h4 id="3-6-1-DPoS的伪代码实现"><a href="#3-6-1-DPoS的伪代码实现" class="headerlink" title="3.6.1 DPoS的伪代码实现"></a>3.6.1 DPoS的伪代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for round i //分成很多个round，round无限持续</span><br><span class="line">   dlist_i = get N delegates sort by votes //根据投票结果选出得票率最高的N个受托人</span><br><span class="line">   dlist_i = shuffle(dlist_i) //随机改变顺序</span><br><span class="line">   loop //round完了，退出循环</span><br><span class="line">       slot = global_time_offset / block_interval</span><br><span class="line">       pos = slot % N</span><br><span class="line">       if dlist_i[pos] exists in this node //delegate在这个节点</span><br><span class="line">           generateBlock(keypair of dlist_i[pos]) //产生block</span><br><span class="line">       else</span><br><span class="line">           skip</span><br></pre></td></tr></table></figure>
@@ -1379,6 +1474,7 @@
 <li><p>对于坏节点的处理存在诸多困难。社区选举不能及时有效的阻止一些破坏节点的出现，给网络造成安全隐患。</p>
 </li>
 </ol>
+<p><strong>代码示例：</strong><br><a href="https://github.com/WuEcho/DPoSDemo" target="_blank" rel="noopener">Go语言实现DPoS共识算法</a></p>
 
       
 
@@ -1659,114 +1755,9 @@
 
 
   
-    <article id="post-星云链Nebulas101-04-智能合约存储区" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/09/星云链Nebulas101-04-智能合约存储区/">星云链Nebulas101 04 智能合约存储区</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/09/星云链Nebulas101-04-智能合约存储区/" class="archive-article-date">
-  	<time datetime="2018-05-09T11:21:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-09</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="04-智能合约存储区"><a href="#04-智能合约存储区" class="headerlink" title="04.智能合约存储区"></a>04.智能合约存储区</h1><p>星云链智能合约(smart contract)提供了链上数据存储功能。类似于传统的key-value存储系统（eg:redis），可以付费（消耗gas）将数据存储到星云链上。</p>
-<h2 id="LocalContractStorage"><a href="#LocalContractStorage" class="headerlink" title="LocalContractStorage"></a>LocalContractStorage</h2><p>星云链的智能合约运行环境内置了存储对象LocalContractStorage，可以存储数字，字符串，JavaScript对象，存储数据只能在智能合约内使用，其他合约不能读取存储的内容。</p>
-<h3 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h3><p><code>LocalContractStorage</code>的简单接口包括set,get,del接口，实现了存储，读取，删除数据功能。存储可以是数字，字符串，对象。</p>
-<h3 id="LocalContractStorage存储数据"><a href="#LocalContractStorage存储数据" class="headerlink" title="LocalContractStorage存储数据"></a>LocalContractStorage存储数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 存储数据，数据会被json序列化成字符串保存</span><br><span class="line">LocalContractStorage.put(key, value);</span><br><span class="line">// 或者</span><br><span class="line">LocalContractStorage.set(key, value);</span><br></pre></td></tr></table></figure>
-<h3 id="LocalContractStorage读取数据"><a href="#LocalContractStorage读取数据" class="headerlink" title="LocalContractStorage读取数据"></a>LocalContractStorage读取数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 获取数据</span><br><span class="line">LocalContractStorage.get(key);</span><br></pre></td></tr></table></figure>
-<h3 id="LocalContractStorage删除数据"><a href="#LocalContractStorage删除数据" class="headerlink" title="LocalContractStorage删除数据"></a>LocalContractStorage删除数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 删除数据, 数据删除后无法读取</span><br><span class="line">LocalContractStorage.del(key);</span><br><span class="line">// 或者</span><br><span class="line">LocalContractStorage.delete(key);</span><br></pre></td></tr></table></figure>
-<p>下面是一个具体在合约中使用LocalContractStorage的实例</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> SampleContract = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span> (<span class="params">name, value</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 存储字符串</span></span><br><span class="line">        LocalContractStorage.set(<span class="string">"name"</span>,name);</span><br><span class="line">        <span class="comment">// 存储数字</span></span><br><span class="line">        LocalContractStorage.set(<span class="string">"value"</span>, value);</span><br><span class="line">        <span class="comment">// 存储对象</span></span><br><span class="line">        LocalContractStorage.set(<span class="string">"obj"</span>, &#123;<span class="attr">name</span>:name,<span class="attr">value</span>:value&#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> name = LocalContractStorage.get(<span class="string">"name"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"name:"</span>+name)</span><br><span class="line">        <span class="keyword">var</span> value = LocalContractStorage.get(<span class="string">"value"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"value:"</span>+value)</span><br><span class="line">        <span class="keyword">var</span> obj = LocalContractStorage.get(<span class="string">"obj"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"obj:"</span>+<span class="built_in">JSON</span>.stringify(obj))</span><br><span class="line">    &#125;,</span><br><span class="line">    del: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> result = LocalContractStorage.del(<span class="string">"name"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"del result:"</span>+result)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = SampleContract;</span><br></pre></td></tr></table></figure>
-<h2 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h2><p><code>LocalContractStorage</code>除了基本的<code>set</code>,<code>get</code>,<code>del</code>方法，还提供方法来绑定合约属性。对绑定过的合约属性的读写将直接在<code>LocalContractStorage</code>上读写，而无需调用<code>get</code>和<code>set</code>方法。</p>
-<h3 id="绑定属性"><a href="#绑定属性" class="headerlink" title="绑定属性"></a>绑定属性</h3><p>在绑定一个合约属性时，需要提供对象实例，属性名和序列化方法。</p>
-<h4 id="绑定接口"><a href="#绑定接口" class="headerlink" title="绑定接口"></a>绑定接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// define a object property named `fieldname` to `obj` with descriptor.</span><br><span class="line">// default descriptor is JSON.parse/JSON.stringify descriptor.</span><br><span class="line">// return this.</span><br><span class="line">defineProperty(obj, fieldName, descriptor);</span><br><span class="line"></span><br><span class="line">// define object properties to `obj` from `props`.</span><br><span class="line">// default descriptor is JSON.parse/JSON.stringify descriptor.</span><br><span class="line">// return this.</span><br><span class="line">defineProperties(obj, descriptorMap);</span><br></pre></td></tr></table></figure>
-<p>下面是一个在合约中使用<code>LocalContractStorage</code>绑定属性的例子:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">use strict<span class="string">';</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">var SampleContract = function () &#123;</span></span><br><span class="line"><span class="string">    // SampleContract的`size`属性为存储属性，对`size`的读写会存储到链上，</span></span><br><span class="line"><span class="string">    // 此处的`descriptor`设置为null，将使用默认的JSON.stringify()和JSON.parse()</span></span><br><span class="line"><span class="string">    LocalContractStorage.defineMapProperty(this, "size", null);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // SampleContract的`value`属性为存储属性，对`value`的读写会存储到链上，</span></span><br><span class="line"><span class="string">    // 此处的`descriptor`自定义实现，存储时直接转为字符串，读取时获得Bignumber对象</span></span><br><span class="line"><span class="string">    LocalContractStorage.defineMapProperty(this, "value", &#123;</span></span><br><span class="line"><span class="string">        stringify: function (obj) &#123;</span></span><br><span class="line"><span class="string">            return obj.toString();</span></span><br><span class="line"><span class="string">        &#125;,</span></span><br><span class="line"><span class="string">        parse: function (str) &#123;</span></span><br><span class="line"><span class="string">            return new BigNumber(str);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;);</span></span><br><span class="line"><span class="string">    // SampleContract的多个属性批量设置为存储属性，对应的descriptor默认使用JSON序列化</span></span><br><span class="line"><span class="string">    LocalContractStorage.defineProperties(this, &#123;</span></span><br><span class="line"><span class="string">        name: null,</span></span><br><span class="line"><span class="string">        count: null</span></span><br><span class="line"><span class="string">    &#125;);</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">module.exports = SampleContract;</span></span><br></pre></td></tr></table></figure>
-<p>然后，可以如下在合约里直接读写这些属性</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    <span class="comment">// 合约部署时调用，部署后无法二次调用</span></span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params">name, count, size, value</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 在部署合约时将数据存储到链上</span></span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">        <span class="keyword">this</span>.size = size;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;,</span><br><span class="line">    testStorage: <span class="function"><span class="keyword">function</span> (<span class="params">balance</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 使用value时会从存储中读取链上数据，并根据descriptor设置自动转换为Bignumber</span></span><br><span class="line">        <span class="keyword">var</span> amount = <span class="keyword">this</span>.value.plus(<span class="keyword">new</span> BigNumber(<span class="number">2</span>));</span><br><span class="line">        <span class="keyword">if</span> (amount.lessThan(<span class="keyword">new</span> BigNumber(balance))) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="绑定Map属性"><a href="#绑定Map属性" class="headerlink" title="绑定Map属性"></a>绑定Map属性</h3><p><code>LocalContractStorage</code>还提供了对合约中map属性的绑定方法。</p>
-<p>下面是一个绑定map属性的例子:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> SampleContract = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 为`SampleContract`定义`userMap`的属性集合，数据可以通过`userMap`存储到链上</span></span><br><span class="line">    LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"userMap"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 为`SampleContract`定义`userBalanceMap`的属性集合，并且存储和读取序列化方法自定义</span></span><br><span class="line">    LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"userBalanceMap"</span>, &#123;</span><br><span class="line">        stringify: <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> obj.toString();</span><br><span class="line">        &#125;,</span><br><span class="line">        parse: <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> BigNumber(str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 为`SampleContract`定义多个集合</span></span><br><span class="line">    LocalContractStorage.defineMapProperties(<span class="keyword">this</span>,&#123;</span><br><span class="line">        key1Map: <span class="literal">null</span>,</span><br><span class="line">        key2Map: <span class="literal">null</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    testStorage: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 将数据存储到userMap中，并序列化到链上</span></span><br><span class="line">        <span class="keyword">this</span>.userMap.set(<span class="string">"robin"</span>,<span class="string">"1"</span>);</span><br><span class="line">        <span class="comment">// 将数据存储到userBalanceMap中，使用自定义序列化函数，保存到链上</span></span><br><span class="line">        <span class="keyword">this</span>.userBalanceMap.set(<span class="string">"robin"</span>,<span class="keyword">new</span> BigNumber(<span class="number">1</span>));</span><br><span class="line">    &#125;,</span><br><span class="line">    testRead: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//读取存储数据</span></span><br><span class="line">        <span class="keyword">var</span> balance = <span class="keyword">this</span>.userBalanceMap.get(<span class="string">"robin"</span>);</span><br><span class="line">        <span class="keyword">this</span>.key1Map.set(<span class="string">"robin"</span>, balance.toString());</span><br><span class="line">        <span class="keyword">this</span>.key2Map.set(<span class="string">"robin"</span>, balance.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = SampleContract;</span><br></pre></td></tr></table></figure>
-<h3 id="Map数据遍历"><a href="#Map数据遍历" class="headerlink" title="Map数据遍历"></a>Map数据遍历</h3><p>在智能合约中如果需要遍历map集合，可以采用如下方式：定义两个map,分别是arrayMap,dataMap，arrayMap采用严格递增的计数器作为key,dataMap采用data的key作为key,详细参见set方法。遍历实现参见forEach,先遍历arrayMap,得到dataKey,再对dataMap遍历。Tip：由于Map遍历性能开销比较大，不建议对大数据量map进行遍历，建议按照limit,offset形式进行遍历，否者可能会由于数据过多，导致调用超时。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> SampleContract = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"arrayMap"</span>);</span><br><span class="line">   LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"dataMap"</span>);</span><br><span class="line">   LocalContractStorage.defineProperty(<span class="keyword">this</span>, <span class="string">"size"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.size = <span class="number">0</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    set: <span class="function"><span class="keyword">function</span> (<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> index = <span class="keyword">this</span>.size;</span><br><span class="line">        <span class="keyword">this</span>.arrayMap.set(index, key);</span><br><span class="line">        <span class="keyword">this</span>.dataMap.set(key, value);</span><br><span class="line">        <span class="keyword">this</span>.size +=<span class="number">1</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.dataMap.get(key);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    len:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.size;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    forEach: <span class="function"><span class="keyword">function</span>(<span class="params">limit, offset</span>)</span>&#123;</span><br><span class="line">        limit = <span class="built_in">parseInt</span>(limit);</span><br><span class="line">        offset = <span class="built_in">parseInt</span>(offset);</span><br><span class="line">        <span class="keyword">if</span>(offset&gt;<span class="keyword">this</span>.size)&#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"offset is not valid"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> number = offset+limit;</span><br><span class="line">        <span class="keyword">if</span>(number &gt; <span class="keyword">this</span>.size)&#123;</span><br><span class="line">          number = <span class="keyword">this</span>.size;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> result  = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=offset;i&lt;number;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> key = <span class="keyword">this</span>.arrayMap.get(i);</span><br><span class="line">            <span class="keyword">var</span> object = <span class="keyword">this</span>.dataMap.get(key);</span><br><span class="line">            result += <span class="string">"index:"</span>+i+<span class="string">" key:"</span>+ key + <span class="string">" value:"</span> +object+<span class="string">"_"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = SampleContract;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">智能合约存储区</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/09/星云链Nebulas101-04-智能合约存储区/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1873,19 +1864,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1897,15 +1884,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1913,11 +1900,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1925,11 +1912,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1941,15 +1932,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1961,6 +1948,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
@@ -1969,19 +1972,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2001,19 +2000,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2026,6 +2021,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2045,19 +2044,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2066,10 +2065,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
             
             <div class="clearfix"></div>

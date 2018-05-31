@@ -172,6 +172,113 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言实现DPoS共识算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/31/Go语言实现DPoS共识算法/">Go语言实现DPoS共识算法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/31/Go语言实现DPoS共识算法/" class="archive-article-date">
+  	<time datetime="2018-05-31T08:42:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-31</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言实现DPoS共识算法"><a href="#Go语言实现DPoS共识算法" class="headerlink" title="Go语言实现DPoS共识算法"></a>Go语言实现DPoS共识算法</h1><h2 id="1-DPoS的伪代码实现"><a href="#1-DPoS的伪代码实现" class="headerlink" title="1. DPoS的伪代码实现"></a>1. DPoS的伪代码实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for round i //分成很多个round，round无限持续</span><br><span class="line">   dlist_i = get N delegates sort by votes //根据投票结果选出得票率最高的N个受托人</span><br><span class="line">   dlist_i = shuffle(dlist_i) //随机改变顺序</span><br><span class="line">   loop //round完了，退出循环</span><br><span class="line">       slot = global_time_offset / block_interval</span><br><span class="line">       pos = slot % N</span><br><span class="line">       if dlist_i[pos] exists in this node //delegate在这个节点</span><br><span class="line">           generateBlock(keypair of dlist_i[pos]) //产生block</span><br><span class="line">       else</span><br><span class="line">           skip</span><br></pre></td></tr></table></figure>
+<h2 id="2-Go语言实现DPoSG共识算法"><a href="#2-Go语言实现DPoSG共识算法" class="headerlink" title="2. Go语言实现DPoSG共识算法"></a>2. Go语言实现DPoSG共识算法</h2><p>先创建一个新的工程名为<code>DPoSDemo</code>,在<code>DPoSDemo</code>文件夹下，创建名为<code>Block</code>的文件夹，在<code>Block</code>文件夹下创建名为<code>block.go</code>的go文件。<code>block.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Block</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">	<span class="string">"encoding/hex"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明区块的结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Block <span class="keyword">struct</span> &#123;</span><br><span class="line">	BMP <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	PrefHash <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">	HashCode <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">	TimeStamp <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">	Index <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//区块验证者</span></span><br><span class="line">	Validator <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>声明产生新区快的方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateNextBlock</span><span class="params">(bmp <span class="keyword">int</span>,oldBlock Block,validator <span class="keyword">string</span>)</span> <span class="title">Block</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> newBlock Block</span><br><span class="line">	newBlock.PrefHash = oldBlock.HashCode</span><br><span class="line">	newBlock.TimeStamp = time.Now().String()</span><br><span class="line">	newBlock.Index = oldBlock.Index + <span class="number">1</span></span><br><span class="line">	newBlock.Validator = validator</span><br><span class="line">	newBlock.BMP = bmp</span><br><span class="line">	newBlock.HashCode = SetHash(newBlock)</span><br><span class="line">  <span class="keyword">return</span> newBlock</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>声明产生区块哈希的方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SetHash</span><span class="params">(b Block)</span> <span class="title">string</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    hashCode := []<span class="keyword">byte</span>(b.Validator+strconv.Itoa(b.Index)+b.TimeStamp+b.PrefHash+strconv.Itoa(b.BMP))</span><br><span class="line"></span><br><span class="line">    sha := sha256.New()</span><br><span class="line"></span><br><span class="line">    sha.Write(hashCode)</span><br><span class="line"></span><br><span class="line">    hash := sha.Sum(<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> hex.EncodeToString(hash)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>DPoSDemo</code>文件夹下创建<code>main.go</code>的go文件，文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"DPoSDemo/Block"</span></span><br><span class="line">	<span class="string">"math/rand"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明区块链，以及存放代理人地址：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> blockChain []Block.Block</span><br><span class="line"></span><br><span class="line"><span class="comment">//存放代理人的地址</span></span><br><span class="line"><span class="keyword">var</span> delegate = [] <span class="keyword">string</span>&#123;<span class="string">"aaa"</span>,<span class="string">"bbb"</span>,<span class="string">"ccc"</span>,<span class="string">"ddd"</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>声明随机调换代理人地址的方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//随机调换</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">randeDelegate</span><span class="params">()</span></span> &#123;</span><br><span class="line">	rand.Seed(time.Now().Unix())</span><br><span class="line">	index := rand.Intn(<span class="built_in">len</span>(delegate))</span><br><span class="line">	index1 := rand.Intn(<span class="built_in">len</span>(delegate))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> index1 == index &#123;</span><br><span class="line">	  Label :</span><br><span class="line">		index1 = rand.Intn(<span class="built_in">len</span>(delegate))</span><br><span class="line">		<span class="keyword">if</span> index1 == index&#123;</span><br><span class="line">			<span class="keyword">goto</span> Label</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	tempDelegate := delegate[index]</span><br><span class="line">	delegate[index] = delegate[index1]</span><br><span class="line">	delegate[index1] = tempDelegate</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> firstBlock Block.Block</span><br><span class="line"></span><br><span class="line">	blockChain = <span class="built_in">append</span>(blockChain,firstBlock)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过变量n按顺序让代理人作为矿工</span></span><br><span class="line">	<span class="keyword">var</span> n  = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> temp = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line"></span><br><span class="line">		randeDelegate()</span><br><span class="line">		<span class="comment">//每隔3秒产生一个新区快</span></span><br><span class="line">		time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> nextBlock = Block.GenerateNextBlock(temp,blockChain[temp],delegate[n])</span><br><span class="line"></span><br><span class="line">     blockChain = <span class="built_in">append</span>(blockChain,nextBlock)</span><br><span class="line"></span><br><span class="line">     n ++</span><br><span class="line"></span><br><span class="line">		temp ++</span><br><span class="line"></span><br><span class="line">		n = n %<span class="built_in">len</span>(delegate)</span><br><span class="line"></span><br><span class="line">		fmt.Println(blockChain)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[&#123;0    0 &#125; &#123;0  2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 2018-06-01 00:12:08.092523857 +0800 CST m=+3.005522759 1 aaa&#125;]</span><br><span class="line">[&#123;0    0 &#125; &#123;0  2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 2018-06-01 00:12:08.092523857 +0800 CST m=+3.005522759 1 aaa&#125; &#123;1 2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 2018-06-01 00:12:11.096789612 +0800 CST m=+6.009852287 2 ddd&#125;]</span><br><span class="line">[&#123;0    0 &#125; &#123;0  2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 2018-06-01 00:12:08.092523857 +0800 CST m=+3.005522759 1 aaa&#125; &#123;1 2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 2018-06-01 00:12:11.096789612 +0800 CST m=+6.009852287 2 ddd&#125; &#123;2 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 6b3bee1122adc311c4861c43eddc24c2e5f0567d7de53ed8b55248a8e66965e0 2018-06-01 00:12:14.098256722 +0800 CST m=+9.011383112 3 bbb&#125;]</span><br><span class="line">[&#123;0    0 &#125; &#123;0  2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 2018-06-01 00:12:08.092523857 +0800 CST m=+3.005522759 1 aaa&#125; &#123;1 2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 2018-06-01 00:12:11.096789612 +0800 CST m=+6.009852287 2 ddd&#125; &#123;2 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 6b3bee1122adc311c4861c43eddc24c2e5f0567d7de53ed8b55248a8e66965e0 2018-06-01 00:12:14.098256722 +0800 CST m=+9.011383112 3 bbb&#125; &#123;3 6b3bee1122adc311c4861c43eddc24c2e5f0567d7de53ed8b55248a8e66965e0 2df775a70b6e375ece68588b40d7993b086d35e83391ba9dcce417ccad75f05d 2018-06-01 00:12:17.103148002 +0800 CST m=+12.016338179 4 ddd&#125;]</span><br><span class="line">[&#123;0    0 &#125; &#123;0  2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 2018-06-01 00:12:08.092523857 +0800 CST m=+3.005522759 1 aaa&#125; &#123;1 2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 2018-06-01 00:12:11.096789612 +0800 CST m=+6.009852287 2 ddd&#125; &#123;2 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 6b3bee1122adc311c4861c43eddc24c2e5f0567d7de53ed8b55248a8e66965e0 2018-06-01 00:12:14.098256722 +0800 CST m=+9.011383112 3 bbb&#125; &#123;3 6b3bee1122adc311c4861c43eddc24c2e5f0567d7de53ed8b55248a8e66965e0 2df775a70b6e375ece68588b40d7993b086d35e83391ba9dcce417ccad75f05d 2018-06-01 00:12:17.103148002 +0800 CST m=+12.016338179 4 ddd&#125; &#123;4 2df775a70b6e375ece68588b40d7993b086d35e83391ba9dcce417ccad75f05d c78ce5440aa641cd93ee83692ca951f5d3def91987e61d9d9e2aee8873a34afd 2018-06-01 00:12:20.104714324 +0800 CST m=+15.017968217 5 aaa&#125;]</span><br><span class="line">[&#123;0    0 &#125; &#123;0  2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 2018-06-01 00:12:08.092523857 +0800 CST m=+3.005522759 1 aaa&#125; &#123;1 2b6b601a57654a96b6f80cd7e5e6604df7ad899b224829df8451d86bb39f6102 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 2018-06-01 00:12:11.096789612 +0800 CST m=+6.009852287 2 ddd&#125; &#123;2 1e8595592768d341828ade7771ab892921a1e078a85e1f21fff10007f2ce7a13 6b3bee1122adc311c4861c43eddc24c2e5f0567d7de53ed8b55248a8e66965e0 2018-06-01 00:12:14.098256722 +0800 CST m=+9.011383112 3 bbb&#125; &#123;3 6b3bee1122adc311c4861c43eddc24c2e5f0567d7de53ed8b55248a8e66965e0 2df775a70b6e375ece68588b40d7993b086d35e83391ba9dcce417ccad75f05d 2018-06-01 00:12:17.103148002 +0800 CST m=+12.016338179 4 ddd&#125; &#123;4 2df775a70b6e375ece68588b40d7993b086d35e83391ba9dcce417ccad75f05d c78ce5440aa641cd93ee83692ca951f5d3def91987e61d9d9e2aee8873a34afd 2018-06-01 00:12:20.104714324 +0800 CST m=+15.017968217 5 aaa&#125; &#123;5 c78ce5440aa641cd93ee83692ca951f5d3def91987e61d9d9e2aee8873a34afd 3bd220ca4872cbc6da04e69dacea093943b5072e68c4773178012c155c665dfa 2018-06-01 00:12:23.10710758 +0800 CST m=+18.020425208 6 ccc&#125;]</span><br></pre></td></tr></table></figure>
+<p><strong>代码示例：</strong><br><a href="https://github.com/WuEcho/DPoSDemo" target="_blank" rel="noopener">Go语言实现DPoS共识算法</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DPoS共识算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/31/Go语言实现DPoS共识算法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-使用以太坊源码搭建私有链" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1101,11 +1208,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoS共识算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoS共识算法</a>
         		</li>
       		
 		</ul>
@@ -1300,11 +1407,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoW共识算法</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoW共识算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
         		</li>
       		
 		</ul>
@@ -1448,103 +1555,9 @@
 
 
   
-    <article id="post-Go语言实现RSA加密解密" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/18/Go语言实现RSA加密解密/">Go语言实现RSA加密解密</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/18/Go语言实现RSA加密解密/" class="archive-article-date">
-  	<time datetime="2018-05-18T05:13:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-18</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Go语言实现RSA加密解密"><a href="#Go语言实现RSA加密解密" class="headerlink" title="Go语言实现RSA加密解密"></a>Go语言实现RSA加密解密</h1><h2 id="1-生成公钥私钥"><a href="#1-生成公钥私钥" class="headerlink" title="1. 生成公钥私钥"></a>1. 生成公钥私钥</h2><p>要想使用<code>openssl</code>生成公钥，私钥，需要先配置好<code>openssl</code>，<br>打开终端。</p>
-<h3 id="1-1-openssl生成私钥"><a href="#1-1-openssl生成私钥" class="headerlink" title="1.1 openssl生成私钥"></a>1.1 openssl生成私钥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out rsa_private_key.pem 1024</span><br></pre></td></tr></table></figure>
-<h3 id="1-2-openssl生成公钥"><a href="#1-2-openssl生成公钥" class="headerlink" title="1.2 openssl生成公钥"></a>1.2 openssl生成公钥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem</span><br></pre></td></tr></table></figure>
-<h2 id="2-实现-RSA-加密解密"><a href="#2-实现-RSA-加密解密" class="headerlink" title="2. 实现 RSA 加密解密"></a>2. 实现 RSA 加密解密</h2><h3 id="2-1-实现方式一"><a href="#2-1-实现方式一" class="headerlink" title="2.1 实现方式一"></a>2.1 实现方式一</h3><p>通过本地生成公钥私钥来实现加密解密</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"crypto/rand"</span>  </span><br><span class="line">    <span class="string">"crypto/rsa"</span>  </span><br><span class="line">    <span class="string">"crypto/x509"</span>  </span><br><span class="line">    <span class="string">"encoding/base64"</span>  </span><br><span class="line">    <span class="string">"encoding/pem"</span>  </span><br><span class="line">    <span class="string">"errors"</span>  </span><br><span class="line">    <span class="string">"fmt"</span>  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 可通过openssl产生  </span></span><br><span class="line"><span class="comment">//openssl genrsa -out rsa_private_key.pem 1024  </span></span><br><span class="line"><span class="keyword">var</span> privateKey = []<span class="keyword">byte</span>(<span class="string">`  </span></span><br><span class="line"><span class="string">-----BEGIN RSA PRIVATE KEY-----</span></span><br><span class="line"><span class="string">MIICXQIBAAKBgQDfw1/P15GQzGGYvNwVmXIGGxea8Pb2wJcF7ZW7tmFdLSjOItn9</span></span><br><span class="line"><span class="string">kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQolDOkEzNP0B8XKm+Lxy4giwwR5</span></span><br><span class="line"><span class="string">LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TUGQD6QzKY1Y8xS+FoQQIDAQAB</span></span><br><span class="line"><span class="string">AoGAbSNg7wHomORm0dWDzvEpwTqjl8nh2tZyksyf1I+PC6BEH8613k04UfPYFUg1</span></span><br><span class="line"><span class="string">0F2rUaOfr7s6q+BwxaqPtz+NPUotMjeVrEmmYM4rrYkrnd0lRiAxmkQUBlLrCBiF</span></span><br><span class="line"><span class="string">u+bluDkHXF7+TUfJm4AZAvbtR2wO5DUAOZ244FfJueYyZHECQQD+V5/WrgKkBlYy</span></span><br><span class="line"><span class="string">XhioQBXff7TLCrmMlUziJcQ295kIn8n1GaKzunJkhreoMbiRe0hpIIgPYb9E57tT</span></span><br><span class="line"><span class="string">/mP/MoYtAkEA4Ti6XiOXgxzV5gcB+fhJyb8PJCVkgP2wg0OQp2DKPp+5xsmRuUXv</span></span><br><span class="line"><span class="string">720oExv92jv6X65x631VGjDmfJNb99wq5QJBAMSHUKrBqqizfMdOjh7z5fLc6wY5</span></span><br><span class="line"><span class="string">M0a91rqoFAWlLErNrXAGbwIRf3LN5fvA76z6ZelViczY6sKDjOxKFVqL38ECQG0S</span></span><br><span class="line"><span class="string">pxdOT2M9BM45GJjxyPJ+qBuOTGU391Mq1pRpCKlZe4QtPHioyTGAAMd4Z/FX2MKb</span></span><br><span class="line"><span class="string">3in48c0UX5t3VjPsmY0CQQCc1jmEoB83JmTHYByvDpc8kzsD8+GmiPVrausrjj4p</span></span><br><span class="line"><span class="string">y2DQpGmUic2zqCxl6qXMpBGtFEhrUbKhOiVOJbRNGvWW</span></span><br><span class="line"><span class="string">-----END RSA PRIVATE KEY-----</span></span><br><span class="line"><span class="string">`</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//openssl  </span></span><br><span class="line"><span class="comment">//openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem  </span></span><br><span class="line"><span class="keyword">var</span> publicKey = []<span class="keyword">byte</span>(<span class="string">`  </span></span><br><span class="line"><span class="string">-----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDfw1/P15GQzGGYvNwVmXIGGxea</span></span><br><span class="line"><span class="string">8Pb2wJcF7ZW7tmFdLSjOItn9kvUsbQgS5yxx+f2sAv1ocxbPTsFdRc6yUTJdeQol</span></span><br><span class="line"><span class="string">DOkEzNP0B8XKm+Lxy4giwwR5LJQTANkqe4w/d9u129bRhTu/SUzSUIr65zZ/s6TU</span></span><br><span class="line"><span class="string">GQD6QzKY1Y8xS+FoQQIDAQAB</span></span><br><span class="line"><span class="string">-----END PUBLIC KEY-----	</span></span><br><span class="line"><span class="string">`</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 加密  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RsaEncrypt</span><span class="params">(origData []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;  </span><br><span class="line">    <span class="comment">//解密pem格式的公钥  </span></span><br><span class="line">    block, _ := pem.Decode(publicKey)  </span><br><span class="line">    <span class="keyword">if</span> block == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">"public key error"</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 解析公钥  </span></span><br><span class="line">    pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 类型断言  </span></span><br><span class="line">    pub := pubInterface.(*rsa.PublicKey)  </span><br><span class="line">    <span class="comment">//加密  </span></span><br><span class="line">    <span class="keyword">return</span> rsa.EncryptPKCS1v15(rand.Reader, pub, origData)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 解密  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RsaDecrypt</span><span class="params">(ciphertext []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;  </span><br><span class="line">    <span class="comment">//解密  </span></span><br><span class="line">    block, _ := pem.Decode(privateKey)  </span><br><span class="line">    <span class="keyword">if</span> block == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, errors.New(<span class="string">"private key error!"</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//解析PKCS1格式的私钥  </span></span><br><span class="line">    priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 解密  </span></span><br><span class="line">    <span class="keyword">return</span> rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    data, _ := RsaEncrypt([]<span class="keyword">byte</span>(<span class="string">"hello world"</span>))  </span><br><span class="line">    fmt.Println(base64.StdEncoding.EncodeToString(data))  </span><br><span class="line">    origData, _ := RsaDecrypt(data)  </span><br><span class="line">    fmt.Println(<span class="keyword">string</span>(origData))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-通过代码生成公钥私钥实现加密解密"><a href="#2-2-通过代码生成公钥私钥实现加密解密" class="headerlink" title="2.2 通过代码生成公钥私钥实现加密解密"></a>2.2 通过代码生成公钥私钥实现加密解密</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"crypto/rsa"</span></span><br><span class="line">	<span class="string">"crypto/rand"</span></span><br><span class="line">	<span class="string">"crypto/md5"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"encoding/base64"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//利用rsa的方法生成公钥私钥</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//生成私钥</span></span><br><span class="line">	pirv,_ := rsa.GenerateKey(rand.Reader,<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">//生成公钥</span></span><br><span class="line">	pub := &amp;pirv.PublicKey</span><br><span class="line"></span><br><span class="line">	<span class="comment">//定义明文</span></span><br><span class="line">	plainText := []<span class="keyword">byte</span>(<span class="string">"hello"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//加密</span></span><br><span class="line">	cipherText,_ := rsa.EncryptOAEP(md5.New(),rand.Reader,pub,plainText,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	fmt.Println(base64.StdEncoding.EncodeToString(cipherText))</span><br><span class="line"></span><br><span class="line">  plainText,_ = rsa.DecryptOAEP(md5.New(),rand.Reader,pirv,cipherText,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">  fmt.Println(<span class="keyword">string</span>(plainText))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nr2Sfc74BXiIvgdUOlGIjv/UkWWIRA/i/74YC32ij7X+TmP2ue+RYsTV161HfBEKMdUcsLrSxjlgbQFmbX8bUPTgEvOjw/JehWNJU2tEai70POX68YCt04apC3uKkGU33opnsSgPS9A54LnBKppkHiE+mzs8Oz9qtEQVv2xT9EM=</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/WuEcho/EncryptionFuncation.git" target="_blank" rel="noopener">demo示例链接</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">RSA加密解密</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/18/Go语言实现RSA加密解密/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1651,19 +1664,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1675,15 +1684,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1691,11 +1700,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1703,11 +1712,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1719,15 +1732,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1739,6 +1748,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
@@ -1747,19 +1772,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1779,19 +1800,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1804,6 +1821,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1823,19 +1844,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1844,10 +1865,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
             
             <div class="clearfix"></div>

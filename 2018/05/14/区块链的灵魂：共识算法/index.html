@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150411.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150425.png">
 <meta property="og:image" content="http://olgjbx93m.bkt.clouddn.com/WX20180419-150435.png">
-<meta property="og:updated_time" content="2018-05-26T08:18:12.204Z">
+<meta property="og:updated_time" content="2018-05-31T09:06:38.281Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区块链的灵魂：共识算法">
 <meta name="twitter:description" content="区块链的灵魂: 共识算法1. 分布式系统的一致性　　所谓一致性就是指数据要完整，要同步。区块链系统本质就是一个分布式应用软件。分布式系统的首要问题就是如何解决一致性问题，也就是如何在多个独立的节点之间达成共识。注意：所说的一致，并不代表一定要结果正确，所有节点都达成失败状态也是一种一致。　　分布式系统存在的问题如下：  分布式系统本身可能出现故障 分布式系统之间的通信可能有故障，或者有巨大的延迟">
@@ -466,6 +466,7 @@
 <li>其他节点将该区块的哈希值放入下一个他们创建的区块中，表示他们承认这个区块</li>
 </ul>
 <p>PoW共识协议的优点是：<strong>完全去中心化，节点自由进出</strong><br>缺点是：<strong>浪费资源，共识达成的周期长</strong></p>
+<p><strong>代码示例：</strong><br><a href="https://github.com/WuEcho/PoWDemo" target="_blank" rel="noopener">Go语言实现PoW共识算法</a></p>
 <h3 id="3-5-股权权益证明-——-PoS"><a href="#3-5-股权权益证明-——-PoS" class="headerlink" title="3.5 股权权益证明 —— PoS"></a>3.5 股权权益证明 —— PoS</h3><p>　　股权权益证明(Proof of Stack 简称PoS)，基本概念为：在PoS中，块是已经铸造好的，铸造的过程是基于每个节点(Node)愿意作为抵押的令牌(Token)数量。如果验证者愿意提供更多的令牌作为抵押品，他们就有更大的机会记账下一个区块并获得奖励。PoS算法是针对PoW算法的缺点的改进。<br>PoS运行的机制大致如下：</p>
 <ul>
 <li>加入PoS机制的都是持币人，称为验证者(validator)</li>
@@ -475,8 +476,7 @@
 </ul>
 <p><strong>POS与PoW有个很大的区别：</strong>在PoS机制下，持币是有利息的。PoS模式下，引入了币龄的概念，每个币每天产生1币龄，如过挖出了一个PoS区块，币龄就会被清空为0。每清空365币龄，会从区块中获得一定利息。</p>
 <p><strong>与PoW相比的优点：</strong>PoS不需要为了生产新区快而大量的消耗电力，一定程度上缩短了共识达成的时间。更去中心化。避免紧缩。<br><strong>缺点是：</strong>PoS机制的加密货币，信用基础不够牢固。纯PoS机制的加密货币，只能通过IPO的方式发行，这就导致“少数人”（通常是开发者）获得大量成本极低的加密货币，在利益面前，很难保证他们不会大量抛售。</p>
-<h3 id="3-5-1-PoS-潜在攻击方法"><a href="#3-5-1-PoS-潜在攻击方法" class="headerlink" title="3.5.1 PoS 潜在攻击方法"></a>3.5.1 PoS 潜在攻击方法</h3><h4 id="账本分叉问题-Nothing-at-Stake-Problem"><a href="#账本分叉问题-Nothing-at-Stake-Problem" class="headerlink" title="账本分叉问题 ( Nothing at Stake Problem )"></a>账本分叉问题 ( Nothing at Stake Problem )</h4><p>　　在 PoW 机制中，当账本出现分叉时，对 PoW 这种算力敏感的算法，矿工必须选择一个方向进行挖矿。而在 PoS 这种算力不敏感的时候，PoS 矿工往往会两个方向都挖，以争取实现利益最大化。当多数矿工都在两条链上一起挖矿的时候，就会很容易出现双重支付攻击。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-123430.png" alt=""></p>
+<h3 id="3-5-1-PoS-潜在攻击方法"><a href="#3-5-1-PoS-潜在攻击方法" class="headerlink" title="3.5.1 PoS 潜在攻击方法"></a>3.5.1 PoS 潜在攻击方法</h3><h4 id="账本分叉问题-Nothing-at-Stake-Problem"><a href="#账本分叉问题-Nothing-at-Stake-Problem" class="headerlink" title="账本分叉问题 ( Nothing at Stake Problem )"></a>账本分叉问题 ( Nothing at Stake Problem )</h4><p>　　在 PoW 机制中，当账本出现分叉时，对 PoW 这种算力敏感的算法，矿工必须选择一个方向进行挖矿。而在 PoS 这种算力不敏感的时候，PoS 矿工往往会两个方向都挖，以争取实现利益最大化。当多数矿工都在两条链上一起挖矿的时候，就会很容易出现双重支付攻击。<br><img src="http://olgjbx93m.bkt.clouddn.com/WX20180419-123430.png" alt=""></p>
 <h4 id="冷启动问题-Initial-Distribution-Problem"><a href="#冷启动问题-Initial-Distribution-Problem" class="headerlink" title="冷启动问题 ( Initial Distribution Problem )"></a>冷启动问题 ( Initial Distribution Problem )</h4><p>　　PoS 机制中，由于持币量会对挖矿难度产生影响。因此，当一个基于 PoS 体系代币系统启动时，就会面临早期获得代币的持有者，没有动力去花费或者转移代币给第三方。同时，持有越多的币，越容易挖到矿，这样就产生了代币初始流通性问题。</p>
 <p>　　解决方案：早起几个版本，通过 PoW 机制来创建货币，而非 PoS。由于 PoW 本身的性质，矿工在挖矿过程中往往需要资金来升级硬件，所以会让矿工手中的币流通起来。</p>
 <h4 id="长距离攻击-Long-Range-Attack"><a href="#长距离攻击-Long-Range-Attack" class="headerlink" title="长距离攻击 ( Long-Range Attack )"></a>长距离攻击 ( Long-Range Attack )</h4><p>　　PoS 中，产生每个 Block 的速度相对 PoW 快了很多。因此，少数不怀好意的节点会想着把整个区块链共识账本全部重写。这在 PoW 中是经典的 51% 问题，即：当某一个节点控制了 51% 及以上算力，就有能力篡改账本，但达到 51% 算力是件极其困难的事情。而在 PoS 中缺乏对算力的约束，那么就存在潜在可能篡改账本。</p>
@@ -488,6 +488,7 @@
 <p>解决方案：限制 CoinAge 的最大值。</p>
 <h4 id="预计算攻击-Precomputing-Attack"><a href="#预计算攻击-Precomputing-Attack" class="headerlink" title="预计算攻击 ( Precomputing Attack)"></a>预计算攻击 ( Precomputing Attack)</h4><p>　　当 PoS 中的某一节点占有了一定量的算力后，PoS 中占有特定算力的节点，就有能力通过控制 H <sub>prev</sub><br>来使自己所在算力范围有能力去计算 </p>
 <p>H(H(B<sub>prev</sub>),A,t) ≤ balance(A)m</p>
+<p><strong>代码示例：</strong><br><a href="https://github.com/WuEcho/PoSDemo" target="_blank" rel="noopener">Go语言实现PoS共识算法</a></p>
 <h3 id="3-6-委托权益人证明机制-——-DPoS"><a href="#3-6-委托权益人证明机制-——-DPoS" class="headerlink" title="3.6 委托权益人证明机制 —— DPoS"></a>3.6 委托权益人证明机制 —— DPoS</h3><p>　　委托权益人证明机制(Delegated Proof of Stake 简称DPoS)是PoS算法的改进。DPoS是由被社区选举的可信帐户（受托人，得票数排行前101位）来创建区块。为了成为正式受托人，用户要去社区拉票，获得足够多用户的信任。用户根据自己持有的加密货币数量占总量的百分比来投票。DPoS机制类似于股份制公司，普通股民进不了董事会，要投票选举代表（受托人）代他们做决策。</p>
 <p>　　这101个受托人可以理解为101个矿池，而这101个矿池彼此的权利是完全相等的。那些握着加密货币的用户可以随时通过投票更换这些代表（矿池），只要他们提供的算力不稳定，计算机宕机、或者试图利用手中的权力作恶，他们将会立刻被愤怒的选民门踢出整个系统，而后备代表可以随时顶上去</p>
 <h4 id="3-6-1-DPoS的伪代码实现"><a href="#3-6-1-DPoS的伪代码实现" class="headerlink" title="3.6.1 DPoS的伪代码实现"></a>3.6.1 DPoS的伪代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for round i //分成很多个round，round无限持续</span><br><span class="line">   dlist_i = get N delegates sort by votes //根据投票结果选出得票率最高的N个受托人</span><br><span class="line">   dlist_i = shuffle(dlist_i) //随机改变顺序</span><br><span class="line">   loop //round完了，退出循环</span><br><span class="line">       slot = global_time_offset / block_interval</span><br><span class="line">       pos = slot % N</span><br><span class="line">       if dlist_i[pos] exists in this node //delegate在这个节点</span><br><span class="line">           generateBlock(keypair of dlist_i[pos]) //产生block</span><br><span class="line">       else</span><br><span class="line">           skip</span><br></pre></td></tr></table></figure>
@@ -527,6 +528,7 @@
 <li><p>对于坏节点的处理存在诸多困难。社区选举不能及时有效的阻止一些破坏节点的出现，给网络造成安全隐患。</p>
 </li>
 </ol>
+<p><strong>代码示例：</strong><br><a href="https://github.com/WuEcho/DPoSDemo" target="_blank" rel="noopener">Go语言实现DPoS共识算法</a></p>
 
       
 
@@ -814,19 +816,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -838,15 +836,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -854,11 +852,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -866,11 +864,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -882,15 +884,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -902,6 +900,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
@@ -910,19 +924,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -942,19 +952,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -967,6 +973,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -986,19 +996,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1007,10 +1017,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
             
             <div class="clearfix"></div>

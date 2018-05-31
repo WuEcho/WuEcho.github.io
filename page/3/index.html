@@ -172,6 +172,111 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-星云链Nebulas101-04-智能合约存储区" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/09/星云链Nebulas101-04-智能合约存储区/">星云链Nebulas101 04 智能合约存储区</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/09/星云链Nebulas101-04-智能合约存储区/" class="archive-article-date">
+  	<time datetime="2018-05-09T11:21:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-09</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="04-智能合约存储区"><a href="#04-智能合约存储区" class="headerlink" title="04.智能合约存储区"></a>04.智能合约存储区</h1><p>星云链智能合约(smart contract)提供了链上数据存储功能。类似于传统的key-value存储系统（eg:redis），可以付费（消耗gas）将数据存储到星云链上。</p>
+<h2 id="LocalContractStorage"><a href="#LocalContractStorage" class="headerlink" title="LocalContractStorage"></a>LocalContractStorage</h2><p>星云链的智能合约运行环境内置了存储对象LocalContractStorage，可以存储数字，字符串，JavaScript对象，存储数据只能在智能合约内使用，其他合约不能读取存储的内容。</p>
+<h3 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h3><p><code>LocalContractStorage</code>的简单接口包括set,get,del接口，实现了存储，读取，删除数据功能。存储可以是数字，字符串，对象。</p>
+<h3 id="LocalContractStorage存储数据"><a href="#LocalContractStorage存储数据" class="headerlink" title="LocalContractStorage存储数据"></a>LocalContractStorage存储数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 存储数据，数据会被json序列化成字符串保存</span><br><span class="line">LocalContractStorage.put(key, value);</span><br><span class="line">// 或者</span><br><span class="line">LocalContractStorage.set(key, value);</span><br></pre></td></tr></table></figure>
+<h3 id="LocalContractStorage读取数据"><a href="#LocalContractStorage读取数据" class="headerlink" title="LocalContractStorage读取数据"></a>LocalContractStorage读取数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 获取数据</span><br><span class="line">LocalContractStorage.get(key);</span><br></pre></td></tr></table></figure>
+<h3 id="LocalContractStorage删除数据"><a href="#LocalContractStorage删除数据" class="headerlink" title="LocalContractStorage删除数据"></a>LocalContractStorage删除数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 删除数据, 数据删除后无法读取</span><br><span class="line">LocalContractStorage.del(key);</span><br><span class="line">// 或者</span><br><span class="line">LocalContractStorage.delete(key);</span><br></pre></td></tr></table></figure>
+<p>下面是一个具体在合约中使用LocalContractStorage的实例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> SampleContract = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span> (<span class="params">name, value</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 存储字符串</span></span><br><span class="line">        LocalContractStorage.set(<span class="string">"name"</span>,name);</span><br><span class="line">        <span class="comment">// 存储数字</span></span><br><span class="line">        LocalContractStorage.set(<span class="string">"value"</span>, value);</span><br><span class="line">        <span class="comment">// 存储对象</span></span><br><span class="line">        LocalContractStorage.set(<span class="string">"obj"</span>, &#123;<span class="attr">name</span>:name,<span class="attr">value</span>:value&#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> name = LocalContractStorage.get(<span class="string">"name"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"name:"</span>+name)</span><br><span class="line">        <span class="keyword">var</span> value = LocalContractStorage.get(<span class="string">"value"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"value:"</span>+value)</span><br><span class="line">        <span class="keyword">var</span> obj = LocalContractStorage.get(<span class="string">"obj"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"obj:"</span>+<span class="built_in">JSON</span>.stringify(obj))</span><br><span class="line">    &#125;,</span><br><span class="line">    del: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> result = LocalContractStorage.del(<span class="string">"name"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"del result:"</span>+result)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = SampleContract;</span><br></pre></td></tr></table></figure>
+<h2 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h2><p><code>LocalContractStorage</code>除了基本的<code>set</code>,<code>get</code>,<code>del</code>方法，还提供方法来绑定合约属性。对绑定过的合约属性的读写将直接在<code>LocalContractStorage</code>上读写，而无需调用<code>get</code>和<code>set</code>方法。</p>
+<h3 id="绑定属性"><a href="#绑定属性" class="headerlink" title="绑定属性"></a>绑定属性</h3><p>在绑定一个合约属性时，需要提供对象实例，属性名和序列化方法。</p>
+<h4 id="绑定接口"><a href="#绑定接口" class="headerlink" title="绑定接口"></a>绑定接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// define a object property named `fieldname` to `obj` with descriptor.</span><br><span class="line">// default descriptor is JSON.parse/JSON.stringify descriptor.</span><br><span class="line">// return this.</span><br><span class="line">defineProperty(obj, fieldName, descriptor);</span><br><span class="line"></span><br><span class="line">// define object properties to `obj` from `props`.</span><br><span class="line">// default descriptor is JSON.parse/JSON.stringify descriptor.</span><br><span class="line">// return this.</span><br><span class="line">defineProperties(obj, descriptorMap);</span><br></pre></td></tr></table></figure>
+<p>下面是一个在合约中使用<code>LocalContractStorage</code>绑定属性的例子:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">use strict<span class="string">';</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">var SampleContract = function () &#123;</span></span><br><span class="line"><span class="string">    // SampleContract的`size`属性为存储属性，对`size`的读写会存储到链上，</span></span><br><span class="line"><span class="string">    // 此处的`descriptor`设置为null，将使用默认的JSON.stringify()和JSON.parse()</span></span><br><span class="line"><span class="string">    LocalContractStorage.defineMapProperty(this, "size", null);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // SampleContract的`value`属性为存储属性，对`value`的读写会存储到链上，</span></span><br><span class="line"><span class="string">    // 此处的`descriptor`自定义实现，存储时直接转为字符串，读取时获得Bignumber对象</span></span><br><span class="line"><span class="string">    LocalContractStorage.defineMapProperty(this, "value", &#123;</span></span><br><span class="line"><span class="string">        stringify: function (obj) &#123;</span></span><br><span class="line"><span class="string">            return obj.toString();</span></span><br><span class="line"><span class="string">        &#125;,</span></span><br><span class="line"><span class="string">        parse: function (str) &#123;</span></span><br><span class="line"><span class="string">            return new BigNumber(str);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;);</span></span><br><span class="line"><span class="string">    // SampleContract的多个属性批量设置为存储属性，对应的descriptor默认使用JSON序列化</span></span><br><span class="line"><span class="string">    LocalContractStorage.defineProperties(this, &#123;</span></span><br><span class="line"><span class="string">        name: null,</span></span><br><span class="line"><span class="string">        count: null</span></span><br><span class="line"><span class="string">    &#125;);</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">module.exports = SampleContract;</span></span><br></pre></td></tr></table></figure>
+<p>然后，可以如下在合约里直接读写这些属性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    <span class="comment">// 合约部署时调用，部署后无法二次调用</span></span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params">name, count, size, value</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 在部署合约时将数据存储到链上</span></span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">        <span class="keyword">this</span>.size = size;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;,</span><br><span class="line">    testStorage: <span class="function"><span class="keyword">function</span> (<span class="params">balance</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 使用value时会从存储中读取链上数据，并根据descriptor设置自动转换为Bignumber</span></span><br><span class="line">        <span class="keyword">var</span> amount = <span class="keyword">this</span>.value.plus(<span class="keyword">new</span> BigNumber(<span class="number">2</span>));</span><br><span class="line">        <span class="keyword">if</span> (amount.lessThan(<span class="keyword">new</span> BigNumber(balance))) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="绑定Map属性"><a href="#绑定Map属性" class="headerlink" title="绑定Map属性"></a>绑定Map属性</h3><p><code>LocalContractStorage</code>还提供了对合约中map属性的绑定方法。</p>
+<p>下面是一个绑定map属性的例子:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> SampleContract = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 为`SampleContract`定义`userMap`的属性集合，数据可以通过`userMap`存储到链上</span></span><br><span class="line">    LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"userMap"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 为`SampleContract`定义`userBalanceMap`的属性集合，并且存储和读取序列化方法自定义</span></span><br><span class="line">    LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"userBalanceMap"</span>, &#123;</span><br><span class="line">        stringify: <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> obj.toString();</span><br><span class="line">        &#125;,</span><br><span class="line">        parse: <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> BigNumber(str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 为`SampleContract`定义多个集合</span></span><br><span class="line">    LocalContractStorage.defineMapProperties(<span class="keyword">this</span>,&#123;</span><br><span class="line">        key1Map: <span class="literal">null</span>,</span><br><span class="line">        key2Map: <span class="literal">null</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    testStorage: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 将数据存储到userMap中，并序列化到链上</span></span><br><span class="line">        <span class="keyword">this</span>.userMap.set(<span class="string">"robin"</span>,<span class="string">"1"</span>);</span><br><span class="line">        <span class="comment">// 将数据存储到userBalanceMap中，使用自定义序列化函数，保存到链上</span></span><br><span class="line">        <span class="keyword">this</span>.userBalanceMap.set(<span class="string">"robin"</span>,<span class="keyword">new</span> BigNumber(<span class="number">1</span>));</span><br><span class="line">    &#125;,</span><br><span class="line">    testRead: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//读取存储数据</span></span><br><span class="line">        <span class="keyword">var</span> balance = <span class="keyword">this</span>.userBalanceMap.get(<span class="string">"robin"</span>);</span><br><span class="line">        <span class="keyword">this</span>.key1Map.set(<span class="string">"robin"</span>, balance.toString());</span><br><span class="line">        <span class="keyword">this</span>.key2Map.set(<span class="string">"robin"</span>, balance.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = SampleContract;</span><br></pre></td></tr></table></figure>
+<h3 id="Map数据遍历"><a href="#Map数据遍历" class="headerlink" title="Map数据遍历"></a>Map数据遍历</h3><p>在智能合约中如果需要遍历map集合，可以采用如下方式：定义两个map,分别是arrayMap,dataMap，arrayMap采用严格递增的计数器作为key,dataMap采用data的key作为key,详细参见set方法。遍历实现参见forEach,先遍历arrayMap,得到dataKey,再对dataMap遍历。Tip：由于Map遍历性能开销比较大，不建议对大数据量map进行遍历，建议按照limit,offset形式进行遍历，否者可能会由于数据过多，导致调用超时。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> SampleContract = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"arrayMap"</span>);</span><br><span class="line">   LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"dataMap"</span>);</span><br><span class="line">   LocalContractStorage.defineProperty(<span class="keyword">this</span>, <span class="string">"size"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">SampleContract.prototype = &#123;</span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.size = <span class="number">0</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    set: <span class="function"><span class="keyword">function</span> (<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> index = <span class="keyword">this</span>.size;</span><br><span class="line">        <span class="keyword">this</span>.arrayMap.set(index, key);</span><br><span class="line">        <span class="keyword">this</span>.dataMap.set(key, value);</span><br><span class="line">        <span class="keyword">this</span>.size +=<span class="number">1</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.dataMap.get(key);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    len:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.size;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    forEach: <span class="function"><span class="keyword">function</span>(<span class="params">limit, offset</span>)</span>&#123;</span><br><span class="line">        limit = <span class="built_in">parseInt</span>(limit);</span><br><span class="line">        offset = <span class="built_in">parseInt</span>(offset);</span><br><span class="line">        <span class="keyword">if</span>(offset&gt;<span class="keyword">this</span>.size)&#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"offset is not valid"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> number = offset+limit;</span><br><span class="line">        <span class="keyword">if</span>(number &gt; <span class="keyword">this</span>.size)&#123;</span><br><span class="line">          number = <span class="keyword">this</span>.size;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> result  = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=offset;i&lt;number;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> key = <span class="keyword">this</span>.arrayMap.get(i);</span><br><span class="line">            <span class="keyword">var</span> object = <span class="keyword">this</span>.dataMap.get(key);</span><br><span class="line">            result += <span class="string">"index:"</span>+i+<span class="string">" key:"</span>+ key + <span class="string">" value:"</span> +object+<span class="string">"_"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = SampleContract;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">智能合约存储区</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/09/星云链Nebulas101-04-智能合约存储区/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-星云链Nebulas101-05-通过RPC接口与星云链交互" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1530,11 +1635,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hash,sha256,及应用</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hash,sha256,及应用</a>
         		</li>
       		
 		</ul>
@@ -1585,142 +1690,9 @@
 
 
   
-    <article id="post-Golang数据结构-二叉搜索树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/02/Golang数据结构-二叉搜索树/">Golang数据结构: 二叉搜索树</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/02/Golang数据结构-二叉搜索树/" class="archive-article-date">
-  	<time datetime="2018-05-02T15:32:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-02</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Golang数据结构-二叉搜索树"><a href="#Golang数据结构-二叉搜索树" class="headerlink" title="Golang数据结构: 二叉搜索树"></a>Golang数据结构: 二叉搜索树</h1><h2 id="1-相关概念"><a href="#1-相关概念" class="headerlink" title="1. 相关概念"></a>1. 相关概念</h2><p>树(tree):一种分层的数据结构，类比家谱</p>
-<p>二叉树（binary tree）: 左结点的值均小于右节点值的二叉树</p>
-<ul>
-<li>深度(depth): 从root根结点到当前节点唯一路径的长度</li>
-<li>高度(height): 从当前节点到一片树叶最长的路径的长度</li>
-<li>根(Root): 深度为0的树节点</li>
-<li>内部节点(Internal node)：至少有一个子节点的节点</li>
-<li>树叶(Leaf): 无子节点的节点</li>
-<li>兄弟节点(sibling): 拥有相同父节点的子节点 </li>
-</ul>
-<p><img src="/2018/05/02/Golang数据结构-二叉搜索树/p1.png" alt=""></p>
-<h2 id="2-二叉搜索树"><a href="#2-二叉搜索树" class="headerlink" title="2. 二叉搜索树"></a>2. 二叉搜索树</h2><p><strong>常用操作与节点定义</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Insert(v)            //向二叉搜索树的合适位置插入节点</span><br><span class="line">Search(k)            //检查序号为k的元素的树中是否存在</span><br><span class="line">Remove(v)            //移除树中所有值为v的节点</span><br><span class="line">Min()                //获取二叉搜索树中最小的值</span><br><span class="line">Max()                //获取二叉搜索树中最大的值</span><br><span class="line">InOrderTraverse()    //中序遍历树</span><br><span class="line">PreOrderTraverse()    //先序遍历树</span><br><span class="line">PostOrderTraverse()   //后序遍历树</span><br><span class="line">String()              //在命令行格式化打印出二叉树</span><br><span class="line">``` </span><br><span class="line">同样使用genny提供代码的复杂性，树类型命名为:`ItemBinarySearchTree`,树节点的结构定义如下：</span><br><span class="line"></span><br><span class="line">```go</span><br><span class="line">type Node struct&#123;</span><br><span class="line">  key  int       //中序遍历的节点序号</span><br><span class="line">  value  Item    //节点存储的值</span><br><span class="line">  left   *Node   //左子节点</span><br><span class="line">  right  *Node   //右子节点</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>key是各节点的位置在先序遍历中的序号，key的值这里使用int，可以是任意可比较的数据类型。</p>
-<p>对于<strong>Node</strong>结构体中的节点值类型<code>Item</code>，有两种方式进行声明：</p>
-<ol>
-<li>自定义</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Item <span class="keyword">interface</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>引入第三方库</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/cheekybits/genny/generic"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Item generic.Type</span><br></pre></td></tr></table></figure>
-<h3 id="2-1-插入操作与遍历"><a href="#2-1-插入操作与遍历" class="headerlink" title="2.1 插入操作与遍历"></a>2.1 插入操作与遍历</h3><p>插入操作需要使用到递归，插入操作需要从上到下查找新节点在树中合适的位置：新节点的值小于任意节点，则向左子树继续寻找，同理向右子树查找，直到查找到树叶节点再插入。</p>
-<p><strong>遍历操作有三种方式:</strong></p>
-<ul>
-<li>中序遍历(in-order): 左子树–&gt;根结点–&gt;右子树: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7-&gt;8-&gt;9-&gt;10-&gt;11</li>
-<li>先序遍历(pre-order): 根结点–&gt;左子树–&gt;右子树: 8-&gt;4-&gt;2-&gt;1-&gt;3-&gt;6-&gt;5-&gt;7-&gt;10-&gt;9-&gt;11</li>
-<li>后序遍历(post-order): 左子树–&gt;右子树–&gt;根结点: 1-&gt;3-&gt;2-&gt;5-&gt;7-&gt;6-&gt;4-&gt;9-&gt;11-&gt;10-&gt;8<br><img src="/2018/05/02/Golang数据结构-二叉搜索树/p2.png" alt=""></li>
-</ul>
-<p><code>String()</code>可视化树结构:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">                     ----[ 1</span><br><span class="line">              ----[ 2</span><br><span class="line">                     ----[ 3</span><br><span class="line">       ----[ 4</span><br><span class="line">                     ----[ 5</span><br><span class="line">              ----[ 6</span><br><span class="line">                     ----[ 7</span><br><span class="line">----[ 8  </span><br><span class="line">              ----[ 9</span><br><span class="line">       ----[ 10</span><br><span class="line">              ----[ 11</span><br></pre></td></tr></table></figure>
-<h2 id="3-代码实现"><a href="#3-代码实现" class="headerlink" title="3. 代码实现"></a>3. 代码实现</h2><h3 id="3-1-插入Insert"><a href="#3-1-插入Insert" class="headerlink" title="3.1 插入Insert"></a>3.1 插入<code>Insert</code></h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">Insert</span><span class="params">(key <span class="keyword">int</span>,value Item)</span></span>&#123;</span><br><span class="line">     tree.lock.Lock()</span><br><span class="line">     <span class="keyword">defer</span> tree.lock.Unlock()</span><br><span class="line">     newNode := &amp;Node&#123;key,value,<span class="literal">nil</span>,<span class="literal">nil</span>&#125;</span><br><span class="line">     <span class="comment">//初始化树</span></span><br><span class="line">     <span class="keyword">if</span> tree.root == <span class="literal">nil</span>&#123;</span><br><span class="line">        tree.root = newNode</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//在树中递归查找正确的位置并插入</span></span><br><span class="line">        insertNode(tree.root,newNode)</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertNode</span><span class="params">(node,newNode *Node)</span></span>&#123;</span><br><span class="line">   <span class="comment">//插入到左子树</span></span><br><span class="line">   <span class="keyword">if</span> newNode.key &lt; node.key &#123;</span><br><span class="line">      <span class="keyword">if</span> node.left == <span class="literal">nil</span> &#123;</span><br><span class="line">         node.left = newNode</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//递归查找左边插入</span></span><br><span class="line">        insertNode(node.left, newNode)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 插入右子树</span></span><br><span class="line">    <span class="keyword">if</span> node.right == <span class="literal">nil</span> &#123;</span><br><span class="line">       node.right = newNode</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//递归查找右边插入</span></span><br><span class="line">      insertNode(node.right, newNode)</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-搜索Search"><a href="#3-2-搜索Search" class="headerlink" title="3.2 搜索Search"></a>3.2 搜索<code>Search</code></h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//检查序号为k的元素在树中是否存在</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">Search</span><span class="params">(key <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    tree.lock.Rlock()</span><br><span class="line">    <span class="keyword">defer</span> tree.lock.RUnlock()</span><br><span class="line">    <span class="keyword">return</span> search(tree.root, key)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">search</span><span class="params">(node *Node, key <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//向左搜索更小的值</span></span><br><span class="line">    <span class="keyword">if</span> key &lt; node.key &#123;</span><br><span class="line">       <span class="keyword">return</span> search(node.left, key)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//向右搜索更大的值</span></span><br><span class="line">    <span class="keyword">if</span> key &gt; node.key&#123;</span><br><span class="line">       <span class="keyword">return</span> search(node.right, key)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> turn  <span class="comment">//key == node.key</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-删除Remove"><a href="#3-3-删除Remove" class="headerlink" title="3.3 删除Remove"></a>3.3 删除<code>Remove</code></h3><p>先递归查找，再删除节点，但在删除时需根据节点拥有子节点的数量，分为如下三种：</p>
-<p><img src="/2018/05/02/Golang数据结构-二叉搜索树/p3.png" alt=""></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//删除指定序号的节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">Remove</span><span class="params">(key <span class="keyword">int</span>)</span></span>&#123;</span><br><span class="line">    tree.lock.Lock()</span><br><span class="line">    <span class="keyword">defer</span> tree.lock.Unlock()</span><br><span class="line">    remove(tree.root, key)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//递归删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">remove</span><span class="params">(node *Node, key <span class="keyword">int</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">   <span class="comment">//要删除的节点不存在</span></span><br><span class="line">   <span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//寻找节点</span></span><br><span class="line">   <span class="comment">//要删除的节点在左侧</span></span><br><span class="line">   <span class="keyword">if</span> key &lt; node.key &#123;</span><br><span class="line">      node.left = remove(node.left, key)</span><br><span class="line">      <span class="keyword">return</span> node</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//要删除的节点在右侧</span></span><br><span class="line">   <span class="keyword">if</span> key &gt; node.key &#123;</span><br><span class="line">      node.right = remove(node.right, key)</span><br><span class="line">      <span class="keyword">return</span> node</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//判断节点类型</span></span><br><span class="line">   <span class="comment">//要删除的节点是叶子节点，直接删除</span></span><br><span class="line">   <span class="comment">// if key == node.key</span></span><br><span class="line">   <span class="keyword">if</span> node.left == <span class="literal">nil</span> &amp;&amp; node.right == <span class="literal">nil</span> &#123;</span><br><span class="line">      node = <span class="literal">nil</span></span><br><span class="line">      <span class="keyword">return</span> node</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//要删除的节点只有一个节点，删除自身</span></span><br><span class="line">   <span class="keyword">if</span> node.right == <span class="literal">nil</span> &#123;</span><br><span class="line">      node = node.right</span><br><span class="line">      <span class="keyword">return</span> node</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> node.right == <span class="literal">nil</span> &#123;</span><br><span class="line">      node = node.left</span><br><span class="line">      <span class="keyword">return</span> node</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">  <span class="comment">//要删除的节点有2个子节点，找到右子树的最左节点，替换当前节点</span></span><br><span class="line">  mostLeftNode := node.right</span><br><span class="line">  <span class="keyword">for</span> &#123;</span><br><span class="line">     <span class="comment">//一直遍历找到最左节点</span></span><br><span class="line">     <span class="keyword">if</span> mostLeftNode != <span class="literal">nil</span> &amp;&amp; mostLeftNode.left != <span class="literal">nil</span> &#123;</span><br><span class="line">        mostLeftNode = mostLeftNode.left</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">break</span></span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//使用右子树的最左节点替换当前节点，即删除当前节点</span></span><br><span class="line">  node.key, node.value = mostLeftNode.key, mostLeftNode.value</span><br><span class="line">  node.right = remove(node.right, node.key)</span><br><span class="line">  <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3-4-最值Min-Max"><a href="#3-4-最值Min-Max" class="headerlink" title="3.4 最值Min,Max"></a>3.4 最值<code>Min,Max</code></h4><p><strong>Min</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取树中值最小的节点: 最左节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">Min</span><span class="params">()</span> *<span class="title">Item</span></span> &#123;</span><br><span class="line">     tree.lock.Rlock()</span><br><span class="line">     <span class="keyword">defer</span> tree.lock.RUnlock()</span><br><span class="line">     node := tree.root</span><br><span class="line">     <span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> node.left == <span class="literal">nil</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> &amp;node.value</span><br><span class="line">        &#125;</span><br><span class="line">        node = node.left</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>Max</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取树中值最大的节点:最右节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">Max</span><span class="params">()</span> *<span class="title">Item</span></span> &#123;</span><br><span class="line">     tree.lock.RLock()</span><br><span class="line">     <span class="keyword">defer</span> tree.lock.RUnlock()</span><br><span class="line">     node := tree.root</span><br><span class="line">     <span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> node.right == <span class="literal">nil</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> &amp;node.value</span><br><span class="line">        &#125;</span><br><span class="line">        node = node.right</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="4-遍历（Traverse）"><a href="#4-遍历（Traverse）" class="headerlink" title="4. 遍历（Traverse）"></a>4. 遍历（Traverse）</h3><p><strong>先序遍历</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//先序遍历: 根节点 -&gt; 左子树 -&gt; 右子树</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">PreOrderTraverse</span><span class="params">(printFunc <span class="keyword">func</span>(Item)</span>)</span> &#123;</span><br><span class="line">     tree.lock.RLock()</span><br><span class="line">     <span class="keyword">defer</span> tree.lock.RUnlock()</span><br><span class="line">     preOrderTraverse(tree.root, printFunc)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">preOrderTraverse</span><span class="params">(node *Node, printFunc <span class="keyword">func</span>(Item)</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> node != <span class="literal">nil</span> &#123;</span><br><span class="line">      printFunc(node.value)                   <span class="comment">//先打印根节点</span></span><br><span class="line">      preOrderTraverse(node.left, printFunc)   <span class="comment">//再打印左子树</span></span><br><span class="line">      preOrderTraverse(node.right, printFunc)   <span class="comment">//最后打印右子树</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>中序遍历</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">PostOrderTraverse</span><span class="params">(printFunc <span class="keyword">func</span>(Item)</span>)</span> &#123;</span><br><span class="line">   tree.lock.Rlock()</span><br><span class="line">   <span class="keyword">defer</span> tree.lock.RUnlock()</span><br><span class="line">   postOrderTraverse(tree.root, printFunc)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">postOrderTraverse</span><span class="params">(node *Node, printFunc <span class="keyword">func</span>(Item)</span>)</span> &#123;</span><br><span class="line">   <span class="keyword">if</span> node != <span class="literal">nil</span> &#123;</span><br><span class="line">      postOrderTraverse(node.left, printFunc)     <span class="comment">//先打印左子树</span></span><br><span class="line">      postOrderTraverse(node.right, printFunc)    <span class="comment">//再打印右子树</span></span><br><span class="line">      printFunc(node.value)                       <span class="comment">//最后打印根节点</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>后序遍历</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">InOrderTraverse</span><span class="params">(printFucn <span class="keyword">func</span>(Item)</span>)</span>&#123;</span><br><span class="line">     tree.lock.Rlock()</span><br><span class="line">     <span class="keyword">defer</span> tree.lock.RUnlock()</span><br><span class="line">     inOrderTraverse(tree.root, printFunc)</span><br><span class="line">&#125;   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">inOrderTraverse</span><span class="params">(node *Node, printFunc <span class="keyword">func</span>(Item)</span>)</span> &#123;</span><br><span class="line">   <span class="keyword">if</span> node != <span class="literal">nil</span> &#123;</span><br><span class="line">     inOrderTraverse(node.left, printFunct)      <span class="comment">//先打印左子树</span></span><br><span class="line">     printFunc(node.value)                       <span class="comment">//再打印根结点</span></span><br><span class="line">     inIrderTraverse(node.right, printFunct)     <span class="comment">//最后打印右子树</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="5-打印输出"><a href="#5-打印输出" class="headerlink" title="5. 打印输出"></a>5. 打印输出</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//后序遍历打印树结构</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tree *ItemBinarySearchTree)</span> <span class="title">String</span><span class="params">()</span></span> &#123;</span><br><span class="line">     tree.lock.Lock()</span><br><span class="line">     <span class="keyword">defer</span> tree.lock.Unlock()</span><br><span class="line">     <span class="keyword">if</span> tree.root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="built_in">println</span>(<span class="string">"Tree is empty"</span>)</span><br><span class="line">        <span class="keyword">return</span>     </span><br><span class="line">     &#125;</span><br><span class="line">     stringify(tree.root, <span class="number">0</span> )</span><br><span class="line">     <span class="built_in">println</span>(<span class="string">"-----------------"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">stringify</span><span class="params">(node *Node, level <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    format := <span class="string">""</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; level; i++&#123;</span><br><span class="line">        format += <span class="string">"\t"</span>   <span class="comment">//根据节点的深度决定缩进长度</span></span><br><span class="line">    &#125;</span><br><span class="line">    format += <span class="string">"----["</span></span><br><span class="line">    level++</span><br><span class="line">    <span class="comment">//先递归打印左子树</span></span><br><span class="line">    stringify(node.left, level)</span><br><span class="line">    <span class="comment">//打印值</span></span><br><span class="line">    fmt.Printf(format+<span class="string">"%d\n"</span>, node.key)</span><br><span class="line">    stringify(node.right, level)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">二叉搜索树</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/02/Golang数据结构-二叉搜索树/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -1827,19 +1799,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1851,15 +1819,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RPC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1867,11 +1835,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1879,11 +1847,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1895,15 +1867,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1915,6 +1883,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
@@ -1923,19 +1907,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1955,19 +1935,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1980,6 +1956,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1999,19 +1979,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2020,10 +2000,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
             
             <div class="clearfix"></div>
