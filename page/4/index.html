@@ -172,6 +172,339 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Hash加密以及应用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/03/Hash加密以及应用/">区块链的骨骼：密码算法以及应用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/03/Hash加密以及应用/" class="archive-article-date">
+  	<time datetime="2018-05-03T07:56:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-03</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="区块链的骨骼：密码算法以及应用"><a href="#区块链的骨骼：密码算法以及应用" class="headerlink" title="区块链的骨骼：密码算法以及应用"></a>区块链的骨骼：密码算法以及应用</h1><h3 id="1-什么是hash加密"><a href="#1-什么是hash加密" class="headerlink" title="1. 什么是hash加密"></a>1. 什么是hash加密</h3><p>　　Hash，一般翻译做“散列”，也有直接音译为“哈希”，就是把<strong>任意长度</strong>的输入（又叫做预映射， pre-image），通过散列算法，变换成<strong>固定长度(64位十六进制)</strong>的输出，该输出就是散列值。</p>
+<p>　　这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是<strong>一种将任意长度的消息压缩到某一固定长度的消息摘要的函数</strong>。</p>
+<p>　　哈希表就是一种以 键-值(key-indexed) 存储数据的结构，我们只要输入待查找的值即key，即可查找到其对应的值。哈希的思路很简单，如果所有的键都是整数，那么就可以使用一个简单的无序数组来实现：将键作为索引，值即为其对应的值，这样就可以快速访问任意键的值。</p>
+<p>　　在Hash表中，<strong>记录在表中的位置和其关键字之间存在着一种确定的关系</strong>。这样我们就能预先知道所查关键字在表中的位置，从而直接通过下标找到记录。使ASL趋近与0.</p>
+<p><strong>hash的特点：</strong> </p>
+<ol>
+<li>不定长度的输入输出长度一定</li>
+<li>同一输入输出结果相同</li>
+</ol>
+<p><strong>hash的四种特性：</strong></p>
+<ol>
+<li>原像不可逆。 原像不可逆是指对于任意给定的h，都无法依据h自身的信息推导出z。</li>
+<li>难题友好性。难题友好性通俗的理解就是如果要得到难题的答案，只能暴力枚举。</li>
+<li>发散性。 发散性是指对于任意的z，即使只改动非常少的信息那么修改之前的hash值和修改之后的hash值就会大相径庭。</li>
+<li>抗碰撞性。 抗碰撞性是指对于任意两个不相同的z，那么他们对应的hash值也不相同。如果对于任意的y不等于z，则HASH(y)不等于HASH(z)。满足上述定义哈希特性的算法，称作具有<strong>严格抗碰撞性。</strong>如果给定一个z，都无法找到另外一个z<sup>`</sup>使得其他值也等于h，满足这样的哈希特性的算法就有<strong>弱抗碰撞法。</strong></li>
+</ol>
+<p><strong>常用的hash算法：</strong><br>  1.MD4<br> 　 MD4(RFC 1320)是 MIT 的Ronald L. Rivest在 1990 年设计的，MD 是 Message Digest（消息摘要） 的缩写。它适用在32位字长的处理器上用高速软件实现——它是基于 32位操作数的位操作来实现的。<br>  2.MD5<br> 　 MD5(RFC 1321)是 Rivest 于1991年对MD4的改进版本。它对输入仍以512位分组，其输出是4个32位字的级联，与 MD4 相同。MD5比MD4来得复杂，并且速度较之要慢一点，但更安全，在抗分析和抗差分方面表现更好。MD5被证明不具有强抗碰撞性。<br>  3.SHA系列<br> 　 SHA(Secure Hash Algorithm)是一个Hash函数族，分为SHA-1,SHA-2,SHA-3代表了三代哈希标准，目前使用的比较多的是SHA-2系列。<br>　　SHA1是由NIST NSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为<strong>160bit</strong>的散列值，因此抗穷举(brute-force)性更好。SHA-1 设计时基于和MD4相同原理,并且模仿了该算法。SHA-1已被证明不具备“强抗碰撞性”，所以安全性不够高。<br>　　为了提高安全性，第二代SHA-2一共包含了SHA-224,SHA-256,SHA-384和SHA-512算法，他们跟SHA-1算法原理类似。<br>　　由于对MD5和SHA-1出现成功的破解，我们需要一个不同与之前算法，可替换的加密散列算法，也就是现在的SHA-3。</p>
+<h3 id="2-区块链上的哈希算法"><a href="#2-区块链上的哈希算法" class="headerlink" title="2. 区块链上的哈希算法"></a>2. 区块链上的哈希算法</h3><p>　　哈希算法被广泛的使用在构造和验证区块，交易的完整性上，由于哈希算法的四个特性，使得可以把任意的交易数据做成数据摘要，然后再一个一个链接起来，形成数据块的链式结构。<br>可以通过验证每个区块间接地验证交易，然后每个交易原数据也可以做成哈希数据摘要，用于验证交易数据的完整性，下图借用了比特币开发者文档中的图表达了区块链的基本数据结构。<br><img src="/2018/05/03/Hash加密以及应用/p1.jpeg" alt=""></p>
+<h4 id="2-1-区块哈希"><a href="#2-1-区块哈希" class="headerlink" title="2.1 区块哈希"></a>2.1 区块哈希</h4><p>　　区块哈希就是区块头进行哈希计算，得出某个区块的哈希值，用这个哈希值可以唯一确定某一个区块，区块与区块之间就是通过这个哈希值进行串联，从而形成了一个区块链的结构。</p>
+<h4 id="2-2-梅克尔根树"><a href="#2-2-梅克尔根树" class="headerlink" title="2.2 梅克尔根树"></a>2.2 梅克尔根树</h4><p>　　梅克尔根树在不同的区块链系统中有不同的细节，但本质是一样的，以比特币中的梅克尔根树来说明。比特币中的梅克尔根树称为<strong>二叉梅克尔根树</strong>，每一个区块都有自己的梅克尔树，<strong>是通过将区块中的交易事务哈希值两两结对计算出新的哈希值，然后哈希值两两结对进行哈希计算，递归循环，直到计算出最后一个根哈希值，这样的树即为梅克尔根树也称为哈希树。</strong>
+　　</p>
+<h3 id="3-公开密匙算法"><a href="#3-公开密匙算法" class="headerlink" title="3. 公开密匙算法"></a>3. 公开密匙算法</h3><h4 id="3-1-公钥和私钥"><a href="#3-1-公钥和私钥" class="headerlink" title="3.1 公钥和私钥"></a>3.1 公钥和私钥</h4><p>　　公钥和私钥是现代密码学分支<strong>非对称性加密</strong>里面的名词，对于一段需要保护的信息，同时产生公钥和私钥，公钥可以公开，私钥自己保存。通常使用公钥加密，用私钥解密，这种加密方法也成为<strong>公开密钥算法</strong>。<br>　　对称加密算法是应用较早的加密算法，技术成熟。在对称加密算法中，数据发信方将明文（原始数据）和加密密钥一起经过特殊加密算法处理后，将密文发送出去。收信方收到密文后，若想解读原文，则需要使用加密用过的密钥及相同算法的逆算法对密文进行解密。<br>　　在<strong>对称加密算法</strong>中，使用的密钥<strong>只有一个</strong>，发收信双方都使用这个密钥对数据进行加密和解密。对称加密比较出名的算法为AES,DES。　<br>　　一般来说，公开密匙算法对于大幅度的原始数据加密的性能不会很高，因此如果是用于大段数据加密与解密，通常还是使用强度比较高的对称加密算法。
+　　</p>
+<h4 id="3-2-RSA算法"><a href="#3-2-RSA算法" class="headerlink" title="3.2 RSA算法"></a>3.2 RSA算法</h4><p>　　RSA加密算法是最常见的非对称加密算法。即用于加密，也用于数字签名，是目前最流行的公开密钥算法。RSA的公钥和私钥是一对大质数，从一个公钥和密文恢复明文的难度，等价于分解两个大质数之积。RSA的安全基于大数德尔因子分解，经历了各种攻击的考验，被普遍认为是目前最优秀的公钥方案之一。<br><strong>缺点：</strong></p>
+<ul>
+<li>产生密钥很麻烦，受限于质数产生的技术</li>
+<li>分组长度太大，运算代价高，速度慢</li>
+</ul>
+<p><strong>作用：</strong></p>
+<ul>
+<li>作用1：公钥加密私钥解密</li>
+<li>作用2：私钥签名公钥验证</li>
+</ul>
+<p><strong>加密原理：</strong></p>
+<h5 id="RSA加密"><a href="#RSA加密" class="headerlink" title="RSA加密"></a>RSA加密</h5><p>　　在RSA中，明文、密钥和密文都是数字。RSA的加密过程可以用下列公式来表达：</p>
+<p><strong>密文=明文<sup>E</sup> mod N</strong> (RSA加密)</p>
+<p>　　RSA的密文是对代表明文的数字的E次方求mod N的结果。就是将明文和自己做E次乘法,然后将其结果除以N求余数，这个余数就是密文。</p>
+<h5 id="RSA解密"><a href="#RSA解密" class="headerlink" title="RSA解密"></a>RSA解密</h5><p>　　RSA的解密和加密一样简单，可以用下面的公式来表达:</p>
+<p><strong>明文=密文 <sup>D</sup> mod N</strong> ( RSA解密)</p>
+<p>表示密文的数字的D次方求 mod N就可以得到明文。</p>
+<p>　　这里所使用的数字N和加密时使用的数字N是相同的，数 <code>D</code> 和数 <code>N</code> 组合起来就是RSA的解密密钥，因此D和N的组合就是私钥。<br>　　在RSA中，加密和解密的形式是相同的。加密是求“明文的E次方的 mod<br>N”，而解密则是求“密文的D次方的 mod N”。</p>
+<h5 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h5><p>　　由于E和N是公钥，D和N是私钥，因此求E、D和N这三个数就是生成密钥对。RSA密钥对的生成步骤如下：</p>
+<ol>
+<li>求N</li>
+<li>求L( L是仅在生成密钥对的过程中使用的数)</li>
+<li>求E</li>
+<li>求D</li>
+</ol>
+<h6 id="1-求N"><a href="#1-求N" class="headerlink" title="1. 求N"></a>1. 求N</h6><p>　　首先准备两个很大的质数。这两个很大的质数为p和q。p和q太小的话，密码会变得容易破译，但太大的话计算时间又会变得很长。</p>
+<p>判断一个数是不是质数并不是看它能不能分解质因数，而是通过数学上的判断方法来完成。</p>
+<p>准备好两个很大的质数之后，我们将这两个数相乘，其结果就是数N。也就是说，数 N 可以用下列公式来表达：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N = p x q (p、q为质数)</span><br></pre></td></tr></table></figure>
+<h6 id="2-求L"><a href="#2-求L" class="headerlink" title="2. 求L"></a>2. 求L</h6><p><code>L</code> 这个数在RSA的加密和解密过程中都不出现，它只出现在生成密钥对的过程中。</p>
+<p><code>L</code> 是 <code>p-1</code> 和 <code>q-1</code> 的最小公倍数( least common multiple, lcm )。</p>
+<p>如果用lcm(X, Y) 来表示 “X和Y的最小公倍数”，则L可以写成下列形式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L= lcm(p-1,q-1) ( L是p-1和q-1的最小公倍数)</span><br></pre></td></tr></table></figure>
+<h6 id="3-求E"><a href="#3-求E" class="headerlink" title="3. 求E"></a>3. 求E</h6><p>　　E是一个比1大、比L小的数。此外，E和L的最大公约数( greatest common divisor, gcd)必须为1。</p>
+<p>如果用gcd(X, Y)来表示X和Y的最大公约数，则E和L之间存在下列关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 &lt; E &lt; L</span><br><span class="line">gcd(E,L)= 1</span><br></pre></td></tr></table></figure>
+<h6 id="4-求D"><a href="#4-求D" class="headerlink" title="4. 求D"></a>4. 求D</h6><p>数D是由数E计算得到的。D、E和L之间必须具备下列关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 &lt; D &lt; L</span><br><span class="line">E x D mod L = 1</span><br></pre></td></tr></table></figure>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/20180117-112927.png" alt=""></p>
+<p><strong>示例：</strong></p>
+<ul>
+<li><strong>求N</strong></li>
+</ul>
+<p>首先我们准备两个质数p、q,这里我们选择17和19,它们都是质数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">N = p x q</span><br><span class="line">  = 17 x 19</span><br><span class="line">  = 323</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>求L</strong></li>
+</ul>
+<p>L是p-1和q- 1的最小公倍数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">L = lcm(p-1,q-1)</span><br><span class="line">  = lcm(16, 18)</span><br><span class="line">  = 144</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>求E</strong></li>
+</ul>
+<p>E和L的最大公约数必须是1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcd(E,L)=1</span><br></pre></td></tr></table></figure>
+<p>满足条件的E有很多，例如下面这些数都可以。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5,7,11,13,17,19,23,25,29,31,...</span><br></pre></td></tr></table></figure>
+<p>　　这些数好像都是质数，但其实并不是这样的，比如25就不是质数。这些数称为和 L “互质的数”，也就是相对于L是质数的意思。我们选择5来作为E。</p>
+<p>E=5, N=323 就是公钥。</p>
+<ul>
+<li><strong>求D</strong></li>
+</ul>
+<p>D必须满足下列条件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E x D mod L=l</span><br></pre></td></tr></table></figure>
+<p>D = 29可以满足上面的条件，因为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E x D mod L = 5 x 29 mod 144</span><br><span class="line">            = 145 mod 144</span><br><span class="line">            =1</span><br></pre></td></tr></table></figure>
+<p>我们已经成功生成了密钥对，即:</p>
+<p><strong>公钥</strong>: <code>E=5 N=323</code><br><strong>私钥</strong>: <code>D=29 N=323</code></p>
+<p>公钥(E,N)=(5,323)是可以任意公开的，但是私钥(D,N)= (29,323)必须妥善保管。</p>
+<ul>
+<li><strong>加密</strong></li>
+</ul>
+<p>要加密的明文必须是小于N的数，也就是小于323的数，我们假设要加密的明文是123，加密时使用的是公钥 <code>E=5、N=323</code>。</p>
+<blockquote>
+<p>明文<sup>E</sup> mod N = 123<sup>5</sup> mod 323 = 255</p>
+</blockquote>
+<p>因此密文就是 255。</p>
+<ul>
+<li><strong>解密</strong></li>
+</ul>
+<p>我们对密文225进行解密。解密时使用的是私钥D=29、N=323。</p>
+<blockquote>
+<p>密文 <sup>29</sup> mod N = 225<sup>29</sup> mod 323 = 123</p>
+</blockquote>
+<p><strong>攻击方式：</strong></p>
+<h4 id="中间人攻击-man-in-the-middle-attack"><a href="#中间人攻击-man-in-the-middle-attack" class="headerlink" title="中间人攻击( man-in-the-middle attack )"></a>中间人攻击( man-in-the-middle attack )</h4><p>　　中间人攻击虽然不能破译RSA,但却是一种针对机密性的有效攻击。所谓中间人攻击，就是主动攻击者Mallory混入发送者和接收者的中间，对发送者伪装成<br>接收者，对接收者伪装成发送者的攻击方式，在这里，Mallory就是“中间人”。</p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/20180117-120937.png" alt=""></p>
+<p>　　这种攻击不仅针对RSA,而是可以针对任何公钥密码。在这个过程中，公钥密码并没有被破译，所有的密码算法也都正常工作并确保了机密性。然而，所谓的机密性并非在Alice和Bob之间，而是在Alice和Mallory之间，以及Mallory和Bob之间成立的。仅靠公钥密码本身,是无法防御中间人攻击的。<br>要防御中间人攻击，还需要一种手段来确认所收到的公钥是否真的属于Bob,这种手段称为认证。在这种情况下，可以使用公钥的证书。</p>
+<h4 id="3-3-椭圆曲线密码算法"><a href="#3-3-椭圆曲线密码算法" class="headerlink" title="3.3 椭圆曲线密码算法"></a>3.3 椭圆曲线密码算法</h4><p>　　椭圆曲线密码算法是基于椭圆曲线数学的一种公钥密码算法。主要的安全性在于利用了椭圆曲线离散对数问题的困难性。是RSA加密算法的升级版。</p>
+<h3 id="4-编码-解码算法"><a href="#4-编码-解码算法" class="headerlink" title="4. 编码/解码算法 　　"></a>4. 编码/解码算法 　　</h3><p>　</p>
+<h4 id="4-1-Base64"><a href="#4-1-Base64" class="headerlink" title="4.1 Base64"></a>4.1 Base64</h4><p>　　这是一种用64个字符来表示任意二进制数据的方法。字符编码表如下：<br><img src="/2018/05/03/Hash加密以及应用/p2.png" alt="">　<br>　　Base64编码主要用在传输，存储，表示二进制等领域，还可以用来加密。这种加密比较简单，也很容易解码。</p>
+<h4 id="4-2-Base58"><a href="#4-2-Base58" class="headerlink" title="4.2 Base58"></a>4.2 Base58</h4><p>　　Base58是基于58个字母和数字组成的，实际上就是Base64的一子集，Base58不包含以下Base64的字符：</p>
+<blockquote>
+<p>数字0<br>大写字母O<br>大写字母I<br>小写字母l</p>
+<ul>
+<li>与 /</li>
+</ul>
+</blockquote>
+<p>　　比特币使用的是改进版的Base8算法,是为了解决Base58编码的字符串没有完整性校验机制。即Base58Check。</p>
+<h4 id="4-3-Base58Check"><a href="#4-3-Base58Check" class="headerlink" title="4.3 Base58Check"></a>4.3 Base58Check</h4><p>　　在二进制数据的传输过程中，为了防止数据传输的错误，保护数据安全，通常会加一个校验码，通过校验码的配合可以发现数据是否被破坏或者是否在发送时输入错误了。<br>　　编码方式如下：进行编码前，在待编码的内容字符串中加入一个字节的版本信息，版本信息可以自行约定，比如比特币地址采用了0x00作为版本信息，然后再加入待编码内容字符串的哈希值，通常只要取得哈希值中的4个字节，加在一起再整体进行Base58编码。
+　　</p>
+<h3 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. 应用场景</h3><p>密码算法在区块链系统中的重要性，相当于整个体系的骨骼。应用场景如下：</p>
+<blockquote>
+<p>账户地址生成</p>
+</blockquote>
+<blockquote>
+<p>　　公开密钥算法的应用，首先生成一对密钥，由于公钥是可以公开的，因此可以作为自己对外的一个账号，而公钥必须和对应的私钥匹配才能验证通过，因此此种方式生成的地址，先天具备验证性。<br>　　<br>价值转移保卫</p>
+</blockquote>
+<blockquote>
+<p>　 公开密钥的重要用武之地，发送者使用自己的私钥进行签名，接收者可以使用发送者公开的那个公钥进行身份验证以确保不误。发送者不但使用了自己的私钥签名，还使用了接受者的公钥进行了一段关键的加密，只有接受者使用自己的私钥才能解开这个公钥，因此就能保证不被别人截获。就算截获也没有对应的私钥来解码。<br>　　<br>完整性证明</p>
+</blockquote>
+<blockquote>
+<p>　 哈希算法应用的主要场景，通过构建的交易哈希树来验证数据是否一致。<br> 　<br>零知识证明</p>
+</blockquote>
+<blockquote>
+<p>　 要想证明自己拥有某笔资产或者拥有某个能力，要想证明自己具备对区块链上某一笔交易的所有权，只要解码一段与交易内容相关但又不泄露真正交易内容对的编码，能够解码成功就能证明所有权。</p>
+</blockquote>
+<h4 id="5-2-在区块链中的应用"><a href="#5-2-在区块链中的应用" class="headerlink" title="5.2 在区块链中的应用"></a>5.2 在区块链中的应用</h4><p>在区路链中主要使用的是sha256加密算法。</p>
+<p>代码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line"> <span class="string">"crypto/sha256"</span></span><br><span class="line"> <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="keyword">const</span> str = <span class="string">"hello"</span></span><br><span class="line"></span><br><span class="line">shar := shar256.New()</span><br><span class="line"></span><br><span class="line">shar.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">result := shar.Sum([]<span class="keyword">byte</span>(str))</span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"%x \n"</span>,result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">68656c6c6f2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</span><br></pre></td></tr></table></figure>
+<h4 id="5-3-最简单的挖矿实现"><a href="#5-3-最简单的挖矿实现" class="headerlink" title="5.3 最简单的挖矿实现"></a>5.3 最简单的挖矿实现</h4><p>　　对于一个区块来说有几个组成部分，在每个区块中，对整个区块链起决定作用的是区块头。区块头是由几个字段组成的。</p>
+<p>区块头描述：</p>
+<table>
+<thead>
+<tr>
+<th>数据项</th>
+<th>目的</th>
+<th>更新时间</th>
+<th>字节大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version（版本）</td>
+<td>区块版本号</td>
+<td>更新软件后，指定了一个新的版本号</td>
+<td>4</td>
+</tr>
+<tr>
+<td>hashPrevBlock（前一区块的hash）</td>
+<td>前一区块的256位hash值</td>
+<td>新的区块进来时</td>
+<td>32</td>
+</tr>
+<tr>
+<td>hashMerkleRoot Merkle(根节点hash值)</td>
+<td>基于一个区块中所有交易的256位hash值</td>
+<td>接受一个交易时</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Time（时间戳）</td>
+<td>从1970-01-01 00:00 UTC开始到现在，以秒为单位的当前时间戳</td>
+<td>每几秒就更新</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Bits(当前目标的hash值)</td>
+<td>压缩格式的当前目标hash值</td>
+<td>当挖矿难度调整时</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Nonce(随机数)</td>
+<td>从0开始32位随机数</td>
+<td>产生hash时(每次产生hash随机数时都要增长)</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>一个区块的区块结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>数据项</th>
+<th>描述</th>
+<th>长度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Magic no(魔法数)</td>
+<td>总是0xD9B4BEF9</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>Blocksize(区块大小)</td>
+<td>到区块结束的字节长度</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>Blockheader(区块头)</td>
+<td>包含6个数据项</td>
+<td>80字节</td>
+</tr>
+<tr>
+<td>Transaction counter(交易量)</td>
+<td>正整数v1 = varint</td>
+<td>1-9字节</td>
+</tr>
+<tr>
+<td>Transactions(交易)</td>
+<td>交易列表（非空）</td>
+<td><transaction counter="">–许多交易</transaction></td>
+</tr>
+</tbody>
+</table>
+<p>　　hashMerkleRoot Merkle名为梅克尔根，将区块头与区块体相关联，梅克尔根是通过交易事务计算出来的。挖矿的计算公式：</p>
+<blockquote>
+<p>SHA256(<br>  SHA256(version + prev_hash + merkle_root + ntine + nbits + nonce)<br>) &lt; TARGET</p>
+</blockquote>
+<p>　　在这些参数中，版本号是固定值，前一个区块的哈希值也是固定值，当前难度也是一个固定值要想改变这个公式的计算结果，能改动的参数就只有梅克尔根，区块时间戳和那个随机数。通过这样的参数来计算出符合条件的值，基本上也就只能靠暴力计算匹配，这种不断执行SHA256计算的过程很消耗算力，因此这个过程被称为<strong>挖矿</strong>。简单说，<strong>挖矿就是重复计算区块头的哈希值，不断修改该参数，直到与难度目标值匹配的一个过程。</strong></p>
+<p><strong>难度目标值</strong></p>
+<p>符合某个多相同位数字的条件函数实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidHasDifficulty</span><span class="params">(h <span class="keyword">string</span>, difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span>&#123;</span><br><span class="line">   b := <span class="built_in">len</span>(h)</span><br><span class="line">   i := <span class="number">0</span></span><br><span class="line">   <span class="keyword">for</span> i = <span class="number">0</span>; i &lt; b; i++ &#123;</span><br><span class="line">     <span class="keyword">if</span> h[i] != <span class="string">'0'</span>&#123;</span><br><span class="line">       <span class="keyword">break</span></span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> i &gt;= difficulty</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简易区块实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidHasDifficulty</span><span class="params">(h <span class="keyword">string</span>,difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    b := <span class="built_in">len</span>(h)</span><br><span class="line">    i := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">0</span> ; i &lt; b; i ++ &#123;</span><br><span class="line">		<span class="keyword">if</span> h[i] != <span class="string">'0'</span> &#123;</span><br><span class="line">	     <span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i &gt;= difficulty</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	str := <span class="string">""</span> </span><br><span class="line">	<span class="comment">//模拟版本信息</span></span><br><span class="line">  versString := <span class="string">"01"</span></span><br><span class="line">  <span class="comment">//模拟前区块hash</span></span><br><span class="line">	hashPrev := <span class="string">"hashPrevBlock"</span></span><br><span class="line">  <span class="comment">//模拟时间戳</span></span><br><span class="line">	timeString := <span class="string">"2018-5-3"</span></span><br><span class="line">  <span class="comment">//模拟交易信息(梅克尔根的模拟)</span></span><br><span class="line">   transactionString := <span class="string">"xxx -&gt; yyy $1"</span></span><br><span class="line">   <span class="comment">//随机数</span></span><br><span class="line">   noceString := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  str = versString + hashPrev + timeString + transactionString</span><br><span class="line">  <span class="comment">//对随机数进行递增直到hash结果满足要求</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		resultHash := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">		str += <span class="keyword">string</span>(noceString)</span><br><span class="line">		hs := sha256.New()</span><br><span class="line">		hs.Write([]<span class="keyword">byte</span>(str))</span><br><span class="line">		result := hs.Sum(<span class="literal">nil</span>)</span><br><span class="line">		resultHash = fmt.Sprintf(<span class="string">"%x"</span>,result)</span><br><span class="line">		<span class="comment">//简单判断生成新的区块的条件为hash前面有3个零</span></span><br><span class="line">		<span class="keyword">if</span> isValidHasDifficulty(resultHash , <span class="number">3</span>) &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Println(resultHash)</span><br><span class="line">		&#125;</span><br><span class="line">      noceString++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">538d690df902c8299a0488aabf29f9a6b290f1f135223cc9f61d57ff0844345c</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">902e0147db1467186f0faa24e35ed7bf1ead164ef268818c248f62151f872994</span><br><span class="line">f1f25af3091a8782998675d85f573e8361ec2a57938ba29980c1f2663bf572bc</span><br><span class="line">26768b9186c42774d4d6e17d970224a6ffeb8ed177bba95b3d5d6e4f30563b9e</span><br><span class="line">c02498dc1bee308eb67f29ea261fed9e26841e13254581f5a0acf915215eb565</span><br><span class="line">31ce77fbd8c8a4816b1e4919987dc8c57c7b23ab00f08eae614188f7b26e6d86</span><br><span class="line">//找到满足要求的hash</span><br><span class="line">0004d1c7300b0c1da55c9acb504badf5c7d1971b92ec2d94c817a35bceddd007</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hash,sha256,及应用</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/03/Hash加密以及应用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Golang数据结构-二叉搜索树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2223,197 +2556,6 @@
 
 
   
-    <article id="post-Go语言中的并发性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/29/Go语言中的并发性/">Go语言中的并发性</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/29/Go语言中的并发性/" class="archive-article-date">
-  	<time datetime="2018-04-29T15:10:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="并发性-Concurrency"><a href="#并发性-Concurrency" class="headerlink" title="并发性(Concurrency)"></a>并发性(Concurrency)</h1><h2 id="1-1-什么是并发"><a href="#1-1-什么是并发" class="headerlink" title="1.1 什么是并发"></a>1.1 什么是并发</h2><p>Go是并发语言，而不是并行语言。在讨论如何在Go中进行并发处理之前，必须了解什么是并发，以及它与并行性有什么不同。(Go is a concurrent language and not a parallel one. )</p>
-<p><strong>并发性Concurrency是同时处理许多事情的能力。</strong></p>
-<p>举个例子，假设一个人在晨跑。在晨跑时，他的鞋带松了。现在这个人停止跑步，系鞋带，然后又开始跑步。这是一个典型的并发性示例。这个人能够同时处理跑步和系鞋带，这是一个人能够同时处理很多事情。</p>
-<p>什么是并行性parallelism，它与并发concurrency有什么不同?<br>并行就是同时做很多事情。这听起来可能与并发类似，但实际上是不同的。</p>
-<p>用同样的慢跑例子更好地理解它。在这种情况下，这个人正在慢跑，并且使用它的手机听音乐。在这种情况下，一个人一边慢跑一边听音乐，那就是他同时在做很多事情。这就是所谓的并行性(parallelism)。</p>
-<p>并发性和并行性——一种技术上的观点。<br>假设正在编写一个web浏览器。web浏览器有各种组件。其中两个是web页面呈现区域和下载文件从internet下载的下载器。假设以这样的方式构建了浏览器的代码，这样每个组件都可以独立地执行(这是在Java和Go中使用线程来完成的，我们可以在稍后使用Goroutines来实现这一点)。当这个浏览器运行在单个核处理器中时，处理器将在浏览器的两个组件之间进行上下文切换。它可能会下载一个文件一段时间，然后它可能会切换到呈现用户请求的网页的html。这就是所谓的并发性。并发进程从不同的时间点开始，它们的执行周期重叠。在这种情况下，下载和呈现从不同的时间点开始，它们的执行重叠。假设同一浏览器运行在多核处理器上。在这种情况下，文件下载组件和HTML呈现组件可能同时在不同的内核中运行。这就是所谓的并行性。</p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/004_concurrency-parallelism-copy.png" alt=""></p>
-<p>并行性Parallelism不会总是导致更快的执行时间。这是因为并行运行的组件可能需要相互通信。例如，在我们的浏览器中，当文件下载完成时，应该将其传递给用户，比如使用弹出窗口。这种通信发生在负责下载的组件和负责呈现用户界面的组件之间。这种通信开销在并发concurrent 系统中很低。当组件在多个内核中并行concurrent 运行时，这种通信开销很高。因此，并行程序并不总是导致更快的执行时间!</p>
-<p><strong>进程(Process)，线程(Thread)，协程(Coroutine，也叫轻量级线程)</strong></p>
-<p>进程<br>进程是一个程序在一个数据集中的一次动态执行过程，可以简单理解为“正在执行的程序”，它是CPU资源分配和调度的独立单位。<br>进程一般由程序、数据集、进程控制块三部分组成。我们编写的程序用来描述进程要完成哪些功能以及如何完成；数据集则是程序在执行过程中所需要使用的资源；进程控制块用来记录进程的外部特征，描述进程的执行变化过程，系统可以利用它来控制和管理进程，它是系统感知进程存在的唯一标志。 <strong>进程的局限是创建、撤销和切换的开销比较大。</strong></p>
-<p>线程<br>线程是在进程之后发展出来的概念。 线程也叫轻量级进程，它是一个基本的CPU执行单元，也是程序执行过程中的最小单元，由线程ID、程序计数器、寄存器集合和堆栈共同组成。一个进程可以包含多个线程。<br>线程的优点是减小了程序并发执行时的开销，提高了操作系统的并发性能，缺点是线程没有自己的系统资源，只拥有在运行时必不可少的资源，但同一进程的各线程可以共享进程所拥有的系统资源，如果把进程比作一个车间，那么线程就好比是车间里面的工人。不过对于某些独占性资源存在锁机制，处理不当可能会产生“死锁”。</p>
-<p>协程<br>协程是一种用户态的轻量级线程，又称微线程，英文名Coroutine，协程的调度完全由用户控制。人们通常将协程和子程序（函数）比较着理解。<br>子程序调用总是一个入口，一次返回，一旦退出即完成了子程序的执行。 </p>
-<p><strong>与传统的系统级线程和进程相比，协程的最大优势在于其”轻量级”，可以轻松创建上百万个而不会导致系统资源衰竭，而线程和进程通常最多也不能超过1万的。这也是协程也叫轻量级线程的原因。</strong></p>
-<blockquote>
-<p>协程的特点在于是一个线程执行，与多线程相比，其优势体现在：协程的执行效率极高。因为子程序切换不是线程切换，而是由程序自身控制，因此，没有线程切换的开销，和多线程比，线程数量越多，协程的性能优势就越明显。</p>
-</blockquote>
-<h2 id="1-2-Goroutines"><a href="#1-2-Goroutines" class="headerlink" title="1.2 Goroutines"></a>1.2 Goroutines</h2><h3 id="1-2-1-什么是Goroutines"><a href="#1-2-1-什么是Goroutines" class="headerlink" title="1.2.1 什么是Goroutines"></a>1.2.1 什么是Goroutines</h3><p>go中使用Goroutines来实现并发concurrently。Goroutines是与其他函数或方法同时运行的函数或方法。Goroutines可以被认为是轻量级的线程。与线程相比，创建Goroutine的成本很小，它就是一段代码，一个函数入口。以及在堆上为其分配的一个堆栈（初始大小为4K，会随着程序的执行自动增长删除）。因此它非常廉价，Go应用程序可以并发运行数千个Goroutines。</p>
-<blockquote>
-<p>Goroutines在线程上的优势。</p>
-<ol>
-<li>与线程相比，Goroutines非常便宜。它们只是堆栈大小的几个kb，堆栈可以根据应用程序的需要增长和收缩，而在线程的情况下，堆栈大小必须指定并且是固定的</li>
-<li>Goroutines被多路复用到较少的OS线程。在一个程序中可能只有一个线程与数千个Goroutines。如果线程中的任何Goroutine都表示等待用户输入，则会创建另一个OS线程，剩下的Goroutines被转移到新的OS线程。所有这些都由运行时进行处理，我们作为程序员从这些复杂的细节中抽象出来，并得到了一个与并发工作相关的干净的API。</li>
-<li>当使用Goroutines访问共享内存时，通过设计的通道可以防止竞态条件发生。通道可以被认为是Goroutines通信的管道。</li>
-</ol>
-</blockquote>
-<h3 id="1-2-2-如何使用Goroutines"><a href="#1-2-2-如何使用Goroutines" class="headerlink" title="1.2.2 如何使用Goroutines"></a>1.2.2 如何使用Goroutines</h3><p>在函数或方法调用前面加上关键字go，会同时运行一个新的Goroutine。</p>
-<p>实例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"Hello world goroutine"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">go</span> hello()</span><br><span class="line">    fmt.Println(<span class="string">"main function"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：可能会值输出“main function”。</p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/005_%E5%B9%B6%E5%8F%91.bmp" alt=""></p>
-<p>Goroutine的规则</p>
-<ol>
-<li>当新的Goroutine开始时，Goroutine调用立即返回。与函数不同，go不等待Goroutine执行结束。当Goroutine调用，并且Goroutine的任何返回值被忽略之后，go立即执行到下一行代码。</li>
-<li>main的Goroutine应该为其他的Goroutines执行。如果main的Goroutine终止了，程序将被终止，而其他Goroutine将不会运行。</li>
-</ol>
-<p>修改以上代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"Hello world goroutine"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">go</span> hello()</span><br><span class="line">    time.Sleep(<span class="number">1</span> * time.Second)</span><br><span class="line">    fmt.Println(<span class="string">"main function"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/006_%E5%B9%B6%E5%8F%91.bmp" alt=""></p>
-<p>在上面的程序中，我们已经调用了时间包的Sleep方法，它会在执行过程中睡觉。在这种情况下，main的goroutine被用来睡觉1秒。现在调用go hello()有足够的时间在main Goroutine终止之前执行。这个程序首先打印Hello world goroutine，等待1秒，然后打印main函数。</p>
-<h3 id="1-2-3-启动多个Goroutines"><a href="#1-2-3-启动多个Goroutines" class="headerlink" title="1.2.3 启动多个Goroutines"></a>1.2.3 启动多个Goroutines</h3><p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">numbers</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++ &#123;</span><br><span class="line">        time.Sleep(<span class="number">250</span> * time.Millisecond)</span><br><span class="line">        fmt.Printf(<span class="string">"%d "</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">alphabets</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">for</span> i := <span class="string">'a'</span>; i &lt;= <span class="string">'e'</span>; i++ &#123;</span><br><span class="line">        time.Sleep(<span class="number">400</span> * time.Millisecond)</span><br><span class="line">        fmt.Printf(<span class="string">"%c "</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">go</span> numbers()</span><br><span class="line">    <span class="keyword">go</span> alphabets()</span><br><span class="line">    time.Sleep(<span class="number">3000</span> * time.Millisecond)</span><br><span class="line">    fmt.Println(<span class="string">"main terminated"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 a 2 3 b 4 c 5 d e main terminated</span><br></pre></td></tr></table></figure>
-<p>时间轴分析：</p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/007_Goroutines-explained.png" alt=""></p>
-<h2 id="1-3通道channels"><a href="#1-3通道channels" class="headerlink" title="1.3通道channels"></a>1.3通道channels</h2><p>通道可以被认为是Goroutines通信的管道。类似于管道中的水从一端到另一端的流动，数据可以从一端发送到另一端，通过通道接收。</p>
-<h3 id="1-3-1-声明通道"><a href="#1-3-1-声明通道" class="headerlink" title="1.3.1 声明通道"></a>1.3.1 声明通道</h3><p>每个通道都有与其相关的类型。该类型是通道允许传输的数据类型。(通道的零值为nil。nil通道没有任何用处，因此通道必须使用类似于地图和切片的方法来定义。)</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">var</span> a <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">if</span> a == <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"channel a is nil, going to define it"</span>)</span><br><span class="line">        a = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">        fmt.Printf(<span class="string">"Type of a is %T"</span>, a)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">channel a is nil, going to define it  </span><br><span class="line">Type of a is chan int</span><br></pre></td></tr></table></figure>
-<p>也可以简短的声明：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-2-发送和接收"><a href="#1-3-2-发送和接收" class="headerlink" title="1.3.2 发送和接收"></a>1.3.2 发送和接收</h3><p>发送和接收的语法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data := &lt;- a <span class="comment">// read from channel a  </span></span><br><span class="line">a &lt;- data <span class="comment">// write to channel a</span></span><br></pre></td></tr></table></figure>
-<p>在通道上箭头的方向指定数据是发送还是接收。</p>
-<h3 id="1-3-3-发送和接收默认是阻塞的"><a href="#1-3-3-发送和接收默认是阻塞的" class="headerlink" title="1.3.3 发送和接收默认是阻塞的"></a>1.3.3 发送和接收默认是阻塞的</h3><p>一个通道发送和接收数据，默认是阻塞的。当一个数据被发送到通道时，在发送语句中被阻塞，直到另一个Goroutine从该通道读取数据。类似地，当从通道读取数据时，读取被阻塞，直到一个Goroutine将数据写入该通道。</p>
-<p>这些通道的特性是帮助Goroutines有效地进行通信，而无需像使用其他编程语言中非常常见的显式锁或条件变量。</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"Hello world goroutine"</span>)</span><br><span class="line">    done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line">    <span class="keyword">go</span> hello(done)</span><br><span class="line">    &lt;-done <span class="comment">// 接收数据，阻塞式</span></span><br><span class="line">    fmt.Println(<span class="string">"main function"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello world goroutine  </span><br><span class="line">main function</span><br></pre></td></tr></table></figure>
-<p>在上面的程序中，在第一行中创建了一个done bool通道。把它作为参数传递给hello Goroutine。第14行正在接收已完成频道的数据。这一行代码是阻塞的，这意味着在某些Goroutine将数据写入到已完成的通道之前，程序将不会执行到下一行代码。因此，这就消除了对时间的需求。睡眠在原来的程序中，以防止主要的Goroutine退出。</p>
-<blockquote>
-<p>代码&lt;-done接收来自done Goroutine的数据，但不使用或存储任何变量中的数据。这是完全合法的。</p>
-</blockquote>
-<p>现在的main Goroutine阻塞等待已完成通道的数据。hello Goroutine接收这个通道作为参数，打印hello world Goroutine，然后写入done通道。当此写入完成时，main的Goroutine接收来自己完成通道的数据，它是未阻塞的，然后输出文本主函数。</p>
-<p>让我们通过在hello Goroutine中引入睡眠来修改这个程序，以更好地理解这个阻塞的概念。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;  </span><br><span class="line">    fmt.Println(<span class="string">"hello go routine is going to sleep"</span>)</span><br><span class="line">    time.Sleep(<span class="number">4</span> * time.Second)</span><br><span class="line">    fmt.Println(<span class="string">"hello go routine awake and going to write to done"</span>)</span><br><span class="line">    done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line">    fmt.Println(<span class="string">"Main going to call hello go goroutine"</span>)</span><br><span class="line">    <span class="keyword">go</span> hello(done)</span><br><span class="line">    &lt;-done</span><br><span class="line">    fmt.Println(<span class="string">"Main received data"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>再一个例子，这个程序将打印一个数字的个位数的平方和。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calcSquares</span><span class="params">(number <span class="keyword">int</span>, squareop <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sum := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> number != <span class="number">0</span> &#123;</span><br><span class="line">        digit := number % <span class="number">10</span></span><br><span class="line">        sum += digit * digit</span><br><span class="line">        number /= <span class="number">10</span></span><br><span class="line">    &#125;</span><br><span class="line">    squareop &lt;- sum</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calcCubes</span><span class="params">(number <span class="keyword">int</span>, cubeop <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sum := <span class="number">0</span> </span><br><span class="line">    <span class="keyword">for</span> number != <span class="number">0</span> &#123;</span><br><span class="line">        digit := number % <span class="number">10</span></span><br><span class="line">        sum += digit * digit * digit</span><br><span class="line">        number /= <span class="number">10</span></span><br><span class="line">    &#125;</span><br><span class="line">    cubeop &lt;- sum</span><br><span class="line">&#125; </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    number := <span class="number">589</span></span><br><span class="line">    sqrch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    cubech := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> calcSquares(number, sqrch)</span><br><span class="line">    <span class="keyword">go</span> calcCubes(number, cubech)</span><br><span class="line">    squares, cubes := &lt;-sqrch, &lt;-cubech</span><br><span class="line">    fmt.Println(<span class="string">"Final output"</span>, squares + cubes)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Final output 1536</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-4-死锁"><a href="#1-3-4-死锁" class="headerlink" title="1.3.4 死锁"></a>1.3.4 死锁</h3><p>使用通道时要考虑的一个重要因素是死锁。如果Goroutine在一个通道上发送数据，那么预计其他的Goroutine应该接收数据。如果这种情况不发生，那么程序将在运行时出现死锁。</p>
-<p>类似地，如果Goroutine正在等待从通道接收数据，那么另一些Goroutine将会在该通道上写入数据，否则程序将会死锁。</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    ch &lt;- <span class="number">5</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>报错：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br><span class="line"></span><br><span class="line">goroutine 1 [chan send]:  </span><br><span class="line">main.main()  </span><br><span class="line">    /tmp/sandbox249677995/main.go:6 +0x80</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-5-定向通道"><a href="#1-3-5-定向通道" class="headerlink" title="1.3.5 定向通道"></a>1.3.5 定向通道</h3><p>之前的通道都是双向通道，可以通过这些通道接收或者发送数据。也可以创建单向通道，这些通道只能发送或者接收数据。</p>
-<p>创建仅能发送数据的通道，示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendData</span><span class="params">(sendch <span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sendch &lt;- <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    sendch := <span class="built_in">make</span>(<span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> sendData(sendch)</span><br><span class="line">    fmt.Println(&lt;-sendch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendData</span><span class="params">(sendch <span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sendch &lt;- <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    chnl := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> sendData(chnl)</span><br><span class="line">    fmt.Println(&lt;-chnl)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-6-关闭通道和通道上的范围循环"><a href="#1-3-6-关闭通道和通道上的范围循环" class="headerlink" title="1.3.6 关闭通道和通道上的范围循环"></a>1.3.6 关闭通道和通道上的范围循环</h3><p>发送者有可以通过关闭信道，来通知接收方不会有更多的数据被发送到信道上。</p>
-<p>接收者可以在接收来自通道的数据时使用额外的变量来检查通道是否已经关闭。</p>
-<p>语法结构：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v, ok := &lt;- ch</span><br></pre></td></tr></table></figure>
-<p>在上面的语句中，如果ok的值是true，表示成功的将value值发送到一个通道。如果ok是false，这意味着我们正在从一个封闭的通道读取数据。从闭通道读取的值将是通道类型的零值。</p>
-<p>例如，如果通道是一个int通道，那么从封闭通道接收的值将为0。</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">producer</span><span class="params">(chnl <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">        chnl &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(chnl)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> producer(ch)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        v, ok := &lt;-ch</span><br><span class="line">        <span class="keyword">if</span> ok == <span class="literal">false</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(<span class="string">"Received "</span>, v, ok)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Received  0 true  </span><br><span class="line">Received  1 true  </span><br><span class="line">Received  2 true  </span><br><span class="line">Received  3 true  </span><br><span class="line">Received  4 true  </span><br><span class="line">Received  5 true  </span><br><span class="line">Received  6 true  </span><br><span class="line">Received  7 true  </span><br><span class="line">Received  8 true  </span><br><span class="line">Received  9 true</span><br></pre></td></tr></table></figure>
-<p>在上面的程序中，producer Goroutine将0到9写入chnl通道，然后关闭通道。主函数里有一个无限循环。它检查通道是否在行号中使用变量ok关闭。如果ok是假的，则意味着通道关闭，因此循环结束。还可以打印接收到的值和ok的值。for循环的for range形式可用于从通道接收值，直到它关闭为止。</p>
-<p>使用range循环，示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">producer</span><span class="params">(chnl <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">        chnl &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(chnl)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> producer(ch)</span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> ch &#123;</span><br><span class="line">        fmt.Println(<span class="string">"Received "</span>,v)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-7-缓冲通道"><a href="#1-3-7-缓冲通道" class="headerlink" title="1.3.7 缓冲通道"></a>1.3.7 缓冲通道</h3><p>之前的所有通道基本上都没有缓冲。发送和接收到一个未缓冲的通道是阻塞的。</p>
-<p>可以用缓冲区创建一个通道。发送到一个缓冲通道只有在缓冲区满时才被阻塞。类似地，从缓冲通道接收的信息只有在缓冲区为空时才会被阻塞。</p>
-<p>可以通过将额外的容量参数传递给make函数来创建缓冲通道，该函数指定缓冲区的大小。</p>
-<p>语法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">type</span>, capacity)</span><br></pre></td></tr></table></figure>
-<p>上述语法的容量应该大于0，以便通道具有缓冲区。默认情况下，无缓冲通道的容量为0，因此在之前创建通道时省略了容量参数。</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">2</span>)</span><br><span class="line">    ch &lt;- <span class="string">"naveen"</span></span><br><span class="line">    ch &lt;- <span class="string">"paul"</span></span><br><span class="line">    fmt.Println(&lt;- ch)</span><br><span class="line">    fmt.Println(&lt;- ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">并发性</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/29/Go语言中的并发性/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -2515,31 +2657,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2551,15 +2681,35 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2575,11 +2725,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2591,19 +2741,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2615,11 +2757,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2628,6 +2766,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2643,15 +2789,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式一致性系统</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2667,15 +2813,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2683,7 +2825,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2703,11 +2849,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2716,14 +2870,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
             
             <div class="clearfix"></div>
