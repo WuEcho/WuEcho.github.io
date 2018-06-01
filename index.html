@@ -233,21 +233,16 @@
 <p>运行结果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no communication</span><br></pre></td></tr></table></figure>
 <ol>
-<li><p>每个case都必须是一个通信</p>
-</li>
-<li><p>所有channel表达式都会被求值</p>
-</li>
-<li><p>所有被发送的表达式都会被求值</p>
-</li>
-<li><p>如果任意某个通信可以进行，它就执行；其他被忽略。</p>
-</li>
-<li><p>如果有多个case都可以运行，Select会随机公平地选出一个执行。其他不会执行。</p>
-</li>
+<li>每个case都必须是一个通信</li>
+<li>所有channel表达式都会被求值</li>
+<li>所有被发送的表达式都会被求值</li>
+<li>如果任意某个通信可以进行，它就执行；其他被忽略。</li>
+<li>如果有多个case都可以运行，Select会随机公平地选出一个执行。其他不会执行。</li>
 </ol>
 <p>否则：</p>
 <p>如果有default子句，则执行该语句。</p>
 <p>如果没有default字句，select将阻塞，直到某个通信可以运行；Go不会重新对channel或值进行求值</p>
-<h3 id="4-定向通道"><a href="#4-定向通道" class="headerlink" title="4. 定向通道"></a>4. 定向通道</h3><p>   通道可以是双向通道，我们可以通过这些通道接收或者发送数据。我们也可以创建单向通道，这些通道只能发送或者接收数据。<br>创建仅能发送数据的通道，示例代码：</p>
+<h2 id="4-定向通道"><a href="#4-定向通道" class="headerlink" title="4. 定向通道"></a>4. 定向通道</h2><p>   通道可以是双向通道，我们可以通过这些通道接收或者发送数据。我们也可以创建单向通道，这些通道只能发送或者接收数据。<br>创建仅能发送数据的通道，示例代码：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendData</span><span class="params">(sendch <span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sendch &lt;- <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    sendch := <span class="built_in">make</span>(<span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> sendData(sendch)</span><br><span class="line">    fmt.Println(&lt;-sendch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>示例代码：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendData</span><span class="params">(sendch <span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sendch &lt;- <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    chnl := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> sendData(chnl)</span><br><span class="line">    fmt.Println(&lt;-chnl)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
