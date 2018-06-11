@@ -172,6 +172,173 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言中的网络编程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/30/Go语言中的网络编程/">Go语言中的网络编程</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/30/Go语言中的网络编程/" class="archive-article-date">
+  	<time datetime="2018-04-29T23:54:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-30</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h1><h2 id="1-网络编程基础"><a href="#1-网络编程基础" class="headerlink" title="1.网络编程基础"></a>1.网络编程基础</h2><p>go语言的网络编程模块主要支持两种Internet协议: TCP 和 UDP</p>
+<h3 id="1-1通信协议"><a href="#1-1通信协议" class="headerlink" title="1.1通信协议"></a>1.1通信协议</h3><p>　　通信协议也叫网络传输协议或简称为传送协议（Communications Protocol）,是指计算机通信或者网络设备的共同语言。</p>
+<p>　　现在最普及的计算机通信为网络通信，所以“传送协议”一般都指计算机通信的传送协议，如：TCP/IP，NetBEUI,HTTP,FTP等。</p>
+<h3 id="1-2-TCP-IP协议"><a href="#1-2-TCP-IP协议" class="headerlink" title="1.2 TCP/IP协议"></a>1.2 <code>TCP/IP</code>协议</h3><p>　　在Internet中<code>TCP/IP</code>协议是使用最为广泛的通信协议。TCP/IP是<code>Transmission Control Protocol/Internet Protocol</code>的缩写，意思是“传输控制协议/网络协议”</p>
+<p>　　TCP/IP协议是一个工业标准协议套件，专为跨广域网（WAN）的大型互联网络而设计。</p>
+<p>　　TCP/IP网络体系结构模型就是遵循TCP/IP协议进行通信的一种分层体系，现在，Internet和Intranet所使用的协议一般都为TCP/IP协议。</p>
+<p><strong>TCP/IP体系结构分为四层</strong></p>
+<ul>
+<li><p>第一层 网络接口层<br>包括用于协作IP数据在已有网络介质上传输的协议，提供TCP/IP协议的数据结构和实际物理硬件之间的借口，比如地址解析协议等。 </p>
+</li>
+<li><p>第二层 网络层<br>对应于OSI模型的网络层，主要包含了IP,RIP等相关协议，负责数据的打包，寻址及路由。还包括网间控制报文协议（ICMP）来提供网络诊断信息。</p>
+</li>
+<li><p>第三层 传输层<br>对应于OSI的传输层，提供了两种端到端的通信服务，分别是TCP和UDP协议</p>
+</li>
+<li><p>第四层 应用层<br>对应于OSI的应用层，表达层和会话层，提供了网络与应用之间的对话接口。包含了各种网络应用层协议，比如HTTP,FTP等应用协议。<br><img src="http://o7cqr8cfk.bkt.clouddn.com/17-7-29/99460206.jpg" alt=""></p>
+</li>
+</ul>
+<h3 id="附录-OSI-七层参考模型"><a href="#附录-OSI-七层参考模型" class="headerlink" title="附录:OSI 七层参考模型"></a>附录:OSI 七层参考模型</h3><p><img src="http://o7cqr8cfk.bkt.clouddn.com/markdown/1501298857841.png"></p>
+<h3 id="1-3-IP地址和端口号"><a href="#1-3-IP地址和端口号" class="headerlink" title="1.3 IP地址和端口号"></a>1.3 IP地址和端口号</h3><h4 id="1-3-1-IP地址"><a href="#1-3-1-IP地址" class="headerlink" title="1.3.1 IP地址"></a>1.3.1 IP地址</h4><p>　　互联网协议地址(Internet Protocol Address)缩写为<strong>IP地址</strong>，IP地址是分配给网络上使用网络协议的设备的数字便签。常见的IP地址分为IPv4与IPv6两大类。</p>
+<p><strong>IPv4地址</strong><br>　　IP地址由32位二进制数组成，为便利使用，常以XXX.XXX.XXX.XXX形式表现，每组XXX代表小于或等于255的10进制数。<br>　　地址可分为A,B,C,D,E五大类，其中E类属于特殊保留地址。IP地址是唯一的，目前IP技术可能使用的IP地址最多可有4，294，967，296个。由于早期编码和分配上的问题，使很多区域的编码实际上被空出或不能使用，再加上互联网的普及以及连接网络的各种设备都消耗大量IPv4地址资源。<br>　　在A,B,C类IP地址中，如果主机号是全1，那么这个地址为直接广播地址，它是用来使路由器将一个分组以广播形式发送给特定网络上的所有主机。</p>
+<p><strong>IPv6</strong><br>　　IPv6地址为128位长但通常写作8组每组4个十六进制数的形式，如：2001：0db8:85a3:08d3:1319:8a2e:0379:7344是一个合法的IPv6地址。<br>　　IPv4地址可以很容易的转化为IPv6形式。举例来说，如果IPv4的一个地址为135.75.43.52（十六进制为0x874B2B34），它可以被转化为0000:0000:0000:0000:0000:0000:874B:2B34或者::874B:2B34。同时，还可以使用混合符号（IPv4-compatible address），则地址可以为::135.75.43.52。<br>　　Go支持IP的类型<br>　　在Go的net包中定义了很多类型，函数和方法用来网络编程，其中IP的定义如下：<br>　　<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type IP []byte</span><br></pre></td></tr></table></figure></p>
+<p>　　在net包中有很多函数来操作IP，但是其中比较有用的也就几个，其中ParseIP(s string) IP函数会把一个IPv4或者IPv6的地址转化成IP类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name := <span class="string">"192.168.10.105:8282"</span></span><br><span class="line">addr := net.ParseIP(name)</span><br><span class="line"><span class="keyword">if</span> addr == <span class="literal">nil</span> &#123;</span><br><span class="line">   fmt.Println(<span class="string">"Invalid address"</span>)</span><br><span class="line">&#125; eles &#123;</span><br><span class="line">   fmt.Println(<span class="string">"The address is "</span>,addr.String())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后就会发现只要你输入一个IP地址就会给出相应的IP格式</p>
+<h4 id="1-3-2端口"><a href="#1-3-2端口" class="headerlink" title="1.3.2端口"></a>1.3.2端口</h4><p>在网络技术中，端口(Port)包括<strong>逻辑端口</strong>和<strong>物理端口</strong>两种类型。</p>
+<p><strong>物理端口</strong><br>　　指的是物理存在的端口，如ADSL Modem,集线器，交换机，路由器上用于连接其他网络设备的接口，如RJ-45端口，SC端口等等。</p>
+<p><strong>逻辑端口</strong><br>　　是指逻辑意义上用于区分服务的端口，如TCP/IP协议中的服务端口，端口号的范围从0到65535，比如用于浏览网页服务的80端口，由于物理端口和逻辑端口数量较多，为了对接口进行区分，将每个端口进行了编号，这就是端口号。</p>
+<p>　　端口是一种软件结构，被客户程序或服务程序用来发送和接受数据，一台服务器有256*256个端口，端口号范围： 0 - 65535</p>
+<p>　　0 - 1023是公认端口号，即已经公认定义或为将要公认定义的软件保留的。1024 - 65535是并没有公共定义的端口号，用户可以自己定义这些端口的作用。</p>
+<p>端口与协议有关：TCP和UDP的端口互不相干</p>
+<h2 id="2-TCP编程"><a href="#2-TCP编程" class="headerlink" title="2.TCP编程"></a>2.TCP编程</h2><p>　　TCP是一种面向连接的，可靠的，基于IP的传输层协议。弥补了IP协议的不足，属于一种较高级的协议，他实现了数据包的有力捆绑，通过排序和重传来确保数据传输的可靠。</p>
+<p>排序可以保证数据的读取是按照正确的格式进行，重传则保证了数据能够准确传送到目的地。</p>
+<p>使用TCP协议通信，首先创建TCP链接，主动发起链接的叫<strong>客户端</strong>，被动响应连接的叫<strong>服务器</strong></p>
+<h3 id="2-1什么是Socket"><a href="#2-1什么是Socket" class="headerlink" title="2.1什么是Socket"></a>2.1什么是Socket</h3><p>　　<code>Socket</code>又称”套接字”，应用程序通常通过”套接字”向网络发出请求或者应答网络请求，使主机间或者一台计算机上的进程间可以通讯。</p>
+<p><code>TCP</code>编程的客户端和服务器端都是通过<code>Socket</code>来完成的.</p>
+<p>　　<strong><em>其实<code>UDP</code>协议通信也是使用的套接字, 和<code>TCP</code>协议稍有差别. <code>TCP</code>是面向连接的套接字, 而<code>UDP</code>是面向无连接的套接字.</em></strong></p>
+<p>　　在Go语言的net包中有一个类型TCPConn，这个类型可以用来作为客户端和服务器端交互的通道，他有两个主要的函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *TCPConn)</span> <span class="title">Write</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, err os.Error)</span></span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="params">(c *TCPConn)</span> <span class="title">Read</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, err os.Error)</span></span></span><br></pre></td></tr></table></figure>
+<p>TCPConn可以用在客户端和服务器端来读写数据。</p>
+<p>另外TCPAddr类型，他表示一个TCP的地址信息，他的定义如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> TCPAddr <span class="keyword">struct</span> &#123;</span><br><span class="line">    IP IP</span><br><span class="line">    Port <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Go语言中通过ResolveTCPAddr获取一个TCPAddr</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ResolveTCPAddr</span><span class="params">(net, addr <span class="keyword">string</span>)</span> <span class="params">(*TCPAddr, os.Error)</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>net参数是”tcp4”、”tcp6”、”tcp”中的任意一个，分别表示TCPv4、TCPv6或者任意</li>
+<li>addr表示域名或者IP地址，例如”<a href="http://www.google.com:80&quot;" target="_blank" rel="noopener">www.google.com:80&quot;</a> 或者”127.0.0.1:22”.</li>
+</ul>
+<p><strong>TCP client</strong><br>　　Go语言中通过net包中的DialTCP函数建议一个TCP连接，返回一个TCPConn类型，客户端和服务器段通过这个类型来进行数据交换。一般而言，客户端通过TCPConn写入请求信息发送到服务器端，读取服务器端反馈的信息。这个链接只有当任意一遍关闭了连接之后才失效，不然我们都可以一直使用。函数的定义如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DialTCP</span><span class="params">(net <span class="keyword">string</span>, laddr, raddr *TCPAddr)</span> <span class="params">(c *TCPConn, err os.Error)</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>net参数是”tcp4”、”tcp6”、”tcp”中的任意一个，分别表示TCPv4、TCPv6或者任意</li>
+<li>laddr表示本机地址，一般设置为nil</li>
+<li>raddr表示远程的服务地址</li>
+</ul>
+<h3 id="2-2-TCP服务端编程"><a href="#2-2-TCP服务端编程" class="headerlink" title="2.2 TCP服务端编程"></a>2.2 TCP服务端编程</h3><p>　　服务器端需要绑定服务到对应的端口，然后监听端口，当有客户端请求到达的时候接收客户端连接。net包中有相应的函数，函数定义如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ListenTCP</span><span class="params">(net <span class="keyword">string</span>, laddr *TCPAddr)</span> <span class="params">(l *TCPListener, err os.Error)</span></span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="params">(l *TCPListener)</span> <span class="title">Accept</span><span class="params">()</span> <span class="params">(c Conn, err os.Error)</span></span></span><br></pre></td></tr></table></figure>
+<p>完成服务端示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TCPServer project main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"net"</span></span><br><span class="line">    <span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    service := <span class="string">":5000"</span></span><br><span class="line">    tcpAddr, err := net.ResolveTCPAddr(<span class="string">"tcp4"</span>, service) <span class="comment">//在Go语言中通过ResolveTCPAddr获取一个TCPAddr</span></span><br><span class="line">    checkErr(err)</span><br><span class="line">    listener, err := net.ListenTCP(<span class="string">"tcp"</span>, tcpAddr) <span class="comment">// 绑定服务器端口，进行监听</span></span><br><span class="line">    checkErr(err)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        conn, err := listener.Accept()</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">go</span> handleClient(conn)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">checkErr</span><span class="params">(err error)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Fprintf(os.Stderr, <span class="string">"Fatal error: %s"</span>, err.Error())</span><br><span class="line">        os.Exit(<span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleClient</span><span class="params">(conn net.Conn)</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> conn.Close()</span><br><span class="line">    <span class="keyword">var</span> buf [<span class="number">512</span>]<span class="keyword">byte</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        n, err := conn.Read(buf[<span class="number">0</span>:])</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        rAddr := conn.RemoteAddr()</span><br><span class="line">        fmt.Println(<span class="string">"Receive from client"</span>, rAddr.String(), <span class="keyword">string</span>(buf[<span class="number">0</span>:n]))</span><br><span class="line">        _, err2 := conn.Write([]<span class="keyword">byte</span>(<span class="string">"Welcome client!"</span>))</span><br><span class="line">        <span class="keyword">if</span> err2 != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-TCP-客户端编程"><a href="#2-3-TCP-客户端编程" class="headerlink" title="2.3 TCP 客户端编程"></a>2.3 TCP 客户端编程</h3><p>客户端实例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TCPClient project main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"net"</span></span><br><span class="line">    <span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> buf [<span class="number">512</span>]<span class="keyword">byte</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(os.Args) != <span class="number">2</span> &#123;</span><br><span class="line">        fmt.Fprintf(os.Stderr, <span class="string">"Usage: %s host:port "</span>, os.Args[<span class="number">0</span>])</span><br><span class="line">        os.Exit(<span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    service := os.Args[<span class="number">1</span>]</span><br><span class="line">    tcpAddr, err := net.ResolveTCPAddr(<span class="string">"tcp4"</span>, service)</span><br><span class="line">    checkErr(err)</span><br><span class="line">    conn, err := net.DialTCP(<span class="string">"tcp"</span>, <span class="literal">nil</span>, tcpAddr)</span><br><span class="line">    <span class="keyword">defer</span> conn.Close()</span><br><span class="line">    checkErr(err)</span><br><span class="line">    rAddr := conn.RemoteAddr()</span><br><span class="line">    n, err := conn.Write([]<span class="keyword">byte</span>(<span class="string">"Hello server!"</span>))</span><br><span class="line">    checkErr(err)</span><br><span class="line">    n, err = conn.Read(buf[<span class="number">0</span>:])</span><br><span class="line">    checkErr(err)</span><br><span class="line">    fmt.Println(<span class="string">"Reply from server "</span>, rAddr.String(), <span class="keyword">string</span>(buf[<span class="number">0</span>:n]))</span><br><span class="line">    os.Exit(<span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">checkErr</span><span class="params">(err error)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Fprintf(os.Stderr, <span class="string">"Fatal error: %s"</span>, err.Error())</span><br><span class="line">        os.Exit(<span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-UDP编程"><a href="#3-UDP编程" class="headerlink" title="3.UDP编程"></a>3.UDP编程</h2><p><strong><code>UDP</code>简介</strong> </p>
+<p><code>UDP</code>也叫用户数据报协议</p>
+<p><code>UDP</code>编程相比<code>TCP</code>编程简单了很多.</p>
+<p><code>TCP</code>是面向连接的, 客户端和服务端必须连接之后才能通讯, 就像打电话, 必须先接通才能通话.</p>
+<p><code>UDP</code>是面向无连接的, 一方负责发送数据(客户端), 只要知道对方(接受数据:服务器) 的地址就可以直接发数据了, 但是能不能达到就没有办法保证了.</p>
+<p><strong>虽然用UDP传输面向无连接, 数据不可靠，但它的优点是和TCP比，速度快，对于不要求可靠到达的数据，就可以使用UDP协议。 比如局域网的视频同步, 使用 udp 是比较合适的:快, 延迟越小越好</strong></p>
+<p>Go语言包中处理UDP Socket和TCP Socket不同的地方就是在服务器端处理多个客户端请求数据包的方式不同,UDP缺少了对客户端连接请求的Accept函数。其他基本几乎一模一样，只有TCP换成了UDP而已。UDP的几个主要函数如下所示：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ResolveUDPAddr</span><span class="params">(net, addr <span class="keyword">string</span>)</span> <span class="params">(*UDPAddr, os.Error)</span></span></span><br><span class="line"><span class="function">   <span class="title">func</span> <span class="title">DialUDP</span><span class="params">(net <span class="keyword">string</span>, laddr, raddr *UDPAddr)</span> <span class="params">(c *UDPConn, err os.Error)</span></span></span><br><span class="line"><span class="function">   <span class="title">func</span> <span class="title">ListenUDP</span><span class="params">(net <span class="keyword">string</span>, laddr *UDPAddr)</span> <span class="params">(c *UDPConn, err os.Error)</span></span></span><br><span class="line"><span class="function">   <span class="title">func</span> <span class="params">(c *UDPConn)</span> <span class="title">ReadFromUDP</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, addr *UDPAddr, err os.Error)</span></span></span><br><span class="line"><span class="function">   <span class="title">func</span> <span class="params">(c *UDPConn)</span> <span class="title">WriteToUDP</span><span class="params">(b []<span class="keyword">byte</span>, addr *UDPAddr)</span> <span class="params">(n <span class="keyword">int</span>, err os.Error)</span></span></span><br></pre></td></tr></table></figure>
+<p>一个UDP的客户端代码如下所示,可以看到不同的就是TCP换成了UDP而已：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line">    <span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"fmt"</span></span><br><span class="line">        <span class="string">"net"</span></span><br><span class="line">        <span class="string">"os"</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(os.Args) != <span class="number">2</span> &#123;</span><br><span class="line">            fmt.Fprintf(os.Stderr, <span class="string">"Usage: %s host:port"</span>, os.Args[<span class="number">0</span>])</span><br><span class="line">            os.Exit(<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        service := os.Args[<span class="number">1</span>]</span><br><span class="line">        udpAddr, err := net.ResolveUDPAddr(<span class="string">"udp4"</span>, service)</span><br><span class="line">        checkError(err)</span><br><span class="line">        conn, err := net.DialUDP(<span class="string">"udp"</span>, <span class="literal">nil</span>, udpAddr)</span><br><span class="line">        checkError(err)</span><br><span class="line">        _, err = conn.Write([]<span class="keyword">byte</span>(<span class="string">"anything"</span>))</span><br><span class="line">        checkError(err)</span><br><span class="line">        <span class="keyword">var</span> buf [<span class="number">512</span>]<span class="keyword">byte</span></span><br><span class="line">        n, err := conn.Read(buf[<span class="number">0</span>:])</span><br><span class="line">        checkError(err)</span><br><span class="line">        fmt.Println(<span class="keyword">string</span>(buf[<span class="number">0</span>:n]))</span><br><span class="line">        os.Exit(<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">checkError</span><span class="params">(err error)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            fmt.Fprintf(os.Stderr, <span class="string">"Fatal error "</span>, err.Error())</span><br><span class="line">            os.Exit(<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-UDP服务器编程"><a href="#3-2-UDP服务器编程" class="headerlink" title="3.2 UDP服务器编程"></a>3.2 UDP服务器编程</h3><p>我们来看一下UDP服务器端如何来处理：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line">    <span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"fmt"</span></span><br><span class="line">        <span class="string">"net"</span></span><br><span class="line">        <span class="string">"os"</span></span><br><span class="line">        <span class="string">"time"</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        service := <span class="string">":1200"</span></span><br><span class="line">        udpAddr, err := net.ResolveUDPAddr(<span class="string">"udp4"</span>, service)</span><br><span class="line">        checkError(err)</span><br><span class="line">        conn, err := net.ListenUDP(<span class="string">"udp"</span>, udpAddr)</span><br><span class="line">        checkError(err)</span><br><span class="line">        <span class="keyword">for</span> &#123;</span><br><span class="line">            handleClient(conn)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">handleClient</span><span class="params">(conn *net.UDPConn)</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> buf [<span class="number">512</span>]<span class="keyword">byte</span></span><br><span class="line">        _, addr, err := conn.ReadFromUDP(buf[<span class="number">0</span>:])</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        daytime := time.Now().String()</span><br><span class="line">        conn.WriteToUDP([]<span class="keyword">byte</span>(daytime), addr)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">checkError</span><span class="params">(err error)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            fmt.Fprintf(os.Stderr, <span class="string">"Fatal error "</span>, err.Error())</span><br><span class="line">            os.Exit(<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="四、net模块其他属性和函数"><a href="#四、net模块其他属性和函数" class="headerlink" title="四、net模块其他属性和函数"></a>四、net模块其他属性和函数</h2><p>控制TCP连接</p>
+<p>TCP连接有很多控制函数，我们平常用到比较多的有如下几个函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func (c *TCPConn) SetTimeout(nsec int64) os.Error</span><br><span class="line">func (c *TCPConn) SetKeepAlive(keepalive bool) os.Error</span><br></pre></td></tr></table></figure>
+<p>第一个函数用来设置超时时间，客户端和服务器端都适用，当超过设置的时间时那么该链接就失效。</p>
+<p>第二个函数用来设置客户端是否和服务器端一直保持着连接，即使没有任何的数据发送</p>
+<p>更多的内容请查看<code>net</code>包的文档。</p>
+<p>阻塞Dial：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conn, err := net.Dial(<span class="string">"tcp"</span>, <span class="string">"google.com:80"</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">//handle error</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// read or write on conn</span></span><br></pre></td></tr></table></figure>
+<p>或是带上超时机制的Dial：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conn, err := net.DialTimeout(<span class="string">"tcp"</span>, <span class="string">":8080"</span>, <span class="number">2</span> * time.Second)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">//handle error</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// read or write on conn</span></span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/30/Go语言中的网络编程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言中的并发性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1634,175 +1801,6 @@
 
 
   
-    <article id="post-Go语言的循环控制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/26/Go语言的循环控制/">Go语言的循环控制</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/26/Go语言的循环控制/" class="archive-article-date">
-  	<time datetime="2018-04-26T13:13:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-26</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="分支循环"><a href="#分支循环" class="headerlink" title="分支循环"></a>分支循环</h1><h2 id="1-判断语句"><a href="#1-判断语句" class="headerlink" title="1.判断语句"></a>1.判断语句</h2><h3 id="1-1-if-语句"><a href="#1-1-if-语句" class="headerlink" title="1.1. if 语句"></a>1.1. if 语句</h3><ol>
-<li>条件表达式没有括号</li>
-<li>支持一个初始化表达式（可以是并行方式）</li>
-<li>左大括号必须和条件语句或else在同一行</li>
-<li>支持单行模式</li>
-<li>初始化语句中的变量为block级别，同时隐藏外部同名变量</li>
-</ol>
-<p><strong>语法</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> 布尔表达式 &#123;</span><br><span class="line">   <span class="comment">/* 在布尔表达式为 true 时执行 */</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">/* 在布尔表达式为 false 时执行 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> 布尔表达式<span class="number">1</span> &#123;</span><br><span class="line">   <span class="comment">/* 在布尔表达式1为 true 时执行 */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> 布尔表达式<span class="number">2</span>&#123;</span><br><span class="line">   <span class="comment">/* 在布尔表达式1为 false ,布尔表达式2为true时执行 */</span></span><br><span class="line">&#125; <span class="keyword">else</span>&#123;</span><br><span class="line">   <span class="comment">/* 在上面两个布尔表达式都为false时，执行*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>示例代码：</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="comment">/* 定义局部变量 */</span></span><br><span class="line">   <span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line"> </span><br><span class="line">   <span class="comment">/* 使用 if 语句判断布尔表达式 */</span></span><br><span class="line">   <span class="keyword">if</span> a &lt; <span class="number">20</span> &#123;</span><br><span class="line">       <span class="comment">/* 如果条件为 true 则执行以下语句 */</span></span><br><span class="line">       fmt.Printf(<span class="string">"a 小于 20\n"</span> )</span><br><span class="line">   &#125;</span><br><span class="line">   fmt.Printf(<span class="string">"a 的值为 : %d\n"</span>, a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果其中包含一个可选的语句组件(在评估条件之前执行)，则还有一个变体。它的语法是</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> statement; condition &#123;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> num := <span class="number">10</span>; num % <span class="number">2</span> == <span class="number">0</span> &#123; <span class="comment">//checks if number is even</span></span><br><span class="line">        fmt.Println(num,<span class="string">"is even"</span>) </span><br><span class="line">    &#125;  <span class="keyword">else</span> &#123;</span><br><span class="line">        fmt.Println(num,<span class="string">"is odd"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>需要注意的是，num的定义在if里，那么只能够在该if..else语句块中使用，否则编译器会报错的。</p>
-</blockquote>
-<h3 id="1-2-switch-语句"><a href="#1-2-switch-语句" class="headerlink" title="1.2 switch 语句"></a>1.2 switch 语句</h3><ol>
-<li>可以使用任何类型或表达式作为条件语句</li>
-<li>不需要写break，一旦条件符合自动终止</li>
-<li>如希望继续执行下一个case，需使用fallthrogh语句</li>
-<li>支持一个初始化表达式(可以使并行方式)，右侧需跟分号</li>
-<li>左大括号必须和条件语句在同一行</li>
-<li>语句执行过程从上至下，直到找到匹配项</li>
-</ol>
-<p><strong>语法</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> var1 &#123;</span><br><span class="line">    <span class="keyword">case</span> val1:</span><br><span class="line">        ...</span><br><span class="line">    <span class="keyword">case</span> val2:</span><br><span class="line">        ...</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　变量 var1 可以是任何类型，而 val1 和 val2 则可以是同类型的任意值。类型不被局限于常量或整数，但必须是相同的类型；或者最终结果为相同类型的表达式。<br>您可以<strong>同时测试多个可能符合条件的值，使用逗号分割它们</strong>，例如：case val1, val2, val3。</p>
-<p><strong>示例代码：</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="comment">/* 定义局部变量 */</span></span><br><span class="line">   <span class="keyword">var</span> grade <span class="keyword">string</span> = <span class="string">"B"</span></span><br><span class="line">   <span class="keyword">var</span> marks <span class="keyword">int</span> = <span class="number">90</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">switch</span> marks &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">90</span>: grade = <span class="string">"A"</span></span><br><span class="line">      <span class="keyword">case</span> <span class="number">80</span>: grade = <span class="string">"B"</span></span><br><span class="line">      <span class="keyword">case</span> <span class="number">50</span>,<span class="number">60</span>,<span class="number">70</span> : grade = <span class="string">"C"</span>  <span class="comment">//case 后可以由多个数值</span></span><br><span class="line">      <span class="keyword">default</span>: grade = <span class="string">"D"</span>  </span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">switch</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> grade == <span class="string">"A"</span> :</span><br><span class="line">         fmt.Printf(<span class="string">"优秀!\n"</span> )     </span><br><span class="line">      <span class="keyword">case</span> grade == <span class="string">"B"</span>, grade == <span class="string">"C"</span> :</span><br><span class="line">         fmt.Printf(<span class="string">"良好\n"</span> )      </span><br><span class="line">      <span class="keyword">case</span> grade == <span class="string">"D"</span> :</span><br><span class="line">         fmt.Printf(<span class="string">"及格\n"</span> )      </span><br><span class="line">      <span class="keyword">case</span> grade == <span class="string">"F"</span>:</span><br><span class="line">         fmt.Printf(<span class="string">"不及格\n"</span> )</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">         fmt.Printf(<span class="string">"差\n"</span> );</span><br><span class="line">   &#125;</span><br><span class="line">   fmt.Printf(<span class="string">"你的等级是 %s\n"</span>, grade );      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如需贯通后续的case，就添加fallthrough</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> data [<span class="number">2</span>]<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">switch</span> x := <span class="number">5</span>; x &#123;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		fmt.Println(x)</span><br><span class="line">	<span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">		x += <span class="number">10</span></span><br><span class="line">		fmt.Println(x)</span><br><span class="line">		<span class="keyword">fallthrough</span></span><br><span class="line">	<span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">		x += <span class="number">20</span></span><br><span class="line">		fmt.Println(x)</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>结果</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">35</span></span><br></pre></td></tr></table></figure>
-<p><strong>ｐｓ：</strong><br>case中的表达式是可选的，可以省略。如果该表达式被省略，则被认为是switch true，并且每个case表达式都被计算为true，并执行相应的代码块。</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    num := <span class="number">75</span></span><br><span class="line">    <span class="keyword">switch</span> &#123; <span class="comment">// expression is omitted</span></span><br><span class="line">    <span class="keyword">case</span> num &gt;= <span class="number">0</span> &amp;&amp; num &lt;= <span class="number">50</span>:</span><br><span class="line">        fmt.Println(<span class="string">"num is greater than 0 and less than 50"</span>)</span><br><span class="line">    <span class="keyword">case</span> num &gt;= <span class="number">51</span> &amp;&amp; num &lt;= <span class="number">100</span>:</span><br><span class="line">        fmt.Println(<span class="string">"num is greater than 51 and less than 100"</span>)</span><br><span class="line">    <span class="keyword">case</span> num &gt;= <span class="number">101</span>:</span><br><span class="line">        fmt.Println(<span class="string">"num is greater than 100"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>Type Switch</strong></p>
-<p>switch 语句还可以被用于 type-switch 来判断某个 interface 变量中实际存储的变量类型。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> x.(<span class="keyword">type</span>)&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">type</span>:</span><br><span class="line">       statement(s);      </span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">type</span>:</span><br><span class="line">       statement(s); </span><br><span class="line">    <span class="comment">/* 你可以定义任意个数的case */</span></span><br><span class="line">    <span class="keyword">default</span>: <span class="comment">/* 可选 */</span></span><br><span class="line">       statement(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> x <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">     </span><br><span class="line">   <span class="keyword">switch</span> i := x.(<span class="keyword">type</span>) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="literal">nil</span>:	  </span><br><span class="line">         fmt.Printf(<span class="string">" x 的类型 :%T"</span>,i)                </span><br><span class="line">      <span class="keyword">case</span> <span class="keyword">int</span>:	  </span><br><span class="line">         fmt.Printf(<span class="string">"x 是 int 型"</span>)                       </span><br><span class="line">      <span class="keyword">case</span> <span class="keyword">float64</span>:</span><br><span class="line">         fmt.Printf(<span class="string">"x 是 float64 型"</span>)           </span><br><span class="line">      <span class="keyword">case</span> <span class="function"><span class="keyword">func</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">float64</span>:</span></span><br><span class="line">         fmt.Printf("x 是 func(int) 型")                      </span><br><span class="line">      <span class="keyword">case</span> <span class="keyword">bool</span>, <span class="keyword">string</span>:</span><br><span class="line">         fmt.Printf(<span class="string">"x 是 bool 或 string 型"</span> )       </span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">         fmt.Printf(<span class="string">"未知型"</span>)     </span><br><span class="line">   &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>结果</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x 的类型 :&lt;<span class="literal">nil</span>&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-select-语句"><a href="#1-3-select-语句" class="headerlink" title="1.3 select 语句"></a>1.3 select 语句</h3><p>　　select 语句类似于 switch 语句，但是select会随机执行一个可运行的case。如果没有case可运行，它将阻塞，直到有case可运行。<br>　- 每个case都必须是一个通信<br>　- 所有channel表达式都会被求值<br>　- 所有被发送的表达式都会被求值<br>　- 如果任何一个通道可以进行，它就执行，其他被忽略<br>　- 如果有多个case都可以运行。select会随机公开的选出一个执行，其他不会执行<br>　- 否则：<br>　  如果有default子句，则执行该语句。<br>如果没有default字句，select将阻塞，直到某个通信可以运行；Go不会重新对channel或值进行求值。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> c1, c2, c3 <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">   <span class="keyword">var</span> i1, i2 <span class="keyword">int</span></span><br><span class="line">   <span class="keyword">select</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> i1 = &lt;-c1:</span><br><span class="line">         fmt.Printf(<span class="string">"received "</span>, i1, <span class="string">" from c1\n"</span>)</span><br><span class="line">      <span class="keyword">case</span> c2 &lt;- i2:</span><br><span class="line">         fmt.Printf(<span class="string">"sent "</span>, i2, <span class="string">" to c2\n"</span>)</span><br><span class="line">      <span class="keyword">case</span> i3, ok := (&lt;-c3):  <span class="comment">// same as: i3, ok := &lt;-c3</span></span><br><span class="line">         <span class="keyword">if</span> ok &#123;</span><br><span class="line">            fmt.Printf(<span class="string">"received "</span>, i3, <span class="string">" from c3\n"</span>)</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fmt.Printf(<span class="string">"c3 is closed\n"</span>)</span><br><span class="line">         &#125;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">         fmt.Printf(<span class="string">"no communication\n"</span>)</span><br><span class="line">   &#125;    </span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`　</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">运行结果：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span><span class="keyword">go</span></span><br><span class="line">no communication</span><br></pre></td></tr></table></figure>
-<h2 id="2-循环语句"><a href="#2-循环语句" class="headerlink" title="2.循环语句"></a>2.循环语句</h2><p>循环语句表示条件满足，可以反复的执行某段代码。</p>
-<ul>
-<li>for是唯一的循环语句。(Go没有while循环)</li>
-<li>条件语句每次循环都会被重新检查，因此不建议在条件语句中使用函数，尽量提前计算好条件并以变量或常量代替</li>
-</ul>
-<h3 id="2-1-for-语句"><a href="#2-1-for-语句" class="headerlink" title="2.1 for 语句"></a>2.1 for 语句</h3><p><strong>语法结构</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for init; condition; post &#123; &#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>初始化语句只执行一次。在初始化循环之后，将检查该条件。如果条件计算为true，那么{}中的循环体将被执行，然后是post语句。post语句将在循环的每次成功迭代之后执行。在执行post语句之后，该条件将被重新检查。如果它是正确的，循环将继续执行，否则循环终止。</p>
-</blockquote>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++ &#123;</span><br><span class="line">        fmt.Printf(<span class="string">" %d"</span>,i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>所有的三个组成部分，即初始化、条件和post都是可选的。</strong></p>
-<p>因此有三种循环样式：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.效果与while相似</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  a := <span class="number">1</span></span><br><span class="line">  <span class="keyword">for</span>&#123;</span><br><span class="line">   a++</span><br><span class="line">   <span class="keyword">if</span> a &gt; <span class="number">3</span>&#123;</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  a := <span class="number">1</span></span><br><span class="line">  <span class="keyword">for</span> a &lt;= <span class="number">3</span>&#123;</span><br><span class="line">    a++</span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//3.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  a := <span class="number">1</span></span><br><span class="line">  <span class="keyword">for</span> i:=<span class="number">0</span>; i &lt; <span class="number">3</span>; i++&#123;</span><br><span class="line">     a++</span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>for 循环的 range 格式可以对 slice、map、数组、字符串等进行迭代循环</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for key, value := range oldMap &#123;</span><br><span class="line">    newMap[key] = value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="3-跳出循环"><a href="#3-跳出循环" class="headerlink" title="3.跳出循环"></a>3.跳出循环</h2><p>跳转语句goto，break，continue</p>
-<ul>
-<li>三个语法都可以配合标签使用</li>
-<li>标签名区分大小写，若不使用会造成编译错误</li>
-<li>break与continue配合标签可用于多层循环跳出</li>
-<li>goto是调整执行位置，与其他两个语句配合标签的结果并不同</li>
-</ul>
-<h3 id="3-1-break语句"><a href="#3-1-break语句" class="headerlink" title="3.1 break语句"></a>3.1 break语句</h3><p>break：跳出循环体。break语句用于在结束其正常执行之前突然终止for循环</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> i &gt; <span class="number">5</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> <span class="comment">//loop is terminated if i &gt; 5</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Printf(<span class="string">"%d "</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Printf(<span class="string">"\nline after for loop"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-continue语句"><a href="#3-2-continue语句" class="headerlink" title="3.2 continue语句"></a>3.2 continue语句</h3><p>continue：跳出一次循环。continue语句用于跳过for循环的当前迭代。在continue语句后面的for循环中的所有代码将不会在当前迭代中执行。循环将继续到下一个迭代。</p>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> i%<span class="number">2</span> == <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Printf(<span class="string">"%d "</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-goto语句"><a href="#3-3-goto语句" class="headerlink" title="3.3 goto语句"></a>3.3 goto语句</h3><p>goto：可以无条件地转移到过程中指定的行</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="comment">/* 定义局部变量 */</span></span><br><span class="line">   <span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 循环 */</span></span><br><span class="line">   LOOP: <span class="keyword">for</span> a &lt; <span class="number">20</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> a == <span class="number">15</span> &#123;</span><br><span class="line">         <span class="comment">/* 跳过迭代 */</span></span><br><span class="line">         a = a + <span class="number">1</span></span><br><span class="line">         <span class="keyword">goto</span> LOOP</span><br><span class="line">      &#125;</span><br><span class="line">      fmt.Printf(<span class="string">"a的值为 : %d\n"</span>, a)</span><br><span class="line">      a++     </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-4-标签"><a href="#3-4-标签" class="headerlink" title="3.4 标签"></a>3.4 标签</h3><p><strong>代码示范</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">LABEL:</span><br><span class="line">  <span class="keyword">for</span>&#123;</span><br><span class="line">     <span class="keyword">for</span> i := <span class="number">0</span>;i &lt; <span class="number">10</span>; i++&#123;</span><br><span class="line">       <span class="keyword">if</span> i &gt; <span class="number">2</span>&#123;</span><br><span class="line">          <span class="keyword">break</span> LABEL</span><br><span class="line">       &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">          fmt.Println(i)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  LABEL:</span><br><span class="line">   <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i ++&#123;</span><br><span class="line">     <span class="keyword">for</span>&#123;</span><br><span class="line">       fmt.Println(i)</span><br><span class="line">       <span class="keyword">continue</span> LABEL</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">循环控制</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/26/Go语言的循环控制/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
@@ -1912,11 +1910,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1925,14 +1931,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1956,6 +1954,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">公链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Go语言搭建公链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
@@ -1964,15 +1970,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1988,10 +1994,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
               </li>
              
@@ -2001,6 +2003,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2020,6 +2026,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
@@ -2032,7 +2042,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2044,11 +2058,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2056,23 +2066,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2080,7 +2074,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2096,15 +2102,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2112,11 +2114,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
             
             <div class="clearfix"></div>
