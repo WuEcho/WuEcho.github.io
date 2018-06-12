@@ -172,6 +172,103 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Golang实现爬虫-一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/04/Golang实现爬虫-一/">Golang实现爬虫(一)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/04/Golang实现爬虫-一/" class="archive-article-date">
+  	<time datetime="2018-05-04T10:27:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-04</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Golang实现爬虫-一"><a href="#Golang实现爬虫-一" class="headerlink" title="Golang实现爬虫(一)"></a>Golang实现爬虫(一)</h1><p>本爬虫项目使用的是珍爱网，先爬取<code>http://www.zhenai.com/zhenghun</code>中的城市列表。<br>城市列表图如下：<br><img src="/2018/05/04/Golang实现爬虫-一/p1.png" alt=""></p>
+<p>在编码之前需要先下载两个包，来辅助完成对改地址的解析读取等操作，打开命令行控制器，输入以下指令获取第三方库的支持：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go get golang.org/x/net/html</span><br><span class="line"></span><br><span class="line">go get golang.org/x/text</span><br></pre></td></tr></table></figure>
+<p>等待下载完成</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/transform"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"golang.org/x/text/encoding"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/html/charset"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mian</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="comment">//获取的数据</span></span><br><span class="line">   resp,err := http.Get(url:<span class="string">"http://www.zhenai.com/zhenghun"</span>)</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    panin(err)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//数据请求完毕需要进行关闭链接</span></span><br><span class="line">   <span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">   <span class="comment">//判断返回的状态码</span></span><br><span class="line">   <span class="keyword">if</span> resp.StatusCode != http.StatusOK&#123;</span><br><span class="line">    <span class="comment">//此处仅做简单示范，实际开发中需要对不同的状态码进行映射</span></span><br><span class="line">    fmt.Println(<span class="string">"状态码不正常"</span>,resp.StatusCode)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//动态获取编码格式</span></span><br><span class="line">   <span class="comment">//Go语言默认采用utf8编码，不获取编码的话可能会导致乱码</span></span><br><span class="line">   e := determinEncodeing(resp.Body)</span><br><span class="line">   <span class="comment">//将内容转化成utf8格式</span></span><br><span class="line">   utf8Obj := transform.NewReader(resp.Body, e.NewDecoder())</span><br><span class="line">   <span class="comment">//对获取的数据进行读取</span></span><br><span class="line">   all,err := ioutil.ReadAll(utf8obj)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">     <span class="built_in">panic</span>(<span class="literal">nil</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   fmt.Printf(<span class="string">"%s"</span>,all)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取编码格式</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">determinEncodeing</span><span class="params">(r io.Reader)</span> <span class="title">encoding</span>.<span class="title">Encoding</span></span> &#123;</span><br><span class="line"> bytes.err := bufio.NewReader(r).Peek(n:<span class="number">1024</span>)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">panic</span>(err)</span><br><span class="line"> &#125;</span><br><span class="line"> e,_,_ := charset.DeterminEncoding(bytes,contenType:<span class="string">""</span>)</span><br><span class="line"> <span class="keyword">return</span> e</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码输出结果（截取部分输出）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">&lt;article class=&quot;myhome-wrap frameW city-page&quot;&gt;</span><br><span class="line">	&lt;dl id=&quot;cityList&quot; class=&quot;city-list  clearfix&quot;&gt;</span><br><span class="line">			&lt;dt&gt;A&lt;/dt&gt;</span><br><span class="line">			&lt;dd&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aba&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿坝&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/akesu&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿克苏&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/alashanmeng&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿拉善盟&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aletai&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿勒泰&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/ali&quot;</span><br><span class="line">									class=&quot;&quot;&gt;阿里&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anhui&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安徽&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/ankang&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安康&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anqing&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安庆&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anshan&quot;</span><br><span class="line">									class=&quot;&quot;&gt;鞍山&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anshun&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安顺&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/anyang&quot;</span><br><span class="line">									class=&quot;&quot;&gt;安阳&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/aomen&quot;</span><br><span class="line">			</span><br><span class="line">									class=&quot;&quot;&gt;北碚&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beichen&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北辰&lt;/a&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beihai&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北海&lt;/a&gt;</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/beijing&quot;</span><br><span class="line">									class=&quot;&quot;&gt;北京&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/benxi&quot;</span><br><span class="line">									class=&quot;&quot;&gt;本溪&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bijie&quot;</span><br><span class="line">									class=&quot;&quot;&gt;毕节&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/binhaixin&quot;</span><br><span class="line">									class=&quot;&quot;&gt;滨海新&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/binzhou&quot;</span><br><span class="line">									class=&quot;&quot;&gt;滨州&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bishan&quot;</span><br><span class="line">									class=&quot;&quot;&gt;璧山&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/boertala&quot;</span><br><span class="line">									class=&quot;&quot;&gt;博尔塔拉&lt;/a&gt;</span><br><span class="line">						</span><br><span class="line">								&lt;a href=&quot;http://www.zhenai.com/zhenghun/bozhou&quot;</span><br><span class="line">									class=&quot;&quot;&gt;亳州&lt;/a&gt;	</span><br><span class="line">							&lt;/article&gt;</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+<p>　　由上面的打印信息可以看到已经获取到网页的信息，现在下一步是希望从一堆数据中捡取所有的符合条件的a便签，即含有城市的a便签，然后从a标签中获取城市以及对应的链接。</p>
+<p>在上面的代码基础上，进一步处理：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在上面代码的基础上添加</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line"> all,err := ioutil.ReadAll(utf8obj)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">     <span class="built_in">panic</span>(<span class="literal">nil</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">printAnode(all)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printAnode</span><span class="params">(s []<span class="keyword">byte</span>)</span></span>&#123;</span><br><span class="line"> <span class="comment">//正则表达式捡取所有城市信息的a标签</span></span><br><span class="line">	match := regexp.MustCompile(<span class="string">`&lt;a href="(http://www.zhenai.com/zhenghun/[a-z0-9].+)"[^&lt;].+&gt;([^&lt;].+)&lt;/a&gt;`</span>)</span><br><span class="line"><span class="comment">//将小括号里面的正则表达式检索到一个二维数组里面  -1代表所有</span></span><br><span class="line">	s1 := match.FindAllSubmatch(s, n:<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> s1 &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"城市：%s 链接:%s \n"</span>,v[<span class="number">2</span>],v[<span class="number">1</span>])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>部分打印信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">城市：阿坝   链接:http://www.zhenai.com/zhenghun/aba </span><br><span class="line">城市：阿克苏   链接:http://www.zhenai.com/zhenghun/akesu </span><br><span class="line">城市：阿拉善盟   链接:http://www.zhenai.com/zhenghun/alashanmeng </span><br><span class="line">城市：阿勒泰   链接:http://www.zhenai.com/zhenghun/aletai </span><br><span class="line">城市：阿里   链接:http://www.zhenai.com/zhenghun/ali </span><br><span class="line">城市：安徽   链接:http://www.zhenai.com/zhenghun/anhui </span><br><span class="line">城市：安康   链接:http://www.zhenai.com/zhenghun/ankang </span><br><span class="line">城市：安庆   链接:http://www.zhenai.com/zhenghun/anqing </span><br><span class="line">城市：鞍山   链接:http://www.zhenai.com/zhenghun/anshan </span><br><span class="line">城市：安顺   链接:http://www.zhenai.com/zhenghun/anshun </span><br><span class="line">城市：安阳   链接:http://www.zhenai.com/zhenghun/anyang </span><br><span class="line">城市：澳门   链接:http://www.zhenai.com/zhenghun/aomen </span><br><span class="line">城市：白城   链接:http://www.zhenai.com/zhenghun/baicheng1 </span><br><span class="line">城市：百色   链接:http://www.zhenai.com/zhenghun/baise </span><br><span class="line">城市：白山   链接:http://www.zhenai.com/zhenghun/baishan</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/04/Golang实现爬虫-一/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-正则表达式在Go中的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2240,351 +2337,6 @@
 
 
   
-    <article id="post-数据库的基本操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/30/数据库的基本操作/">数据库的基本操作</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/30/数据库的基本操作/" class="archive-article-date">
-  	<time datetime="2018-04-30T00:03:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-30</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="二-数据库的操作"><a href="#二-数据库的操作" class="headerlink" title="二. 数据库的操作"></a>二. 数据库的操作</h1><h2 id="1-sql语言"><a href="#1-sql语言" class="headerlink" title="1.sql语言"></a>1.sql语言</h2><h3 id="1-1-什么是SQL"><a href="#1-1-什么是SQL" class="headerlink" title="1.1 什么是SQL"></a>1.1 什么是SQL</h3><p>SQL是结构化查询语言（Structured Query Language）</p>
-<h3 id="1-2-SQL的作业"><a href="#1-2-SQL的作业" class="headerlink" title="1.2 SQL的作业"></a>1.2 SQL的作业</h3><p>客户端使用SQL来操作服务器</p>
-<p>​    启动mysql，会连接到服务器后，就可以使用sql来操作服务器了</p>
-<p>​    将来会使用程序(比如java)链接服务器，然后使用sql来操作服务器</p>
-<h3 id="1-3-SQL标准"><a href="#1-3-SQL标准" class="headerlink" title="1.3 SQL标准"></a>1.3 SQL标准</h3><p>由国际标准组织(ISO)制定的，对DBMS的统一操作方式(例如相同的语句可以操作：mysql，oracle等)。</p>
-<p>例如SQL99，即1999年制定的标准</p>
-<blockquote>
-<p>SQL99</p>
-<p>（1）是操作所有关系型数据库的规则<br>（2）是第四代语言<br>（3）是一种结构化查询语言<br>（4）只需发出合法合理的命令，就有对应的结果显示</p>
-</blockquote>
-<p>注意，某种DBMS不只会支持SQL标准，而且还会有一些自己独有的语法，比如limit语句只在MySQL中可以使用</p>
-<h3 id="1-4-SQL的语法"><a href="#1-4-SQL的语法" class="headerlink" title="1.4 SQL的语法"></a>1.4 SQL的语法</h3><ol>
-<li><p>SQL语句可以在单行或多行书写，以分号结尾</p>
-<p>​    有些时候可以不以分号结尾，比如代码中</p>
-</li>
-<li><p>可以使用空格和缩进来增强语句的可读性</p>
-</li>
-<li><p>MySQL不区分大小写，建议使用大写</p>
-</li>
-</ol>
-<h3 id="1-5-SQL99标准的四大分类"><a href="#1-5-SQL99标准的四大分类" class="headerlink" title="1.5 SQL99标准的四大分类"></a>1.5 SQL99标准的四大分类</h3><ol>
-<li><p>DDL数据定义语言（data definition language）</p>
-<p>​    create table,alter table，drop table，truncate table 。。</p>
-</li>
-<li><p>DML数据操作语言（Data Manipulation Language）</p>
-<p>​    insert,update,delete </p>
-</li>
-<li><p>DQL数据查询语言（data query language）</p>
-<p>select</p>
-<p>其实DQL也从DML中分离出来的。</p>
-</li>
-<li><p>DCL数据控制语言（Data Control Language）</p>
-<p>​    grant 权限 to scott，revoke 权限 from scott 。。。 </p>
-</li>
-<li><p>DCL（事务控制语言）：commit，rollback，rollback to savepoint 。。。</p>
-</li>
-</ol>
-<h2 id="2-数据库的基本操作"><a href="#2-数据库的基本操作" class="headerlink" title="2.数据库的基本操作"></a>2.数据库的基本操作</h2><h3 id="2-1-在终端连接mysql数据库"><a href="#2-1-在终端连接mysql数据库" class="headerlink" title="2.1 在终端连接mysql数据库"></a>2.1 在终端连接<code>mysql</code>数据库</h3><p>在终端输入如下命令:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-<p>回车后输入密码.</p>
-<h3 id="2-2-查看数据库版本"><a href="#2-2-查看数据库版本" class="headerlink" title="2.2 查看数据库版本"></a>2.2 查看数据库版本</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">version</span>();</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-查看当前时间"><a href="#2-3-查看当前时间" class="headerlink" title="2.3 查看当前时间"></a>2.3 查看当前时间</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">now</span>();</span><br></pre></td></tr></table></figure>
-<h3 id="2-4-退出mysql数据库的连接"><a href="#2-4-退出mysql数据库的连接" class="headerlink" title="2.4 退出mysql数据库的连接"></a>2.4 退出<code>mysql</code>数据库的连接</h3><p><code>exit</code>或<code>quit</code></p>
-<p><strong>以下操作都是在连接数据库之后才能做的操作</strong></p>
-<h3 id="2-5-显示所有的数据库"><a href="#2-5-显示所有的数据库" class="headerlink" title="2.5 显示所有的数据库"></a>2.5 显示所有的数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="2-6-创建数据库"><a href="#2-6-创建数据库" class="headerlink" title="2.6 创建数据库"></a>2.6 创建数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> [<span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span>]数据库名 [<span class="keyword">default</span> <span class="keyword">charset</span> utf8 <span class="keyword">collate</span> utf8_general_ci];</span><br></pre></td></tr></table></figure>
-<p>说明: </p>
-<ol>
-<li>数据库名不要使用中文</li>
-<li>由于数据库中将来会存储一些<code>非ascii</code>字符, 所以务必指定字符编码, 一般都是指定<code>utf-8</code>编码</li>
-<li>CHARSET 选择 utf8<br>COLLATION 选择 utf8_general_ci </li>
-<li>mysql中字符集是utf8，不是utf-8。</li>
-<li>[]内的部分为非必须输入的代码</li>
-</ol>
-<h3 id="2-7-切换到要操作的数据库"><a href="#2-7-切换到要操作的数据库" class="headerlink" title="2.7 切换到要操作的数据库"></a>2.7 切换到要操作的数据库</h3><p>若要操作数据库中的内容, 需要先切换到要操作的数据库</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> 数据库名;</span><br></pre></td></tr></table></figure>
-<h3 id="2-8-查看当前选择的数据库"><a href="#2-8-查看当前选择的数据库" class="headerlink" title="2.8 查看当前选择的数据库"></a>2.8 查看当前选择的数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">database</span>();</span><br></pre></td></tr></table></figure>
-<h3 id="2-9-删除数据库"><a href="#2-9-删除数据库" class="headerlink" title="2.9 删除数据库"></a>2.9 删除数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">database</span> [<span class="keyword">if</span> <span class="keyword">exists</span>]数据库名;</span><br></pre></td></tr></table></figure>
-<h3 id="2-10-MySQL添加用户、删除用户与授权"><a href="#2-10-MySQL添加用户、删除用户与授权" class="headerlink" title="2.10 MySQL添加用户、删除用户与授权"></a>2.10 MySQL添加用户、删除用户与授权</h3><p>DCL数据控制语言（Data Control Language）</p>
-<p>通常一个项目创建一个用户。一个项目对应的数据库只有一个，这个用户只能对这个数据库有权限，无法对其他数据库进行操作。</p>
-<p>MySql中添加用户,新建数据库,用户授权,删除用户,修改密码(注意每行后边都跟个;表示一个命令语句结束)</p>
-<h4 id="2-10-1-创建用户"><a href="#2-10-1-创建用户" class="headerlink" title="2.10.1 创建用户"></a>2.10.1 创建用户</h4><p>A：先使用root账户进行登录</p>
-<p>登录MYSQL：</p>
-<p>@&gt;mysql -u root -p</p>
-<p>@&gt;密码:hanru1314</p>
-<p>B：创建用户：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'username'</span>@<span class="string">'IP地址'</span> [<span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'PASSWORD'</span>] 其中密码是可选项；</span><br><span class="line">	用户只能在指定的IP地址上登录</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'username'</span>@<span class="string">'%'</span> [<span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'PASSWORD'</span>] 其中密码是可选项；</span><br><span class="line">	用户可以在任意IP地址上登录</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<p>create user “test”@”localhost” identified by “1234”;</p>
-<p>CREATE USER ‘john‘@’192.168.189.71’ IDENTIFIED BY “123”;</p>
-<p>C：然后登录一下：</p>
-<p>mysql&gt;exit;</p>
-<p>@&gt;mysql -u ruby -p</p>
-<p>@&gt;输入密码</p>
-<p>mysql&gt;登录成功</p>
-<h4 id="2-10-2-为用户授权"><a href="#2-10-2-为用户授权" class="headerlink" title="2.10.2 为用户授权"></a>2.10.2 为用户授权</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">授权格式：<span class="keyword">grant</span> 权限 <span class="keyword">on</span> 数据库.* <span class="keyword">to</span> 用户名@登录主机 <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">"密码"</span>;</span><br></pre></td></tr></table></figure>
-<h5 id="2-10-2-1-登录MYSQL（有ROOT权限），这里以ROOT身份登录："><a href="#2-10-2-1-登录MYSQL（有ROOT权限），这里以ROOT身份登录：" class="headerlink" title="2.10.2.1 登录MYSQL（有ROOT权限），这里以ROOT身份登录："></a>2.10.2.1 登录MYSQL（有ROOT权限），这里以ROOT身份登录：</h5><p>@&gt;mysql -u root -p</p>
-<p>@&gt;密码</p>
-<h5 id="2-10-2-2-首先为用户创建一个数据库-testDB-："><a href="#2-10-2-2-首先为用户创建一个数据库-testDB-：" class="headerlink" title="2.10.2.2 首先为用户创建一个数据库(testDB)："></a>2.10.2.2 首先为用户创建一个数据库(testDB)：</h5><p>mysql&gt;CREATE DATABASE<code>testDB</code>DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</p>
-<h5 id="2-10-2-3-授权test用户拥有testDB数据库的所有权限（某个数据库的所有权限）："><a href="#2-10-2-3-授权test用户拥有testDB数据库的所有权限（某个数据库的所有权限）：" class="headerlink" title="2.10.2.3 授权test用户拥有testDB数据库的所有权限（某个数据库的所有权限）："></a>2.10.2.3 授权test用户拥有testDB数据库的所有权限（某个数据库的所有权限）：</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式：<span class="keyword">grant</span> 权限 <span class="keyword">on</span> 数据库.* <span class="keyword">to</span> 用户名@登录主机 <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">"密码"</span>;</span><br></pre></td></tr></table></figure>
-<p>mysql&gt;grant all privileges on testDB.* to test@localhost identified by ‘1234’;</p>
-<p>mysql&gt;flush privileges;//刷新系统权限表</p>
-<h5 id="2-10-2-4-如果想指定部分权限给一用户，可以这样来写"><a href="#2-10-2-4-如果想指定部分权限给一用户，可以这样来写" class="headerlink" title="2.10.2.4 如果想指定部分权限给一用户，可以这样来写:"></a>2.10.2.4 如果想指定部分权限给一用户，可以这样来写:</h5><p>mysql&gt;grant select,update on testDB.* to test@localhost identified by ‘1234’;</p>
-<p>mysql&gt;flush privileges; //刷新系统权限表</p>
-<h5 id="2-10-2-5-授权test用户拥有所有数据库的某些权限："><a href="#2-10-2-5-授权test用户拥有所有数据库的某些权限：" class="headerlink" title="2.10.2.5 授权test用户拥有所有数据库的某些权限："></a>2.10.2.5 授权test用户拥有所有数据库的某些权限：</h5><p>mysql&gt;grant select,delete,update,create,drop on_._to test@”%” identified by “1234”;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//test用户对所有数据库都有select,delete,update,create,drop 权限。</span><br></pre></td></tr></table></figure>
-<p>//@”%” 表示对所有非本地主机授权，不包括localhost。（localhost地址设为127.0.0.1，如果设为真实的本地地址，不知道是否可以，没有验证。）</p>
-<p>//对localhost授权：加上一句grant all privileges on testDB.* to test@localhost identified by ‘1234’;即可。</p>
-<h5 id="2-10-3-撤销权限"><a href="#2-10-3-撤销权限" class="headerlink" title="2.10.3 撤销权限"></a>2.10.3 撤销权限</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">revoke</span> 权限<span class="number">1</span>，权限<span class="number">2.</span>。。。<span class="keyword">on</span> 数据库.* <span class="keyword">from</span> 用户名@IP地址;</span><br></pre></td></tr></table></figure>
-<p>撤销指定用户在指定数据库上的执行权限。</p>
-<h5 id="2-10-4-查看权限"><a href="#2-10-4-查看权限" class="headerlink" title="2.10.4 查看权限"></a>2.10.4 查看权限</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show grants for 用户名@IP地址;</span><br></pre></td></tr></table></figure>
-<h5 id="2-10-5-删除用户"><a href="#2-10-5-删除用户" class="headerlink" title="2.10.5 删除用户"></a>2.10.5 删除用户</h5><p>@&gt;mysql -u root -p</p>
-<p>@&gt;密码</p>
-<p>删除账户及权限：&gt;drop user 用户名@’%’;</p>
-<p>>drop user 用户名@ localhost;</p>
-<h2 id="3-MySQL-数据类型"><a href="#3-MySQL-数据类型" class="headerlink" title="3. MySQL 数据类型"></a>3. MySQL 数据类型</h2><p>　　MySQL中定义数据字段的类型对数据库的优化是非常重要的。 MySQL支持多种类型，大致可以分为三类：数值、日期/时间和字符串(字符)类型。</p>
-<h3 id="3-1-数值类型"><a href="#3-1-数值类型" class="headerlink" title="3.1 数值类型"></a>3.1 数值类型</h3><p>　　MySQL支持所有标准SQL数值数据类型。 这些类型包括严格数值数据类型(<code>INTEGER</code>、<code>SMALLINT</code>、<code>DECIMAL</code>和<code>NUMERIC</code>)，以及近似数值数据类型(<code>FLOAT</code>、<code>REAL</code>和<code>DOUBLE PRECISION</code>)。 关键字INT是INTEGER的同义词，关键字DEC是DECIMAL的同义词。 BIT数据类型保存位字段值，并且支持MyISAM、MEMORY、InnoDB和BDB表。 作为SQL标准的扩展，MySQL也支持整数类型<code>TINYINT</code>、<code>MEDIUMINT</code>和<code>BIGINT</code>。</p>
-<h3 id="3-2-日期和时间类型"><a href="#3-2-日期和时间类型" class="headerlink" title="3.2 日期和时间类型"></a>3.2 日期和时间类型</h3><p>　　表示时间值的日期和时间类型为<code>DATETIME</code>、<code>DATE</code>、<code>TIMESTAMP</code>、<code>TIME</code>和<code>YEAR</code>。 每个时间类型有一个有效值范围和一个”零”值，当指定不合法的MySQL不能表示的值时使用”零”值。 TIMESTAMP类型有专有的自动更新特性</p>
-<h3 id="3-3-字符串类型"><a href="#3-3-字符串类型" class="headerlink" title="3.3 字符串类型"></a>3.3 字符串类型</h3><p>　　 字符串类型指<code>CHAR</code>、<code>VARCHAR</code>、<code>BINARY</code>、<code>VARBINARY</code>、<code>BLOB</code>、<code>TEXT</code>、<code>ENUM</code>和<code>SET</code>。<br>　　 <code>CHAR</code>和<code>VARCHAR</code>类型类似，但它们保存和检索的方式不同。它们的最大长度和是否尾部空格被保留等方面也不同。在存储或检索过程中不进行大小写转换。<br> 　　<code>BINARY</code>和<code>VARBINARY</code>类类似于<code>CHAR</code>和<code>VARCHAR</code>，不同的是它们包含二进制字符串而不要非二进制字符串。也就是说，它们包含字节字符串而不是字符字符串。这说明它们没有字符集，并且排序和比较基于列值字节的数值值。<br>　　　<code>BLOB</code>是一个二进制大对象，可以容纳可变数量的数据。有4种BLOB类型：<code>TINYBLOB</code>、<code>BLOB</code>、<code>MEDIUMBLOB</code>和<code>LONGBLOB</code>。它们只是可容纳值的最大长度不同。<br>　　　有4种TEXT类型：<code>TINYTEXT</code>、<code>TEXT</code>、<code>MEDIUMTEXT</code>和<code>LONGTEXT</code>。</p>
-<p><strong>最常用的: char, varchar和text类型.</strong></p>
-<blockquote>
-<p> 总结常用的类型：</p>
-<p> int：整型</p>
-<p> double：浮点型，例如double(5,2)表示最多5位，其中必须有2位小数，即最大值：999.99</p>
-<p> decimal：浮点型，不会出现精度缺失问题，比如金钱。</p>
-<p> char：固定长度字符串类型：最大长度：char(255)</p>
-<p> varchar：可变长度字符串类型：最大长度：varchar(65535)</p>
-<p> text(clob)：字符串类型，存储超大文本。</p>
-<p> blob：字节类型，最大4G</p>
-<p> date：日期类型，格式为：yyyy-MM-dd</p>
-<p> time：时间类型：格式为：hh:mm:ss</p>
-<p> timestamp：时间戳</p>
-<p> datatime</p>
-</blockquote>
-<h2 id="4-表的基本操作"><a href="#4-表的基本操作" class="headerlink" title="4.表的基本操作"></a>4.表的基本操作</h2><p>MySQL不仅用于表数据操纵，而且还可以用来执行数据库和表的所有操作，包括表本身的创建和处理。</p>
-<p><strong>数据库中存储的是表(table), 表中存储的是一行行的数据.</strong></p>
-<h3 id="4-1-查看当前数据库中的所有表"><a href="#4-1-查看当前数据库中的所有表" class="headerlink" title="4.1 查看当前数据库中的所有表"></a>4.1 查看当前数据库中的所有表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">tables</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="4-2-创建表"><a href="#4-2-创建表" class="headerlink" title="4.2 创建表"></a>4.2 创建表</h3><p>通用语法：<strong>CREATE TABLE table_**</strong>*name (column_name column_type);***</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [<span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] 表名(</span><br><span class="line">	列名 列类型(长度) 约束 默认值,</span><br><span class="line">  	列名 列类型(长度) 约束 默认值,</span><br><span class="line">  	...</span><br><span class="line">); </span><br><span class="line"></span><br><span class="line">//例如:</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(<span class="keyword">id</span> <span class="built_in">int</span> auto_increament primary <span class="keyword">key</span>, <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">16</span>) <span class="keyword">not</span> <span class="literal">null</span>, age <span class="built_in">int</span>, sex <span class="built_in">char</span>(<span class="number">1</span>));</span><br></pre></td></tr></table></figure>
-<p>在这里，一些数据项需要解释：</p>
-<ul>
-<li>字段使用NOT NULL，是因为我们不希望这个字段的值为NULL。 因此，如果用户将尝试创建具有NULL值的记录，那么MySQL会产生错误。</li>
-<li>字段的AUTO_INCREMENT属性告诉MySQL自动增加id字段下一个可用编号。</li>
-<li>DEFAULT 设置默认值。</li>
-<li>关键字PRIMARY KEY用于定义此列作为主键。可以使用逗号分隔多个列来定义主键。</li>
-</ul>
-<h3 id="4-3-查看表结构"><a href="#4-3-查看表结构" class="headerlink" title="4.3 查看表结构"></a>4.3 查看表结构</h3><p>通用语法：<strong>desc 表名;</strong></p>
-<blockquote>
-<p>describe tableName</p>
-</blockquote>
-<h3 id="4-4-查看表的创建语句"><a href="#4-4-查看表的创建语句" class="headerlink" title="4.4 查看表的创建语句"></a>4.4 查看表的创建语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> 表名;</span><br></pre></td></tr></table></figure>
-<h3 id="4-5-修改表"><a href="#4-5-修改表" class="headerlink" title="4.5 修改表"></a>4.5 修改表</h3><p>通用语法：<strong>ALTER TALBE 表名….</strong></p>
-<h4 id="4-5-1-添加字段：add"><a href="#4-5-1-添加字段：add" class="headerlink" title="4.5.1 添加字段：add"></a>4.5.1 添加字段：<code>add</code></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span>(</span><br><span class="line">	列名 列类型,</span><br><span class="line">  	列名 列类型,</span><br><span class="line">  	...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<h4 id="4-5-2-修改列类型：modify"><a href="#4-5-2-修改列类型：modify" class="headerlink" title="4.5.2 修改列类型：modify"></a>4.5.2 修改列类型：<code>modify</code></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">modify</span> </span><br><span class="line">	列名 列类型;</span><br></pre></td></tr></table></figure>
-<p>注意：如果被修改的列已经存在数据，那么新的类型可能会影响到已存在的数据</p>
-<h4 id="4-5-3-修改列明：change"><a href="#4-5-3-修改列明：change" class="headerlink" title="4.5.3 修改列明：change"></a>4.5.3 修改列明：<code>change</code></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">change</span> </span><br><span class="line">	原列名 新列名 列类型;</span><br></pre></td></tr></table></figure>
-<h4 id="4-5-4-删除列：drop"><a href="#4-5-4-删除列：drop" class="headerlink" title="4.5.4 删除列：drop"></a>4.5.4 删除列：<code>drop</code></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> </span><br><span class="line">	列名;</span><br></pre></td></tr></table></figure>
-<h4 id="4-5-5-更改表的名称：rename-to"><a href="#4-5-5-更改表的名称：rename-to" class="headerlink" title="4.5.5 更改表的名称：rename to"></a>4.5.5 更改表的名称：<code>rename to</code></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rename</span> <span class="keyword">table</span> 原表名 <span class="keyword">to</span> 新表名;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 原表名 <span class="keyword">rename</span> <span class="keyword">to</span> </span><br><span class="line">	新表名;</span><br></pre></td></tr></table></figure>
-<h4 id="4-5-6-删除表"><a href="#4-5-6-删除表" class="headerlink" title="4.5.6 删除表"></a>4.5.6 删除表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> [<span class="keyword">if</span> <span class="keyword">exists</span>] 表名;</span><br></pre></td></tr></table></figure>
-<h4 id="4-5-7-复制表中的数据-仅复制数据不复制表的结构"><a href="#4-5-7-复制表中的数据-仅复制数据不复制表的结构" class="headerlink" title="4.5.7 复制表中的数据(仅复制数据不复制表的结构)"></a>4.5.7 复制表中的数据(仅复制数据不复制表的结构)</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名<span class="number">2</span> <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> 表名<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="5-操纵表中的数据"><a href="#5-操纵表中的数据" class="headerlink" title="5.操纵表中的数据"></a>5.操纵表中的数据</h2><p>对于数据表进行增删改查（CRUD）</p>
-<p>DML语言：增删改</p>
-<p>DQL语言：查</p>
-<blockquote>
-<p>crud是指在做计算处理时的增加(Create)、读取查询(Retrieve)、更新(Update)和删除(Delete)几个单词的首字母简写。crud主要被用在描述软件系统中数据库或者<a href="https://baike.baidu.com/item/%E6%8C%81%E4%B9%85%E5%B1%82" target="_blank" rel="noopener">持久层</a>的基本操作功能。</p>
-</blockquote>
-<h3 id="5-1-查询数据"><a href="#5-1-查询数据" class="headerlink" title="5.1 查询数据"></a>5.1 查询数据</h3><p>查询数据的操作是最复杂, 后面文章单独陈述.本篇只陈列最简单的。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名;</span><br></pre></td></tr></table></figure>
-<h3 id="5-2-添加数据"><a href="#5-2-添加数据" class="headerlink" title="5.2 添加数据"></a>5.2 添加数据</h3><p>增加数据的方式有多种:</p>
-<blockquote>
-<p>注意：在数据库中所有的字符串类型，必须使用单引，不能使用双引。日期类型也要使用单引。</p>
-</blockquote>
-<h4 id="5-2-1-全列插入"><a href="#5-2-1-全列插入" class="headerlink" title="5.2.1 全列插入"></a>5.2.1 全列插入</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名 <span class="keyword">values</span>(值<span class="number">1</span>, 值<span class="number">2</span>,...);</span><br></pre></td></tr></table></figure>
-<p>说明:</p>
-<ol>
-<li>全列插入的时候需要每一列的数据都要添加上去.</li>
-<li>对自动增长的数据, 在全列插入的时候需要占位处理, 一般使用0来占位.但是最终的值以实际为准.</li>
-</ol>
-<h4 id="5-2-2-缺省插入"><a href="#5-2-2-缺省插入" class="headerlink" title="5.2.2 缺省插入"></a>5.2.2 缺省插入</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名(列<span class="number">1</span>, 列<span class="number">2</span>, ...) <span class="keyword">values</span>(值<span class="number">1</span>, 值<span class="number">2</span>, ...);</span><br></pre></td></tr></table></figure>
-<p>说明:</p>
-<ol>
-<li>插入的时候,<code>not null</code>和<code>primary key</code>的列必须赋值, 其他的列根据情况来赋值.如果没有赋值则会使用默认值.</li>
-</ol>
-<h4 id="5-2-3-同时插入多条数据"><a href="#5-2-3-同时插入多条数据" class="headerlink" title="5.2.3 同时插入多条数据"></a>5.2.3 同时插入多条数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名 <span class="keyword">values</span>(值<span class="number">1</span>, 值<span class="number">2</span>,...), (值<span class="number">1</span>, 值<span class="number">2</span>,...),...;</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名(列<span class="number">1</span>, 列<span class="number">2</span>, ...) <span class="keyword">values</span>(值<span class="number">1</span>, 值<span class="number">2</span>, ...), (值<span class="number">1</span>, 值<span class="number">2</span>, ...), ...;</span><br></pre></td></tr></table></figure>
-<h3 id="5-3-修改数据-更新数据"><a href="#5-3-修改数据-更新数据" class="headerlink" title="5.3 修改数据(更新数据)"></a>5.3 修改数据(更新数据)</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 列<span class="number">1</span>=值<span class="number">1</span>,列<span class="number">2</span>=值<span class="number">2</span>,... <span class="keyword">where</span> 条件</span><br><span class="line">例如: </span><br><span class="line"><span class="keyword">update</span> stus <span class="keyword">set</span> sex=<span class="string">'男'</span>,age=<span class="number">100</span> <span class="keyword">where</span> sex <span class="keyword">is</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>条件(条件是可选的)</p>
-<ol>
-<li>条件必须是boolean类型的值或者表达式</li>
-<li>运算符：=,!=,&lt;&gt;,&gt;,&lt;,&gt;=,&lt;=,between..and, in(…),or ,and ,not, is null，is not null</li>
-<li>is null 不是 = null(永远是false)</li>
-</ol>
-</blockquote>
-<h3 id="5-4-删除数据"><a href="#5-4-删除数据" class="headerlink" title="5.4 删除数据"></a>5.4 删除数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名 <span class="keyword">where</span> 条件</span><br></pre></td></tr></table></figure>
-<h2 id="6-约束-constraint"><a href="#6-约束-constraint" class="headerlink" title="6.约束(constraint)"></a>6.约束(constraint)</h2><p>当创建数据表的时候，为某一个字段设置约束，表示限定该列的数值内容。也可以通过修改表结构添加约束</p>
-<h3 id="6-1-默认值：default"><a href="#6-1-默认值：default" class="headerlink" title="6.1 默认值：default"></a>6.1 默认值：default</h3><h3 id="6-2-非空约束：not-null"><a href="#6-2-非空约束：not-null" class="headerlink" title="6.2 非空约束：not null"></a>6.2 非空约束：not null</h3><p> 如果某个字段添加了非空约束，那么该字段的数值不能为null，对于mysql而言，表示什么都没有，未知的。不是0，也不是空””，更不是”NULL”。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu (</span><br><span class="line">	<span class="keyword">sid</span> <span class="built_in">int</span> ,  </span><br><span class="line">	sname <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>, # 定义sname字段值不能为空</span><br><span class="line">	age <span class="built_in">int</span>,</span><br><span class="line">	gender <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p><strong>删除非空约束：</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> stu <span class="keyword">modify</span> sname <span class="built_in">varchar</span>(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>添加非空约束：</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> stu <span class="keyword">modify</span> sname  <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>该列已有的数据不能有null数值。</p>
-</blockquote>
-<h3 id="6-3-唯一性约束：unique"><a href="#6-3-唯一性约束：unique" class="headerlink" title="6.3 唯一性约束：unique"></a>6.3 唯一性约束：<code>unique</code></h3><p>唯一性约束强调所在的字段所有的数值都是唯一的。不允许重复。允许空值（多个）。</p>
-<p>语法： </p>
-<p><code>ALTER TABLE 表名 ADD CONSTRAINT 约束名 约束类型 具体的约束声明</code></p>
-<p><strong>约束名的取名规则推荐采用</strong>:约束类型_约束列，当然也可以不这么命名，这样单纯是比较方便</p>
-<p>如：主键(Primary Key)约束：PK_UserId</p>
-<pre><code>唯一(Unique key)约束: UQ_UserCardId
-
-默认(Default Key)约束 DF_UserPasswd
-
-检查(Check Key)约束 CK_Gender
-
-外键(Foreign Key)约束: FK_SortId
-</code></pre><p>例如：add constraint PK_UserId PRIMARY KEY (UserId)<br>–PK_UserId 是自定义约束名 ， PRIMARY KEY 是约束类型， (UserId)是具体的约束声明</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu (</span><br><span class="line">	<span class="keyword">sid</span> <span class="built_in">int</span> primary <span class="keyword">key</span> auto_increment,  </span><br><span class="line">	sname <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">unique</span>, # 定义sname字段值必须唯一</span><br><span class="line">	age <span class="built_in">int</span>,</span><br><span class="line">	gender <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">);</span><br><span class="line">或者,使用constraint 约束名 unique 字段。</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu (</span><br><span class="line">	<span class="keyword">sid</span> <span class="built_in">int</span> auto_increment,</span><br><span class="line">	sname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">	age <span class="built_in">int</span>,</span><br><span class="line">	gender <span class="built_in">varchar</span>(<span class="number">10</span>),</span><br><span class="line">  	[<span class="keyword">constraint</span> ] <span class="keyword">unique</span> (sname)  # 指明<span class="keyword">name</span>字段唯一</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p>删除唯一约束：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> stu <span class="keyword">modify</span> sname <span class="built_in">varchar</span>(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
-<p>添加唯一约束：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> stu <span class="keyword">modify</span> sname  <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>该列已有的数据不能有null数值。</p>
-</blockquote>
-<p>  为已有的字段设置约束<br>  alter table 表名 modify 字段 约束</p>
-<p>  添加新的字段，带约束</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> 字段 数据类型 约束</span><br></pre></td></tr></table></figure>
-<p>  先将已有的字段删除，重新添加带约束的。<br>  alter table 表名 drop column 列名<br>  alter table 表名 add 列名 数据类型 约束</p>
-<h3 id="6-4-主键约束：primary-key"><a href="#6-4-主键约束：primary-key" class="headerlink" title="6.4 主键约束：primary key"></a>6.4 主键约束：primary key</h3><p>主键约束：要求该字段数值不允许空，而且数值唯一。(not null+unique)</p>
-<p>主键约束用于唯一的标识表中的每一个行记录的。一个表中最多只能有一个主键约束。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu (</span><br><span class="line">	<span class="keyword">sid</span> <span class="built_in">int</span> primary <span class="keyword">key</span> auto_increment,  # 定义<span class="keyword">sid</span>作为stu表的主键</span><br><span class="line">	sname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">	age <span class="built_in">int</span>,</span><br><span class="line">	gender <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">);</span><br><span class="line">或者,使用constraint 约束名 primary key 字段。</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu (</span><br><span class="line">	<span class="keyword">sid</span> <span class="built_in">int</span> auto_increment,</span><br><span class="line">	sname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">	age <span class="built_in">int</span>,</span><br><span class="line">	gender <span class="built_in">varchar</span>(<span class="number">10</span>),</span><br><span class="line">  	[<span class="keyword">constraint</span> [sid_pk]] primary <span class="keyword">key</span> (<span class="keyword">sid</span>)  # 指明<span class="keyword">sid</span>作为stu表的主键</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p><strong>删除主键：</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> stu <span class="keyword">drop</span> primary <span class="keyword">key</span>;</span><br></pre></td></tr></table></figure>
-<p><strong>添加主键：</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> teachers <span class="keyword">add</span> primary <span class="keyword">key</span>(<span class="keyword">id</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>主键自增：</strong> auto_increment<br>要求该字段数值不允许空，而且数值唯一。所以通常会指定主键类型为整型，然后设置其自动增长，这样可以保证在插入数据时主键列的唯一和非空特性。</p>
-<p>修改表时设置主键自动增长：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> stu <span class="keyword">modify</span> <span class="keyword">sid</span>  <span class="built_in">int</span> auto_increment;</span><br></pre></td></tr></table></figure>
-<p>修改表时删除主键自动增长：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> stu <span class="keyword">modify</span> <span class="keyword">sid</span>  <span class="built_in">int</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="6-5-外键约束：foreign-key"><a href="#6-5-外键约束：foreign-key" class="headerlink" title="6.5 外键约束：foreign key"></a>6.5 外键约束：foreign key</h3><h4 id="6-5-1-外键"><a href="#6-5-1-外键" class="headerlink" title="6.5.1 外键"></a>6.5.1 外键</h4><p><strong>外键作用数据完整性。</strong></p>
-<p>班级表可以叫做父表(主表)：class，字段classno，该表的主键</p>
-<p>学生表可以叫做子表(从表)：student，字段sid是该表的主键，classno是该表的外键</p>
-<p>  父表：department，字段deptno，该表的主键<br>  子表：employee，字段empno，该表的主键，deptno，该表的外键</p>
-<p><strong>子表的外键是父表的主键。</strong> </p>
-<ol>
-<li>当对于子表插入数据，外键字段的数值不能随便插入，而取决于父表的主键数值。</li>
-<li>对于父表的删除操作，要看子表中是否有记录引用该数值。</li>
-</ol>
-<h4 id="6-5-2-外键的设置"><a href="#6-5-2-外键的设置" class="headerlink" title="6.5.2 外键的设置"></a>6.5.2 外键的设置</h4><p>方法一：在创建子表的时候，直接标明外键。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">设置外键语法：</span><br><span class="line">  references 父表(主键);</span><br><span class="line">  constraint classno_FK  foreign key (classno) references class(classno);</span><br><span class="line"></span><br><span class="line">创建数据表</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scores(</span><br><span class="line">	<span class="keyword">sid</span> <span class="built_in">int</span>(<span class="number">4</span>) primary <span class="keyword">key</span> auto_increment,</span><br><span class="line">	sname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">	sage <span class="built_in">int</span>(<span class="number">3</span>),</span><br><span class="line">	classno <span class="built_in">int</span>(<span class="number">4</span>),</span><br><span class="line">	<span class="keyword">constraint</span> stu_classno foreign <span class="keyword">key</span>(classno) <span class="keyword">references</span> <span class="keyword">class</span>(classno),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p>方法二：使用alter语句今天添加外键</p>
-<pre><code>alter table student add constraint stu_classno foreign key(classno) references class(classno);
-</code></pre><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">add</span> <span class="keyword">constraint</span> stu_classno foreign <span class="keyword">key</span>(classno) <span class="keyword">references</span> <span class="keyword">class</span>(classno) <span class="keyword">on</span> <span class="keyword">delete</span> <span class="keyword">cascade</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>此时插入或者修改数据时，如果classno的值在student表中不存在则会报错</li>
-</ul>
-<p>删除外键：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table student drop foreign key stu_classno;</span><br></pre></td></tr></table></figure>
-<h4 id="6-5-3外键的级联操作"><a href="#6-5-3外键的级联操作" class="headerlink" title="6.5.3外键的级联操作"></a>6.5.3外键的级联操作</h4><ul>
-<li><p>在删除class表的数据时，如果这个classno值在student中已经存在，则会抛异常</p>
-</li>
-<li><p>推荐使用逻辑删除，还可以解决这个问题</p>
-</li>
-<li><p>可以创建表时指定级联操作，也可以在创建表后再修改外键的级联操作</p>
-</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">语法：</span><br><span class="line"></span><br><span class="line">on <span class="keyword">delete</span> <span class="keyword">cascade</span>,删除父表的时候，子表的数据直接删除，级联删除</span><br><span class="line"></span><br><span class="line"><span class="keyword">on</span> <span class="keyword">delete</span> <span class="keyword">set</span> <span class="literal">null</span>，删除父表的时候，子表的数据置<span class="literal">null</span>。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>级联操作的类型包括：<ul>
-<li>restrict（限制）：默认值，抛异常</li>
-<li>cascade（级联）：如果主表的记录删掉，则从表中相关联的记录都将被删除</li>
-<li>set null：将外键设置为空</li>
-<li>no action：什么都不做</li>
-</ul>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">基本操作</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/DataBase//" class="article-tag-list-link color4">DataBase</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/30/数据库的基本操作/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -2686,11 +2438,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2706,19 +2462,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2730,11 +2478,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">公链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">地址</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2750,11 +2494,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color3">公链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">地址与钱包</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2762,7 +2510,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color1">事务/交易</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2814,6 +2574,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
@@ -2823,14 +2591,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2854,15 +2614,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2874,11 +2630,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
               </li>
              
               <li class="article-tag-list-item">

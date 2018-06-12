@@ -9,14 +9,14 @@
   <title>Go语言实现搭建公链-(2)地址与钱包 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Go语言实现搭建公链-(2)地址与钱包1. 地址　　在比特币中，没有用户账户，也不需要任何存储个人信息(比如姓名，证件号等)，但是总要有某种途径识别谁是交易的输出者(也就是说，谁拥有这些输出上的锁定币)。这是比特币地址 1.1 比特币地址　　比特币地址是完全公开的，要想与别人进行交易只需要知道他的地址即可。所谓的地址，只不过是将公钥表示成人类可读的形式而已，因为原生的公钥人类很难阅读。在比特币中，">
-<meta name="keywords" content="公链,地址">
+<meta name="keywords" content="公链,地址与钱包">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go语言实现搭建公链-(2)地址与钱包">
 <meta property="og:url" content="http://www.wuecho.com/2018/06/11/Go语言实现公链-2-地址与钱包/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
 <meta property="og:description" content="Go语言实现搭建公链-(2)地址与钱包1. 地址　　在比特币中，没有用户账户，也不需要任何存储个人信息(比如姓名，证件号等)，但是总要有某种途径识别谁是交易的输出者(也就是说，谁拥有这些输出上的锁定币)。这是比特币地址 1.1 比特币地址　　比特币地址是完全公开的，要想与别人进行交易只需要知道他的地址即可。所谓的地址，只不过是将公钥表示成人类可读的形式而已，因为原生的公钥人类很难阅读。在比特币中，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-12T08:27:25.130Z">
+<meta property="og:updated_time" content="2018-06-12T16:37:30.810Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go语言实现搭建公链-(2)地址与钱包">
 <meta name="twitter:description" content="Go语言实现搭建公链-(2)地址与钱包1. 地址　　在比特币中，没有用户账户，也不需要任何存储个人信息(比如姓名，证件号等)，但是总要有某种途径识别谁是交易的输出者(也就是说，谁拥有这些输出上的锁定币)。这是比特币地址 1.1 比特币地址　　比特币地址是完全公开的，要想与别人进行交易只需要知道他的地址即可。所谓的地址，只不过是将公钥表示成人类可读的形式而已，因为原生的公钥人类很难阅读。在比特币中，">
@@ -351,7 +351,7 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">地址</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">地址与钱包</a>
         		</li>
       		
 		</ul>
@@ -431,6 +431,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2018/06/13/Go语言实现公链-3-事务-交易/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Go语言实现公链-(3)事务/交易
+        
+      </div>
+    </a>
   
   
     <a href="/2018/06/05/Go语言实现搭建公链-1/" id="article-nav-older" class="article-nav-link-wrap">
@@ -577,11 +586,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -597,19 +610,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -621,11 +626,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">公链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">地址</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -641,11 +642,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color3">公链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">地址与钱包</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -653,7 +658,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color1">事务/交易</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -705,6 +722,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
@@ -714,14 +739,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -745,15 +762,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -765,11 +778,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
               </li>
              
               <li class="article-tag-list-item">

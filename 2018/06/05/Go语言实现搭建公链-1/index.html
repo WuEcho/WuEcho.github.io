@@ -9,7 +9,7 @@
   <title>Go语言实现搭建公链-(1)命令行控制，数据库存储 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Go语言实现搭建公链-(1)命令行控制，数据库存储1. 公链应该具备的功能　　首先对于一个公链，应该具备以下功能：  具备一个核心，支持同步区块数据并验证和存储区块数据到主链 具备一个钱包功能，可以存储公钥私钥以及账户余额 具备一个挖矿功能，用于打包区块数据并发行新的代币  各功能模块应该包含的详细功能那内容如下：  (1) 核心 　　1） 命令交互系统，用于与节点核心进行功能调用 　　2） 节点">
-<meta name="keywords" content="公链,Go语言">
+<meta name="keywords" content="公链,Go语言,数据库存储与命令行控制">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go语言实现搭建公链-(1)命令行控制，数据库存储">
 <meta property="og:url" content="http://www.wuecho.com/2018/06/05/Go语言实现搭建公链-1/index.html">
@@ -17,7 +17,7 @@
 <meta property="og:description" content="Go语言实现搭建公链-(1)命令行控制，数据库存储1. 公链应该具备的功能　　首先对于一个公链，应该具备以下功能：  具备一个核心，支持同步区块数据并验证和存储区块数据到主链 具备一个钱包功能，可以存储公钥私钥以及账户余额 具备一个挖矿功能，用于打包区块数据并发行新的代币  各功能模块应该包含的详细功能那内容如下：  (1) 核心 　　1） 命令交互系统，用于与节点核心进行功能调用 　　2） 节点">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/06/05/Go语言实现搭建公链-1/p1.png">
-<meta property="og:updated_time" content="2018-06-12T15:54:43.754Z">
+<meta property="og:updated_time" content="2018-06-12T16:38:05.697Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go语言实现搭建公链-(1)命令行控制，数据库存储">
 <meta name="twitter:description" content="Go语言实现搭建公链-(1)命令行控制，数据库存储1. 公链应该具备的功能　　首先对于一个公链，应该具备以下功能：  具备一个核心，支持同步区块数据并验证和存储区块数据到主链 具备一个钱包功能，可以存储公钥私钥以及账户余额 具备一个挖矿功能，用于打包区块数据并发行新的代币  各功能模块应该包含的详细功能那内容如下：  (1) 核心 　　1） 命令交互系统，用于与节点核心进行功能调用 　　2） 节点">
@@ -410,6 +410,10 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Go语言</a>
         		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">数据库存储与命令行控制</a>
+        		</li>
       		
 		</ul>
 	</div>
@@ -643,11 +647,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -663,19 +671,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -687,11 +687,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">公链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">地址</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -707,11 +703,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color3">公链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">地址与钱包</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -719,7 +719,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color1">事务/交易</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -771,6 +783,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
@@ -780,14 +800,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -811,15 +823,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -831,11 +839,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
               </li>
              
               <li class="article-tag-list-item">

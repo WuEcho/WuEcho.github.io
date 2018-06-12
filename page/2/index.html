@@ -172,6 +172,135 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言中的远程过程调用协议RPC" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/24/Go语言中的远程过程调用协议RPC/">Go语言中的远程过程调用协议RPC</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/24/Go语言中的远程过程调用协议RPC/" class="archive-article-date">
+  	<time datetime="2018-05-24T12:21:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言中的远程过程调用协议RPC"><a href="#Go语言中的远程过程调用协议RPC" class="headerlink" title="Go语言中的远程过程调用协议RPC"></a>Go语言中的远程过程调用协议RPC</h1><h2 id="1-什么是RPC"><a href="#1-什么是RPC" class="headerlink" title="1. 什么是RPC"></a>1. 什么是RPC</h2><p>　　RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。
+　　</p>
+<h2 id="2-go语言中如何使用RPC"><a href="#2-go语言中如何使用RPC" class="headerlink" title="2. go语言中如何使用RPC"></a>2. go语言中如何使用RPC</h2><p>我并不清楚其他语言中如何使用RPC来实现计算机间的通信以及互相调用，在go语言当中RPC有相应的包文件可以调用相关函数来实现。使用一台电脑来模拟两台电脑互相通信，调用方法，创建新的项目名为<code>rpcdemo</code>，在<code>rpcdemo</code>文件夹下创建名为<code>rpcSever</code>的文件夹，里面创建名为<code>rpcSever.go</code>的go文件，来模仿提供方法给别的机器调用的服务端，再在<code>rpcdemo</code>文件夹下创建名为<code>rpcClient</code>的文件夹，文件夹下创建名为<code>rpcClient.go</code>的go文件，来模仿连接到服务端的客户端，并调用服务端中提供的方法。</p>
+<h3 id="2-1-http链接使用rpc"><a href="#2-1-http链接使用rpc" class="headerlink" title="2.1 http链接使用rpc"></a>2.1 http链接使用rpc</h3><p><code>rpcSever.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明传递参数结构体以及类对象的结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义参数类型</span></span><br><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明对象</span></span><br><span class="line"><span class="keyword">type</span> Rect <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对外提供的公共方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义公共方法  (本机以外的电脑也可以调用)</span></span><br><span class="line"><span class="comment">//error 是必须的    ret为指针的地址   </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Area</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	*ret = p.Width * p.Width</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//周长</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Perimeter</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	*ret = (p.Width + p.Height)*<span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//注册服务</span></span><br><span class="line">	rect := <span class="built_in">new</span>(Rect)</span><br><span class="line">	rpc.Register(rect)</span><br><span class="line">	<span class="comment">//开辟端口让别的机器可以调用</span></span><br><span class="line">	rpc.HandleHTTP()</span><br><span class="line">	err := http.ListenAndServe(<span class="string">":9090"</span>,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>rpcClient.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>参数的结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//链接远程RPC   此处"127.0.0.1:9090"为要连接的服务器的ip地址</span></span><br><span class="line">	rp,err := rpc.DialHTTP(<span class="string">"tcp"</span>,<span class="string">"127.0.0.1:9090"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//从服务器接收过来的值</span></span><br><span class="line">	ret := <span class="number">0</span></span><br><span class="line">	<span class="comment">//调用方法</span></span><br><span class="line">	e := rp.Call(<span class="string">"Rect.Area"</span>,Param&#123;<span class="number">100</span>,<span class="number">100</span>&#125;,&amp;ret)</span><br><span class="line">	<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(e)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(ret)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用IDE分别打开<code>rpcClient</code>文件和<code>rpcSever</code>文件，先运行<code>rpcSever.go</code>文件然后在运行<code>rpcClient.go</code>文件</p>
+<p>然后在<code>rpcClient.go</code>的输出端看到输出为10000。</p>
+<p><a href="https://github.com/WuEcho/RPCDemo.git" target="_blank" rel="noopener">Go语言使用RCP代码示例</a></p>
+<h3 id="2-2-利用json方式连接"><a href="#2-2-利用json方式连接" class="headerlink" title="2.2 利用json方式连接"></a>2.2 利用json方式连接</h3><p>项目结构与上面相同，服务端和客户端文件夹分别命名为 <code>rpcJsonSever</code>，<code>rpcJsonClient</code><br><code>rpcJsonSever.go</code>文件内容如下：<br>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"errors"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"net/rpc/jsonrpc"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 算数运算结构体</span></span><br><span class="line"><span class="keyword">type</span> Arith <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算请求结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="keyword">int</span></span><br><span class="line">	B <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算响应结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Pro <span class="keyword">int</span> <span class="comment">// 乘积</span></span><br><span class="line">	Quo <span class="keyword">int</span> <span class="comment">// 商</span></span><br><span class="line">	Rem <span class="keyword">int</span> <span class="comment">// 余数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>声明方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 乘法运算方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Arith)</span> <span class="title">Multiply</span><span class="params">(req ArithRequest, res *ArithResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	res.Pro = req.A * req.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 除法运算方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Arith)</span> <span class="title">Divide</span><span class="params">(req ArithRequest, res *ArithResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> req.B == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> errors.New(<span class="string">"divide by zero"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	res.Quo = req.A / req.B</span><br><span class="line">	res.Rem = req.A % req.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	rpc.Register(<span class="built_in">new</span>(Arith)) <span class="comment">// 注册rpc服务</span></span><br><span class="line"></span><br><span class="line">	lis, err := net.Listen(<span class="string">"tcp"</span>, <span class="string">":8096"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"fatal error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Fprintf(os.Stdout, <span class="string">"%s"</span>, <span class="string">"start connection\n"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		conn, err := lis.Accept() <span class="comment">// 接收客户端连接请求</span></span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(conn net.Conn)</span></span> &#123; <span class="comment">// 并发处理客户端请求</span></span><br><span class="line">			fmt.Println(<span class="string">"new client in coming"</span>)</span><br><span class="line">			jsonrpc.ServeConn(conn)</span><br><span class="line">		&#125;(conn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>rpcJsonClient.go</code>文件内容如下：</p>
+<p>头文件如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/rpc/jsonrpc"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 算数运算请求结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="keyword">int</span></span><br><span class="line">	B <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算响应结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Pro <span class="keyword">int</span> <span class="comment">// 乘积</span></span><br><span class="line">	Quo <span class="keyword">int</span> <span class="comment">// 商</span></span><br><span class="line">	Rem <span class="keyword">int</span> <span class="comment">// 余数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	conn, err := jsonrpc.Dial(<span class="string">"tcp"</span>, <span class="string">"127.0.0.1:8096"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"dailing error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	req := ArithRequest&#123;<span class="number">9</span>, <span class="number">2</span>&#125;</span><br><span class="line">	<span class="keyword">var</span> res ArithResponse</span><br><span class="line"></span><br><span class="line">	err = conn.Call(<span class="string">"Arith.Multiply"</span>, req, &amp;res) <span class="comment">// 乘法运算</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"arith error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%d * %d = %d\n"</span>, req.A, req.B, res.Pro)</span><br><span class="line"></span><br><span class="line">	err = conn.Call(<span class="string">"Arith.Divide"</span>, req, &amp;res)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"arith error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%d / %d, quo is %d, rem is %d\n"</span>, req.A, req.B, res.Quo, res.Rem)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行方式与上面的相同，运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">9 * 2 = 18</span><br><span class="line"></span><br><span class="line">9 / 2, quo is 4, rem is 1</span><br></pre></td></tr></table></figure>
+<p><a href="ttps://github.com/WuEcho/RPCDemo.git" target="_blank" rel="noopener">Go语言RPC使用代码示例</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RPC</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/24/Go语言中的远程过程调用协议RPC/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言实现PoS共识算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1450,99 +1579,6 @@
 
 
   
-    <article id="post-Go语言实现链表-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/15/Go语言实现链表-二/">Go语言实现链表(二)</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/15/Go语言实现链表-二/" class="archive-article-date">
-  	<time datetime="2018-05-15T12:28:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Go语言实现链表"><a href="#Go语言实现链表" class="headerlink" title="Go语言实现链表"></a>Go语言实现链表</h1><p>对链表来说都是通过键值对来检索值，因此对于简单的链表实现基础上，对数据区，应该一对键值对。因此，新创建一个项目名为<code>hashLink</code>,在项目目录下创建两个文件夹，分别名为<code>linkNode</code>，<code>hashAlgorithm</code>,在<code>linkNode</code>文件夹下，创建名为<code>Node.go</code>的文件。<br><code>Node.go</code>文件内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> linkNodes</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明全局变量保存头结点</span></span><br><span class="line"><span class="keyword">var</span> headNode *Node</span><br><span class="line"><span class="keyword">var</span> curr *Node</span><br><span class="line"></span><br><span class="line"><span class="comment">//用结构体作为数据域的类型</span></span><br><span class="line"><span class="keyword">type</span> DM <span class="keyword">struct</span> &#123;</span><br><span class="line">	K <span class="keyword">string</span></span><br><span class="line">	V <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//节点类型</span></span><br><span class="line"><span class="keyword">type</span> Node <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">//数据域</span></span><br><span class="line">	Data  DM</span><br><span class="line">	NextNode *Node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//创建头结点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatHeadNode</span> <span class="params">(k <span class="keyword">string</span>,v <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">	<span class="comment">//设置数据域结构体中的键值对</span></span><br><span class="line">	node.Data.K = k</span><br><span class="line">	node.Data.V = v</span><br><span class="line">	node.NextNode = <span class="literal">nil</span></span><br><span class="line">	<span class="comment">//保存头结点以及当前节点</span></span><br><span class="line">	headNode = node</span><br><span class="line">	curr = node</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在指定的节点后面添加节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNode</span><span class="params">(k <span class="keyword">string</span>,v <span class="keyword">string</span>,curr *Node)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">	<span class="comment">//设置新节点中的数据域</span></span><br><span class="line">	newNode.Data.K = k</span><br><span class="line">	newNode.Data.V = v</span><br><span class="line">	newNode.NextNode = <span class="literal">nil</span></span><br><span class="line">    <span class="comment">//挂接节点</span></span><br><span class="line">	curr.NextNode = newNode</span><br><span class="line">    curr = newNode</span><br><span class="line">    <span class="keyword">return</span> newNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在指定的节点后面遍历链表</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ShowNode</span><span class="params">(n *Node)</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> node = n</span><br><span class="line">	fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">			fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算节点个数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NodeCnt</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> n  = <span class="number">1</span></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">for</span>  &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			n++</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//插入节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InsertNodeByIndex</span><span class="params">(index <span class="keyword">int</span>, data DM)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="comment">//添加新头节点</span></span><br><span class="line">		<span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		node.Data.K = data.K</span><br><span class="line">		node.Data.V = data.V</span><br><span class="line">		node.NextNode = headNode</span><br><span class="line">		headNode = node</span><br><span class="line"></span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> index &gt; NodeCnt()<span class="number">-1</span>&#123;</span><br><span class="line">     <span class="comment">//添加节点</span></span><br><span class="line">     AddNode(data.K,data.V,curr)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">//中间节点</span></span><br><span class="line">       <span class="keyword">var</span> n = headNode</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i:= <span class="number">0</span>; i &lt; index<span class="number">-1</span>;i++&#123;</span><br><span class="line">			n = n.NextNode</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		newNode.Data.K = data.K</span><br><span class="line">		newNode.Data.V = data.V</span><br><span class="line">		newNode.NextNode = n.NextNode</span><br><span class="line">		n.NextNode = newNode</span><br><span class="line">	&#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DeleteNodeByIndex</span><span class="params">(index <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">       headNode = node.NextNode</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>;i &lt; index<span class="number">-1</span>;i ++ &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.NextNode = node.NextNode.NextNode</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//更新指定下标的节点内容</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UpdataNodeByIndex</span><span class="params">(index <span class="keyword">int</span>,data DM)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span>  node  = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		headNode.Data.K = data.K</span><br><span class="line">		headNode.Data.V = data.V</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; index; i++&#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.Data.V = data.V</span><br><span class="line">		node.Data.K = data.K</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在<code>hashAlgorithm</code>文件夹下创建名为<code>myHashMap.go</code>的文件，文件内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> hashAlgorithm</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"hashLink/linkNodes"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明全局数组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bultArr [<span class="number">16</span>]*linkNodes.Node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatBarrel</span><span class="params">()</span> <span class="params">([16]*linkNodes.Node)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> arr  = [<span class="number">16</span>]*linkNodes.Node&#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> i:= <span class="number">0</span>; i &lt; <span class="number">16</span> ; i ++ &#123;</span><br><span class="line">      arr[i] = linkNodes.CreatHeadNode(<span class="string">"头节点"</span>,<span class="string">"头节点"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	bultArr = arr</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将key装换成数组下标的散列算法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HashCode</span><span class="params">(key <span class="keyword">string</span>)</span><span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> index <span class="keyword">int</span> = <span class="number">0</span></span><br><span class="line">	index = <span class="keyword">int</span>(key[<span class="number">0</span>])</span><br><span class="line">	<span class="keyword">for</span> k := <span class="number">0</span>; k &lt; <span class="built_in">len</span>(key); k++ &#123;</span><br><span class="line">		<span class="comment">//1103515245 散列因子  类似于π</span></span><br><span class="line">		index *= (<span class="number">1103515245</span> + <span class="keyword">int</span>(key[k]))</span><br><span class="line">	&#125;</span><br><span class="line">	index &gt;&gt;= <span class="number">27</span></span><br><span class="line">	index &amp;= <span class="number">16</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> index</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//向数组中添加键值对</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddKeyValue</span><span class="params">(k <span class="keyword">string</span>, v <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">//计算建所对应的木桶下标</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> pos = HashCode(k)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获得木桶数组</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">var</span> head *linkNodes.Node = bultArr[pos]</span><br><span class="line"></span><br><span class="line">   <span class="comment">//向指定下标的头节点添加节点</span></span><br><span class="line"></span><br><span class="line">   linkNodes.AddNode(k, v, head)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取数据</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetValueByKey</span><span class="params">(k <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> pos = HashCode(k)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> head *linkNodes.Node = bultArr[pos]</span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过头节点便利链表</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//linkNodes.ShowNode(head)</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//查找对应下标下的链表，判断在key与节点中的key一致时打印</span></span><br><span class="line">	<span class="keyword">for</span>  &#123;</span><br><span class="line">		<span class="keyword">if</span> head.Data.K == k &#123;</span><br><span class="line">			fmt.Println(head.Data.V)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			head = head.NextNode</span><br><span class="line">			<span class="keyword">if</span> head.NextNode == <span class="literal">nil</span> &#123;</span><br><span class="line">			  <span class="comment">//break</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在文件夹下创建名为<code>main.go</code>的文件，文件内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"hashLink/hashAlgorithm"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(hashAlgorithm.HashCode(<span class="string">"abc"</span>))</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.CreatBarrel()</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.AddKeyValue(<span class="string">"abc"</span>,<span class="string">"hello"</span>)</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.AddKeyValue(<span class="string">"bcd"</span>,<span class="string">"world"</span>)</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.GetValueByKey(<span class="string">"abc"</span>)</span><br><span class="line"></span><br><span class="line">	hashAlgorithm.GetValueByKey(<span class="string">"bcd"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行后打印如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hello</span><br><span class="line">world</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">链表</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/15/Go语言实现链表-二/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1644,11 +1680,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1664,19 +1704,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1688,11 +1720,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">公链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">地址</a>
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1708,11 +1736,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color3">公链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">地址与钱包</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1720,7 +1752,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color1">事务/交易</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1772,6 +1816,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
@@ -1781,14 +1833,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1812,15 +1856,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1832,11 +1872,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
               </li>
              
               <li class="article-tag-list-item">
