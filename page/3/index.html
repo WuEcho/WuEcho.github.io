@@ -172,6 +172,97 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言实现简易链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/15/Go语言实现简易链表/">Go语言实现简易链表</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/15/Go语言实现简易链表/" class="archive-article-date">
+  	<time datetime="2018-05-15T11:26:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言实现简易链表"><a href="#Go语言实现简易链表" class="headerlink" title="Go语言实现简易链表"></a>Go语言实现简易链表</h1><h2 id="1-单向链表"><a href="#1-单向链表" class="headerlink" title="1. 单向链表"></a>1. 单向链表</h2><p>　　<strong>单向链表</strong>是链表的一种，其特点是链表的链接方向是单向的，对链表的访问要通过顺序读取从头部开始；链表是使用指针进行构造的列表；因为链表是由一个个节点组装起来的；其中每个节点都有指针成员变量指向列表中的下一个节点；节点分为<strong>数据区</strong>和<strong>地址区</strong>链表就是由前一个地址区指向下一个地址区。
+　　</p>
+<h2 id="2-Go语言实现"><a href="#2-Go语言实现" class="headerlink" title="2. Go语言实现"></a>2. Go语言实现</h2><p>　　实现链表暂时先不应用哈希算法，对链表进行处理，只是对链表进行模拟。<br>　　创建项目文件名为<code>linkNodes</code>，在<code>linkNodes</code>文件夹下创建一个名为<code>Node.go</code>的文件，<code>Node.go</code>文件内部文件代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> linkNodes</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//声明全局变量保存头节点</span></span><br><span class="line"><span class="keyword">var</span> headNode *Node</span><br><span class="line"><span class="comment">//声明全局变量保存当前节点</span></span><br><span class="line"><span class="keyword">var</span> curr *Node</span><br><span class="line"></span><br><span class="line"><span class="comment">//节点类型</span></span><br><span class="line"><span class="keyword">type</span> Node <span class="keyword">struct</span> &#123;</span><br><span class="line">   <span class="comment">//数据域</span></span><br><span class="line">   Data  <span class="keyword">string</span></span><br><span class="line">   <span class="comment">//地址域</span></span><br><span class="line">   NextNode *Node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建头节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatHeadNode</span> <span class="params">(data <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">   node.Data = data</span><br><span class="line">   node.NextNode = <span class="literal">nil</span></span><br><span class="line">   <span class="comment">//保存头结点以及当前节点</span></span><br><span class="line">	headNode = node</span><br><span class="line">	curr = node</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加新节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNode</span><span class="params">(data <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">    newNode.Data = data</span><br><span class="line">    newNode.NextNode = ni</span><br><span class="line">    <span class="comment">//挂接节点</span></span><br><span class="line">    curr.NextNode = newNode</span><br><span class="line">    curr = newNode</span><br><span class="line">    <span class="keyword">return</span> newNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//遍历链表</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ShowNode</span><span class="params">()</span></span>  &#123;</span><br><span class="line">  <span class="comment">//从头节点开始遍历</span></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">			fmt.Print(node.Data,<span class="string">"---"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算节点个数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NodeCnt</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> n  = <span class="number">1</span></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">for</span>  &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			n++</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//插入节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InsertNodeByIndex</span><span class="params">(index <span class="keyword">int</span>, data <span class="keyword">string</span>)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="comment">//添加新头节点</span></span><br><span class="line">		<span class="keyword">var</span> node *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		node.Data = data</span><br><span class="line">		node.NextNode = headNode</span><br><span class="line">		headNode = node</span><br><span class="line">		</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> index &gt; NodeCnt()<span class="number">-1</span>&#123;</span><br><span class="line">     <span class="comment">//向尾部添加节点</span></span><br><span class="line">     AddNode(data)</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">//中间插入节点</span></span><br><span class="line">     <span class="keyword">var</span> n = headNode</span><br><span class="line">     </span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; index<span class="number">-1</span>; i++&#123;</span><br><span class="line">			n = n.NextNode</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">		newNode.Data = data</span><br><span class="line">		newNode.NextNode = n.NextNode</span><br><span class="line">		n.NextNode = newNode</span><br><span class="line">	&#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DeleteNodeByIndex</span><span class="params">(index <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">       headNode = node.NextNode</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>;i &lt; index<span class="number">-1</span>;i ++ &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.NextNode = node.NextNode.NextNode</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//更新指定下标的节点内容</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UpdataNodeByIndex</span><span class="params">(index <span class="keyword">int</span>,data <span class="keyword">string</span>)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> node = headNode</span><br><span class="line">	<span class="keyword">if</span> index == <span class="number">0</span> &#123;</span><br><span class="line">		headNode.Data = data</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; index; i++&#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">		&#125;</span><br><span class="line">		node.Data = data</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`　　</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">在文件夹中创建名为`</span>main.<span class="keyword">go</span><span class="string">`的go文件，`</span>main.<span class="keyword">go</span><span class="string">`中代码如下：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span><span class="keyword">go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="comment">//引入自定义节点包</span></span><br><span class="line">	<span class="string">"MyHashMap/linkNodes"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">  <span class="comment">//创建头结点</span></span><br><span class="line">	linkNodes.CreatHeadNode(<span class="string">"头节点"</span>)</span><br><span class="line">  <span class="comment">//添加节点</span></span><br><span class="line">	linkNodes.AddNode(<span class="string">"第二个节点"</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.AddNode(<span class="string">"第三个节点"</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.AddNode(<span class="string">"第四个节点"</span>)</span><br><span class="line">  <span class="comment">//遍历节点</span></span><br><span class="line">	linkNodes.ShowNode()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line">  <span class="comment">///删除指定节点</span></span><br><span class="line">	linkNodes.DeleteNodeByIndex(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.ShowNode()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line">  <span class="comment">//更新指定节点</span></span><br><span class="line">	linkNodes.UpdataNodeByIndex(<span class="number">2</span>,<span class="string">"新的第三个节点"</span>)</span><br><span class="line"></span><br><span class="line">	linkNodes.ShowNode()</span><br><span class="line"></span><br><span class="line">	fmt.Println()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行之后的打印信息为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">头节点---第二个节点---第三个节点---第四个节点---</span><br><span class="line">头节点---第二个节点---第四个节点---</span><br><span class="line">头节点---第二个节点---新的第三个节点---</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">简易单向链表</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/15/Go语言实现简易链表/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-区块链的灵魂：共识算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1610,100 +1701,6 @@
 
 
   
-    <article id="post-正则表达式在Go中的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/04/正则表达式在Go中的使用/">正则表达式在Go中的使用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/04/正则表达式在Go中的使用/" class="archive-article-date">
-  	<time datetime="2018-05-04T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-04</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="正则表达式在Go中的使用"><a href="#正则表达式在Go中的使用" class="headerlink" title="正则表达式在Go中的使用"></a>正则表达式在Go中的使用</h1><p>正则表达式的相关内容想查询本博客的文章<code>正则表达式</code>，对于正则表达式在Go语言的应用：</p>
-<p>需要引入：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="comment">//正则表达式需要引入</span></span><br><span class="line">	<span class="string">"regexp"</span></span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>代码示例：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"> <span class="string">"regexp"</span></span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> text = <span class="string">"my email is emailforecho@163.com"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">//对于go语言中不存在的转义符号需要使用 \\ 双反斜线</span></span><br><span class="line">  <span class="comment">// match := regexp.MustCompile("[a-zA-Z0-9]+@.+\\.com")</span></span><br><span class="line">  <span class="comment">//也可以使用表示字符串的``来使用</span></span><br><span class="line">  match := regexp.MustComile(str:<span class="string">`[a-zA-Z0-9]+@.+\.com`</span>)</span><br><span class="line">      </span><br><span class="line">  <span class="comment">//判断emailforecho@163.com是否存在与text里面</span></span><br><span class="line">  isExist := match.MatchString(text)</span><br><span class="line">  fmt.Println(isExist)</span><br><span class="line">  <span class="comment">//返回正则表达式匹配的字符串</span></span><br><span class="line">  s := match.FindString(text)</span><br><span class="line">  fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">emailforecho@163.com</span><br></pre></td></tr></table></figure>
-<p>查找匹配正则表达式的函数还有很多：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func (re *Regexp) Find(b []byte) []byte</span><br><span class="line"></span><br><span class="line">func (*Regexp) FindAll</span><br><span class="line"></span><br><span class="line">func (*Regexp) FindAllString</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">正则表达式Go语言应用</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/04/正则表达式在Go中的使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -1813,19 +1810,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">通道</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1837,6 +1822,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">通道</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
               </li>
              
@@ -1845,7 +1846,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">公链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">地址</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1857,19 +1862,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">公链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Go语言搭建公链</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1877,11 +1870,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color5">Go语言</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1897,11 +1898,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
+                <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1909,7 +1910,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1929,14 +1930,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
@@ -1945,11 +1938,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
+                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1961,6 +1958,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
@@ -1969,15 +1970,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1985,7 +1982,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1997,6 +1994,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
               </li>
              
@@ -2005,15 +2006,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">树和二叉树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2021,15 +2018,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Go语言</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
             
             <div class="clearfix"></div>
