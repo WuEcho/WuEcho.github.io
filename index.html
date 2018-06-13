@@ -193,7 +193,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h1 id="Go语言实现公链-3-事务-交易"><a href="#Go语言实现公链-3-事务-交易" class="headerlink" title="Go语言实现公链-(3)事务/交易"></a>Go语言实现公链-(3)事务/交易</h1><h2 id="1-事务、交易"><a href="#1-事务、交易" class="headerlink" title="1.事务、交易"></a>1.事务、交易</h2><p>在区块链中作重要的就是交易，即事务。交易可以是转帐，支付等操作。在以太坊中交易的概念是比较广义的，因为以太坊并不仅仅支持转账交易这样的合约功能。对于交易，按结构属于区块体，区块头中包含梅克尔根树，为交易事务的hash值根节点。通过前面的文章两篇文章，</p>
+
       
 
       
@@ -647,144 +648,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/06/05/Go语言实现搭建公链-1/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Go语言中的通道" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/01/Go语言中的通道/">Go语言中的通道</a>
-    </h1>
-  
-
-        
-        <a href="/2018/06/01/Go语言中的通道/" class="archive-article-date">
-  	<time datetime="2018-06-01T15:29:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-01</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Go语言中的通道"><a href="#Go语言中的通道" class="headerlink" title="Go语言中的通道"></a>Go语言中的通道</h1><h2 id="1-什么是通道"><a href="#1-什么是通道" class="headerlink" title="1. 什么是通道"></a>1. 什么是通道</h2><p>Channel通道</p>
-<ol>
-<li>用于goroutine，传递消息的。</li>
-<li>通道，每个都有相关联的数据类型,nil chan，不能使用，类似于nil map，不能直接存储键值对</li>
-<li><p>使用通道传递数据：&lt;-</p>
-<blockquote>
-<p>chan &lt;- data,发送数据到通道。向通道中写数据</p>
-<p>data &lt;- chan,从通道中获取数据。从通道中读数据</p>
-</blockquote>
-</li>
-<li><p>阻塞：</p>
-<blockquote>
-<p>   发送数据：chan &lt;- data,阻塞的，直到另一条goroutine，读取数据来解除阻塞。</p>
-<p>   读取数据：data &lt;- chan,也是阻塞的。直到另一条goroutine，写出数据解除阻塞。</p>
-</blockquote>
-</li>
-<li><p>本身channel就是同步的，意味着同一时间，只能有一条goroutine来操作。</p>
-</li>
-</ol>
-<blockquote>
-<p>Goroutines在线程上的优势。</p>
-<ol>
-<li>与线程相比，Goroutines非常便宜。它们只是堆栈大小的几个kb，堆栈可以根据应用程序的需要增长和收缩，而在线程的情况下，堆栈大小必须指定并且是固定的</li>
-<li>Goroutines被多路复用到较少的OS线程。在一个程序中可能只有一个线程与数千个Goroutines。如果线程中的任何Goroutine都表示等待用户输入，则会创建另一个OS线程，剩下的Goroutines被转移到新的OS线程。所有这些都由运行时进行处理，我们作为程序员从这些复杂的细节中抽象出来，并得到了一个与并发工作相关的干净的API。</li>
-<li>当使用Goroutines访问共享内存时，通过设计的通道可以防止竞态条件发生。通道可以被认为是Goroutines通信的管道。</li>
-</ol>
-</blockquote>
-<h2 id="2-通道的声明以及创建"><a href="#2-通道的声明以及创建" class="headerlink" title="2. 通道的声明以及创建"></a>2. 通道的声明以及创建</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ch1 <span class="keyword">chan</span> <span class="keyword">bool</span> <span class="comment">//声明，没有创建</span></span><br><span class="line">fmt.Println(ch1) <span class="comment">//&lt;nil&gt;</span></span><br><span class="line">fmt.Printf(<span class="string">"%T\n"</span>, ch1) <span class="comment">//chan bool</span></span><br><span class="line"></span><br><span class="line">ch1 = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>) <span class="comment">//0xc042036060,是引用类型的数据</span></span><br><span class="line">fmt.Println(ch1)</span><br></pre></td></tr></table></figure>
-<h3 id="2-1-使用"><a href="#2-1-使用" class="headerlink" title="2.1 使用"></a>2.1 使用</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">var</span> ch1 <span class="keyword">chan</span> <span class="keyword">bool</span> <span class="comment">//声明，没有创建</span></span><br><span class="line">	fmt.Println(ch1) <span class="comment">//&lt;nil&gt;</span></span><br><span class="line">	fmt.Printf(<span class="string">"%T\n"</span>, ch1) <span class="comment">//chan bool</span></span><br><span class="line">	ch1 = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>) <span class="comment">//0xc042036060,是引用类型的数据</span></span><br><span class="line">	fmt.Println(ch1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++ &#123;</span><br><span class="line">			fmt.Println(<span class="string">"子goroutine中，i："</span>,i)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 循环结束后，向通道中写数据，表示要结束了。。</span></span><br><span class="line">		ch1 &lt;- <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">		fmt.Println(<span class="string">"结束。。"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	data:=&lt;- ch1 <span class="comment">// 从ch1通道中读取数据</span></span><br><span class="line">	fmt.Println(<span class="string">"data--&gt;"</span>, data)</span><br><span class="line">	fmt.Println(<span class="string">"main。。over。。。。"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-关闭通道"><a href="#2-2-关闭通道" class="headerlink" title="2.2 关闭通道"></a>2.2 关闭通道</h3><p>使用函数<code>close()</code>将通道关闭，被关闭了的通道无法再从通道里获取值，也无法赋值<br><img src="/2018/06/01/Go语言中的通道/p1.png" alt=""><br>对于循环部分，可以使用<code>for-range</code>取值，但是无需对通道是否有值进行过判断。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> n:=<span class="keyword">range</span> ch1&#123;</span><br><span class="line">	 fmt.Println(n)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-缓存通道"><a href="#2-3-缓存通道" class="headerlink" title="2.3 缓存通道"></a>2.3 缓存通道</h3><p>非缓存通道：make(chan T)<br>缓存通道：make(chan T ,size)<br>缓存通道，理解为是队列：<br>    非缓存，发送还是接受，都是阻塞的<br>    缓存通道,缓存区的数据满了，才会阻塞状态。。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  ch2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">5</span>)        <span class="comment">//缓存的通道，缓存区大小是5</span></span><br><span class="line">fmt.Println(<span class="built_in">len</span>(ch2), <span class="built_in">cap</span>(ch2)) <span class="comment">//0 5</span></span><br><span class="line">ch2 &lt;- <span class="number">100</span>                      <span class="comment">//</span></span><br><span class="line">fmt.Println(<span class="built_in">len</span>(ch2), <span class="built_in">cap</span>(ch2)) <span class="comment">//1 5</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-4-返回值是通道的系统包"><a href="#2-4-返回值是通道的系统包" class="headerlink" title="2.4 返回值是通道的系统包"></a>2.4 返回值是通道的系统包</h3><p><img src="/2018/06/01/Go语言中的通道/p2.png" alt=""></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">//在当前时间点上xx时间间隔的时间</span></span><br><span class="line">  ch1 := time.After(<span class="number">3</span> * time.Second) <span class="comment">// 16:19:00</span></span><br><span class="line">	fmt.Printf(<span class="string">"%T\n"</span>, ch1) <span class="comment">// &lt;-chan time.Time</span></span><br><span class="line">fmt.Println(time.Now())</span><br><span class="line">time2 := &lt;-ch1</span><br><span class="line">fmt.Println(time2)</span><br></pre></td></tr></table></figure>
-<h2 id="3-selected"><a href="#3-selected" class="headerlink" title="3. selected"></a>3. selected</h2><p>   select 语句类似于 switch 语句，但是select会随机执行一个可运行的case。如果没有case可运行，它将阻塞，直到有case可运行。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> c1, c2, c3 <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">   <span class="keyword">var</span> i1, i2 <span class="keyword">int</span></span><br><span class="line">   <span class="keyword">select</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> i1 = &lt;-c1:</span><br><span class="line">         fmt.Printf(<span class="string">"received "</span>, i1, <span class="string">" from c1\n"</span>)</span><br><span class="line">      <span class="keyword">case</span> c2 &lt;- i2:</span><br><span class="line">         fmt.Printf(<span class="string">"sent "</span>, i2, <span class="string">" to c2\n"</span>)</span><br><span class="line">      <span class="keyword">case</span> i3, ok := (&lt;-c3):  <span class="comment">// same as: i3, ok := &lt;-c3</span></span><br><span class="line">         <span class="keyword">if</span> ok &#123;</span><br><span class="line">            fmt.Printf(<span class="string">"received "</span>, i3, <span class="string">" from c3\n"</span>)</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fmt.Printf(<span class="string">"c3 is closed\n"</span>)</span><br><span class="line">         &#125;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">         fmt.Printf(<span class="string">"no communication\n"</span>)</span><br><span class="line">   &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no communication</span><br></pre></td></tr></table></figure>
-<ol>
-<li>每个case都必须是一个通信</li>
-<li>所有channel表达式都会被求值</li>
-<li>所有被发送的表达式都会被求值</li>
-<li>如果任意某个通信可以进行，它就执行；其他被忽略。</li>
-<li>如果有多个case都可以运行，Select会随机公平地选出一个执行。其他不会执行。</li>
-</ol>
-<p>否则：</p>
-<p>如果有default子句，则执行该语句。</p>
-<p>如果没有default字句，select将阻塞，直到某个通信可以运行；Go不会重新对channel或值进行求值</p>
-<h2 id="4-定向通道"><a href="#4-定向通道" class="headerlink" title="4. 定向通道"></a>4. 定向通道</h2><p>   通道可以是双向通道，我们可以通过这些通道接收或者发送数据。我们也可以创建单向通道，这些通道只能发送或者接收数据。<br>创建仅能发送数据的通道，示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendData</span><span class="params">(sendch <span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sendch &lt;- <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    sendch := <span class="built_in">make</span>(<span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> sendData(sendch)</span><br><span class="line">    fmt.Println(&lt;-sendch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendData</span><span class="params">(sendch <span class="keyword">chan</span>&lt;- <span class="keyword">int</span>)</span></span> &#123;  </span><br><span class="line">    sendch &lt;- <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    chnl := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> sendData(chnl)</span><br><span class="line">    fmt.Println(&lt;-chnl)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">通道</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/01/Go语言中的通道/">展开全文 >></a>
         </p>
       
 
@@ -1558,6 +1421,135 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/28/分布式一致性键值存储系统-etcd/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Go语言中的远程过程调用协议RPC" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/24/Go语言中的远程过程调用协议RPC/">Go语言中的远程过程调用协议RPC</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/24/Go语言中的远程过程调用协议RPC/" class="archive-article-date">
+  	<time datetime="2018-05-24T12:21:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言中的远程过程调用协议RPC"><a href="#Go语言中的远程过程调用协议RPC" class="headerlink" title="Go语言中的远程过程调用协议RPC"></a>Go语言中的远程过程调用协议RPC</h1><h2 id="1-什么是RPC"><a href="#1-什么是RPC" class="headerlink" title="1. 什么是RPC"></a>1. 什么是RPC</h2><p>　　RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。
+　　</p>
+<h2 id="2-go语言中如何使用RPC"><a href="#2-go语言中如何使用RPC" class="headerlink" title="2. go语言中如何使用RPC"></a>2. go语言中如何使用RPC</h2><p>我并不清楚其他语言中如何使用RPC来实现计算机间的通信以及互相调用，在go语言当中RPC有相应的包文件可以调用相关函数来实现。使用一台电脑来模拟两台电脑互相通信，调用方法，创建新的项目名为<code>rpcdemo</code>，在<code>rpcdemo</code>文件夹下创建名为<code>rpcSever</code>的文件夹，里面创建名为<code>rpcSever.go</code>的go文件，来模仿提供方法给别的机器调用的服务端，再在<code>rpcdemo</code>文件夹下创建名为<code>rpcClient</code>的文件夹，文件夹下创建名为<code>rpcClient.go</code>的go文件，来模仿连接到服务端的客户端，并调用服务端中提供的方法。</p>
+<h3 id="2-1-http链接使用rpc"><a href="#2-1-http链接使用rpc" class="headerlink" title="2.1 http链接使用rpc"></a>2.1 http链接使用rpc</h3><p><code>rpcSever.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明传递参数结构体以及类对象的结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义参数类型</span></span><br><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明对象</span></span><br><span class="line"><span class="keyword">type</span> Rect <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对外提供的公共方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义公共方法  (本机以外的电脑也可以调用)</span></span><br><span class="line"><span class="comment">//error 是必须的    ret为指针的地址   </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Area</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	*ret = p.Width * p.Width</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//周长</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Perimeter</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	*ret = (p.Width + p.Height)*<span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//注册服务</span></span><br><span class="line">	rect := <span class="built_in">new</span>(Rect)</span><br><span class="line">	rpc.Register(rect)</span><br><span class="line">	<span class="comment">//开辟端口让别的机器可以调用</span></span><br><span class="line">	rpc.HandleHTTP()</span><br><span class="line">	err := http.ListenAndServe(<span class="string">":9090"</span>,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>rpcClient.go</code>文件内容如下：</p>
+<p>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>参数的结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//链接远程RPC   此处"127.0.0.1:9090"为要连接的服务器的ip地址</span></span><br><span class="line">	rp,err := rpc.DialHTTP(<span class="string">"tcp"</span>,<span class="string">"127.0.0.1:9090"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//从服务器接收过来的值</span></span><br><span class="line">	ret := <span class="number">0</span></span><br><span class="line">	<span class="comment">//调用方法</span></span><br><span class="line">	e := rp.Call(<span class="string">"Rect.Area"</span>,Param&#123;<span class="number">100</span>,<span class="number">100</span>&#125;,&amp;ret)</span><br><span class="line">	<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(e)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(ret)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用IDE分别打开<code>rpcClient</code>文件和<code>rpcSever</code>文件，先运行<code>rpcSever.go</code>文件然后在运行<code>rpcClient.go</code>文件</p>
+<p>然后在<code>rpcClient.go</code>的输出端看到输出为10000。</p>
+<p><a href="https://github.com/WuEcho/RPCDemo.git" target="_blank" rel="noopener">Go语言使用RCP代码示例</a></p>
+<h3 id="2-2-利用json方式连接"><a href="#2-2-利用json方式连接" class="headerlink" title="2.2 利用json方式连接"></a>2.2 利用json方式连接</h3><p>项目结构与上面相同，服务端和客户端文件夹分别命名为 <code>rpcJsonSever</code>，<code>rpcJsonClient</code><br><code>rpcJsonSever.go</code>文件内容如下：<br>引入头文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"errors"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"net/rpc/jsonrpc"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 算数运算结构体</span></span><br><span class="line"><span class="keyword">type</span> Arith <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算请求结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="keyword">int</span></span><br><span class="line">	B <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算响应结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Pro <span class="keyword">int</span> <span class="comment">// 乘积</span></span><br><span class="line">	Quo <span class="keyword">int</span> <span class="comment">// 商</span></span><br><span class="line">	Rem <span class="keyword">int</span> <span class="comment">// 余数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>声明方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 乘法运算方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Arith)</span> <span class="title">Multiply</span><span class="params">(req ArithRequest, res *ArithResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	res.Pro = req.A * req.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 除法运算方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Arith)</span> <span class="title">Divide</span><span class="params">(req ArithRequest, res *ArithResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> req.B == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> errors.New(<span class="string">"divide by zero"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	res.Quo = req.A / req.B</span><br><span class="line">	res.Rem = req.A % req.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	rpc.Register(<span class="built_in">new</span>(Arith)) <span class="comment">// 注册rpc服务</span></span><br><span class="line"></span><br><span class="line">	lis, err := net.Listen(<span class="string">"tcp"</span>, <span class="string">":8096"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"fatal error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Fprintf(os.Stdout, <span class="string">"%s"</span>, <span class="string">"start connection\n"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		conn, err := lis.Accept() <span class="comment">// 接收客户端连接请求</span></span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(conn net.Conn)</span></span> &#123; <span class="comment">// 并发处理客户端请求</span></span><br><span class="line">			fmt.Println(<span class="string">"new client in coming"</span>)</span><br><span class="line">			jsonrpc.ServeConn(conn)</span><br><span class="line">		&#125;(conn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>rpcJsonClient.go</code>文件内容如下：</p>
+<p>头文件如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/rpc/jsonrpc"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 算数运算请求结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="keyword">int</span></span><br><span class="line">	B <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算响应结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Pro <span class="keyword">int</span> <span class="comment">// 乘积</span></span><br><span class="line">	Quo <span class="keyword">int</span> <span class="comment">// 商</span></span><br><span class="line">	Rem <span class="keyword">int</span> <span class="comment">// 余数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	conn, err := jsonrpc.Dial(<span class="string">"tcp"</span>, <span class="string">"127.0.0.1:8096"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"dailing error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	req := ArithRequest&#123;<span class="number">9</span>, <span class="number">2</span>&#125;</span><br><span class="line">	<span class="keyword">var</span> res ArithResponse</span><br><span class="line"></span><br><span class="line">	err = conn.Call(<span class="string">"Arith.Multiply"</span>, req, &amp;res) <span class="comment">// 乘法运算</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"arith error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%d * %d = %d\n"</span>, req.A, req.B, res.Pro)</span><br><span class="line"></span><br><span class="line">	err = conn.Call(<span class="string">"Arith.Divide"</span>, req, &amp;res)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"arith error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%d / %d, quo is %d, rem is %d\n"</span>, req.A, req.B, res.Quo, res.Rem)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行方式与上面的相同，运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">9 * 2 = 18</span><br><span class="line"></span><br><span class="line">9 / 2, quo is 4, rem is 1</span><br></pre></td></tr></table></figure>
+<p><a href="ttps://github.com/WuEcho/RPCDemo.git" target="_blank" rel="noopener">Go语言RPC使用代码示例</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RPC</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/24/Go语言中的远程过程调用协议RPC/">展开全文 >></a>
         </p>
       
 
