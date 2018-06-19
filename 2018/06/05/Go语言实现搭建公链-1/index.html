@@ -17,7 +17,7 @@
 <meta property="og:description" content="Go语言实现搭建公链-(1)命令行控制，数据库存储1. 公链应该具备的功能　　首先对于一个公链，应该具备以下功能：  具备一个核心，支持同步区块数据并验证和存储区块数据到主链 具备一个钱包功能，可以存储公钥私钥以及账户余额 具备一个挖矿功能，用于打包区块数据并发行新的代币  各功能模块应该包含的详细功能那内容如下：  (1) 核心 　　1） 命令交互系统，用于与节点核心进行功能调用 　　2） 节点">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/06/05/Go语言实现搭建公链-1/p1.png">
-<meta property="og:updated_time" content="2018-06-12T16:38:05.697Z">
+<meta property="og:updated_time" content="2018-06-13T14:51:22.338Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go语言实现搭建公链-(1)命令行控制，数据库存储">
 <meta name="twitter:description" content="Go语言实现搭建公链-(1)命令行控制，数据库存储1. 公链应该具备的功能　　首先对于一个公链，应该具备以下功能：  具备一个核心，支持同步区块数据并验证和存储区块数据到主链 具备一个钱包功能，可以存储公钥私钥以及账户余额 具备一个挖矿功能，用于打包区块数据并发行新的代币  各功能模块应该包含的详细功能那内容如下：  (1) 核心 　　1） 命令交互系统，用于与节点核心进行功能调用 　　2） 节点">
@@ -359,7 +359,7 @@
 <p><code>main.go</code>内容作出修改如下：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"BlockChainDemo5/blc"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	cli := blc.Cli&#123;&#125;</span><br><span class="line"></span><br><span class="line">	cli.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行方式与上一个示例一样。</p>
-<p><strong>代码示例</strong><br><a href="">优化整理后demo示例</a></p>
+<p><strong>代码示例</strong><br><a href="https://github.com/WuEcho/PublishBlockChain/tree/master/BlockChainDemo4" target="_blank" rel="noopener">优化整理后demo示例</a></p>
 
       
 
