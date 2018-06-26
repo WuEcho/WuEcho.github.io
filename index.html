@@ -172,6 +172,113 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-超级账本Fabric-介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/26/超级账本Fabric-介绍/">超级账本Fabric-介绍</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/26/超级账本Fabric-介绍/" class="archive-article-date">
+  	<time datetime="2018-06-26T06:46:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-26</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="超级账本Fabric-简介"><a href="#超级账本Fabric-简介" class="headerlink" title="超级账本Fabric-简介"></a>超级账本Fabric-简介</h1><h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>　　2015年12月, 由Linux基金会牵头, IBM、Intel、Cisco等共同宣布了Hyperledger联合项目成立。超级账本项目为透明、公开、去中心化的企业级分布式账本技术提供开源参考实现。</p>
+<ul>
+<li>艾亿数融、OnChain、比邻共赢、BitSE、布比、三一重工、万达、华为等诸多国内企业加入</li>
+</ul>
+<p>　　超级账本首次将区块链技术引入到分布式联盟账本的应用场景中, 为未来基于区块链技术打造高效率的商业网络打下基础。</p>
+<p>超级账本由面向不同目的和场景的八大顶级子项目构成:</p>
+<ul>
+<li><strong>Fabric:</strong>  目标是区块链的基础核心平台,支持PBFT(拜占庭容错算法)等新的共识机制, 支持权限管理</li>
+<li><strong>Sawtooth:</strong> 是Intel 主要发起和贡献的区块链平台. 支持全新的基于硬件芯片的共识机制Proof of Elapsed Time(PoET)</li>
+<li><strong>iroha:</strong>  账本平台项目, 基于C++实现, 带有面向Web和Mobile的特性</li>
+<li><strong>Blockchain Explorer:</strong>  提供Web操作界面, 可查看查询绑定区块链的状态(区块个数, 交易历史)信息等</li>
+<li><strong>Cello:</strong> 提供区块链平台的部署和运行时管理功能, 应用开发者无需关心如何搭建和维护区块链</li>
+<li><strong>Indy:</strong> 提供基于分布式账本技术的数字身份管理机制</li>
+<li><strong>Composer:</strong> 提供面向链码开发的高级语言支持, 自动生成链码等</li>
+<li><strong>Burrow:</strong>  提供以太坊虚拟机的支持, 实现支持高效交易的带权限的区块链平台</li>
+</ul>
+<p>　　Fabric是最早加入到超级账本项目中的顶级项目, 面向企业的分布式账本平台,引入了权限管理,支持可插拔、可扩展,由IBM、DIH等企业于2015年底提交到社区,是首个面向联盟链场景的开源项目。</p>
+<p>Fabric基于GO语言实现,已发布1.1.0版本。</p>
+<p><a href="https://github.com/hyperledger/fabric" target="_blank" rel="noopener">项目地址:  https://github.com/hyperledger/fabric</a></p>
+<h2 id="2-节点类型"><a href="#2-节点类型" class="headerlink" title="2. 节点类型"></a>2. 节点类型</h2><p>　　Fabric从1.0开始，在架构上进行了重新设计，解耦了节点的角色，同时在安全性，性能，可靠性和可插拔性方面都有不少改进。目前，网络中存在以下4种不同种类的服务节点，彼此协作完成整个区块链系统的功能。<br>　　对网络中节点角色进行解耦是Fabric设计中的一大创新，这也是联盟链场景下的特殊需求和环境所决定的：　<br>　　- <strong>背书节点(Endorser)：</strong>负责对交易的提案(proposal)进行检查和背书，计算交易执行结果。<br>　　- <strong>确认节点(Committer)：</strong>负责在接受交易结果前再次检查合法性，接受合法交易对账本的修改，并写入区块链结构。<br>　　- <strong>排序节点(Orderer)：</strong>对所有发往网络中的交易进行排序，将排序后的交易按照配置中的约定整理为区块，之后提交给确认节点进行处理。<br>　　- <strong>证书节点(CA)：</strong>负责对网络中所有的证书进行管理，提供标准的PKI服务。
+　　</p>
+<h2 id="3-启动网络的步骤"><a href="#3-启动网络的步骤" class="headerlink" title="3. 启动网络的步骤"></a>3. 启动网络的步骤</h2><p>　　要启动一个Fabric网络，需要遵循如下主要步骤：<br>1）预备网络内各项配置，包括网络中成员的组织结构和对应的身份证书(使用cryptogen工具完成);生成系统通道的初始配置区块文件，新建应用通道的配置更新交易文件以及可能需要的锚节点配置更新交易文件（使用configtxgen工具完成）。<br>2）使用系统通道的初始配置区块文件启动排序节点，排序节点启动后自动按照指定配置创建系统通道。<br>3）不同的组织按照预置角色分别启动Peer节点。这个时候网络中不存在应用通道，Peer节点也并没有加入网络中。<br>4）使用新建应用通道的配置更新交易文件，向系统通道发送交易，创建新的应用通道。<br>5）让对应的Peer节点加入所创建的应用通道中，此时Peer节点加入网络，可以准备接受交易。<br>6）用户通过客户端向网络中安装注册链码，链码容器启动成功后用户即可对链码进行调用，将交易发送到网络中。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/26/超级账本Fabric-介绍/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-超级账本Fabric-环境搭建" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1508,128 +1615,6 @@
 
 
   
-    <article id="post-分布式一致性键值存储系统-etcd" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/28/分布式一致性键值存储系统-etcd/">分布式一致性键值存储系统--etcd</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/28/分布式一致性键值存储系统-etcd/" class="archive-article-date">
-  	<time datetime="2018-05-28T02:48:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-28</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="分布式一致性键值存储系统–etcd-终端命令单机版"><a href="#分布式一致性键值存储系统–etcd-终端命令单机版" class="headerlink" title="分布式一致性键值存储系统–etcd(终端命令单机版)"></a>分布式一致性键值存储系统–etcd(终端命令单机版)</h1><h2 id="1-什么是etcd"><a href="#1-什么是etcd" class="headerlink" title="1. 什么是etcd"></a>1. 什么是etcd</h2><p>etcd是一个分布式一致性键值存储系统，用于共享配置和服务发现，专注于：</p>
-<ul>
-<li><p>简单:良好定义的，面向用户的API (gRPC)</p>
-</li>
-<li><p>安全： 带有可选客户端证书认证的自动TLS</p>
-</li>
-<li><p>快速:测试验证，每秒10000写入</p>
-</li>
-<li><p>可靠:使用Raft适当分布</p>
-</li>
-</ul>
-<p>etcd是Go编写，并使用Raft一致性算法来管理高可用复制日志，</p>
-<h2 id="1-1-提前准备"><a href="#1-1-提前准备" class="headerlink" title="1.1 提前准备"></a>1.1 提前准备</h2><h3 id="1-1-1-下载安装"><a href="#1-1-1-下载安装" class="headerlink" title="1.1.1 下载安装"></a>1.1.1 下载安装</h3><p><strong>方式1</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src</span><br><span class="line">//如果没有github.com</span><br><span class="line">$ mkdir github.com</span><br><span class="line">$ cd github.com</span><br><span class="line">$ mkdir coreos</span><br><span class="line">$ cd coreos</span><br><span class="line">$ git clone https://github.com/coreos/etcd.git</span><br><span class="line">$ cd etcd</span><br><span class="line">$ ./build</span><br><span class="line">$ ./bin/etcd</span><br></pre></td></tr></table></figure>
-<p><strong>方法2</strong></p>
-<p>直接下载etcd二进制 （包含etcd、etcdctl）<br><a href="https://github.com/coreos/etcd/releases" target="_blank" rel="noopener">https://github.com/coreos/etcd/releases</a></p>
-<h3 id="1-1-2-测试"><a href="#1-1-2-测试" class="headerlink" title="1.1.2 测试"></a>1.1.2 测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH</span><br><span class="line">$ ./bin/etcd</span><br><span class="line"></span><br><span class="line">$ cd $GOPATH</span><br><span class="line">$ ETCDCTL_API=3 ./bin/etcdctl put foo bar</span><br><span class="line"></span><br><span class="line"># 输出结果显示OK，表示安装成功</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
-<h2 id="2-搭建本地集群"><a href="#2-搭建本地集群" class="headerlink" title="2. 搭建本地集群"></a>2. 搭建本地集群</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ go get github.com/mattn/goreman</span><br><span class="line"></span><br><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd</span><br><span class="line">$ goreman -f Procfile start</span><br></pre></td></tr></table></figure>
-<p>查看本地集群的服务器列表</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl member list</span><br><span class="line"></span><br><span class="line"># 显示结果</span><br><span class="line"></span><br><span class="line">8211f1d0f64f3269: name=infra1 peerURLs=http://127.0.0.1:12380 clientURLs=http://127.0.0.1:2379 isLeader=false</span><br><span class="line">91bc3c398fb3c146: name=infra2 peerURLs=http://127.0.0.1:22380 clientURLs=http://127.0.0.1:22379 isLeader=true</span><br><span class="line">fd422379fda50e48: name=infra3 peerURLs=http://127.0.0.1:32380 clientURLs=http://127.0.0.1:32379 isLeader=false</span><br></pre></td></tr></table></figure>
-<h2 id="3-使用"><a href="#3-使用" class="headerlink" title="3. 使用"></a>3. 使用</h2><p>是用终端进入$GOPATH/src/github.com/coreos/etcd，目录下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export ETCDCTL_API=3</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl put foo &quot;Hello World!&quot;</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl get foo</span><br><span class="line"></span><br><span class="line">foo</span><br><span class="line">Hello World!</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl  --write-out=&quot;json&quot; get foo</span><br><span class="line"></span><br><span class="line">&#123;&quot;header&quot;:&#123;&quot;cluster_id&quot;:17237436991929493444,&quot;member_id&quot;:9372538179322589801,&quot;revision&quot;:2,&quot;raft_term&quot;:2&#125;,&quot;kvs&quot;:[&#123;&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:2,&quot;mod_revision&quot;:2,&quot;version&quot;:1,&quot;value&quot;:&quot;SGVsbG8gV29ybGQh&quot;&#125;],&quot;count&quot;:1&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-1-查询"><a href="#3-1-查询" class="headerlink" title="3.1 查询"></a>3.1 查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/etcdctl put web1 value1</span><br><span class="line">$ ./bin/etcdctl put web2 value2</span><br><span class="line">$ ./bin/etcdctl put web3 value3</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl get web --prefix</span><br><span class="line"></span><br><span class="line">//输出</span><br><span class="line">web1</span><br><span class="line">value1</span><br><span class="line">web2</span><br><span class="line">value2</span><br><span class="line">web3</span><br><span class="line">value3</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-删除"><a href="#3-2-删除" class="headerlink" title="3.2 删除"></a>3.2 删除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/etcdctl put key myvalue</span><br><span class="line">$ ./bin/etcdctl del key</span><br><span class="line">1</span><br><span class="line">$ ./bin/etcdctl get key</span><br><span class="line">// 查询结果为空</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl put k1 value1</span><br><span class="line">$ ./bin/etcdctl put k2 value2</span><br><span class="line">$ ./bin/etcdctl del k --prefix</span><br><span class="line">2</span><br><span class="line">$ ./bin/etcdctl get k --prefix</span><br><span class="line">// 查询结果为空</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-事务写入"><a href="#3-3-事务写入" class="headerlink" title="3.3 事务写入"></a>3.3 事务写入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/etcdctl put user1 bad</span><br><span class="line">OK</span><br><span class="line">$ ./bin/etcdctl txn --interactive</span><br><span class="line"></span><br><span class="line">compares:</span><br><span class="line">// 输入以下内容，输入结束按 两次回车</span><br><span class="line">value(&quot;user1&quot;) = &quot;bad&quot;      </span><br><span class="line"></span><br><span class="line">//如果 user1 = bad，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != bad，则执行 put user1 good</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 good</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 success</span><br><span class="line">SUCCESS</span><br><span class="line"></span><br><span class="line">user1</span><br><span class="line">bad</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl txn --interactive</span><br><span class="line">compares:</span><br><span class="line">value(&quot;user1&quot;) = &quot;111&quot;  </span><br><span class="line"></span><br><span class="line">// 如果 user1 = 111，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != 111，则执行 put user1 2222</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 2222</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 failure</span><br><span class="line">FAILURE</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl get user1</span><br><span class="line">user1</span><br><span class="line">2222</span><br></pre></td></tr></table></figure>
-<h3 id="3-4-watch"><a href="#3-4-watch" class="headerlink" title="3.4 watch"></a>3.4 watch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 当 stock1 的数值改变（ put 方法）的时候，watch 会收到通知</span><br><span class="line">$ ./bin/etcdctl watch stock1</span><br><span class="line"></span><br><span class="line">// 新打开终端</span><br><span class="line">$ export ETCDCTL_API=3</span><br><span class="line">$ ./bin/etcdctl put stock1 1000</span><br><span class="line"></span><br><span class="line">//在watch 终端显示</span><br><span class="line">PUT</span><br><span class="line">stock1</span><br><span class="line">1000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl watch stock --prefix</span><br><span class="line">$ ./bin/etcdctl put stock1 10</span><br><span class="line">$ ./bin/etcdctl put stock2 20</span><br></pre></td></tr></table></figure>
-<h3 id="3-5-lease"><a href="#3-5-lease" class="headerlink" title="3.5 lease"></a>3.5 lease</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/etcdctl lease grant 300</span><br><span class="line"># lease 326963a02758b527 granted with TTL(300s)</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl put sample value --lease=326963a02758b527</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl get sample</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl lease keep-alive 326963a02758b520</span><br><span class="line">$ ./bin/etcdctl lease revoke 326963a02758b527</span><br><span class="line">lease 326963a02758b527 revoked</span><br><span class="line"></span><br><span class="line"># or after 300 seconds</span><br><span class="line">$ ./bin/etcdctl get sample</span><br></pre></td></tr></table></figure>
-<h3 id="3-6-Distributed-locks"><a href="#3-6-Distributed-locks" class="headerlink" title="3.6 Distributed locks"></a>3.6 Distributed locks</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//第一终端</span><br><span class="line">$ ./bin/etcdctl lock mutex1</span><br><span class="line">mutex1/326963a02758b52d</span><br><span class="line"></span><br><span class="line"># 第二终端</span><br><span class="line">$ ./bin/etcdctl lock mutex1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//在第一个终端中输入ctrl + c 使得第一个终端结束</span><br><span class="line">//当第一个终端结束了，第二个终端会显示</span><br><span class="line">mutex1/326963a02758b531</span><br></pre></td></tr></table></figure>
-<h3 id="3-7-Elections"><a href="#3-7-Elections" class="headerlink" title="3.7 Elections"></a>3.7 Elections</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/etcdctl elect one p1</span><br><span class="line"></span><br><span class="line">one/326963a02758b539</span><br><span class="line">p1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># another client with the same name blocks</span><br><span class="line">$ ./bin/etcdctl elect one p2</span><br><span class="line"></span><br><span class="line">//结束第一终端，第二终端显示</span><br><span class="line">one/326963a02758b53e</span><br><span class="line">p2</span><br></pre></td></tr></table></figure>
-<h3 id="3-8-Cluster-status"><a href="#3-8-Cluster-status" class="headerlink" title="3.8 Cluster status"></a>3.8 Cluster status</h3><p>集群状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/etcdctl --write-out=table endpoint status</span><br><span class="line"></span><br><span class="line">$ ./bin/etcdctl endpoint health</span><br></pre></td></tr></table></figure>
-<h3 id="3-9-Snapshot"><a href="#3-9-Snapshot" class="headerlink" title="3.9 Snapshot"></a>3.9 Snapshot</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./bin/etcdctl snapshot save my.db</span><br><span class="line"></span><br><span class="line">Snapshot saved at my.db</span><br><span class="line"></span><br><span class="line">./bin/etcdctl --write-out=table snapshot status my.db</span><br></pre></td></tr></table></figure>
-<h3 id="3-10-Member"><a href="#3-10-Member" class="headerlink" title="3.10 Member"></a>3.10 Member</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/etcdctl member list -w table</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式一致性系统</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">etcd</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/28/分布式一致性键值存储系统-etcd/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1723,11 +1708,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1739,11 +1724,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1755,19 +1740,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1783,6 +1768,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
@@ -1795,7 +1784,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1804,10 +1793,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">事务/交易</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1843,11 +1828,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1871,15 +1856,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1899,15 +1884,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1915,7 +1896,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1923,11 +1904,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1939,7 +1928,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1947,15 +1936,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1963,11 +1944,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
               </li>
             
             <div class="clearfix"></div>
