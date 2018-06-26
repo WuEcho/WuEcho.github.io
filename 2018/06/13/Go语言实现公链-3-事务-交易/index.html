@@ -17,7 +17,7 @@
 <meta property="og:description" content="Go语言实现公链-(3)事务/交易与UTXO交易模型1. 事务、交易　　在区块链中作重要的就是交易，即事务。交易可以是转帐，支付等操作。在以太坊中交易的概念是比较广义的，因为以太坊并不仅仅支持转账交易这样的合约功能。对于交易，按结构属于区块体，区块头中包含梅克尔根树，为交易事务的hash值根节点。通过前面的文章命令行控制，数据库存储，以及代码演示案例,已经演示了 区块链的产生，存储以及命令行控制。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/06/13/Go语言实现公链-3-事务-交易/p1.png">
-<meta property="og:updated_time" content="2018-06-19T12:57:58.353Z">
+<meta property="og:updated_time" content="2018-06-25T16:37:52.086Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go语言实现公链-(3)事务&#x2F;交易">
 <meta name="twitter:description" content="Go语言实现公链-(3)事务/交易与UTXO交易模型1. 事务、交易　　在区块链中作重要的就是交易，即事务。交易可以是转帐，支付等操作。在以太坊中交易的概念是比较广义的，因为以太坊并不仅仅支持转账交易这样的合约功能。对于交易，按结构属于区块体，区块头中包含梅克尔根树，为交易事务的hash值根节点。通过前面的文章命令行控制，数据库存储，以及代码演示案例,已经演示了 区块链的产生，存储以及命令行控制。">
@@ -198,7 +198,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现公链-3-事务-交易与UTXO交易模型"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现公链-(3)事务/交易与UTXO交易模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-事务、交易"><span class="toc-number">1.1.</span> <span class="toc-text">1. 事务、交易</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-代码实现"><span class="toc-number">1.2.</span> <span class="toc-text">2. 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-事务替换"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 事务替换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-UTXO交易模型"><span class="toc-number">1.3.</span> <span class="toc-text">3. UTXO交易模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-代码实现"><span class="toc-number">1.4.</span> <span class="toc-text">4. 代码实现</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现公链-3-事务-交易与UTXO交易模型"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现公链-(3)事务/交易与UTXO交易模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-事务、交易"><span class="toc-number">1.1.</span> <span class="toc-text">1. 事务、交易</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-代码实现"><span class="toc-number">1.2.</span> <span class="toc-text">2. 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-事务替换"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 事务替换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-UTXO交易模型"><span class="toc-number">1.3.</span> <span class="toc-text">3. UTXO交易模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-代码实现"><span class="toc-number">1.4.</span> <span class="toc-text">4. 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-查询余额"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 查询余额</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-代码演示"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 代码演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-UTXO账户模型正式替换"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 UTXO账户模型正式替换</span></a></li></ol></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -252,6 +252,19 @@
 <p>　　运行效果如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">------------------</span><br><span class="line">Height：2</span><br><span class="line">PrevBlockHash：00006e1f9c0c55b45f8e4c83005120aed9d68b8c37e55bc4f019d5043d4487dd</span><br><span class="line">Data：[]</span><br><span class="line">Timestamp：2018-06-19 07:16:22 PM</span><br><span class="line">Hash：0000e92640d2deeacbb78f908022f57424e38e824201511825650b8086d19686</span><br><span class="line">Nonce：120702</span><br><span class="line">------------------</span><br><span class="line">------------------</span><br><span class="line">Height：1</span><br><span class="line">PrevBlockHash：0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">Data：[0xc4200a62d0]</span><br><span class="line">Timestamp：2018-06-19 07:14:47 PM</span><br><span class="line">Hash：00006e1f9c0c55b45f8e4c83005120aed9d68b8c37e55bc4f019d5043d4487dd</span><br><span class="line">Nonce：51065</span><br><span class="line">------------------</span><br></pre></td></tr></table></figure>
 <p><strong>代码演示</strong><br><a href="https://github.com/WuEcho/PublishBlockChain/tree/master/BlockChainDemo6" target="_blank" rel="noopener">代码示例参照演示地址</a></p>
+<h3 id="4-1-查询余额"><a href="#4-1-查询余额" class="headerlink" title="4.1 查询余额"></a>4.1 查询余额</h3><p>　　对于查询余额，首先需要分析的问题是，余额是针对与某一账户地址的，查询余额是遍历区块链当中的交易事务，检索事务中输入交易的对应账户地址，然后在输出交易交易中与输入交易进行对比，剔除花费掉的交易。剩下的所有对应账户地址下的输出交易就都是未花费的交易。<br>　　对于如何从众多输出交易中剔除掉已花费的交易：<br>　　1. 首先，对于区块链中的交易事务，需要遍历所有区块中的事务，由于事务里面包含有输入交易以及输出交易，因而需要遍历交易事务中的输入交易，对账户地址进行匹配，将匹配上的输入交易保存入一个字典中，字典中保存输入交易的哈希，以及相应输出所对应的序列号。将所有有对应输出的输入保存收集。<br>　　2. 然后，在收集了所有输入交易以后，对所有输出交易进行筛选，筛选条件为输出交易的账户地址以及交易的序号，当账户地址匹配上以后对筛选出来的对应账户的所有交易进行匹配，当序号与所有输入交易对应的序号匹配的时候，这个交易就是已花费的交易，需要从输出的交易集合中剔除，没有匹配到的交易便放入集合当中返回。
+　　</p>
+<h3 id="4-2-代码演示"><a href="#4-2-代码演示" class="headerlink" title="4.2 代码演示"></a>4.2 代码演示</h3><p>在<code>cli.go</code>中添加查询余额的命令行操作：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在主函数中添加如下代码</span></span><br><span class="line">getBalanceFlag := flag.NewFlagSet(<span class="string">"getBalance"</span>,flag.ExitOnError)</span><br><span class="line"></span><br><span class="line">getBalanceWithAddress := getBalanceFlag.String(<span class="string">"address"</span>,<span class="string">""</span>,<span class="string">"查询目标地址余额"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> os.Args[<span class="number">1</span>] &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"creatGenesisBlock"</span>:</span><br><span class="line">		err := creatGenesisBlock.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"printBlock"</span>:</span><br><span class="line">		err := printFlag.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"send"</span>:</span><br><span class="line">		err := sendFlag.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span>&#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125; </span><br><span class="line">	<span class="comment">//添加代码</span></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"getBalance"</span>:</span><br><span class="line">		err := getBalanceFlag.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		printUsage()</span><br><span class="line">		os.Exit(<span class="number">0</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//新增方法</span></span><br><span class="line">	<span class="keyword">if</span> getBalanceFlag.Parsed() &#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> *getBalanceWithAddress == <span class="string">""</span>&#123;</span><br><span class="line">			fmt.Println(<span class="string">"地址不能为空"</span>)</span><br><span class="line">			printUsage()</span><br><span class="line">			os.Exit(<span class="number">1</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		cli.getBalance(*getBalanceWithAddress)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line"><span class="comment">//在主函数外面添加相应方法</span></span><br><span class="line"><span class="comment">//查询余额</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cli *Cli)</span><span class="title">getBalance</span><span class="params">(address <span class="keyword">string</span>)</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"地址："</span>+address)</span><br><span class="line"></span><br><span class="line">   blockChain := BlockChainObject()</span><br><span class="line">   <span class="keyword">defer</span> blockChain.DB.Close()</span><br><span class="line"></span><br><span class="line">   tsOutPut := blockChain.UnUTXOs(address)</span><br><span class="line"></span><br><span class="line">   fmt.Println(<span class="string">"========"</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> _,out := <span class="keyword">range</span> tsOutPut&#123;</span><br><span class="line">   	fmt.Println(out)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printUsage</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"Usage----"</span>)</span><br><span class="line">	fmt.Println(<span class="string">"\t creatGenesisBlock  --- 创建创世区块"</span>)</span><br><span class="line">	fmt.Println(<span class="string">"\t send -from -to -amount --- 添加新的区块"</span>)</span><br><span class="line">	<span class="comment">//新增</span></span><br><span class="line">	fmt.Println(<span class="string">"\t getBalance -address  --- 查询余额"</span>)</span><br><span class="line">	fmt.Println(<span class="string">"\t printBlock  --- 打印区块数据"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>blockchain.go</code>文件中添加方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果一个地址对应的TrsOuts未花费，那么这个Translation添加到数组中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(blockChain *BlockChain)</span><span class="title">UnUTXOs</span><span class="params">(address <span class="keyword">string</span>)</span> []*<span class="title">TranslationOutput</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> unUTXOs []*TranslationOutput</span><br><span class="line"></span><br><span class="line">	spentTXOutputs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>][]<span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	blockIterator := blockChain.Iterator()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		block := blockIterator.NextBlock()</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		//事务哈希</span></span><br><span class="line"><span class="comment">	    TransHash  []byte</span></span><br><span class="line"><span class="comment">	    //输入事务</span></span><br><span class="line"><span class="comment">	    TrsIns     []*TranslationInput</span></span><br><span class="line"><span class="comment">	    //输出事务</span></span><br><span class="line"><span class="comment">		TrsOuts    []*TranslationOutput</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		<span class="keyword">for</span> _,ts := <span class="keyword">range</span> block.Translations &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ts.isCoinBaseTransaction() == <span class="literal">false</span> &#123;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">for</span> _,in := <span class="keyword">range</span> ts.TrsIns &#123;</span><br><span class="line">					<span class="comment">//是否能够解锁</span></span><br><span class="line">					<span class="keyword">if</span> in.UnLockWithAdress(address) &#123;</span><br><span class="line"></span><br><span class="line">						key := hex.EncodeToString(in.TxHash)</span><br><span class="line">                <span class="comment">//将所有的输入保存起来</span></span><br><span class="line">                 spentTXOutputs[key] = <span class="built_in">append</span>(spentTXOutputs[key],in.VoutInde)</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> index,out := <span class="keyword">range</span> ts.TrsOuts &#123;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> out.UnlockScriptPubKeyWithAddress(address) &#123;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> spentTXOutputs != <span class="literal">nil</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> <span class="built_in">len</span>(spentTXOutputs) != <span class="number">0</span> &#123;</span><br><span class="line">							<span class="keyword">for</span> tsHash,indexArray := <span class="keyword">range</span> spentTXOutputs &#123;</span><br><span class="line"></span><br><span class="line">								<span class="keyword">for</span> _,i := <span class="keyword">range</span> indexArray &#123;</span><br><span class="line"></span><br><span class="line">									<span class="keyword">if</span> tsHash== hex.EncodeToString(ts.TransHash) &amp;&amp; index == i </span><br><span class="line">										<span class="keyword">continue</span></span><br><span class="line">									&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">										unUTXOs = <span class="built_in">append</span>(unUTXOs,out)</span><br><span class="line">									&#125;</span><br><span class="line"></span><br><span class="line">								&#125;</span><br><span class="line"></span><br><span class="line">							&#125;</span><br><span class="line"></span><br><span class="line">						&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">							unUTXOs = <span class="built_in">append</span>(unUTXOs,out)</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> hashInt big.Int</span><br><span class="line">		hashInt.SetBytes(block.PrefHash)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> hashInt.Cmp(big.NewInt(<span class="number">0</span>)) == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">  <span class="keyword">return</span> unUTXOs</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-UTXO账户模型正式替换"><a href="#4-3-UTXO账户模型正式替换" class="headerlink" title="4.3 UTXO账户模型正式替换"></a>4.3 UTXO账户模型正式替换</h3><p>在<code>blc</code>文件夹下创建新的go文件，文件命名为<code>utxo.go</code>，内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> blc</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UTXO <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">	TXHash []<span class="keyword">byte</span></span><br><span class="line"></span><br><span class="line">	Index <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	Output *TranslationOutput</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在将<code>blockchain.go</code>文件内容进行修改：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果一个地址对应的TrsOuts未花费，那么这个Translation添加到数组中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(blockChain *BlockChain)</span><span class="title">UnUTXOs</span><span class="params">(address <span class="keyword">string</span>)</span> []*<span class="title">UTXO</span></span> &#123;</span><br><span class="line">  <span class="comment">//替换原来的输出交易模型</span></span><br><span class="line">	<span class="keyword">var</span> unUTXOs []*UTXO</span><br><span class="line"></span><br><span class="line">	spentTXOutputs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>][]<span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	blockIterator := blockChain.Iterator()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		block := blockIterator.NextBlock()</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		//事务哈希</span></span><br><span class="line"><span class="comment">	    TransHash  []byte</span></span><br><span class="line"><span class="comment">	    //输入事务</span></span><br><span class="line"><span class="comment">	    TrsIns     []*TranslationInput</span></span><br><span class="line"><span class="comment">	    //输出事务</span></span><br><span class="line"><span class="comment">		TrsOuts    []*TranslationOutput</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line"></span><br><span class="line">		fmt.Printf(<span class="string">"Height：%d\n"</span>, block.Height)</span><br><span class="line">		fmt.Printf(<span class="string">"PrevBlockHash：%x\n"</span>, block.PrefHash)</span><br><span class="line">		fmt.Printf(<span class="string">"Timestamp：%s\n"</span>, time.Unix(block.TimeStamp, <span class="number">0</span>).Format(<span class="string">"2006-01-02 03:04:05 PM"</span>))</span><br><span class="line">		fmt.Printf(<span class="string">"Hash：%x\n"</span>, block.Hash)</span><br><span class="line">		fmt.Printf(<span class="string">"Nonce：%d\n"</span>, block.Nonce)</span><br><span class="line">		fmt.Println(<span class="string">"Txs:"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> _,ts := <span class="keyword">range</span> block.Translations &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ts.isCoinBaseTransaction() == <span class="literal">false</span> &#123;</span><br><span class="line">				fmt.Printf(<span class="string">"%x\n"</span>,ts.TransHash)</span><br><span class="line">				fmt.Println(<span class="string">"Vins:"</span>)</span><br><span class="line"></span><br><span class="line">				<span class="keyword">for</span> _,in := <span class="keyword">range</span> ts.TrsIns &#123;</span><br><span class="line">					<span class="comment">//是否能够解锁</span></span><br><span class="line">					<span class="keyword">if</span> in.UnLockWithAdress(address) &#123;</span><br><span class="line"></span><br><span class="line">						key := hex.EncodeToString(in.TxHash)</span><br><span class="line"></span><br><span class="line">                        spentTXOutputs[key] = <span class="built_in">append</span>(spentTXOutputs[key],in.VoutInde)</span><br><span class="line"></span><br><span class="line">						fmt.Printf(<span class="string">"%x\n"</span>,in.TxHash)</span><br><span class="line">						fmt.Printf(<span class="string">"%d\n"</span>,in.VoutInde)</span><br><span class="line">						fmt.Printf(<span class="string">"%s\n"</span>,in.Address)</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			fmt.Println(<span class="string">"Vouts:"</span>)</span><br><span class="line">			<span class="keyword">for</span> index,out := <span class="keyword">range</span> ts.TrsOuts &#123;</span><br><span class="line"></span><br><span class="line">				fmt.Println(out.Value)</span><br><span class="line">				fmt.Println(out.ScriptPubKey)</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> out.UnlockScriptPubKeyWithAddress(address) &#123;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> spentTXOutputs != <span class="literal">nil</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> <span class="built_in">len</span>(spentTXOutputs) != <span class="number">0</span> &#123;</span><br><span class="line">							<span class="keyword">for</span> tsHash,indexArray := <span class="keyword">range</span> spentTXOutputs &#123;</span><br><span class="line"></span><br><span class="line">								<span class="keyword">for</span> _,i := <span class="keyword">range</span> indexArray &#123;</span><br><span class="line"></span><br><span class="line">									<span class="keyword">if</span> tsHash== hex.EncodeToString(ts.TransHash) &amp;&amp; index == i &#123;</span><br><span class="line">										<span class="keyword">continue</span></span><br><span class="line">									&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">										<span class="comment">//unUTXOs = append(unUTXOs,out)</span></span><br><span class="line">                                        utxo := &amp;UTXO&#123;ts.TransHash,index,out&#125;</span><br><span class="line">                                        unUTXOs = <span class="built_in">append</span>(unUTXOs,utxo)</span><br><span class="line">									&#125;</span><br><span class="line"></span><br><span class="line">								&#125;</span><br><span class="line"></span><br><span class="line">							&#125;</span><br><span class="line"></span><br><span class="line">						&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">							<span class="comment">//unUTXOs = append(unUTXOs,out)</span></span><br><span class="line">							utxo := &amp;UTXO&#123;ts.TransHash,index,out&#125;</span><br><span class="line">							unUTXOs = <span class="built_in">append</span>(unUTXOs,utxo)</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(<span class="string">"------------------------------"</span>)</span><br><span class="line">		<span class="keyword">var</span> hashInt big.Int</span><br><span class="line">		hashInt.SetBytes(block.PrefHash)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> hashInt.Cmp(big.NewInt(<span class="number">0</span>)) == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">  <span class="keyword">return</span> unUTXOs</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译运行效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Usage----</span><br><span class="line">         creatGenesisBlock  --- 创建创世区块</span><br><span class="line">         send -from -to -amount --- 添加新的区块</span><br><span class="line">         getBalance -address  --- 查询余额</span><br><span class="line">         printBlock  --- 打印区块数据</span><br><span class="line">EchodeMacBook-Pro:BlockChainDemo-UTXO Echo$ ./main getBalance -address &apos;[&quot;haha&quot;]&apos;</span><br><span class="line">地址：[&quot;haha&quot;]</span><br><span class="line">Height：2</span><br><span class="line">PrevBlockHash：0000a6070d0887d564582a8c056d68ab5f29f149b7e24ebbf8916d64b95f0700</span><br><span class="line">Timestamp：2018-06-26 12:07:19 AM</span><br><span class="line">Hash：00002e9e15f9d0917d77fb20a556a50abc8d3a5ff5a2d77d0d911514fe68a0f8</span><br><span class="line">Nonce：379511</span><br><span class="line">Txs:</span><br><span class="line">75cda9c0e3532d59445c390b3a26f335f52776f09f74b3580d7e6c84cf8e632e</span><br><span class="line">Vins:</span><br><span class="line">Vouts:</span><br><span class="line">2</span><br><span class="line">lala</span><br><span class="line">------------------------------</span><br><span class="line">Height：1</span><br><span class="line">PrevBlockHash：0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">Timestamp：2018-06-26 12:05:03 AM</span><br><span class="line">Hash：0000a6070d0887d564582a8c056d68ab5f29f149b7e24ebbf8916d64b95f0700</span><br><span class="line">Nonce：2599</span><br><span class="line">Txs:</span><br><span class="line">30fda86619acdd7cdaa31d80c3d3a493918b0fd60a940ae4ceecd59f3970d914</span><br><span class="line">Vins:</span><br><span class="line">Vouts:</span><br><span class="line">10</span><br><span class="line">创世区块</span><br><span class="line">------------------------------</span><br><span class="line">========</span><br></pre></td></tr></table></figure>
+<p><strong>代码演示</strong><br><a href="https://github.com/WuEcho/PublishBlockChain/tree/master/BlockChainDemo-UTXO" target="_blank" rel="noopener">替换代码演示地址</a></p>
 
       
 
@@ -385,6 +398,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2018/06/26/超级账本Fabric-环境搭建/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          超级账本Fabric-环境搭建
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/06/11/Go语言实现公链-2-地址与钱包/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">Go语言实现搭建公链-(2)地址与钱包</div>
@@ -414,7 +436,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现公链-3-事务-交易与UTXO交易模型"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现公链-(3)事务/交易与UTXO交易模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-事务、交易"><span class="toc-number">1.1.</span> <span class="toc-text">1. 事务、交易</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-代码实现"><span class="toc-number">1.2.</span> <span class="toc-text">2. 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-事务替换"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 事务替换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-UTXO交易模型"><span class="toc-number">1.3.</span> <span class="toc-text">3. UTXO交易模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-代码实现"><span class="toc-number">1.4.</span> <span class="toc-text">4. 代码实现</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言实现公链-3-事务-交易与UTXO交易模型"><span class="toc-number">1.</span> <span class="toc-text">Go语言实现公链-(3)事务/交易与UTXO交易模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-事务、交易"><span class="toc-number">1.1.</span> <span class="toc-text">1. 事务、交易</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-代码实现"><span class="toc-number">1.2.</span> <span class="toc-text">2. 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-事务替换"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 事务替换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-UTXO交易模型"><span class="toc-number">1.3.</span> <span class="toc-text">3. UTXO交易模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-代码实现"><span class="toc-number">1.4.</span> <span class="toc-text">4. 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-查询余额"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 查询余额</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-代码演示"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 代码演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-UTXO账户模型正式替换"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 UTXO账户模型正式替换</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -522,11 +544,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -538,11 +560,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -554,19 +576,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">通道</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">通道</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -582,10 +604,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
@@ -595,6 +613,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">地址与钱包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -610,11 +632,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -642,19 +664,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">接口</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -670,15 +692,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -698,27 +720,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -726,11 +732,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -742,7 +760,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -750,7 +768,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -758,11 +784,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>

@@ -172,6 +172,140 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-超级账本Fabric-环境搭建" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/26/超级账本Fabric-环境搭建/">超级账本Fabric-环境搭建</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/26/超级账本Fabric-环境搭建/" class="archive-article-date">
+  	<time datetime="2018-06-26T01:47:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-26</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="超级账本Fabric-环境搭建"><a href="#超级账本Fabric-环境搭建" class="headerlink" title="超级账本Fabric-环境搭建"></a>超级账本Fabric-环境搭建</h1><h2 id="1-环境搭建"><a href="#1-环境搭建" class="headerlink" title="1. 环境搭建"></a>1. 环境搭建</h2><p>　　快速入门:  <a href="http://hyperledger-fabric.readthedocs.io/en/release-1.1/getting_started.html" target="_blank" rel="noopener">http://hyperledger-fabric.readthedocs.io/en/release-1.1/getting_started.html</a></p>
+<h2 id="2-前提准备"><a href="#2-前提准备" class="headerlink" title="2. 前提准备"></a>2. 前提准备</h2><p>　　由于Fabric工程是基于Linux系统进行开发，因此常见的Linux发行版(包括Ubuntu,Redhat,CentOS等)和MacOS都可以原生支持Fabric编译和运行。一下操作默认以Ubuntu操作系统进行操作。</p>
+<h3 id="2-1-安装git"><a href="#2-1-安装git" class="headerlink" title="2.1 安装git"></a>2.1 安装git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install git</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-安装curl"><a href="#2-2-安装curl" class="headerlink" title="2.2 安装curl"></a>2.2 安装curl</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install curl</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-安装vim"><a href="#2-3-安装vim" class="headerlink" title="2.3 安装vim"></a>2.3 安装vim</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install vim</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-安装Docker"><a href="#2-4-安装Docker" class="headerlink" title="2.4 安装Docker"></a>2.4 安装Docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ docker --version</span><br><span class="line">$ sudo apt install docker.io</span><br></pre></td></tr></table></figure>
+<h3 id="2-5-查看Docker版本信息"><a href="#2-5-查看Docker版本信息" class="headerlink" title="2.5 查看Docker版本信息"></a>2.5 查看Docker版本信息</h3><p>version 1.12+</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker --version</span><br></pre></td></tr></table></figure>
+<p>输出: <code>Docker version 1.13.1, build 092cba3</code></p>
+<h3 id="2-6-安装Docker-Compose"><a href="#2-6-安装Docker-Compose" class="headerlink" title="2.6 安装Docker Compose"></a>2.6 安装Docker Compose</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose --version</span><br><span class="line">$ sudo apt install docker-compose</span><br></pre></td></tr></table></figure>
+<h3 id="2-7-查看DockerCompose版本信息"><a href="#2-7-查看DockerCompose版本信息" class="headerlink" title="2.7 查看DockerCompose版本信息"></a>2.7 查看DockerCompose版本信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose --version</span><br></pre></td></tr></table></figure>
+<p>输出: <code>docker-compose version 1.8.0, build unknown</code></p>
+<h2 id="3-Golang语言环境"><a href="#3-Golang语言环境" class="headerlink" title="3. Golang语言环境"></a>3. Golang语言环境</h2><p>Fabric1.1.0版本要求Go1.9+</p>
+<p>Fabric1.0.0版本要求Go1.7+</p>
+<p><a href="https://golang.org" target="_blank" rel="noopener">下载Golang语言支持地址</a></p>
+<h3 id="3-1-解压文件"><a href="#3-1-解压文件" class="headerlink" title="3.1 解压文件"></a>3.1 解压文件</h3><p>复制下载的文件名称替换下面的文件名称</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf go1.10.1.linux-amd64.tar.gz -C /usr/local/</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-编辑环境变量文件"><a href="#3-2-编辑环境变量文件" class="headerlink" title="3.2 编辑环境变量文件"></a>3.2 编辑环境变量文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim /etc/profile</span><br></pre></td></tr></table></figure>
+<p>添加如下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=$HOME/go</span><br><span class="line">export GOROOT=/usr/local/go</span><br><span class="line">export PATH=$GOROOT/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>应用配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ source /etc/profile</span><br><span class="line">$ go version</span><br></pre></td></tr></table></figure>
+<p>输出: <code>go version go1.10.1 linux/amd64</code></p>
+<blockquote>
+<p>如果系统中有旧版本的golang,则使用如下命令卸载旧版本的golang,然后再重新安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; $ su -</span><br><span class="line">&gt; # apt-get remove golang-go --purge &amp;&amp; apt-get autoremove --purge &amp;&amp; apt-get clean</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="4-安装Node与npm"><a href="#4-安装Node与npm" class="headerlink" title="4. 安装Node与npm"></a>4. 安装Node与npm</h2><h3 id="4-1-安装nvm"><a href="#4-1-安装nvm" class="headerlink" title="4.1 安装nvm"></a>4.1 安装nvm</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.10/install.sh | bash</span><br><span class="line"></span><br><span class="line">$ export NVM_DIR=&quot;$HOME/.nvm&quot;</span><br><span class="line">$ [ -s &quot;$NVM_DIR/nvm.sh&quot; ] &amp;&amp; \. &quot;$NVM_DIR/nvm.sh&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-安装Node"><a href="#4-2-安装Node" class="headerlink" title="4.2 安装Node"></a>4.2 安装Node</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install v8.11.1</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-检查Node版本"><a href="#4-3-检查Node版本" class="headerlink" title="4.3 检查Node版本"></a>4.3 检查Node版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node -v</span><br></pre></td></tr></table></figure>
+<p>输出:   <code>v8.11.1</code></p>
+<h3 id="4-4-检查npm版本"><a href="#4-4-检查npm版本" class="headerlink" title="4.4 检查npm版本"></a>4.4 检查npm版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm -v</span><br></pre></td></tr></table></figure>
+<p>输出:   <code>5.6.0</code></p>
+<h2 id="5-Hyperledger-Fabric-Samples-下载安装"><a href="#5-Hyperledger-Fabric-Samples-下载安装" class="headerlink" title="5. Hyperledger Fabric Samples 下载安装"></a>5. Hyperledger Fabric Samples 下载安装</h2><h3 id="5-1-创建一个空目录"><a href="#5-1-创建一个空目录" class="headerlink" title="5.1 创建一个空目录"></a>5.1 创建一个空目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hyfa</span><br><span class="line">$ cd hyfa</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-下载方式"><a href="#5-2-下载方式" class="headerlink" title="5.2 下载方式"></a>5.2 下载方式</h3><p><strong>新建文件bootstrap.sh</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim bootstrap.sh</span><br></pre></td></tr></table></figure>
+<p>　　将<code>https://github.com/hyperledger/fabric/blob/master/scripts/bootstrap.sh</code>中的内容拷贝保存退出</p>
+<p><strong>赋予bootstrap.sh可执行权限并运行</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x bootstrap.sh</span><br></pre></td></tr></table></figure>
+<p><strong>配置docker加速器</strong></p>
+<p>配置docker加速器的目的是为了在下载docker镜像文件时加速</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://8890cb8b.m.daocloud.io</span><br></pre></td></tr></table></figure>
+<p><strong>重启docker服务</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl restart docker.service</span><br></pre></td></tr></table></figure>
+<p><strong>执行<code>bootstrap.sh</code></strong></p>
+<p><strong>确定网络稳定,否则会导致各种问题，例如下载到一半时网络超时，下载失败等等</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ./bootstrap.sh 1.1.0</span><br></pre></td></tr></table></figure>
+<p>　　下载完成后, 查看相关输出内容, 如果下载有失败的镜像, 可再次执行  <code>$ sudo ./bootstrap.sh 1.1.0</code>  命令</p>
+<p><code>HyperLedger Fabric</code>环境搭建完成</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/26/超级账本Fabric-环境搭建/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言实现公链-3-事务-交易" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -227,6 +361,19 @@
 <p>　　运行效果如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">------------------</span><br><span class="line">Height：2</span><br><span class="line">PrevBlockHash：00006e1f9c0c55b45f8e4c83005120aed9d68b8c37e55bc4f019d5043d4487dd</span><br><span class="line">Data：[]</span><br><span class="line">Timestamp：2018-06-19 07:16:22 PM</span><br><span class="line">Hash：0000e92640d2deeacbb78f908022f57424e38e824201511825650b8086d19686</span><br><span class="line">Nonce：120702</span><br><span class="line">------------------</span><br><span class="line">------------------</span><br><span class="line">Height：1</span><br><span class="line">PrevBlockHash：0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">Data：[0xc4200a62d0]</span><br><span class="line">Timestamp：2018-06-19 07:14:47 PM</span><br><span class="line">Hash：00006e1f9c0c55b45f8e4c83005120aed9d68b8c37e55bc4f019d5043d4487dd</span><br><span class="line">Nonce：51065</span><br><span class="line">------------------</span><br></pre></td></tr></table></figure>
 <p><strong>代码演示</strong><br><a href="https://github.com/WuEcho/PublishBlockChain/tree/master/BlockChainDemo6" target="_blank" rel="noopener">代码示例参照演示地址</a></p>
+<h3 id="4-1-查询余额"><a href="#4-1-查询余额" class="headerlink" title="4.1 查询余额"></a>4.1 查询余额</h3><p>　　对于查询余额，首先需要分析的问题是，余额是针对与某一账户地址的，查询余额是遍历区块链当中的交易事务，检索事务中输入交易的对应账户地址，然后在输出交易交易中与输入交易进行对比，剔除花费掉的交易。剩下的所有对应账户地址下的输出交易就都是未花费的交易。<br>　　对于如何从众多输出交易中剔除掉已花费的交易：<br>　　1. 首先，对于区块链中的交易事务，需要遍历所有区块中的事务，由于事务里面包含有输入交易以及输出交易，因而需要遍历交易事务中的输入交易，对账户地址进行匹配，将匹配上的输入交易保存入一个字典中，字典中保存输入交易的哈希，以及相应输出所对应的序列号。将所有有对应输出的输入保存收集。<br>　　2. 然后，在收集了所有输入交易以后，对所有输出交易进行筛选，筛选条件为输出交易的账户地址以及交易的序号，当账户地址匹配上以后对筛选出来的对应账户的所有交易进行匹配，当序号与所有输入交易对应的序号匹配的时候，这个交易就是已花费的交易，需要从输出的交易集合中剔除，没有匹配到的交易便放入集合当中返回。
+　　</p>
+<h3 id="4-2-代码演示"><a href="#4-2-代码演示" class="headerlink" title="4.2 代码演示"></a>4.2 代码演示</h3><p>在<code>cli.go</code>中添加查询余额的命令行操作：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在主函数中添加如下代码</span></span><br><span class="line">getBalanceFlag := flag.NewFlagSet(<span class="string">"getBalance"</span>,flag.ExitOnError)</span><br><span class="line"></span><br><span class="line">getBalanceWithAddress := getBalanceFlag.String(<span class="string">"address"</span>,<span class="string">""</span>,<span class="string">"查询目标地址余额"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> os.Args[<span class="number">1</span>] &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"creatGenesisBlock"</span>:</span><br><span class="line">		err := creatGenesisBlock.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"printBlock"</span>:</span><br><span class="line">		err := printFlag.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"send"</span>:</span><br><span class="line">		err := sendFlag.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span>&#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125; </span><br><span class="line">	<span class="comment">//添加代码</span></span><br><span class="line">	<span class="keyword">case</span> <span class="string">"getBalance"</span>:</span><br><span class="line">		err := getBalanceFlag.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Panic(err)</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		printUsage()</span><br><span class="line">		os.Exit(<span class="number">0</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//新增方法</span></span><br><span class="line">	<span class="keyword">if</span> getBalanceFlag.Parsed() &#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> *getBalanceWithAddress == <span class="string">""</span>&#123;</span><br><span class="line">			fmt.Println(<span class="string">"地址不能为空"</span>)</span><br><span class="line">			printUsage()</span><br><span class="line">			os.Exit(<span class="number">1</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		cli.getBalance(*getBalanceWithAddress)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line"><span class="comment">//在主函数外面添加相应方法</span></span><br><span class="line"><span class="comment">//查询余额</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cli *Cli)</span><span class="title">getBalance</span><span class="params">(address <span class="keyword">string</span>)</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"地址："</span>+address)</span><br><span class="line"></span><br><span class="line">   blockChain := BlockChainObject()</span><br><span class="line">   <span class="keyword">defer</span> blockChain.DB.Close()</span><br><span class="line"></span><br><span class="line">   tsOutPut := blockChain.UnUTXOs(address)</span><br><span class="line"></span><br><span class="line">   fmt.Println(<span class="string">"========"</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> _,out := <span class="keyword">range</span> tsOutPut&#123;</span><br><span class="line">   	fmt.Println(out)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printUsage</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"Usage----"</span>)</span><br><span class="line">	fmt.Println(<span class="string">"\t creatGenesisBlock  --- 创建创世区块"</span>)</span><br><span class="line">	fmt.Println(<span class="string">"\t send -from -to -amount --- 添加新的区块"</span>)</span><br><span class="line">	<span class="comment">//新增</span></span><br><span class="line">	fmt.Println(<span class="string">"\t getBalance -address  --- 查询余额"</span>)</span><br><span class="line">	fmt.Println(<span class="string">"\t printBlock  --- 打印区块数据"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>blockchain.go</code>文件中添加方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果一个地址对应的TrsOuts未花费，那么这个Translation添加到数组中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(blockChain *BlockChain)</span><span class="title">UnUTXOs</span><span class="params">(address <span class="keyword">string</span>)</span> []*<span class="title">TranslationOutput</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> unUTXOs []*TranslationOutput</span><br><span class="line"></span><br><span class="line">	spentTXOutputs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>][]<span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	blockIterator := blockChain.Iterator()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		block := blockIterator.NextBlock()</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		//事务哈希</span></span><br><span class="line"><span class="comment">	    TransHash  []byte</span></span><br><span class="line"><span class="comment">	    //输入事务</span></span><br><span class="line"><span class="comment">	    TrsIns     []*TranslationInput</span></span><br><span class="line"><span class="comment">	    //输出事务</span></span><br><span class="line"><span class="comment">		TrsOuts    []*TranslationOutput</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		<span class="keyword">for</span> _,ts := <span class="keyword">range</span> block.Translations &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ts.isCoinBaseTransaction() == <span class="literal">false</span> &#123;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">for</span> _,in := <span class="keyword">range</span> ts.TrsIns &#123;</span><br><span class="line">					<span class="comment">//是否能够解锁</span></span><br><span class="line">					<span class="keyword">if</span> in.UnLockWithAdress(address) &#123;</span><br><span class="line"></span><br><span class="line">						key := hex.EncodeToString(in.TxHash)</span><br><span class="line">                <span class="comment">//将所有的输入保存起来</span></span><br><span class="line">                 spentTXOutputs[key] = <span class="built_in">append</span>(spentTXOutputs[key],in.VoutInde)</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> index,out := <span class="keyword">range</span> ts.TrsOuts &#123;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> out.UnlockScriptPubKeyWithAddress(address) &#123;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> spentTXOutputs != <span class="literal">nil</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> <span class="built_in">len</span>(spentTXOutputs) != <span class="number">0</span> &#123;</span><br><span class="line">							<span class="keyword">for</span> tsHash,indexArray := <span class="keyword">range</span> spentTXOutputs &#123;</span><br><span class="line"></span><br><span class="line">								<span class="keyword">for</span> _,i := <span class="keyword">range</span> indexArray &#123;</span><br><span class="line"></span><br><span class="line">									<span class="keyword">if</span> tsHash== hex.EncodeToString(ts.TransHash) &amp;&amp; index == i </span><br><span class="line">										<span class="keyword">continue</span></span><br><span class="line">									&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">										unUTXOs = <span class="built_in">append</span>(unUTXOs,out)</span><br><span class="line">									&#125;</span><br><span class="line"></span><br><span class="line">								&#125;</span><br><span class="line"></span><br><span class="line">							&#125;</span><br><span class="line"></span><br><span class="line">						&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">							unUTXOs = <span class="built_in">append</span>(unUTXOs,out)</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> hashInt big.Int</span><br><span class="line">		hashInt.SetBytes(block.PrefHash)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> hashInt.Cmp(big.NewInt(<span class="number">0</span>)) == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">  <span class="keyword">return</span> unUTXOs</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-UTXO账户模型正式替换"><a href="#4-3-UTXO账户模型正式替换" class="headerlink" title="4.3 UTXO账户模型正式替换"></a>4.3 UTXO账户模型正式替换</h3><p>在<code>blc</code>文件夹下创建新的go文件，文件命名为<code>utxo.go</code>，内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> blc</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UTXO <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">	TXHash []<span class="keyword">byte</span></span><br><span class="line"></span><br><span class="line">	Index <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	Output *TranslationOutput</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在将<code>blockchain.go</code>文件内容进行修改：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果一个地址对应的TrsOuts未花费，那么这个Translation添加到数组中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(blockChain *BlockChain)</span><span class="title">UnUTXOs</span><span class="params">(address <span class="keyword">string</span>)</span> []*<span class="title">UTXO</span></span> &#123;</span><br><span class="line">  <span class="comment">//替换原来的输出交易模型</span></span><br><span class="line">	<span class="keyword">var</span> unUTXOs []*UTXO</span><br><span class="line"></span><br><span class="line">	spentTXOutputs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>][]<span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	blockIterator := blockChain.Iterator()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		block := blockIterator.NextBlock()</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		//事务哈希</span></span><br><span class="line"><span class="comment">	    TransHash  []byte</span></span><br><span class="line"><span class="comment">	    //输入事务</span></span><br><span class="line"><span class="comment">	    TrsIns     []*TranslationInput</span></span><br><span class="line"><span class="comment">	    //输出事务</span></span><br><span class="line"><span class="comment">		TrsOuts    []*TranslationOutput</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line"></span><br><span class="line">		fmt.Printf(<span class="string">"Height：%d\n"</span>, block.Height)</span><br><span class="line">		fmt.Printf(<span class="string">"PrevBlockHash：%x\n"</span>, block.PrefHash)</span><br><span class="line">		fmt.Printf(<span class="string">"Timestamp：%s\n"</span>, time.Unix(block.TimeStamp, <span class="number">0</span>).Format(<span class="string">"2006-01-02 03:04:05 PM"</span>))</span><br><span class="line">		fmt.Printf(<span class="string">"Hash：%x\n"</span>, block.Hash)</span><br><span class="line">		fmt.Printf(<span class="string">"Nonce：%d\n"</span>, block.Nonce)</span><br><span class="line">		fmt.Println(<span class="string">"Txs:"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> _,ts := <span class="keyword">range</span> block.Translations &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ts.isCoinBaseTransaction() == <span class="literal">false</span> &#123;</span><br><span class="line">				fmt.Printf(<span class="string">"%x\n"</span>,ts.TransHash)</span><br><span class="line">				fmt.Println(<span class="string">"Vins:"</span>)</span><br><span class="line"></span><br><span class="line">				<span class="keyword">for</span> _,in := <span class="keyword">range</span> ts.TrsIns &#123;</span><br><span class="line">					<span class="comment">//是否能够解锁</span></span><br><span class="line">					<span class="keyword">if</span> in.UnLockWithAdress(address) &#123;</span><br><span class="line"></span><br><span class="line">						key := hex.EncodeToString(in.TxHash)</span><br><span class="line"></span><br><span class="line">                        spentTXOutputs[key] = <span class="built_in">append</span>(spentTXOutputs[key],in.VoutInde)</span><br><span class="line"></span><br><span class="line">						fmt.Printf(<span class="string">"%x\n"</span>,in.TxHash)</span><br><span class="line">						fmt.Printf(<span class="string">"%d\n"</span>,in.VoutInde)</span><br><span class="line">						fmt.Printf(<span class="string">"%s\n"</span>,in.Address)</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			fmt.Println(<span class="string">"Vouts:"</span>)</span><br><span class="line">			<span class="keyword">for</span> index,out := <span class="keyword">range</span> ts.TrsOuts &#123;</span><br><span class="line"></span><br><span class="line">				fmt.Println(out.Value)</span><br><span class="line">				fmt.Println(out.ScriptPubKey)</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> out.UnlockScriptPubKeyWithAddress(address) &#123;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> spentTXOutputs != <span class="literal">nil</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> <span class="built_in">len</span>(spentTXOutputs) != <span class="number">0</span> &#123;</span><br><span class="line">							<span class="keyword">for</span> tsHash,indexArray := <span class="keyword">range</span> spentTXOutputs &#123;</span><br><span class="line"></span><br><span class="line">								<span class="keyword">for</span> _,i := <span class="keyword">range</span> indexArray &#123;</span><br><span class="line"></span><br><span class="line">									<span class="keyword">if</span> tsHash== hex.EncodeToString(ts.TransHash) &amp;&amp; index == i &#123;</span><br><span class="line">										<span class="keyword">continue</span></span><br><span class="line">									&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">										<span class="comment">//unUTXOs = append(unUTXOs,out)</span></span><br><span class="line">                                        utxo := &amp;UTXO&#123;ts.TransHash,index,out&#125;</span><br><span class="line">                                        unUTXOs = <span class="built_in">append</span>(unUTXOs,utxo)</span><br><span class="line">									&#125;</span><br><span class="line"></span><br><span class="line">								&#125;</span><br><span class="line"></span><br><span class="line">							&#125;</span><br><span class="line"></span><br><span class="line">						&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">							<span class="comment">//unUTXOs = append(unUTXOs,out)</span></span><br><span class="line">							utxo := &amp;UTXO&#123;ts.TransHash,index,out&#125;</span><br><span class="line">							unUTXOs = <span class="built_in">append</span>(unUTXOs,utxo)</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(<span class="string">"------------------------------"</span>)</span><br><span class="line">		<span class="keyword">var</span> hashInt big.Int</span><br><span class="line">		hashInt.SetBytes(block.PrefHash)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> hashInt.Cmp(big.NewInt(<span class="number">0</span>)) == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">  <span class="keyword">return</span> unUTXOs</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译运行效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Usage----</span><br><span class="line">         creatGenesisBlock  --- 创建创世区块</span><br><span class="line">         send -from -to -amount --- 添加新的区块</span><br><span class="line">         getBalance -address  --- 查询余额</span><br><span class="line">         printBlock  --- 打印区块数据</span><br><span class="line">EchodeMacBook-Pro:BlockChainDemo-UTXO Echo$ ./main getBalance -address &apos;[&quot;haha&quot;]&apos;</span><br><span class="line">地址：[&quot;haha&quot;]</span><br><span class="line">Height：2</span><br><span class="line">PrevBlockHash：0000a6070d0887d564582a8c056d68ab5f29f149b7e24ebbf8916d64b95f0700</span><br><span class="line">Timestamp：2018-06-26 12:07:19 AM</span><br><span class="line">Hash：00002e9e15f9d0917d77fb20a556a50abc8d3a5ff5a2d77d0d911514fe68a0f8</span><br><span class="line">Nonce：379511</span><br><span class="line">Txs:</span><br><span class="line">75cda9c0e3532d59445c390b3a26f335f52776f09f74b3580d7e6c84cf8e632e</span><br><span class="line">Vins:</span><br><span class="line">Vouts:</span><br><span class="line">2</span><br><span class="line">lala</span><br><span class="line">------------------------------</span><br><span class="line">Height：1</span><br><span class="line">PrevBlockHash：0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">Timestamp：2018-06-26 12:05:03 AM</span><br><span class="line">Hash：0000a6070d0887d564582a8c056d68ab5f29f149b7e24ebbf8916d64b95f0700</span><br><span class="line">Nonce：2599</span><br><span class="line">Txs:</span><br><span class="line">30fda86619acdd7cdaa31d80c3d3a493918b0fd60a940ae4ceecd59f3970d914</span><br><span class="line">Vins:</span><br><span class="line">Vouts:</span><br><span class="line">10</span><br><span class="line">创世区块</span><br><span class="line">------------------------------</span><br><span class="line">========</span><br></pre></td></tr></table></figure>
+<p><strong>代码演示</strong><br><a href="https://github.com/WuEcho/PublishBlockChain/tree/master/BlockChainDemo-UTXO" target="_blank" rel="noopener">替换代码演示地址</a></p>
 
       
 
@@ -1483,135 +1630,6 @@
 
 
   
-    <article id="post-Go语言中的远程过程调用协议RPC" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/24/Go语言中的远程过程调用协议RPC/">Go语言中的远程过程调用协议RPC</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/24/Go语言中的远程过程调用协议RPC/" class="archive-article-date">
-  	<time datetime="2018-05-24T12:21:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Go语言中的远程过程调用协议RPC"><a href="#Go语言中的远程过程调用协议RPC" class="headerlink" title="Go语言中的远程过程调用协议RPC"></a>Go语言中的远程过程调用协议RPC</h1><h2 id="1-什么是RPC"><a href="#1-什么是RPC" class="headerlink" title="1. 什么是RPC"></a>1. 什么是RPC</h2><p>　　RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。
-　　</p>
-<h2 id="2-go语言中如何使用RPC"><a href="#2-go语言中如何使用RPC" class="headerlink" title="2. go语言中如何使用RPC"></a>2. go语言中如何使用RPC</h2><p>我并不清楚其他语言中如何使用RPC来实现计算机间的通信以及互相调用，在go语言当中RPC有相应的包文件可以调用相关函数来实现。使用一台电脑来模拟两台电脑互相通信，调用方法，创建新的项目名为<code>rpcdemo</code>，在<code>rpcdemo</code>文件夹下创建名为<code>rpcSever</code>的文件夹，里面创建名为<code>rpcSever.go</code>的go文件，来模仿提供方法给别的机器调用的服务端，再在<code>rpcdemo</code>文件夹下创建名为<code>rpcClient</code>的文件夹，文件夹下创建名为<code>rpcClient.go</code>的go文件，来模仿连接到服务端的客户端，并调用服务端中提供的方法。</p>
-<h3 id="2-1-http链接使用rpc"><a href="#2-1-http链接使用rpc" class="headerlink" title="2.1 http链接使用rpc"></a>2.1 http链接使用rpc</h3><p><code>rpcSever.go</code>文件内容如下：</p>
-<p>引入头文件：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>声明传递参数结构体以及类对象的结构体：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义参数类型</span></span><br><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明对象</span></span><br><span class="line"><span class="keyword">type</span> Rect <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对外提供的公共方法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义公共方法  (本机以外的电脑也可以调用)</span></span><br><span class="line"><span class="comment">//error 是必须的    ret为指针的地址   </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Area</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	*ret = p.Width * p.Width</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//周长</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Rect)</span><span class="title">Perimeter</span><span class="params">(p Param,ret *<span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	*ret = (p.Width + p.Height)*<span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>主函数内容：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//注册服务</span></span><br><span class="line">	rect := <span class="built_in">new</span>(Rect)</span><br><span class="line">	rpc.Register(rect)</span><br><span class="line">	<span class="comment">//开辟端口让别的机器可以调用</span></span><br><span class="line">	rpc.HandleHTTP()</span><br><span class="line">	err := http.ListenAndServe(<span class="string">":9090"</span>,<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>rpcClient.go</code>文件内容如下：</p>
-<p>引入头文件：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>参数的结构体：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Param <span class="keyword">struct</span> &#123;</span><br><span class="line">	Width,Height <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>主函数如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//链接远程RPC   此处"127.0.0.1:9090"为要连接的服务器的ip地址</span></span><br><span class="line">	rp,err := rpc.DialHTTP(<span class="string">"tcp"</span>,<span class="string">"127.0.0.1:9090"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//从服务器接收过来的值</span></span><br><span class="line">	ret := <span class="number">0</span></span><br><span class="line">	<span class="comment">//调用方法</span></span><br><span class="line">	e := rp.Call(<span class="string">"Rect.Area"</span>,Param&#123;<span class="number">100</span>,<span class="number">100</span>&#125;,&amp;ret)</span><br><span class="line">	<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(e)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(ret)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用IDE分别打开<code>rpcClient</code>文件和<code>rpcSever</code>文件，先运行<code>rpcSever.go</code>文件然后在运行<code>rpcClient.go</code>文件</p>
-<p>然后在<code>rpcClient.go</code>的输出端看到输出为10000。</p>
-<p><a href="https://github.com/WuEcho/RPCDemo.git" target="_blank" rel="noopener">Go语言使用RCP代码示例</a></p>
-<h3 id="2-2-利用json方式连接"><a href="#2-2-利用json方式连接" class="headerlink" title="2.2 利用json方式连接"></a>2.2 利用json方式连接</h3><p>项目结构与上面相同，服务端和客户端文件夹分别命名为 <code>rpcJsonSever</code>，<code>rpcJsonClient</code><br><code>rpcJsonSever.go</code>文件内容如下：<br>引入头文件：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"errors"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">	<span class="string">"net/rpc/jsonrpc"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>声明结构体：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 算数运算结构体</span></span><br><span class="line"><span class="keyword">type</span> Arith <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算请求结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="keyword">int</span></span><br><span class="line">	B <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算响应结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Pro <span class="keyword">int</span> <span class="comment">// 乘积</span></span><br><span class="line">	Quo <span class="keyword">int</span> <span class="comment">// 商</span></span><br><span class="line">	Rem <span class="keyword">int</span> <span class="comment">// 余数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>声明方法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 乘法运算方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Arith)</span> <span class="title">Multiply</span><span class="params">(req ArithRequest, res *ArithResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	res.Pro = req.A * req.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 除法运算方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Arith)</span> <span class="title">Divide</span><span class="params">(req ArithRequest, res *ArithResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> req.B == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> errors.New(<span class="string">"divide by zero"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	res.Quo = req.A / req.B</span><br><span class="line">	res.Rem = req.A % req.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>主函数内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	rpc.Register(<span class="built_in">new</span>(Arith)) <span class="comment">// 注册rpc服务</span></span><br><span class="line"></span><br><span class="line">	lis, err := net.Listen(<span class="string">"tcp"</span>, <span class="string">":8096"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"fatal error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Fprintf(os.Stdout, <span class="string">"%s"</span>, <span class="string">"start connection\n"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		conn, err := lis.Accept() <span class="comment">// 接收客户端连接请求</span></span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(conn net.Conn)</span></span> &#123; <span class="comment">// 并发处理客户端请求</span></span><br><span class="line">			fmt.Println(<span class="string">"new client in coming"</span>)</span><br><span class="line">			jsonrpc.ServeConn(conn)</span><br><span class="line">		&#125;(conn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>rpcJsonClient.go</code>文件内容如下：</p>
-<p>头文件如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/rpc/jsonrpc"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>声明结构体：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 算数运算请求结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="keyword">int</span></span><br><span class="line">	B <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算数运算响应结构体</span></span><br><span class="line"><span class="keyword">type</span> ArithResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Pro <span class="keyword">int</span> <span class="comment">// 乘积</span></span><br><span class="line">	Quo <span class="keyword">int</span> <span class="comment">// 商</span></span><br><span class="line">	Rem <span class="keyword">int</span> <span class="comment">// 余数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>主函数内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	conn, err := jsonrpc.Dial(<span class="string">"tcp"</span>, <span class="string">"127.0.0.1:8096"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"dailing error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	req := ArithRequest&#123;<span class="number">9</span>, <span class="number">2</span>&#125;</span><br><span class="line">	<span class="keyword">var</span> res ArithResponse</span><br><span class="line"></span><br><span class="line">	err = conn.Call(<span class="string">"Arith.Multiply"</span>, req, &amp;res) <span class="comment">// 乘法运算</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"arith error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%d * %d = %d\n"</span>, req.A, req.B, res.Pro)</span><br><span class="line"></span><br><span class="line">	err = conn.Call(<span class="string">"Arith.Divide"</span>, req, &amp;res)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"arith error: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%d / %d, quo is %d, rem is %d\n"</span>, req.A, req.B, res.Quo, res.Rem)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行方式与上面的相同，运行结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">9 * 2 = 18</span><br><span class="line"></span><br><span class="line">9 / 2, quo is 4, rem is 1</span><br></pre></td></tr></table></figure>
-<p><a href="ttps://github.com/WuEcho/RPCDemo.git" target="_blank" rel="noopener">Go语言RPC使用代码示例</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RPC</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/24/Go语言中的远程过程调用协议RPC/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1705,11 +1723,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">二叉搜索树</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1721,11 +1739,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">方法</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+                <a href="javascript:void(0)" class="js-tag color3">方法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1737,19 +1755,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">通道</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">通道</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1765,10 +1783,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
@@ -1778,6 +1792,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">地址与钱包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1793,11 +1811,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1825,19 +1843,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">接口</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
+                <a href="javascript:void(0)" class="js-tag color5">循环控制</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1853,15 +1871,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1881,27 +1899,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">密码算法加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1909,11 +1911,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">编译安装星云链</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1925,7 +1939,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1933,7 +1947,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">通过RPC接口与星云链交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1941,11 +1963,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>
