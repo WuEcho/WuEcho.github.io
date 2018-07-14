@@ -172,6 +172,426 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-使用以太坊源码搭建私有链" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/30/使用以太坊源码搭建私有链/">使用以太坊源码搭建私有链</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/30/使用以太坊源码搭建私有链/" class="archive-article-date">
+  	<time datetime="2018-05-30T11:55:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-30</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="使用以太坊源码搭建私有链"><a href="#使用以太坊源码搭建私有链" class="headerlink" title="使用以太坊源码搭建私有链"></a>使用以太坊源码搭建私有链</h1><h2 id="1-下载源码"><a href="#1-下载源码" class="headerlink" title="1. 下载源码"></a>1. 下载源码</h2><p><a href="https://github.com/ethereum/go-ethereum.git" target="_blank" rel="noopener">以太坊下载地址</a></p>
+<h2 id="2-编译"><a href="#2-编译" class="headerlink" title="2. 编译"></a>2. 编译</h2><p>　　将下载好的代码放入<code>src</code>目录下，然后打开终端进入到当前目录路径：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd go-ethereum</span><br><span class="line">$ make geth</span><br></pre></td></tr></table></figure>
+<p>　　将 <code>geth</code> 添加到环境变量中 <code>vi ~/.bashrc</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GETH=&quot;$GOPATH/src/github.com/ethereum/go-ethereum/build&quot;</span><br><span class="line">export PATH=&quot;$PATH:$GETH/bin&quot;</span><br></pre></td></tr></table></figure>
+<p>　　然后执行 <code>source ~/.bashrc</code>，使配置生效。</p>
+<p>　　检查是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geth --help</span><br></pre></td></tr></table></figure>
+<p>　　如果输出一些帮助提示命令，则说明安装成功。</p>
+<h2 id="3-搭建私有链"><a href="#3-搭建私有链" class="headerlink" title="3. 搭建私有链"></a>3. 搭建私有链</h2><h3 id="3-1-配置初始状态"><a href="#3-1-配置初始状态" class="headerlink" title="3.1 配置初始状态"></a>3.1 配置初始状态</h3><p>　　要运行以太坊私有链，需要定义自己的创世区块，创世区块信息写在一个 JSON 格式的配置文件中。首先将下面的内容保存到一个 JSON 文件中，例如 <code>genesis.json</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ~/privatechain</span><br><span class="line">$ cd privatechain</span><br><span class="line">$ mkdir data0</span><br><span class="line">$ vi genesis.json</span><br></pre></td></tr></table></figure>
+<p><strong>genesis.json 的代码</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;config&quot;: &#123;</span><br><span class="line">        &quot;chainId&quot;: 10, </span><br><span class="line">        &quot;homesteadBlock&quot;: 0,</span><br><span class="line">        &quot;eip155Block&quot;: 0,</span><br><span class="line">        &quot;eip158Block&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;alloc&quot;      : &#123;&#125;,</span><br><span class="line">  &quot;coinbase&quot;   : &quot;0x0000000000000000000000000000000000000000&quot;,</span><br><span class="line">  &quot;difficulty&quot; : &quot;0x20000&quot;,</span><br><span class="line">  &quot;extraData&quot;  : &quot;&quot;,</span><br><span class="line">  &quot;gasLimit&quot;   : &quot;0x2fefd8&quot;,</span><br><span class="line">  &quot;nonce&quot;      : &quot;0x0000000000000042&quot;,</span><br><span class="line">  &quot;mixhash&quot;    : &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">  &quot;parentHash&quot; : &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">  &quot;timestamp&quot;  : &quot;0x00&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　其中，chainID 指定了独立的区块链网络 ID。网络 ID 在连接到其他节点的时候会用到，以太坊公网的网络 ID 是 1，为了不与公有链网络冲突，运行私有链节点的时候要指定自己的网络 ID。不同 ID 网络的节点无法相互连接。配置文件还对当前挖矿难度 difficulty、区块 Gas 消耗限制 gasLimit 等参数进行了设置。</p>
+<h3 id="3-2-初始化：写入创世区块"><a href="#3-2-初始化：写入创世区块" class="headerlink" title="3.2 初始化：写入创世区块"></a>3.2 初始化：写入创世区块</h3><p>　　准备好创世区块配置文件后，需要初始化区块链，将上面的创世区块信息写入到区块链中。首先要新建一个目录用来存放区块链数据，假设新建的数据目录为 ~/privatechain/data0，genesis.json 保存在 ~/privatechain 中，此时目录结构应该是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">privatechain</span><br><span class="line">├── data0</span><br><span class="line">└── genesis.json</span><br></pre></td></tr></table></figure>
+<p>执行初始化命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geth --datadir data0 init genesis.json</span><br></pre></td></tr></table></figure>
+<p>　　上面的命令的主体是 <code>geth init</code>，表示初始化区块链，命令可以带有选项和参数，其中 <code>--datadir</code> 选项后面跟一个目录名，这里为 <code>data0</code>，表示指定数据存放目录为 <code>data0</code>，<code>genesis.json</code> 是 <code>init</code> 命令的参数。</p>
+<p>　　运行上面的命令，会读取 <code>genesis.json</code> 文件，根据其中的内容，将创世区块写入到区块链中。如果看到以下的输出内容，说明初始化成功了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INFO [01-29|21:21:13] Maximum peer count                       ETH=25 LES=0 total=25</span><br><span class="line">INFO [01-29|21:21:13] Allocated cache and file handles         database=/Users/fujinliang/privatechain/data0/geth/chaindata cache=16 handles=16</span><br><span class="line">INFO [01-29|21:21:13] Writing custom genesis block </span><br><span class="line">INFO [01-29|21:21:13] Persisted trie from memory database      nodes=0 size=0.00B time=358.89µs gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B</span><br><span class="line">INFO [01-29|21:21:13] Successfully wrote genesis state         database=chaindata                                           hash=5e1fc7…d790e0</span><br><span class="line">INFO [01-29|21:21:13] Allocated cache and file handles         database=/Users/fujinliang/privatechain/data0/geth/lightchaindata cache=16 handles=16</span><br><span class="line">INFO [01-29|21:21:13] Writing custom genesis block </span><br><span class="line">INFO [01-29|21:21:13] Persisted trie from memory database      nodes=0 size=0.00B time=2.633µs  gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B</span><br><span class="line">INFO [01-29|21:21:13] Successfully wrote genesis state         database=lightchaindata                                           hash=5e1fc7…d790e0</span><br></pre></td></tr></table></figure>
+<p>　　初始化成功后，会在数据目录 data0 中生成 geth 和 keystore 两个文件夹，此时目录结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">privatechain</span><br><span class="line">├── data0</span><br><span class="line">│   ├── geth</span><br><span class="line">│   │   ├── chaindata</span><br><span class="line">│   │   │   ├── 000001.log</span><br><span class="line">│   │   │   ├── CURRENT</span><br><span class="line">│   │   │   ├── LOCK</span><br><span class="line">│   │   │   ├── LOG</span><br><span class="line">│   │   │   └── MANIFEST-000000</span><br><span class="line">│   │   └── lightchaindata</span><br><span class="line">│   │       ├── 000001.log</span><br><span class="line">│   │       ├── CURRENT</span><br><span class="line">│   │       ├── LOCK</span><br><span class="line">│   │       ├── LOG</span><br><span class="line">│   │       └── MANIFEST-000000</span><br><span class="line">│   └── keystore</span><br><span class="line">└── genesis.json</span><br></pre></td></tr></table></figure>
+<p>　　其中 <code>geth/chaindata</code> 中存放的是区块数据，<code>keystore</code> 中存放的是账户数据。</p>
+<h3 id="3-3-启动私有链节点"><a href="#3-3-启动私有链节点" class="headerlink" title="3.3 启动私有链节点"></a>3.3 启动私有链节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geth --datadir data0 --networkid 110 console</span><br></pre></td></tr></table></figure>
+<p>　　上面命令的主体是 <code>geth console</code>，表示启动节点并进入交互式控制台，–datadir选项指定使用data0作为数据目录，<code>--networkid</code> 选项后面跟一个数字，这里是110，表示指定这个私有链的网络id为110。网络id在连接到其他节点的时候会用到，以太坊公网的网络id是1，为了不与公有链网络冲突，运行私有链节点的时候要指定自己的网络id。</p>
+<p>　　运行上面的命令后，就启动了区块链节点并进入了该节点的控制台：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Welcome to the Geth JavaScript console!</span><br><span class="line"></span><br><span class="line">instance: Geth/v1.8.10-unstable-ccc0debb/darwin-amd64/go1.10.2</span><br><span class="line"> modules: admin:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0 txpool:1.0 web3:1.0</span><br><span class="line"></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<p>　　这是一个交互式的 JavaScript 执行环境，在这里面可以执行 JavaScript 代码，其中 &gt; 是命令提示符。在这个环境里也内置了一些用来操作以太坊的 JavaScript 对象，可以直接使用这些对象。这些对象主要包括：</p>
+<ul>
+<li>eth：包含一些跟操作区块链相关的方法；</li>
+<li>net：包含一些查看p2p网络状态的方法；</li>
+<li>admin：包含一些与管理节点相关的方法；</li>
+<li>miner：包含启动&amp;停止挖矿的一些方法；</li>
+<li>personal：主要包含一些管理账户的方法；</li>
+<li>txpool：包含一些查看交易内存池的方法；</li>
+<li>web3：包含了以上对象，还包含一些单位换算的方法。</li>
+</ul>
+<h2 id="4-控制台操作"><a href="#4-控制台操作" class="headerlink" title="4. 控制台操作"></a>4. 控制台操作</h2><p>　　进入以太坊 Javascript Console 后，就可以使用里面的内置对象做一些操作，这些内置对象提供的功能很丰富，比如查看区块和交易、创建账户、挖矿、发送交易、部署智能合约等。</p>
+<p>常用命令有：</p>
+<ul>
+<li>personal.newAccount()：创建账户；</li>
+<li>personal.unlockAccount()：解锁账户；</li>
+<li>eth.accounts：枚举系统中的账户；</li>
+<li>eth.getBalance()：查看账户余额，返回值的单位是 Wei（Wei 是以太坊中最小货币面额单位，类似比特币中的聪，1 ether = 10^18 Wei）；</li>
+<li>eth.blockNumber：列出区块总数；</li>
+<li>eth.getTransaction()：获取交易；</li>
+<li>eth.getBlock()：获取区块；</li>
+<li>miner.start()：开始挖矿；</li>
+<li>miner.stop()：停止挖矿；</li>
+<li>eth.coinbase：挖矿奖励的账户</li>
+<li>web3.fromWei()：Wei 换算成以太币；</li>
+<li>web3.toWei()：以太币换算成 Wei；</li>
+<li>txpool.status：交易池中的状态；</li>
+<li>admin.addPeer()：连接到其他节点；</li>
+</ul>
+<h3 id="4-1-创建账户"><a href="#4-1-创建账户" class="headerlink" title="4.1 创建账户"></a>4.1 创建账户</h3><p>　　输入 <code>eth.accounts</code> 查询系统中的账户：<br>　<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.accounts</span><br><span class="line">[]</span><br></pre></td></tr></table></figure></p>
+<p>　　显示为 <code>[]</code>，表示没有账户，接下来使用 <code>personal.newAccount()</code> 来创建一个账户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; personal.newAccount()</span><br><span class="line">Passphrase: </span><br><span class="line">Repeat passphrase: </span><br><span class="line">&quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;</span><br></pre></td></tr></table></figure>
+<p><code>Passphrase</code> 表示输入密码，<code>Repeat passphrase</code> 表示输入确认密码</p>
+<p>　　再次创建一个账户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; personal.newAccount()</span><br><span class="line">Passphrase: </span><br><span class="line">Repeat passphrase: </span><br><span class="line">&quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;</span><br></pre></td></tr></table></figure>
+<p>　　查看刚刚创建的用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.accounts</span><br><span class="line">[&quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;, &quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;]</span><br></pre></td></tr></table></figure>
+<p>　　账户默认会保存在数据目录的 <code>data0/keystore</code> 文件夹中。可以查看其中的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;address&quot;: &quot;fb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;, </span><br><span class="line">    &quot;crypto&quot;: &#123;</span><br><span class="line">        &quot;cipher&quot;: &quot;aes-128-ctr&quot;, </span><br><span class="line">        &quot;ciphertext&quot;: &quot;0efae4f94134172b785f1f635be8e70342bf31e1e0ecad21d672594f09ccf572&quot;, </span><br><span class="line">        &quot;cipherparams&quot;: &#123;</span><br><span class="line">            &quot;iv&quot;: &quot;37f4f3fa2cf070b70e3eb668fad6f46f&quot;</span><br><span class="line">        &#125;, </span><br><span class="line">        &quot;kdf&quot;: &quot;scrypt&quot;, </span><br><span class="line">        &quot;kdfparams&quot;: &#123;</span><br><span class="line">            &quot;dklen&quot;: 32, </span><br><span class="line">            &quot;n&quot;: 262144, </span><br><span class="line">            &quot;p&quot;: 1, </span><br><span class="line">            &quot;r&quot;: 8, </span><br><span class="line">            &quot;salt&quot;: &quot;1cdd1cf97fb882c3d3e734223668b47c888170e795346e11d0f521a71fe3aa2a&quot;</span><br><span class="line">        &#125;, </span><br><span class="line">        &quot;mac&quot;: &quot;902a29db25a3a35a2568b04b30a8194201f07ab37c96ed1fe9af932fc1d38be0&quot;</span><br><span class="line">    &#125;, </span><br><span class="line">    &quot;id&quot;: &quot;ecd5beb2-8261-4207-8eff-2fa34678d064&quot;, </span><br><span class="line">    &quot;version&quot;: 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-查看账户余额"><a href="#4-2-查看账户余额" class="headerlink" title="4.2 查看账户余额"></a>4.2 查看账户余额</h3><p>　　通过 <code>eth.getBalance()</code> 可以查看账户余额</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.getBalance(eth.accounts[0])</span><br><span class="line">0</span><br><span class="line">&gt; eth.getBalance(eth.accounts[1])</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>　　目前两个账户的以太币余额都是0，要使账户有余额，可以从其他账户转账过来，或者通过挖矿来获得以太币奖励。</p>
+<h3 id="4-3-启动-amp-停止挖矿"><a href="#4-3-启动-amp-停止挖矿" class="headerlink" title="4.3 启动&amp;停止挖矿"></a>4.3 启动&amp;停止挖矿</h3><p>　　通过 <code>miner.start()</code> 启动挖矿</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; miner.start(3)</span><br></pre></td></tr></table></figure>
+<p>　　其中 start 的参数表示挖矿使用的线程数。第一次启动挖矿会先生成挖矿所需的 DAG 文件，这个过程有点慢，等进度达到 100% 后，就会开始挖矿，此时屏幕会被挖矿信息刷屏。</p>
+<p>　　停止挖矿，在 console 中输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">miner.stop()</span><br></pre></td></tr></table></figure>
+<p>　　挖到一个区块会奖励5个以太币，挖矿所得的奖励会进入矿工的账户，这个账户叫做coinbase，默认情况下coinbase是本地账户中的第一个账户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.coinbase</span><br><span class="line">&quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;</span><br></pre></td></tr></table></figure>
+<p>　　可以通过 <code>miner.setEtherbase()</code> 将其他账户设置成 <code>coinbase</code> 即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; miner.setEtherbase(eth.accounts[1])</span><br><span class="line">true</span><br><span class="line">&gt; eth.coinbase</span><br><span class="line">&quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;</span><br></pre></td></tr></table></figure>
+<p>　　重新启动挖矿，查看 <code>eth.accounts[1]</code> 是否可以获得以太币</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; miner.start(3)</span><br><span class="line"></span><br><span class="line">//等待几秒后</span><br><span class="line">&gt; miner.stop()</span><br></pre></td></tr></table></figure>
+<p>　　查询账户余额：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.getBalance(eth.accounts[0])</span><br><span class="line">280000000000000000000</span><br><span class="line">&gt; eth.getBalance(eth.accounts[1])</span><br><span class="line">210000000000000000000</span><br></pre></td></tr></table></figure>
+<p>　　发现账户0 和 账号1 都有以太币，说明 <code>miner.setEtherbase()</code> 设置成功。</p>
+<p><code>getBalance()</code> 返回值的单位是wei，wei是以太币的最小单位，1个以太币=10的18次方个wei。要查看有多少个以太币，可以用web3.fromWei()将返回值换算成以太币：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[0]),&apos;ether&apos;)</span><br><span class="line">280</span><br><span class="line"></span><br><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[1]),&apos;ether&apos;)</span><br><span class="line">210</span><br></pre></td></tr></table></figure>
+<h3 id="4-4-发送交易"><a href="#4-4-发送交易" class="headerlink" title="4.4 发送交易"></a>4.4 发送交易</h3><p>　　从账户0转移10个以太币到账户1,首先要解锁账户 0，才能发起交易：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; personal.unlockAccount(eth.accounts[0])</span><br><span class="line">Unlock account 0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d</span><br><span class="line">Passphrase: </span><br><span class="line">true</span><br></pre></td></tr></table></figure>
+<p>　　发起交易</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; amount = web3.toWei(10,&apos;ether&apos;)</span><br><span class="line">&quot;10000000000000000000&quot;</span><br><span class="line">&gt; eth.sendTransaction(&#123;from:eth.accounts[0],to:eth.accounts[1],value:amount&#125;)</span><br><span class="line">INFO [05-29|22:37:32] Submitted transaction                    fullhash=0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2 recipient=0xc6b5702B15a3794374e28f41F36e1E8dBDd564DF</span><br><span class="line">&quot;0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2&quot;</span><br></pre></td></tr></table></figure>
+<p>　　查询 账户1 的余额：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[1]),&apos;ether&apos;)</span><br><span class="line">210</span><br></pre></td></tr></table></figure>
+<p>　　发现账户余额没有发生改变，此时交易已经提交到区块链，但还未被处理，这可以通过用 <code>txpool.status</code> 命令可以看到本地交易池中有一个待确认的交易：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; txpool.status</span><br><span class="line">&#123;</span><br><span class="line">  pending: 1,</span><br><span class="line">  queued: 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　其中有一条pending的交易，pending表示已提交但还未被处理的交易。</p>
+<p>　　要使交易被处理，必须要挖矿。这里我们启动挖矿，然后等待挖到一个区块之后就停止挖矿：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;miner.start(1);admin.sleepBlocks(1);miner.stop()</span><br><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[1]),&apos;ether&apos;)</span><br><span class="line">225.000378</span><br></pre></td></tr></table></figure>
+<p>　　发现账户收到了账户的钱，还多了5个以太币。其实多出的5个以太币是挖矿奖励。</p>
+<h3 id="4-5-查看交易和区块"><a href="#4-5-查看交易和区块" class="headerlink" title="4.5 查看交易和区块"></a>4.5 查看交易和区块</h3><p>查看当前区块总数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.blockNumber</span><br><span class="line">99</span><br></pre></td></tr></table></figure>
+<p>通过区块号查看区块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.getBlock(6)</span><br><span class="line">&#123;</span><br><span class="line">  difficulty: 131328,</span><br><span class="line">  extraData: &quot;0xd98301080a846765746888676f312e31302e328664617277696e&quot;,</span><br><span class="line">  gasLimit: 3160033,</span><br><span class="line">  gasUsed: 0,</span><br><span class="line">  hash: &quot;0x9679d0dc01045c3d15cbf29241ae1cd6de2e5661d3387c0980f6397e3fd9ed2c&quot;,</span><br><span class="line">  logsBloom: &quot;0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">  miner: &quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;,</span><br><span class="line">  mixHash: &quot;0x05c369134eac2cb6227860b4ed11527b11825af3541712c5704914576c37c0a0&quot;,</span><br><span class="line">  nonce: &quot;0x00168a9831624417&quot;,</span><br><span class="line">  number: 6,</span><br><span class="line">  parentHash: &quot;0xad68f0a581cf2144b8a05190b6310c7a9d945d9c338fd16b4708651b8813ad8b&quot;,</span><br><span class="line">  receiptsRoot: &quot;0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421&quot;,</span><br><span class="line">  sha3Uncles: &quot;0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347&quot;,</span><br><span class="line">  size: 537,</span><br><span class="line">  stateRoot: &quot;0xfaa0a4ffe160a2937b967f9780ae0de51a465bcce6a3f6f3aa24b903df3d44a0&quot;,</span><br><span class="line">  timestamp: 1527602736,</span><br><span class="line">  totalDifficulty: 918144,</span><br><span class="line">  transactions: [],</span><br><span class="line">  transactionsRoot: &quot;0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421&quot;,</span><br><span class="line">  uncles: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过交易hash（hash 值包含在上面交易返回值中）查看交易：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">eth.getTransaction(&quot;0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2&quot;)</span><br><span class="line">&#123;</span><br><span class="line">  blockHash: &quot;0xbe60f7ccddcb7cab39a7b932c0d89d37ac13ae14521cfdcb8ac359a5b6773655&quot;,</span><br><span class="line">  blockNumber: 99,</span><br><span class="line">  from: &quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;,</span><br><span class="line">  gas: 90000,</span><br><span class="line">  gasPrice: 18000000000,</span><br><span class="line">  hash: &quot;0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2&quot;,</span><br><span class="line">  input: &quot;0x&quot;,</span><br><span class="line">  nonce: 0,</span><br><span class="line">  r: &quot;0x8da41e865d399fc4d8f813a39116e486db7658a04ea1f89ca0b7f44c02dd3c57&quot;,</span><br><span class="line">  s: &quot;0x15edd22404460cfc5e86c9735774a02aad024bc8c369ec531e4485f1012cbcf6&quot;,</span><br><span class="line">  to: &quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;,</span><br><span class="line">  transactionIndex: 0,</span><br><span class="line">  v: &quot;0x37&quot;,</span><br><span class="line">  value: 10000000000000000000</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">以太坊</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/30/使用以太坊源码搭建私有链/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-etcd本机手动测试集群及member操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/30/etcd本机手动测试集群及member操作/">etcd本机手动测试集群及member操作和代码调用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/30/etcd本机手动测试集群及member操作/" class="archive-article-date">
+  	<time datetime="2018-05-30T10:40:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-30</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="etcd本机手动测试集群及member操作和代码调用"><a href="#etcd本机手动测试集群及member操作和代码调用" class="headerlink" title="etcd本机手动测试集群及member操作和代码调用"></a>etcd本机手动测试集群及member操作和代码调用</h1><p>使用终端进入到<code>$GOPATH/src/github.com/coreos/etcd</code>目录下，再进入<code>bin</code>目录下使用如下指令：</p>
+<h2 id="1-启动节点"><a href="#1-启动节点" class="headerlink" title="1. 启动节点"></a>1. 启动节点</h2><p><strong>节点1</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd0 --initial-advertise-peer-urls http://127.0.0.1:2380 --listen-peer-urls http://127.0.0.1:2380 --listen-client-urls http://127.0.0.1:2379 --advertise-client-urls http://127.0.0.1:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480,cd2=http://127.0.0.1:2580 --initial-cluster-state new</span><br></pre></td></tr></table></figure>
+<p>在开启另一个终端，进入到相同的目录下：</p>
+<p><strong>节点2</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd1 --initial-advertise-peer-urls http://127.0.0.1:2480 --listen-peer-urls http://127.0.0.1:2480 --listen-client-urls http://127.0.0.1:2479 --advertise-client-urls http://127.0.0.1:2479 --initial-cluster-token etcd-cluster-1 --initial-cluster cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480,cd2=http://127.0.0.1:2580 --initial-cluster-state new</span><br></pre></td></tr></table></figure>
+<p>再开启另一个终端，进入到相同的目录下：</p>
+<p><strong>节点3</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd2 --initial-advertise-peer-urls http://127.0.0.1:2580 --listen-peer-urls http://127.0.0.1:2580 --listen-client-urls http://127.0.0.1:2579 --advertise-client-urls http://127.0.0.1:2579 --initial-cluster-token etcd-cluster-1 --initial-cluster cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480,cd2=http://127.0.0.1:2580 --initial-cluster-state new</span><br></pre></td></tr></table></figure>
+<h2 id="2-查询-member-列表"><a href="#2-查询-member-列表" class="headerlink" title="2. 查询 member 列表"></a>2. 查询 member 列表</h2><p>重新再打开一个终端，进入到<code>$GOPATH/src/github.com/coreos/etcd/bin</code>目录下，输入如下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export ETCDCTL_API=3</span><br><span class="line">ENDPOINTS=127.0.0.1:2379,127.0.0.1:2479,127.0.0.1:2579</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">98f0c6bf64240842, started, cd2, http://127.0.0.1:2580, http://127.0.0.1:2579</span><br><span class="line">bf9071f4639c75cc, started, cd0, http://127.0.0.1:2380, http://127.0.0.1:2379</span><br><span class="line">e3ba87c3b4858ef1, started, cd1, http://127.0.0.1:2480, http://127.0.0.1:2479</span><br></pre></td></tr></table></figure>
+<h2 id="3-添加-member-节点"><a href="#3-添加-member-节点" class="headerlink" title="3. 添加 member 节点"></a>3. 添加 member 节点</h2><p><strong>member add</strong> 添加节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS member add cd3 --peer-urls=http://127.0.0.1:2180</span><br><span class="line">Member b9057cfdc8ff17ce added to cluster 9da8cd75487bd6dc</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ETCD_NAME=&quot;cd3&quot;</span><br><span class="line">ETCD_INITIAL_CLUSTER=&quot;cd3=http://127.0.0.1:2180,cd2=http://127.0.0.1:2580,cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480&quot;</span><br><span class="line">ETCD_INITIAL_ADVERTISE_PEER_URLS=&quot;http://127.0.0.1:2180&quot;</span><br><span class="line">ETCD_INITIAL_CLUSTER_STATE=&quot;existing&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>查询 member 节点列表信息</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">98f0c6bf64240842, started, cd2, http://127.0.0.1:2580, http://127.0.0.1:2579</span><br><span class="line">b9057cfdc8ff17ce, unstarted, , http://127.0.0.1:2180, </span><br><span class="line">bf9071f4639c75cc, started, cd0, http://127.0.0.1:2380, http://127.0.0.1:2379</span><br><span class="line">e3ba87c3b4858ef1, started, cd1, http://127.0.0.1:2480, http://127.0.0.1:2479</span><br></pre></td></tr></table></figure>
+<p>通过查询结果可以发现：<code>http://127.0.0.1:2180</code> 显示状态为：<code>unstarted</code></p>
+<p><strong>启动新节点</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd3 --listen-client-urls http://127.0.0.1:2179 --advertise-client-urls http://127.0.0.1:2179 --listen-peer-urls http://127.0.0.1:2180 --initial-advertise-peer-urls http://127.0.0.1:2180 --initial-cluster-state existing --initial-cluster cd2=http://127.0.0.1:2580,cd0=http://127.0.0.1:2380,cd3=http://127.0.0.1:2180,cd1=http://127.0.0.1:2480 --initial-cluster-token etcd-cluster-1</span><br></pre></td></tr></table></figure>
+<p><strong>查询 member 节点列表信息</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">98f0c6bf64240842, started, cd2, http://127.0.0.1:2580, http://127.0.0.1:2579</span><br><span class="line">b9057cfdc8ff17ce, started, cd3, http://127.0.0.1:2180, http://127.0.0.1:2179</span><br><span class="line">bf9071f4639c75cc, started, cd0, http://127.0.0.1:2380, http://127.0.0.1:2379</span><br><span class="line">e3ba87c3b4858ef1, started, cd1, http://127.0.0.1:2480, http://127.0.0.1:2479</span><br></pre></td></tr></table></figure>
+<h2 id="4-Go语言代码实现member的管理"><a href="#4-Go语言代码实现member的管理" class="headerlink" title="4. Go语言代码实现member的管理"></a>4. Go语言代码实现member的管理</h2><h3 id="4-1-添加节点"><a href="#4-1-添加节点" class="headerlink" title="4.1 添加节点"></a>4.1 添加节点</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addMember</span><span class="params">(cli *clientv3.Client)</span></span>  &#123;</span><br><span class="line">    peerURLs := []<span class="keyword">string</span>&#123;<span class="string">"http://127.0.0.1:2180"</span>&#125;</span><br><span class="line"></span><br><span class="line">    mresp, err := cli.MemberAdd(context.Background(), peerURLs)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(<span class="string">"added member.PeerURLs:"</span>, mresp.Member.PeerURLs)</span><br><span class="line">    resp, err := cli.MemberList(context.Background())</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(<span class="string">"添加后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行完 添加节点，需要打开终端启动节点服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd3 --listen-client-urls http://127.0.0.1:2179 --advertise-client-urls http://127.0.0.1:2179 --listen-peer-urls http://127.0.0.1:2180 --initial-advertise-peer-urls http://127.0.0.1:2180 --initial-cluster-state existing --initial-cluster cd2=http://127.0.0.1:2580,cd0=http://127.0.0.1:2380,cd3=http://127.0.0.1:2180,cd1=http://127.0.0.1:2480 --initial-cluster-token etcd-cluster-1</span><br></pre></td></tr></table></figure>
+<p><strong>如果启动失败，需要删除 cd3 的信息</strong></p>
+<p><img src="http://olgjbx93m.bkt.clouddn.com/20180129-104838.png" alt=""></p>
+<h3 id="4-2-删除节点"><a href="#4-2-删除节点" class="headerlink" title="4.2 删除节点"></a>4.2 删除节点</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">delMember</span> <span class="params">(cli *clientv3.Client, memberId <span class="keyword">uint64</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_, err = cli.MemberRemove(context.Background(), memberId)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	resp, err = cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"删除后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-全部代码"><a href="#5-全部代码" class="headerlink" title="5. 全部代码"></a>5. 全部代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/coreos/etcd/clientv3"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"context"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	dialTimeout    = <span class="number">5</span> * time.Second</span><br><span class="line">	requestTimeout = <span class="number">2</span> * time.Second</span><br><span class="line">	endpoints      = []<span class="keyword">string</span>&#123;<span class="string">"127.0.0.1:2379"</span>&#125;</span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	cli, err := clientv3.New(clientv3.Config&#123;</span><br><span class="line">		Endpoints:   endpoints,</span><br><span class="line">		DialTimeout: dialTimeout,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> cli.Close()</span><br><span class="line"></span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"members:"</span>, resp.Members)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//添加member</span></span><br><span class="line">	<span class="comment">//addMember(cli)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除节点</span></span><br><span class="line">	<span class="comment">//delMember(cli,uint64(7438291228984697304))</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addMember</span><span class="params">(cli *clientv3.Client)</span></span>  &#123;</span><br><span class="line">	peerURLs := []<span class="keyword">string</span>&#123;<span class="string">"http://127.0.0.1:2180"</span>&#125;</span><br><span class="line"></span><br><span class="line">	mresp, err := cli.MemberAdd(context.Background(), peerURLs)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"added member.PeerURLs:"</span>, mresp.Member.PeerURLs)</span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"添加后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">delMember</span> <span class="params">(cli *clientv3.Client, memberId <span class="keyword">uint64</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_, err = cli.MemberRemove(context.Background(), memberId)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	resp, err = cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"删除后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言使用</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/30/etcd本机手动测试集群及member操作/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-etcd部署多个服务器集群" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/29/etcd部署多个服务器集群/">etcd部署多个服务器集群</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/29/etcd部署多个服务器集群/" class="archive-article-date">
+  	<time datetime="2018-05-29T12:11:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-29</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="etcd部署多个服务器集群"><a href="#etcd部署多个服务器集群" class="headerlink" title="etcd部署多个服务器集群"></a>etcd部署多个服务器集群</h1><h2 id="1-启动服务"><a href="#1-启动服务" class="headerlink" title="1. 启动服务"></a>1. 启动服务</h2><p>　　etcd系统的提前准备清楚参考<a href="http://www.wuecho.com/2018/05/28/分布式一致性键值存储系统-etcd/">分布式一致性键值存储系统–etcd(终端命令)</a>。<br>要想启动分布式系统必须停止之前的单机版的服务终端。</p>
+<p>　　每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TOKEN=token-01</span><br><span class="line">CLUSTER_STATE=new</span><br><span class="line">NAME_1=machine-1</span><br><span class="line">NAME_2=machine-2</span><br><span class="line">NAME_3=machine-3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">CLUSTER=$&#123;NAME_1&#125;=http://$&#123;HOST_1&#125;:2380,$&#123;NAME_2&#125;=http://$&#123;HOST_2&#125;:2380,$&#123;NAME_3&#125;=http://$&#123;HOST_3&#125;:2380</span><br></pre></td></tr></table></figure>
+<p><strong>machine 1</strong> 执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 1</span><br><span class="line">THIS_NAME=$&#123;NAME_1&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_1&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>machine 2</strong> 执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 2</span><br><span class="line">THIS_NAME=$&#123;NAME_2&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_2&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>machine 3</strong> 执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 3</span><br><span class="line">THIS_NAME=$&#123;NAME_3&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_3&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-测试验证"><a href="#2-测试验证" class="headerlink" title="2. 测试验证"></a>2. 测试验证</h2><p>检测服务器运行是否正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line">export ETCDCTL_API=3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
+<h2 id="3-操作"><a href="#3-操作" class="headerlink" title="3. 操作"></a>3. 操作</h2><h3 id="3-1-存储数据"><a href="#3-1-存储数据" class="headerlink" title="3.1 存储数据"></a>3.1 存储数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put foo &quot;Hello World!&quot;</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS get foo</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS --write-out=&quot;json&quot; get foo</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-根据前缀查询"><a href="#3-2-根据前缀查询" class="headerlink" title="3.2 根据前缀查询"></a>3.2 根据前缀查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put web1 value1</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put web2 value2</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put web3 value3</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS get web --prefix</span><br><span class="line"></span><br><span class="line">web1</span><br><span class="line">value1</span><br><span class="line">web2</span><br><span class="line">value2</span><br><span class="line">web3</span><br><span class="line">value3</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-删除"><a href="#3-3-删除" class="headerlink" title="3.3 删除"></a>3.3 删除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put key myvalue</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS del key</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put k1 value1</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put k2 value2</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS del k --prefix</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-事务写入"><a href="#3-4-事务写入" class="headerlink" title="3.4 事务写入"></a>3.4 事务写入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS put user1 bad</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive</span><br><span class="line"></span><br><span class="line">compares:</span><br><span class="line">// 输入以下内容，输入结束按 两次回车</span><br><span class="line">value(&quot;user1&quot;) = &quot;bad&quot;      </span><br><span class="line"></span><br><span class="line">//如果 user1 = bad，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != bad，则执行 put user1 good</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 good</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 success</span><br><span class="line">SUCCESS</span><br><span class="line"></span><br><span class="line">user1</span><br><span class="line">bad</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive</span><br><span class="line">compares:</span><br><span class="line">value(&quot;user1&quot;) = &quot;111&quot;  </span><br><span class="line"></span><br><span class="line">// 如果 user1 = 111，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != 111，则执行 put user1 2222</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 2222</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 failure</span><br><span class="line">FAILURE</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS get user1</span><br><span class="line">user1</span><br><span class="line">2222</span><br></pre></td></tr></table></figure>
+<h3 id="3-5-watch"><a href="#3-5-watch" class="headerlink" title="3.5 watch"></a>3.5 watch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 当 stock1 的数值改变（ put 方法）的时候，watch 会收到通知</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS watch stock1</span><br><span class="line"></span><br><span class="line">// 新打开终端</span><br><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line">export ETCDCTL_API=3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock1 1000</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS watch stock --prefix</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock1 10</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock2 20</span><br></pre></td></tr></table></figure>
+<h2 id="4-更多操作"><a href="#4-更多操作" class="headerlink" title="4. 更多操作"></a>4. 更多操作</h2><p><a href="https://coreos.com/etcd/docs/latest/demo.html" target="_blank" rel="noopener">了解更多操作</a></p>
+<h2 id="5-代码操作"><a href="#5-代码操作" class="headerlink" title="5. 代码操作"></a>5. 代码操作</h2><p>注：要想使用代码来存取查询操作，需要对构建的etcd对象ip地址进行修改。</p>
+<p><a href="https://github.com/WuEcho/etcdDemo.git" target="_blank" rel="noopener">Go语言使用etcd实现分布式集群demo示例</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">搭建多服务器集群</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/29/etcd部署多个服务器集群/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言使用分布式一致性系统etcd" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -681,11 +1101,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoS共识算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoS共识算法</a>
         		</li>
       		
 		</ul>
@@ -880,11 +1300,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoW共识算法</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoW共识算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
         		</li>
       		
 		</ul>
@@ -1122,444 +1542,9 @@
 
 
   
-    <article id="post-编译Openssl" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/18/编译Openssl/">编译Openssl</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/18/编译Openssl/" class="archive-article-date">
-  	<time datetime="2018-05-18T04:26:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-18</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-提前准备工作"><a href="#1-提前准备工作" class="headerlink" title="1. 提前准备工作"></a>1. 提前准备工作</h2><p>去<a href="https://www.openssl.org" target="_blank" rel="noopener">https://www.openssl.org</a>网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本</p>
-<p>解压openssl开发包文件</p>
-<h3 id="2-在终端下操作如下"><a href="#2-在终端下操作如下" class="headerlink" title="2. 在终端下操作如下"></a>2. 在终端下操作如下</h3><p>进入刚才解压的文件夹，如图所示</p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/2018_4_4.png" alt=""></p>
-<p>-设定Openssl 安装路径，( <strong>–prefix</strong> )参数为欲安装之目录，执行如下命令：</p>
-<p>​     ./config –prefix=/usr/local/openssl</p>
-<h3 id="3-执行命令-config-t"><a href="#3-执行命令-config-t" class="headerlink" title="3.执行命令./config -t"></a>3.执行命令./config -t</h3><h3 id="4-执行make命令，编译Openssl，编译需要等待一定的时间。"><a href="#4-执行make命令，编译Openssl，编译需要等待一定的时间。" class="headerlink" title="4.执行make命令，编译Openssl，编译需要等待一定的时间。"></a>4.执行make命令，编译Openssl，编译需要等待一定的时间。</h3><h3 id="5-执行make-install，安装-Openssl，安装也需要一定的时间。"><a href="#5-执行make-install，安装-Openssl，安装也需要一定的时间。" class="headerlink" title="5.执行make install，安装 Openssl，安装也需要一定的时间。"></a>5.执行make install，安装 Openssl，安装也需要一定的时间。</h3><p>安装完成后,openssl 会被安装到/usr/local/openssl 目录，包括头文件目录 </p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/1522819297%281%29.png" alt=""></p>
-<p>进入lib后，libssl.a和libcrypto.a则为编译后的库文件</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">编译Openssl</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/18/编译Openssl/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hash加密原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/17/Hash加密原理/">Hash加密原理</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/17/Hash加密原理/" class="archive-article-date">
-  	<time datetime="2018-05-17T10:38:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-17</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Hash加密原理"><a href="#Hash加密原理" class="headerlink" title="Hash加密原理"></a>Hash加密原理</h1><p>　　计算理论中，没有Hash函数的说法，只有单向函数的说法。所谓的单向函数，是一个复杂的定义，可以去看计算理论或者密码学方面的内容。用“人类”的语言描述单向函数就是：<strong>如果某个函数在给定输入的时候，很容易计算出其结果来；而当给定结果的时候，很难计算出输入来，这就是单向函数</strong>。各种加密函数都可以被认为是单向函数的逼近。Hash函数（或者成为散列函数）也可以看成是单向函数的一个逼近。即它接近于满足单向函数的定义。<br>　　Hash函数还有另外的含义。实际中的Hash函数是指把一个大范围映射到一个小范围。把大范围映射到一个小范围的目的往往是为了节省空间，使得数据容易保存。除此以外，Hash函数往往应用于查找上。所以，在考虑使用Hash函数之前，需要明白它的几个限制：</p>
-<ol>
-<li>Hash的主要原理就是把大范围映射到小范围；所以，你输入的实际值的个数必须和小范围相当或者比它更小。不然冲突就会很多。</li>
-<li>由于Hash逼近单向函数；所以，你可以用它来对数据进行加密。</li>
-<li>不同的应用对Hash函数有着不同的要求；比如，用于加密的Hash函数主要考虑它和单项函数的差距，而用于查找的Hash函数主要考虑它映射到小范围的冲突率。<br>Hash函数应用的主要对象是数组（比如，字符串），而其目标一般是一个int类型。以下我们都按照这种方式来说明。</li>
-</ol>
-<p>一般的说，Hash函数可以简单的划分为如下几类：</p>
-<ol>
-<li>加法Hash；</li>
-<li>位运算Hash；</li>
-<li>乘法Hash；</li>
-<li>除法Hash；</li>
-<li>查表Hash；</li>
-<li>混合Hash；</li>
-</ol>
-<h3 id="1-加法Hash"><a href="#1-加法Hash" class="headerlink" title="1. 加法Hash"></a>1. 加法Hash</h3><p>所谓的加法Hash就是把输入元素一个一个的加起来构成最后的结果。标准的加法Hash的构造如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">static int additiveHash(String key, int prime)</span><br><span class="line"> &#123;</span><br><span class="line">  int hash, i;</span><br><span class="line">  for (hash = key.length(), i = 0; i &lt; key.length(); i++)</span><br><span class="line">   hash += key.charAt(i);</span><br><span class="line">  return (hash % prime);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>这里的prime是任意的质数，看得出，结果的值域为[0,prime-1]。</p>
-<h3 id="2-位运算Hash"><a href="#2-位运算Hash" class="headerlink" title="2. 位运算Hash"></a>2. 位运算Hash</h3><p>　　这类型Hash函数通过利用各种位运算（常见的是移位和异或）来充分的混合输入元素。比如，标准的旋转Hash的构造如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">static int rotatingHash(String key, int prime)</span><br><span class="line"> &#123;</span><br><span class="line">   int hash, i;</span><br><span class="line">   for (hash=key.length(), i=0; i&lt;key.length(); ++i)</span><br><span class="line">     hash = (hash&lt;&lt;4)^(hash&gt;&gt;28)^key.charAt(i);</span><br><span class="line">   return (hash % prime);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>　　先移位，然后再进行各种位运算是这种类型Hash函数的主要特点。比如，以上的那段计算hash的代码还可以有如下几种变形：</p>
-<ol>
-<li>hash = (hash&lt;&lt;5)^(hash&gt;&gt;27)^key.charAt(i);</li>
-<li>hash += key.charAt(i);<br>hash += (hash &lt;&lt; 10);<br>hash ^= (hash &gt;&gt; 6);</li>
-<li>if((i&amp;1) == 0){<br> hash ^= (hash&lt;&lt;7) ^ key.charAt(i) ^ (hash&gt;&gt;3);<br>}else{<br> hash ^= ~((hash&lt;&lt;11) ^ key.charAt(i) ^ (hash &gt;&gt;5));<br>}</li>
-<li>hash += (hash&lt;&lt;5) + key.charAt(i);</li>
-<li>hash = key.charAt(i) + (hash&lt;&lt;6) + (hash&gt;&gt;16) – hash;</li>
-<li>hash ^= ((hash&lt;&lt;5) + key.charAt(i) + (hash&gt;&gt;2));</li>
-</ol>
-<h3 id="3-乘法Hash"><a href="#3-乘法Hash" class="headerlink" title="3. 乘法Hash"></a>3. 乘法Hash</h3><p>　　这种类型的Hash函数利用了乘法的不相关性（乘法的这种性质，最有名的莫过于平方取头尾的随机数生成算法，虽然这种算法效果并不好）。比如，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static int bernstein(String key)</span><br><span class="line">&#123;</span><br><span class="line">  int hash = 0;</span><br><span class="line">  int i;</span><br><span class="line">  for (i=0; i&lt;key.length(); ++i) </span><br><span class="line">   hash = 33*hash + key.charAt(i);</span><br><span class="line">  return hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　jdk5.0里面的String类的hashCode()方法也使用乘法Hash。不过，它使用的乘数是31。推荐的乘数还有：131, 1313, 13131, 131313等等。</p>
-<p>使用这种方式的著名Hash函数还有：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> //  32位FNV算法</span><br><span class="line"> int M_SHIFT = 0;</span><br><span class="line">    public int FNVHash(byte[] data)</span><br><span class="line">    &#123;</span><br><span class="line">        int hash = (int)2166136261L;</span><br><span class="line">        for(byte b : data)</span><br><span class="line">            hash = (hash * 16777619) ^ b;</span><br><span class="line">        if (M_SHIFT == 0)</span><br><span class="line">            return hash;</span><br><span class="line">        return (hash ^ (hash &gt;&gt; M_SHIFT)) &amp; M_MASK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以及改进的FNV算法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> public static int FNVHash1(String data)</span><br><span class="line">    &#123;</span><br><span class="line">        final int p = 16777619;</span><br><span class="line">        int hash = (int)2166136261L;</span><br><span class="line">        for(int i=0;i&lt;data.length();i++)</span><br><span class="line">            hash = (hash ^ data.charAt(i)) * p;</span><br><span class="line">        hash += hash &lt;&lt; 13;</span><br><span class="line">        hash ^= hash &gt;&gt; 7;</span><br><span class="line">        hash += hash &lt;&lt; 3;</span><br><span class="line">        hash ^= hash &gt;&gt; 17;</span><br><span class="line">        hash += hash &lt;&lt; 5;</span><br><span class="line">        return hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>除了乘以一个固定的数，常见的还有乘以一个不断改变的数，比如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> static int RSHash(String str)</span><br><span class="line">    &#123;</span><br><span class="line">        int b    = 378551;</span><br><span class="line">        int a    = 63689;</span><br><span class="line">        int hash = 0;</span><br><span class="line"></span><br><span class="line">       for(int i = 0; i &lt; str.length(); i++)</span><br><span class="line">       &#123;</span><br><span class="line">          hash = hash * a + str.charAt(i);</span><br><span class="line">          a    = a * b;</span><br><span class="line">       &#125;</span><br><span class="line">       return (hash &amp; 0x7FFFFFFF);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　虽然Adler32算法的应用没有CRC32广泛，不过，它可能是乘法Hash里面最有名的一个了。关于它的介绍，可以去看RFC 1950规范。</p>
-<h3 id="4-除法Hash"><a href="#4-除法Hash" class="headerlink" title="4. 除法Hash"></a>4. 除法Hash</h3><p>　　除法和乘法一样，同样具有表面上看起来的不相关性。不过，因为除法太慢，这种方式几乎找不到真正的应用。需要注意的是，我们在前面看到的hash的 结果除以一个prime的目的只是为了保证结果的范围。如果你不需要它限制一个范围的话，可以使用如下的代码替代”hash%prime”： <code>hash = hash ^ (hash&gt;&gt;10) ^ (hash&gt;&gt;20)。</code></p>
-<h3 id="5-查表Hash"><a href="#5-查表Hash" class="headerlink" title="5. 查表Hash"></a>5. 查表Hash</h3><p>　　查表Hash最有名的例子莫过于CRC系列算法。虽然CRC系列算法本身并不是查表，但是，查表是它的一种最快的实现方式。查表Hash中有名的例子有：Universal Hashing和Zobrist Hashing。他们的表格都是随机生成的。</p>
-<h3 id="6-混合Hash"><a href="#6-混合Hash" class="headerlink" title="6. 混合Hash"></a>6. 混合Hash</h3><p>　　混合Hash算法利用了以上各种方式。各种常见的Hash算法，比如MD5、Tiger都属于这个范围。它们一般很少在面向查找的Hash函数里面使用。</p>
-<h3 id="7-对Hash算法的评价"><a href="#7-对Hash算法的评价" class="headerlink" title="7. 对Hash算法的评价"></a>7. 对Hash算法的评价</h3><p>　　<a href="http://www.burtleburtle.net/bob/hash/doobs.html" target="_blank" rel="noopener">这个页面</a>提供了对几种流行Hash算法的评价。对Hash函数的建议如下：</p>
-<ol>
-<li><p>字符串的Hash。最简单可以使用基本的乘法Hash，当乘数为33时，对于英文单词有很好的散列效果（小于6个的小写形式可以保证没有冲突）。复杂一点可以使用FNV算法（及其改进形式），它对于比较长的字符串，在速度和效果上都不错。</p>
-</li>
-<li><p>长数组的Hash。可以使用<a href="http://burtleburtle.net/bob/c/lookup3.c这种算法，它一次运算多个字节，速度还算不错。" target="_blank" rel="noopener">http://burtleburtle.net/bob/c/lookup3.c这种算法，它一次运算多个字节，速度还算不错。</a></p>
-</li>
-</ol>
-<h3 id="8-后记"><a href="#8-后记" class="headerlink" title="8. 后记"></a>8. 后记</h3><p>　　本文简略的介绍了一番实际应用中的用于查找的Hash算法。Hash算法除了应用于这个方面以外，另外一个著名的应用是巨型字符串匹配（这时的 Hash算法叫做：rolling hash，因为它必须可以滚动的计算）。设计一个真正好的Hash算法并不是一件容易的事情。做为应用来说，选择一个适合的算法是最重要的。</p>
-<h3 id="9-数组hash"><a href="#9-数组hash" class="headerlink" title="9. 数组hash"></a>9. 数组hash</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">inline int hashcode(const int *v)&#123;</span><br><span class="line">  int s = 0;</span><br><span class="line">  for(int i=0; i&lt;k; i++)</span><br><span class="line">  s=((s&lt;&lt;2)+(v[i]&gt;&gt;4))^(v[i]&lt;&lt;10);</span><br><span class="line">  s = s % M;</span><br><span class="line">  s = s &lt; 0 ? s + M : s;</span><br><span class="line"> return s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注：虽说以上的hash能极大程度地避免冲突，但是冲突是在所难免的。所以无论用哪种hash函数，都要加上处理冲突的方法。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">hash加密原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/17/Hash加密原理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-密码算法加密原理及攻击方式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/17/密码算法加密原理及攻击方式/">密码算法加密原理及攻击方式</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/17/密码算法加密原理及攻击方式/" class="archive-article-date">
-  	<time datetime="2018-05-17T07:51:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-17</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="密码算法加密原理及攻击方式"><a href="#密码算法加密原理及攻击方式" class="headerlink" title="密码算法加密原理及攻击方式"></a>密码算法加密原理及攻击方式</h1><h2 id="1-密码算法分类"><a href="#1-密码算法分类" class="headerlink" title="1. 密码算法分类"></a>1. 密码算法分类</h2><p>密码算法可以分为<strong>分组密码</strong>和<strong>流密码</strong>两种</p>
-<ul>
-<li><p><strong>分组密码（block cipher）</strong>是每次只能处理特定长度的一块数据的一类密码算法，这里的“一块”就称为分组（block）。一个分组的比特数就称为分组长度（block lenght）。</p>
-<p>  例如 DES和3DES的分组长度都是64比特。AES的分组长度为128比特。</p>
-</li>
-<li><p><strong>流密码（stream cipher）</strong>是对数据流进行连续处理的一类密码算法。流密码中一般以1比特、8比特、或32比特等为单位进行加密和解密。</p>
-</li>
-</ul>
-<p>　　分组密码处理完一个分组就结束了，因此不需要通过内部状态来记录加密的进度；相对地，流密码是对一串数据进行连续处理，因此需要保持内部状态。</p>
-<h2 id="2-加密模式"><a href="#2-加密模式" class="headerlink" title="2. 加密模式"></a>2. 加密模式</h2><p>　　分组密码算法只能加密固定长度的分组，但是我们需要加密的明文长度可能会超过分组密码的分组长度，这时就需要对分组密码算法进行迭代，以便将一段很长的明文全部加密。而迭代的方法就称为分组密码的模式（mode）。</p>
-<ul>
-<li>ECB模式：Electronic CodeBook mode（电子密码模式）</li>
-<li>CBC模式：Cipher Block Chaining mode（密码分组链接模式）</li>
-<li>CFB模式：Cipher FeedBack mode（密文反馈模式）</li>
-<li>OFB模式：Output FeedBack mode（输出反馈模式）</li>
-<li>CTR模式：CounTeR mode（计数器模式）</li>
-</ul>
-<h3 id="2-1-ECB模式"><a href="#2-1-ECB模式" class="headerlink" title="2.1 ECB模式"></a>2.1 ECB模式</h3><p>　　在ECB模式中，将明文分组加密之后的结果直接成为密文分组。当最后一个明文分组的内容小于分组长度时，需要用一些特定的数据进行填充（padding）。</p>
-<p><strong>明文分组</strong>：是指分组密码算法中作为加密对象的明文。<br><strong>密文分组</strong>：是指使用分组密码算法中将明文分组加密之后所生成的密文。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-192036.png" alt=""></p>
-<p>　　使用 ECB 模式加密时，相同的明文分组会转换为相同的密文分组，也就是说，我们可以将其理解为是一个巨大的“明文分组-&gt;密文分组”的对应表，因此 ECB 模式也称为 <strong>电子密码本模式</strong>。</p>
-<h4 id="ECB模式的特点"><a href="#ECB模式的特点" class="headerlink" title="ECB模式的特点"></a>ECB模式的特点</h4><p>　　ECB模式是所有模式中最简单的一种。ECB的明文分组与密文分组是一一对应的关系，因此，如果明文中存在多个相同的明文分组，则这些明文分组最终都会将被转换为相同的密文分组。这样一来，只要观察一下密文，就可以知道明文中存在怎样的重复组合，并可以以此为线索来破译密码，因此ECB模式是存在风险的。</p>
-<h4 id="对ECB模式的攻击"><a href="#对ECB模式的攻击" class="headerlink" title="对ECB模式的攻击"></a>对ECB模式的攻击</h4><p>　　假如存在主动攻击者Mallory，它能够改变密文分组的顺序。当接收者对密文进行解密时，由于密文分组的顺序被改变了，因此相应的明文分组的顺序也会改变。也就是说，攻击者Mallory无需破译密码就能够操纵明文。</p>
-<p>列举一个银行转账的简单例子，假设某银行转账数据由以下3个分组构成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">分组1 = 付款人的银行账号</span><br><span class="line">分组2 = 收款人的银行账号</span><br><span class="line">分组3 = 转转金额</span><br></pre></td></tr></table></figure>
-<p>我们可以制作一个“从 A 账号 向 B账号转账1000元”的数据，用16进制数据表示如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">明文分组1 = 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 （付款人：A）</span><br><span class="line"></span><br><span class="line">明文分组2 = 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30  （收款人： B）</span><br><span class="line"></span><br><span class="line">明文分组3 = 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  （转账金额： 1000）</span><br></pre></td></tr></table></figure>
-<p>经过 ECB模式进行加密，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">密文分组1 = 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C （付款人：*）</span><br><span class="line"></span><br><span class="line">密文分组2 = 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F （收款人： *）</span><br><span class="line"></span><br><span class="line">密文分组3 = 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E （转账金额： **）</span><br></pre></td></tr></table></figure>
-<p>如果攻击者 Mallory 将密文分组1 和 2 内容对调，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">密文分组1 = 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F 2D 3F （付款人： *）</span><br><span class="line"></span><br><span class="line">密文分组2 = 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C 1A 2C （收款人：*）</span><br><span class="line"></span><br><span class="line">密文分组3 = 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E 4D 5E （转账金额： **）</span><br></pre></td></tr></table></figure>
-<p>　　那请求内容从A向B转账1000，变成了B向A转账1000。我们可以看出ECB模式的缺点是可以在不破译密文的情况下操纵明文。</p>
-<h3 id="2-2-CBC模式"><a href="#2-2-CBC模式" class="headerlink" title="2.2 CBC模式"></a>2.2 CBC模式</h3><p>　　CBC模式，全称Cipher Block Chaining模式，译为密文分组链接模式，即加密算法的输入是上一个密文分组和下一个明文分组的异或。因为是将上一个密文分组和下一个明文分组的内容混合加密，因此可以避免ECB模式的缺陷。当加密第一个明文分组时，由于不存在上一个密文分组，因此需要准备与分组等长的初始化向量IV，来代替上一个密文分组。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-201449.png" alt=""></p>
-<p>　　<strong>初始化向量</strong>：当加密第一个明文分组时，由于不存在“前一个密文分组”，因此需要事先准备一个长度为一个分组的比特序列来代替“前一个密文分组”，这个比特序列称为初始化向量，通常缩写为IV。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func NewCBCEncrypter(b Block, iv []byte) BlockMode</span><br></pre></td></tr></table></figure>
-<p>当我们使用 CBC模式的时候，需要传入 iv（初始化向量）</p>
-<h4 id="CBC模式的特点"><a href="#CBC模式的特点" class="headerlink" title="CBC模式的特点"></a>CBC模式的特点</h4><ul>
-<li><p>明文分组在加密之前一定会与“前一个密文分组”进行XOR运算，因此即便明文分组1和2的值是相等的，密文分组1和2的值也不一定是相等的。这样ECB模式的缺陷在CBC模式中就不存在了。</p>
-</li>
-<li><p>在CBC模式中，无法单独对一个中间的明文分组进行加密。例如，如果要生成密文分组3，则至少需要凑齐明文分组1、2、3才行。</p>
-</li>
-<li><p>如果密文分组中有一些比特缺失了，即便只缺失了1比特，那么缺失比特的位置之后的密文分组也就全部无法解密了。</p>
-</li>
-</ul>
-<h4 id="对CBC模式的攻击"><a href="#对CBC模式的攻击" class="headerlink" title="对CBC模式的攻击"></a>对CBC模式的攻击</h4><p>　　假设主动攻击者Mallory的目的是通过修改密文来操纵解密后的明文。如果Mallory能够对初始化向量中任意比特进行反转，则解密后得到的明文分组中相应的比特也会被反转。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-202558.png" alt=""></p>
-<h3 id="2-3-CFB模式"><a href="#2-3-CFB模式" class="headerlink" title="2.3 CFB模式"></a>2.3 CFB模式</h3><p>　　CFB模式，全称Cipher FeedBack模式，译为密文反馈模式，即上一个密文分组作为加密算法的输入，输出与明文异或作为下一个分组的密文。在CFB模式中，明文分组和密文分组之间只有一次异或。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-203020.png" alt=""></p>
-<p>　　CFB模式与一次性密码本相似，都是通过将明文与随机比特序列进行异或运算来生成密文。但由于CFB模式中密码算法的输出是通过计算得到的，并非真正的随机数，因此不具备一次性密码本那样理论上不可破译的性质。CFB模式可以看做使用分组方式实现流密码的方式。</p>
-<h4 id="对CFB模式的攻击"><a href="#对CFB模式的攻击" class="headerlink" title="对CFB模式的攻击"></a>对CFB模式的攻击</h4><p>　　对CFB模式可以实施 <strong>重放攻击（replay attack）</strong></p>
-<p>　　有一天 A 向 B 发送了一条消息，这条消息由4个密文分组组成，攻击者将后3个密文分组保存下来，第二天，A又向 B 发送内容不同的4个密文分组，攻击者将后3个密文分组进行替换。解密的时候就会发现第一个可以解密正确，第2个会出现错误，而第3个和第4个则变成攻击者替换的内容。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-204000.png" alt=""></p>
-<h3 id="2-4-OFB模式"><a href="#2-4-OFB模式" class="headerlink" title="2.4 OFB模式"></a>2.4 OFB模式</h3><p>　　OFB模式，全称Output Feedback模式，译为输出反馈模式。OFB模式与CFB模式类似，只是加密算法的输入是上一次加密的输出。</p>
-<p>　　OFB模式不是通过密码算法对明文直接进行加密的，而是通过将“<strong>明文分组</strong>”和“<strong>密码算法的输出</strong>”进行XOR来产生“密文分组”的。</p>
-<p>　　OFB模式加密和处理解密逻辑相同，明文与密钥流异或生成密文，密文与密钥流异或生成明文。<br>　　<br><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-204818.png" alt=""><br>　　<br><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-204840.png" alt=""></p>
-<h3 id="2-5-CTR模式"><a href="#2-5-CTR模式" class="headerlink" title="2.5 CTR模式"></a>2.5 CTR模式</h3><p>　　CTR模式，全称Counter模式，译为计数器模式。CTR模式中，每个分组对应一个逐次累加的计数器，并通过对计数器进行加密来生成密钥流。也即最终的密文分组是通过将计数器加密得到的比特序列，与明文分组进行异或运算得到的。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180116-205323.png" alt=""></p>
-<h4 id="CTR模式的特点"><a href="#CTR模式的特点" class="headerlink" title="CTR模式的特点"></a>CTR模式的特点</h4><ul>
-<li><p>CTR模式的加密和解密使用了完全相同的结构，因此在程序实现上比较容易。这一特点和同为流密码的OFB模式是一样的。</p>
-</li>
-<li><p>CTR模式中可以以任意顺序对分组进行加密和解密，因此在加密和解密时需要用到的“计数器”的值可以由nonce和分组序号直接计算出来。能够以任意顺序处理分组，就以为着能够实现并行计算。在支持并行计算的系统中，CTR模式的速度是非常快的。</p>
-</li>
-</ul>
-<h4 id="错误与机密性"><a href="#错误与机密性" class="headerlink" title="错误与机密性"></a>错误与机密性</h4><ul>
-<li><p>假设CTR模式的密文分组中有一个比特被反转了，则解密后明文分组中仅有与之对应的比特会被反转，这一错误不会放大，这一弱点和OFB模式是相同的。</p>
-</li>
-<li><p>在OFB模式中，如果对密钥流的一个分组进行加密后其结果碰巧和加密前是相同的，那么这一分组之后的密钥流就会变成同一值的不断反复。在CTR模式中就不存在这一问题。</p>
-</li>
-</ul>
-<h2 id="3-分组密码模式比较"><a href="#3-分组密码模式比较" class="headerlink" title="3. 分组密码模式比较"></a>3. 分组密码模式比较</h2><table>
-<thead>
-<tr>
-<th>模式</th>
-<th>优点</th>
-<th>缺点</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ECB模式</td>
-<td>简单<br> 快速<br> 支持并行运算</td>
-<td>明文中的重复排列反映在密文中<br> 通过删除、替换密文分组可以对明文进行操作 <br> 对包含某些比特错误的密文进行解密时对应的分组会出错 <br> 不能抵御重放攻击</td>
-<td>不应使用</td>
-</tr>
-<tr>
-<td>CBC模式</td>
-<td>明文的重复排列不会反映在密文中<br> 支持并行运算（仅解密）<br> 能够解密任意密文分组</td>
-<td>对包含某些错误比特的密文进行解密时，第一个分组的全部比特以及后一个分组的相应比特会出错<br> 加密不支持并行运算</td>
-<td>CRYPRTREC推荐 《应用密码学》推荐</td>
-</tr>
-<tr>
-<td>CFB模式</td>
-<td>不需要填充<br> 支持并行计算（仅解密）<br> 能够解密任意密文分组</td>
-<td>加密不支持并行计算<br> 对包含某些错误比特的密文进行解密时，第一个分组的全部比特以及后一个分组的相应比特会出错<br> 不能抵御重放攻击</td>
-<td>CRYPRTREC推荐</td>
-</tr>
-<tr>
-<td>OFB模式</td>
-<td>不需要填充<br> 可事先进行加密、解密的准备 <br> 加密、解密使用相同结构 <br> 对包含某些错误比特的密文进行解密时，只有明文中相对应的比特会出错</td>
-<td>不支持并行计算 <br> 主动攻击者反转密文分组中的某些比特时，明文分组中相对应的比特也会被反转</td>
-<td>CRYPRTREC推荐</td>
-</tr>
-<tr>
-<td>CTR模式</td>
-<td>不需要填充<br> 可事先进行加密、解密的准备 <br> 加密、解密使用相同结构 <br> 对包含某些错误比特的密文进行解密时，只有明文中相对应的比特会出错 <br> 支持并行计算（加密、解密）</td>
-<td>主动攻击者反转密文分组中的某些比特时，明文分组中相对应的比特也会被反转</td>
-<td>CRYPRTREC推荐 《应用密码学》推荐</td>
-</tr>
-</tbody>
-</table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码算法加密原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/17/密码算法加密原理及攻击方式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1670,10 +1655,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RPC</a>
               </li>
              
@@ -1682,7 +1663,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1694,19 +1683,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1714,7 +1695,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1726,6 +1711,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Go语言</a>
               </li>
              
@@ -1734,7 +1723,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1743,10 +1732,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1766,6 +1751,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
               </li>
              
@@ -1774,15 +1763,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1802,15 +1787,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1834,10 +1819,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
@@ -1847,6 +1828,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1878,15 +1863,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1894,7 +1879,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>

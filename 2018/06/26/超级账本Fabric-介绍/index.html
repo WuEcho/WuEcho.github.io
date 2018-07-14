@@ -16,10 +16,12 @@
 <meta property="og:site_name" content="WuEcho的博客">
 <meta property="og:description" content="超级账本Fabric-１.简介1. 简介　　2015年12月, 由Linux基金会牵头, IBM、Intel、Cisco等共同宣布了Hyperledger联合项目成立。超级账本项目为透明、公开、去中心化的企业级分布式账本技术提供开源参考实现。  艾亿数融、OnChain、比邻共赢、BitSE、布比、三一重工、万达、华为等诸多国内企业加入  　　超级账本首次将区块链技术引入到分布式联盟账本的应用场景">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-26T07:12:09.245Z">
+<meta property="og:image" content="http://www.wuecho.com/2018/06/26/超级账本Fabric-介绍/fabric目录介绍.png">
+<meta property="og:updated_time" content="2018-07-14T15:19:21.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="超级账本Fabric-介绍">
 <meta name="twitter:description" content="超级账本Fabric-１.简介1. 简介　　2015年12月, 由Linux基金会牵头, IBM、Intel、Cisco等共同宣布了Hyperledger联合项目成立。超级账本项目为透明、公开、去中心化的企业级分布式账本技术提供开源参考实现。  艾亿数融、OnChain、比邻共赢、BitSE、布比、三一重工、万达、华为等诸多国内企业加入  　　超级账本首次将区块链技术引入到分布式联盟账本的应用场景">
+<meta name="twitter:image" content="http://www.wuecho.com/2018/06/26/超级账本Fabric-介绍/fabric目录介绍.png">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
   
@@ -196,7 +198,7 @@
       <div id="toc-article" class="toc-article">
           <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-１-简介"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-１.简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-简介"><span class="toc-number">1.1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-节点类型"><span class="toc-number">1.2.</span> <span class="toc-text">2. 节点类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-启动网络的步骤"><span class="toc-number">1.3.</span> <span class="toc-text">3. 启动网络的步骤</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-１-简介"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-１.简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-简介"><span class="toc-number">1.1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-节点类型"><span class="toc-number">1.2.</span> <span class="toc-text">2. 节点类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-启动网络的步骤"><span class="toc-number">1.3.</span> <span class="toc-text">3. 启动网络的步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-fabric项目目录介绍"><span class="toc-number">1.4.</span> <span class="toc-text">4. fabric项目目录介绍</span></a></li></ol></li></ol>
       </div>
       <script type="text/javascript">
           function showToc(){
@@ -235,9 +237,11 @@
 <p>　　Fabric是最早加入到超级账本项目中的顶级项目, 面向企业的分布式账本平台,引入了权限管理,支持可插拔、可扩展,由IBM、DIH等企业于2015年底提交到社区,是首个面向联盟链场景的开源项目。</p>
 <p>Fabric基于GO语言实现,已发布1.1.0版本。</p>
 <p><a href="https://github.com/hyperledger/fabric" target="_blank" rel="noopener">项目地址:  https://github.com/hyperledger/fabric</a></p>
-<h2 id="2-节点类型"><a href="#2-节点类型" class="headerlink" title="2. 节点类型"></a>2. 节点类型</h2><p>　　Fabric从1.0开始，在架构上进行了重新设计，解耦了节点的角色，同时在安全性，性能，可靠性和可插拔性方面都有不少改进。目前，网络中存在以下4种不同种类的服务节点，彼此协作完成整个区块链系统的功能。<br>　　对网络中节点角色进行解耦是Fabric设计中的一大创新，这也是联盟链场景下的特殊需求和环境所决定的：　<br>　　- <strong>背书节点(Endorser)：</strong>负责对交易的提案(proposal)进行检查和背书，计算交易执行结果。<br>　　- <strong>确认节点(Committer)：</strong>负责在接受交易结果前再次检查合法性，接受合法交易对账本的修改，并写入区块链结构。<br>　　- <strong>排序节点(Orderer)：</strong>对所有发往网络中的交易进行排序，将排序后的交易按照配置中的约定整理为区块，之后提交给确认节点进行处理。<br>　　- <strong>证书节点(CA)：</strong>负责对网络中所有的证书进行管理，提供标准的PKI服务。
-　　</p>
+<h2 id="2-节点类型"><a href="#2-节点类型" class="headerlink" title="2. 节点类型"></a>2. 节点类型</h2><p>　　Fabric从1.0开始，在架构上进行了重新设计，解耦了节点的角色，同时在安全性，性能，可靠性和可插拔性方面都有不少改进。目前，网络中存在以下4种不同种类的服务节点，彼此协作完成整个区块链系统的功能。<br>　　对网络中节点角色进行解耦是Fabric设计中的一大创新，这也是联盟链场景下的特殊需求和环境所决定的：　<br>　　- <strong>背书节点(Endorser)：</strong>负责对交易的提案(proposal)进行检查和背书，计算交易执行结果。<br>　　- <strong>确认节点(Committer)：</strong>负责在接受交易结果前再次检查合法性，接受合法交易对账本的修改，并写入区块链结构。<br>　　- <strong>排序节点(Orderer)：</strong>对所有发往网络中的交易进行排序，将排序后的交易按照配置中的约定整理为区块，之后提交给确认节点进行处理。<br>　　- <strong>证书节点(CA)：</strong>负责对网络中所有的证书进行管理，提供标准的PKI服务。</p>
+<p>　　对于peer节点中的角色：<br>　　- <strong>Leader节点：</strong> 获取Orderer服务节点生成的区块，并广播给本组织其他节点<br>　　- <strong>Anchor节点：</strong> 用于跨组织的数据交换<br>　　- <strong>背书节点：</strong> 用于背书签名，检验交易是否合法<br>　　- <strong>commit节点：</strong> 用于保存区块，所有节点都是commit节点
+ 　　</p>
 <h2 id="3-启动网络的步骤"><a href="#3-启动网络的步骤" class="headerlink" title="3. 启动网络的步骤"></a>3. 启动网络的步骤</h2><p>　　要启动一个Fabric网络，需要遵循如下主要步骤：<br>1）预备网络内各项配置，包括网络中成员的组织结构和对应的身份证书(使用cryptogen工具完成);生成系统通道的初始配置区块文件，新建应用通道的配置更新交易文件以及可能需要的锚节点配置更新交易文件（使用configtxgen工具完成）。<br>2）使用系统通道的初始配置区块文件启动排序节点，排序节点启动后自动按照指定配置创建系统通道。<br>3）不同的组织按照预置角色分别启动Peer节点。这个时候网络中不存在应用通道，Peer节点也并没有加入网络中。<br>4）使用新建应用通道的配置更新交易文件，向系统通道发送交易，创建新的应用通道。<br>5）让对应的Peer节点加入所创建的应用通道中，此时Peer节点加入网络，可以准备接受交易。<br>6）用户通过客户端向网络中安装注册链码，链码容器启动成功后用户即可对链码进行调用，将交易发送到网络中。</p>
+<h2 id="4-fabric项目目录介绍"><a href="#4-fabric项目目录介绍" class="headerlink" title="4. fabric项目目录介绍"></a>4. fabric项目目录介绍</h2><p><img src="/2018/06/26/超级账本Fabric-介绍/fabric目录介绍.png" alt=""></p>
 
       
 
@@ -401,7 +405,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-１-简介"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-１.简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-简介"><span class="toc-number">1.1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-节点类型"><span class="toc-number">1.2.</span> <span class="toc-text">2. 节点类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-启动网络的步骤"><span class="toc-number">1.3.</span> <span class="toc-text">3. 启动网络的步骤</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-１-简介"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-１.简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-简介"><span class="toc-number">1.1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-节点类型"><span class="toc-number">1.2.</span> <span class="toc-text">2. 节点类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-启动网络的步骤"><span class="toc-number">1.3.</span> <span class="toc-text">3. 启动网络的步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-fabric项目目录介绍"><span class="toc-number">1.4.</span> <span class="toc-text">4. fabric项目目录介绍</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -529,10 +533,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RPC</a>
               </li>
              
@@ -541,7 +541,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -553,19 +561,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -573,7 +573,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -585,6 +589,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Go语言</a>
               </li>
              
@@ -593,7 +601,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -602,10 +610,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -625,6 +629,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
               </li>
              
@@ -633,15 +641,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -661,15 +665,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -693,10 +697,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
@@ -706,6 +706,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -737,15 +741,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -753,7 +757,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>

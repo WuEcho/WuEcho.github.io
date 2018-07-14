@@ -172,6 +172,516 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-超级账本Fabric-链码的概念与使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/28/超级账本Fabric-链码的概念与使用/">超级账本Fabric-链码的概念与使用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/28/超级账本Fabric-链码的概念与使用/" class="archive-article-date">
+  	<time datetime="2018-06-27T16:22:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-28</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="超级账本Fabric-5-链码的概念与使用"><a href="#超级账本Fabric-5-链码的概念与使用" class="headerlink" title="超级账本Fabric-5.链码的概念与使用"></a>超级账本Fabric-5.链码的概念与使用</h1><h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念:"></a>1.概念:</h2><p>链码(Chaincode): 链上代码, 简称链码, 一般是指用户编写的应用代码</p>
+<p>链码被部署在Fabric网络节点上, </p>
+<p>​    Peer 节点:</p>
+<p>​        – 背书节点</p>
+<p>​        – commit节点</p>
+<p>​        – Leader节点</p>
+<p>​        – 锚节点</p>
+<p>运行在隔离沙盒(当前为Docker容器)中, 并通过gRPC协议与相应的Peer节点进行交互, 以操作分布式账本中的数据</p>
+<p>protobuf</p>
+<p><strong>分类</strong></p>
+<p>链码一般分为:</p>
+<ul>
+<li>用户链码</li>
+<li>系统链码</li>
+</ul>
+<h3 id="1-1-用户链码"><a href="#1-1-用户链码" class="headerlink" title="1.1 用户链码"></a>1.1 用户链码</h3><p>由应用开发人员使用Go(Java/JS)语言编写基于区块链分布式账本的状态及处理逻辑,运行在链码容器中, 通过Fabric提供的接口与账本平台进行交互。</p>
+<h3 id="1-2-系统链码"><a href="#1-2-系统链码" class="headerlink" title="1.2 系统链码"></a>1.2 系统链码</h3><p>负责Fabric节点自身的处理逻辑, 包括系统配置、背书、校验等工作，系统链码仅支持Go语言, 在Peer节点启动时会自动完成注册和部署</p>
+<p><strong>系统链码共有五种类型:</strong></p>
+<ul>
+<li><p>配置系统链码(CSCC)</p>
+<p>CSCC:  Configuration System Chaincode<br>负责账本和链的配置管理 </p>
+</li>
+<li><p>背书管理系统链码(ESCC)</p>
+</li>
+</ul>
+<p>ESCC:  Endorsement System Chaincode</p>
+<p>负责背书(签名)过程, 并可以支持对背书策略进行管理</p>
+<blockquote>
+<p>对传入的链码提案的模拟运行结果进行签名, 之后创建响应消息返回给客户端</p>
+</blockquote>
+<ul>
+<li>生命周期系统链码(LSCC)</li>
+</ul>
+<p>LSCC:  Lifecycle System Chaincode</p>
+<p>负责对用户链码的生命周期进行管理</p>
+<p>链码生命周期包括安装、部署、升级、权限管理、获取信息等环节.</p>
+<ul>
+<li>查询系统链码(QSCC)</li>
+</ul>
+<p>QSCC:  Query System Chaincode</p>
+<p>负责提供账本和链的信息查询功能</p>
+<ul>
+<li>验证系统链码(VSCC)</li>
+</ul>
+<p>VSCC:  Verification System Chaincode</p>
+<p>交易提交前根据背书策略进行检查</p>
+<p>验证过程:</p>
+<ol>
+<li>首先解析出交易结构, 并对交易结构格式进行校验</li>
+<li>检查交易的读集合中元素版本跟本地账本中版本一致</li>
+<li>检查带有合法的背书信息(主要是检查签名信息)</li>
+<li>通过则返回正确, 否则返回错误消息</li>
+</ol>
+<h2 id="2-链码生命周期"><a href="#2-链码生命周期" class="headerlink" title="2. 链码生命周期"></a>2. 链码生命周期</h2><p><strong>管理Chaincode的生命周期四个命令：</strong></p>
+<p>安装, 实例化, 升级, 打包, 签名</p>
+<p><code>package</code>， <code>install</code>，<code>instantiate</code>，<code>upgrade</code></p>
+<p>未来还会支持<code>stop</code>和<code>start</code>命令, 来禁用和重新启用链代码,链代码成功安装和实例化后，链代码处于活动状态（正在运行），可通过<code>invoke</code>命令调用处理事务,链代码可以在安装后随时升级。</p>
+<h2 id="3-安装链码"><a href="#3-安装链码" class="headerlink" title="3. 安装链码"></a>3. 安装链码</h2><p>install命令将链码的源码和环境等内容封装为一个链码安装打包文件(Chaincode Install Package, CIP), 并传输到背书节点。</p>
+<p>背书节点解析后一般会保存在$CORE_PEER_FILESYSTEMPATH/chaincodes目录下。安装链码只需要与Peer交互。</p>
+<h3 id="3-1-进入到sacc目录"><a href="#3-1-进入到sacc目录" class="headerlink" title="3.1 进入到sacc目录"></a>3.1 进入到sacc目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/hyfa/fabric-samples/chaincode/sacc/</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-构建Chaincode"><a href="#3-2-构建Chaincode" class="headerlink" title="3.2 构建Chaincode"></a>3.2 构建Chaincode</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ go get -u --tags nopkcs11 github.com/hyperledger/fabric/core/chaincode/shim</span><br><span class="line"></span><br><span class="line">$ go build --tags nopkcs11</span><br></pre></td></tr></table></figure>
+<p><strong>命令解释</strong><br>go get:  根据要求和实际情况从互联网上下载或更新指定的代码包及其依赖包，并对它们进行编译和安装</p>
+<p>-u:  利用网络来更新已有代码包及其依赖包。默认情况下，该命令只会从网络上下载本地不存在的代码包，而不会更新已有的代码包</p>
+<p>go build:  加上可编译的go源文件可以得到一个可执行文件</p>
+<p>如果在执行  <code>go build --tags nopkcsll</code>  命令时出现如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$GOPATH/src/github.com/hyperledger/fabric/vendor/github.com/miekg/pkcs11/pkcs11.go:26:18: fatal error: ltdl.h: No such file or directory</span><br><span class="line">compilation terminated.</span><br><span class="line"></span><br><span class="line">解决方式: 安装 libltdl-dev</span><br><span class="line">$ sudo apt install libltdl-dev</span><br></pre></td></tr></table></figure>
+<p>在执行<code>go build</code>命令的时候如果出现权限问题那么可以通过修改chaincode文件夹的操作权限为当前用户权限来解决。<br>当前所在路径为<code>/hyfa/fabric-samples/chaincode/sacc/</code>，使用如下命令：<code>cd ../../</code><br>然后查看当前用户权限名称：<code>ll</code>，然后修改chaincode文件夹权限：<code>sudo chown -R parallels:parallels chaincode</code></p>
+<h2 id="4-使用开发模式测试"><a href="#4-使用开发模式测试" class="headerlink" title="4.使用开发模式测试"></a>4.使用开发模式测试</h2><p>正常情况下chaincode由对等体启动和维护。然而，在“开发模式”下，链码由用户构建并启动</p>
+<blockquote>
+<p>如果没有安装Hyperledger Fabric Samples请先安装</p>
+</blockquote>
+<blockquote>
+<p>如果没有下载Docker images请先下载</p>
+</blockquote>
+<p>跳转至<code>fabric-samples</code>的<code>chaincode-docker-devmode</code>目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode/</span><br></pre></td></tr></table></figure>
+<p>使用<code>docker images</code>查看Docker镜像信息(显示本地Docker Registry)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker images</span><br></pre></td></tr></table></figure>
+<p>会看到如下输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">REPOSITORY                     TAG                  IMAGE ID            CREATED             SIZE</span><br><span class="line">hyperledger/fabric-tools       latest             b7bfddf508bc        About an hour ago   1.46GB</span><br><span class="line">hyperledger/fabric-tools       x86_64-1.1.0       b7bfddf508bc        About an hour ago   1.46GB</span><br><span class="line">hyperledger/fabric-orderer     latest             ce0c810df36a        About an hour ago   180MB</span><br><span class="line">hyperledger/fabric-orderer     x86_64-1.1.0       ce0c810df36a        About an hour ago   180MB</span><br><span class="line">hyperledger/fabric-peer        latest             b023f9be0771        About an hour ago   187MB</span><br><span class="line">hyperledger/fabric-peer        x86_64-1.1.0       b023f9be0771        About an hour ago   187MB</span><br><span class="line">hyperledger/fabric-javaenv     latest             82098abb1a17        About an hour ago   1.52GB</span><br><span class="line">hyperledger/fabric-javaenv     x86_64-1.1.0       82098abb1a17        About an hour ago   1.52GB</span><br><span class="line">hyperledger/fabric-ccenv       latest             c8b4909d8d46        About an hour ago   1.39GB</span><br><span class="line">hyperledger/fabric-ccenv       x86_64-1.1.0       c8b4909d8d46        About an hour ago   1.39GB</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-使用三个终端"><a href="#4-1-使用三个终端" class="headerlink" title="4.1 使用三个终端"></a>4.1 使用三个终端</h3><h4 id="4-1-1-终端1-启动网络"><a href="#4-1-1-终端1-启动网络" class="headerlink" title="4.1.1 终端1 启动网络"></a>4.1.1 终端1 启动网络</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode/</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>该目录下有  <code>myc.tx</code>  文件</p>
+</blockquote>
+<p>启动网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker-compose -f docker-compose-simple.yaml up -d</span><br></pre></td></tr></table></figure>
+<h4 id="4-1-2-终端2-建立并启动链码"><a href="#4-1-2-终端2-建立并启动链码" class="headerlink" title="4.1.2 终端2 建立并启动链码"></a>4.1.2 终端2 建立并启动链码</h4><p>打开第二个终端, 进入到<code>chaincode-docker-devmode</code>  目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode/</span><br></pre></td></tr></table></figure>
+<p><strong>进入CLI</strong></p>
+<p>chaincode容器的作用是为发简化的方式建立并启动链码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker exec -it chaincode bash</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 命令提示符变为:</p>
+<p><code>root@858726aed16e:/opt/gopath/src/chaincode#</code></p>
+</blockquote>
+<p><strong>编译</strong></p>
+<p>进入sacc目录编译chaincode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@858726aed16e:/opt/gopath/src/chaincode#  cd sacc</span><br><span class="line">root@858726aed16e:/opt/gopath/src/chaincode/sacc#  go build</span><br></pre></td></tr></table></figure>
+<p><strong>运行chaincode</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=mycc:0 ./sacc</span><br></pre></td></tr></table></figure>
+<p>mycc: 链码名称</p>
+<p>0: 链码初始版本号</p>
+<h4 id="4-1-3-终端3-使用链码"><a href="#4-1-3-终端3-使用链码" class="headerlink" title="4.1.3 终端3 使用链码"></a>4.1.3 终端3 使用链码</h4><p><strong>安装及实例化</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode/</span><br><span class="line">$ sudo docker exec -it cli bash</span><br></pre></td></tr></table></figure>
+<p>进入CLI容器后执行如下命令安装及实例化chaincode</p>
+<blockquote>
+<p> <strong>容器中已经有  <code>myc.block</code>    、  <code>myc.tx</code>  两个文件， 可以直接使用</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode install -p chaincodedev/chaincode/sacc -n mycc -v 0</span><br><span class="line">peer chaincode instantiate -n mycc -v 0 -c &apos;&#123;&quot;Args&quot;:[&quot;a&quot;,&quot;10&quot;]&#125;&apos; -C myc</span><br></pre></td></tr></table></figure>
+<p><strong>调用</strong></p>
+<p>进行调用,将<code>a</code>的值更改为<code>20</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode invoke -n mycc -c &apos;&#123;&quot;Args&quot;:[&quot;set&quot;, &quot;a&quot;, &quot;20&quot;]&#125;&apos; -C myc</span><br></pre></td></tr></table></figure>
+<p>执行成功, 输出如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">...... Chaincode invoke successful. result: status:200 payload:&quot;20&quot;</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<p><strong>查询</strong></p>
+<p>查询<code>a</code>的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode query -n mycc -c &apos;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&apos; -C myc</span><br></pre></td></tr></table></figure>
+<p>执行成功, 输出: <code>Query Result: 20</code></p>
+<h2 id="5-打包链码及签名"><a href="#5-打包链码及签名" class="headerlink" title="5. 打包链码及签名"></a>5. 打包链码及签名</h2><p>通过将链码相关数据进行封装, 可以实现对其进行打包和签名操作</p>
+<h3 id="5-1-打包"><a href="#5-1-打包" class="headerlink" title="5.1 打包"></a>5.1 打包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode package -n mycc -p chaincodedev/chaincode/sacc -v 0 -s -S -i &quot;AND(&apos;OrgA.admin&apos;)&quot; ccpack.out</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>-s: 创建角色支持的CC部署规范包, 而不是原始的CC部署规范</p>
+<p>-S: 如果创建CC部署规范方案角色支持,也与本地MSP签名</p>
+<p>-i: 指定实例化策略</p>
+</blockquote>
+<p>打包后的文件, 可以直接用于install操作, 如:</p>
+<p>​    <code>peer chaincode install ccpack.out</code><br>​    </p>
+<h3 id="5-2-签名"><a href="#5-2-签名" class="headerlink" title="5.2 签名"></a>5.2 签名</h3><p>对一个打包文件进行签名操作(添加当前MSP签名到签名列表中)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode signpackage ccpack.out signedccpack.out</span><br></pre></td></tr></table></figure>
+<h2 id="6-升级链码"><a href="#6-升级链码" class="headerlink" title="6. 升级链码"></a>6. 升级链码</h2><p><strong>退出终端3, 停止终端2的服务</strong></p>
+<h3 id="6-1-终端2中重新运行chaincode"><a href="#6-1-终端2中重新运行chaincode" class="headerlink" title="6.1 终端2中重新运行chaincode"></a>6.1 终端2中重新运行chaincode</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker exec -it chaincode bash</span><br><span class="line"></span><br><span class="line">cd sacc</span><br><span class="line">go build</span><br><span class="line">CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=mycc:1 ./sacc</span><br></pre></td></tr></table></figure>
+<p><strong>注意版本为 <code>1.0</code>,  旧版本为 <code>0</code></strong></p>
+<h3 id="6-2-终端3"><a href="#6-2-终端3" class="headerlink" title="6.2 终端3"></a>6.2 终端3</h3><p>打开终端3, 进入CLI容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker exec -it cli bash</span><br></pre></td></tr></table></figure>
+<h3 id="6-3-安装及升级"><a href="#6-3-安装及升级" class="headerlink" title="6.3 安装及升级"></a>6.3 安装及升级</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode install -p chaincodedev/chaincode/sacc -n mycc -v 1</span><br><span class="line"></span><br><span class="line">peer chaincode upgrade -n mycc -v 1 -c &apos;&#123;&quot;Args&quot;:[&quot;a&quot;, &quot;100&quot;]&#125;&apos; -C myc</span><br></pre></td></tr></table></figure>
+<p>注意版本号必须一致</p>
+<p>在对某链码代码升级前, 推荐先将所有该链码的容器停止, 并从Peer上备份并移除旧链码部署文件. 之后先在个别Peer节点上部署新链码, 对原有数据进行测试, 成功后再在其它节点上进行升级操作</p>
+<h3 id="6-4-查询"><a href="#6-4-查询" class="headerlink" title="6.4 查询"></a>6.4 查询</h3><p>查询<code>a</code>的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode query -n mycc -c &apos;&#123;&quot;Args&quot;:[&quot;query&quot;,&quot;a&quot;]&#125;&apos; -C myc</span><br></pre></td></tr></table></figure>
+<p>执行成功, 输出: <code>Query Result:100</code></p>
+<h2 id="7-链码使用的示意图"><a href="#7-链码使用的示意图" class="headerlink" title="7. 链码使用的示意图"></a>7. 链码使用的示意图</h2><p><img src="/2018/06/28/超级账本Fabric-链码的概念与使用/链码.png" alt=""></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/28/超级账本Fabric-链码的概念与使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-超级账本Fabric-测试链码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/28/超级账本Fabric-测试链码/">超级账本Fabric-测试链码</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/28/超级账本Fabric-测试链码/" class="archive-article-date">
+  	<time datetime="2018-06-27T16:15:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-28</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="超级账本Fabric-4-测试链码"><a href="#超级账本Fabric-4-测试链码" class="headerlink" title="超级账本Fabric-4.测试链码"></a>超级账本Fabric-4.测试链码</h1><h2 id="1-测试链码"><a href="#1-测试链码" class="headerlink" title="1.测试链码"></a>1.测试链码</h2><p>确定进入CLI容器中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker exec -it cli bash</span><br></pre></td></tr></table></figure>
+<p>Peer加入应用通道后, 可以执行链码相关操作,进行测试</p>
+<p>链码在调用之前, 必须先经过安装和实例化两个步骤, 部署到Peer节点上.</p>
+<p>检查环境变量是否正确设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $CHANNEL_NAME</span><br></pre></td></tr></table></figure>
+<p>设置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export CHANNEL_NAME=mychannel</span><br></pre></td></tr></table></figure>
+<h3 id="1-1-安装并实例化Chaincode"><a href="#1-1-安装并实例化Chaincode" class="headerlink" title="1.1 安装并实例化Chaincode"></a>1.1 安装并实例化Chaincode</h3><p><strong>安装:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode install -n mycc -v 1.0 -p github.com/chaincode/chaincode_example02/go/</span><br><span class="line">``` </span><br><span class="line">参数说明:</span><br><span class="line"></span><br><span class="line">-n: 指定要安装的链码的名称</span><br><span class="line"></span><br><span class="line">-v: 指定要安装的链码的版本号</span><br><span class="line"></span><br><span class="line">-p: 指定要安装的链码的链码文件所在路径</span><br><span class="line"></span><br><span class="line">**实例化:**</span><br></pre></td></tr></table></figure>
+<p>peer chaincode instantiate -o orderer.example.com:7050 –tls –cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc -v 1.0 -c ‘{“Args”:[“init”,”a”, “100”, “b”,”200”]}’ -P “OR (‘Org1MSP.peer’,’Org2MSP.peer’)”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">参数说明:</span><br><span class="line"></span><br><span class="line">-o: 指定Orderer服务地址</span><br><span class="line"></span><br><span class="line">-n: 指定链码的名称</span><br><span class="line"></span><br><span class="line">-v: 指定链码的版本号</span><br><span class="line"></span><br><span class="line">-c: 指定实例化链码时的初始参数</span><br><span class="line"></span><br><span class="line">-C: 指定链码的所属通道</span><br><span class="line"></span><br><span class="line">-P: 指定背书策略</span><br><span class="line"></span><br><span class="line">--tls: 是否开启TLS</span><br><span class="line"></span><br><span class="line">--cafile: 指定MSP CA证书路径</span><br><span class="line"></span><br><span class="line">实例化完成后, 用户即可向网络中发起交易</span><br><span class="line"></span><br><span class="line">**调用链码:**</span><br><span class="line"></span><br><span class="line">1. query</span><br><span class="line">2. invoke</span><br><span class="line"></span><br><span class="line">### 1.2 查询</span><br></pre></td></tr></table></figure></p>
+<p>peer chaincode query -C $CHANNEL_NAME -n mycc -c ‘{“Args”:[“query”,”a”]}’<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">参数说明:</span><br><span class="line"></span><br><span class="line">-C: 指定所属通道</span><br><span class="line"></span><br><span class="line">-n: 指定链码名称</span><br><span class="line"></span><br><span class="line">-c: 调用链码的传递的参数</span><br><span class="line"></span><br><span class="line">输出结果:`Query Result: 100`</span><br><span class="line"></span><br><span class="line">### 1.3 调用/转账</span><br></pre></td></tr></table></figure></p>
+<p>peer chaincode invoke -o orderer.example.com:7050  –tls –cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c ‘{“Args”:[“invoke”,”a”,”b”,”10”]}’<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 1.4 查询a账户的金额</span><br></pre></td></tr></table></figure></p>
+<p>peer chaincode query -C $CHANNEL_NAME -n mycc -c ‘{“Args”:[“query”,”a”]}’<br><code>`</code></p>
+<p>输出结果: <code>Query Result: 90</code></p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>将github.com/chaincode/sacc/的链码安装并实例化,</p>
+<p>​     查询a账户的余额</p>
+<p>​    使用set方法设置a账户的余额</p>
+<p>​    使用get方法获取a账户的余额</p>
+<p>实例化时只需要两个参数, 不需要指定操作名称</p>
+<p>​    两个参数:  账户名, 金额</p>
+<p>set</p>
+<p>​    账户名, 金额</p>
+<p>get</p>
+<p>​    账户名, 金额</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/28/超级账本Fabric-测试链码/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-超级账本Fabric-手动启动网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/27/超级账本Fabric-手动启动网络/">超级账本Fabric-手动启动网络</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/27/超级账本Fabric-手动启动网络/" class="archive-article-date">
+  	<time datetime="2018-06-27T04:25:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-27</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="超级账本Fabric-3-手动启动网络"><a href="#超级账本Fabric-3-手动启动网络" class="headerlink" title="超级账本Fabric-3.手动启动网络"></a>超级账本Fabric-3.手动启动网络</h1><h2 id="1-实现步骤"><a href="#1-实现步骤" class="headerlink" title="1.实现步骤"></a>1.实现步骤</h2><h3 id="1-1-生成组织关系和身份证书"><a href="#1-1-生成组织关系和身份证书" class="headerlink" title="1.1 生成组织关系和身份证书"></a>1.1 生成组织关系和身份证书</h3><p>打开命令行工具<br>确定是在  <code>fabric-samples/first-network</code>  路径下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd hyfa/fabric-samples/first-network/</span><br></pre></td></tr></table></figure>
+<p>为fabric网络生成指定拓扑结构的<strong>组织关系和身份证书</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ../bin/cryptogen generate --config=./crypto-config.yaml</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此命令依赖 <code>crypto-config.yaml</code> 配置文件</p>
+</blockquote>
+<p>会有如下输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">org1.example.com</span><br><span class="line">org2.example.com</span><br></pre></td></tr></table></figure>
+<p>　　证书和密钥（即MSP材料）将被输出到目录  <code>first-network/crypto-config</code>  的目录中。<br>ordererOrganizations子目录下包括构成Orderer组织(1个Orderer节点)的身份信息。<br>　　peerOrganizations子目录下为所有的Peer节点组织(2个组织, 4个节点)的相关身份信息. 其中最关键的是MSP目录, 代表了实体的身份信息。</p>
+<p><strong>crypto-config文件目录结构如下</strong></p>
+<p>crypto-config<br>├── ordererOrganizations<br>│   └── example.com<br>│       ├── ca<br>│       │   ├── ca.example.com-cert.pem<br>│       │   └── df69b6d2aea8038270c5340d358bfe34eee039a8e16d4a849e67ec27a8ed53bd_sk<br>│       ├── msp<br>│       │   ├── admincerts<br>│       │   │   └── <a href="mailto:Admin@example.com-cert.pem" target="_blank" rel="noopener">Admin@example.com-cert.pem</a><br>│       │   ├── cacerts<br>│       │   │   └── ca.example.com-cert.pem<br>│       │   └── tlscacerts<br>│       │       └── tlsca.example.com-cert.pem<br>│       ├── orderers<br>│       │   └── orderer.example.com<br>│       │       ├── msp<br>│       │       │   ├── admincerts<br>│       │       │   ├── cacerts<br>│       │       │   ├── keystore<br>│       │       │   ├── signcerts<br>│       │       │   └── tlscacerts<br>│       │       └── tls<br>│       │           ├── ca.crt<br>│       │           ├── server.crt<br>│       │           └── server.key<br>│       ├── tlsca<br>│       │   ├── 138f1cfd2708bca1e9e525773af410d46cef12736c3673ed787d7bbc38f013a4_sk<br>│       │   └── tlsca.example.com-cert.pem<br>│       └── users<br>│           └── <a href="mailto:Admin@example.com" target="_blank" rel="noopener">Admin@example.com</a><br>│               ├── msp<br>│               │   ├── admincerts<br>│               │   ├── cacerts<br>│               │   ├── keystore<br>│               │   ├── signcerts<br>│               │   └── tlscacerts<br>│               └── tls<br>│                   ├── ca.crt<br>│                   ├── client.crt<br>│                   └── client.key<br>└── peerOrganizations<br>    ├── org1.example.com            # 第一个组织的相关材料，每个组织会生成单独的根证书<br>    │   ├── ca    #存放组织的根证书和对应的私钥文件，默认采用EC 算法，证书为自签名。组织内的实体将基于该根证书作为证书根。<br>    │   │   ├── 9b78dd1cc0570c9ef3f3fa31a1b343e7a6c0f157a2cc17f75412e12f2936898c_sk<br>    │   │   └── ca.org1.example.com-cert.pem<br>    │   ├── msp                    # 存放代表该组织的身份信息<br>    │   │   ├── admincerts            # 组织管理员的身份验证证书，被根证书签名<br>    │   │   │   └── <a href="mailto:Admin@org1.example.com-cert.pem" target="_blank" rel="noopener">Admin@org1.example.com-cert.pem</a><br>    │   │   ├── cacerts                # 组织的根证书，同ca 目录下文件<br>    │   │   │   └── ca.org1.example.com-cert.pem<br>    │   │   ├── config.yaml<br>    │   │   └── tlscacerts            # ：用于TLS 的CA 证书，自签名<br>    │   │       └── tlsca.org1.example.com-cert.pem<br>    │   ├── peers            # 存放属于该组织的所有Peer 节点<br>    │   │   ├── peer0.org1.example.com      # 第一个peer 的信息，包括其msp 证书和tls 证书两类<br>    │   │   │   ├── msp<br>    │   │   │   │   ├── admincerts                # 组织管理员的身份验证证书。Peer 将基于这些证书来认证交易签署者是否为管理员身份<br>    │   │   │   │   ├── cacerts                # 存放组织的根证书<br>    │   │   │   │   ├── config.yaml<br>    │   │   │   │   ├── keystore                # 本节点的身份私钥，用来签名<br>    │   │   │   │   ├── signcerts                # 验证本节点签名的证书，被组织根证书签名<br>    │   │   │   │   └── tlscacerts                # TLS 连接用的身份证书，即组织TLS 证书<br>    │   │   │   └── tls        # 存放tls 相关的证书和私钥<br>    │   │   │       ├── ca.crt            # 组织的根证书<br>    │   │   │       ├── server.crt        # 验证本节点签名的证书，被组织根证书签名<br>    │   │   │       └── server.key        # 本节点的身份私钥，用来签名<br>    │   │   └── peer1.org1.example.com        # 第二个peer 的信息，与peer0.org1.example.com结构类似<br>    │   │       ├── msp<br>    │   │       │   ├── admincerts<br>    │   │       │   ├── cacerts<br>    │   │       │   ├── config.yaml<br>    │   │       │   ├── keystore<br>    │   │       │   ├── signcerts<br>    │   │       │   └── tlscacerts<br>    │   │       └── tls<br>    │   │           ├── ca.crt<br>    │   │           ├── server.crt<br>    │   │           └── server.key<br>    │   ├── tlsca<br>    │   │   ├── cf4587814bc05f9f81ac3d990c365660dedf1479e60f737c7e9e707727a27168_sk<br>    │   │   └── tlsca.org1.example.com-cert.pem<br>    │   └── users        # 存放属于该组织的用户的实体<br>    │       ├── <a href="mailto:Admin@org1.example.com" target="_blank" rel="noopener">Admin@org1.example.com</a>        # 管理员用户的信息，包括其msp 证书和tls 证书两类<br>    │       │   ├── msp<br>    │       │   │   ├── admincerts            # 管理身份验证证书<br>    │       │   │   ├── cacerts                # 存放组织的根证书<br>    │       │   │   ├── keystore            # 本用户的身份私钥，用来签名<br>    │       │   │   ├── signcerts            # 管理员用户的身份验证证书，被组织根证书签名。要被某个Peer认可，则必须放到该Peer 的msp/admincerts 下<br>    │       │   │   └── tlscacerts            # TLS 连接用的身份证书，即组织TLS 证书<br>    │       │   └── tls        # 存放tls 相关的证书和私钥<br>    │       │       ├── ca.crt        # 组织的根证书<br>    │       │       ├── client.crt        # 管理员的用户身份验证证书，被组织根证书签名<br>    │       │       └── client.key    # 管理员用户的身份私钥，用来签名<br>    │       └── <a href="mailto:User1@org1.example.com" target="_blank" rel="noopener">User1@org1.example.com</a>        # 第一个用户的信息，包括msp 证书和tls 证书两类<br>    │           ├── msp<br>    │           │   ├── admincerts        # 管理身份验证证书<br>    │           │   ├── cacerts            # 存放组织的根证书<br>    │           │   ├── keystore            # 本用户的身份私钥，用来签名<br>    │           │   ├── signcerts        # 验证本用户签名的身份证书，被组织根证书签名<br>    │           │   └── tlscacerts        # TLS 连接用的身份证书，即组织TLS 证书<br>    │           └── tls            # 存放tls 相关的证书和私钥<br>    │               ├── ca.crt        # 组织的根证书<br>    │               ├── client.crt        # 验证用户签名的身份证书，被组织根证书签名<br>    │               └── client.key        # 用户的身份私钥，用来签名<br>    └── org2.example.com                # 第二个组织的信息，与org1.example.com结构类似<br>        ├── ca<br>        │   ├── 91fd76daf883a57066303fb6842ff4fb07c6793dbc8fbbca6303efea455884b2_sk<br>        │   └── ca.org2.example.com-cert.pem<br>        ├── msp<br>        │   ├── admincerts<br>        │   │   └── <a href="mailto:Admin@org2.example.com-cert.pem" target="_blank" rel="noopener">Admin@org2.example.com-cert.pem</a><br>        │   ├── cacerts<br>        │   │   └── ca.org2.example.com-cert.pem<br>        │   ├── config.yaml<br>        │   └── tlscacerts<br>        │       └── tlsca.org2.example.com-cert.pem<br>        ├── peers<br>        │   ├── peer0.org2.example.com<br>        │   │   ├── msp<br>        │   │   │   ├── admincerts<br>        │   │   │   ├── cacerts<br>        │   │   │   ├── config.yaml<br>        │   │   │   ├── keystore<br>        │   │   │   ├── signcerts<br>        │   │   │   └── tlscacerts<br>        │   │   └── tls<br>        │   │       ├── ca.crt<br>        │   │       ├── server.crt<br>        │   │       └── server.key<br>        │   └── peer1.org2.example.com<br>        │       ├── msp<br>        │       │   ├── admincerts<br>        │       │   ├── cacerts<br>        │       │   ├── config.yaml<br>        │       │   ├── keystore<br>        │       │   ├── signcerts<br>        │       │   └── tlscacerts<br>        │       └── tls<br>        │           ├── ca.crt<br>        │           ├── server.crt<br>        │           └── server.key<br>        ├── tlsca<br>        │   ├── d3c3e6e37d306992bc9fb826415ed77971031418db48c195d5a24521916f32f3_sk<br>        │   └── tlsca.org2.example.com-cert.pem<br>        └── users<br>            ├── <a href="mailto:Admin@org2.example.com" target="_blank" rel="noopener">Admin@org2.example.com</a><br>            │   ├── msp<br>            │   │   ├── admincerts<br>            │   │   ├── cacerts<br>            │   │   ├── keystore<br>            │   │   ├── signcerts<br>            │   │   └── tlscacerts<br>            │   └── tls<br>            │       ├── ca.crt<br>            │       ├── client.crt<br>            │       └── client.key<br>            └── <a href="mailto:User1@org2.example.com" target="_blank" rel="noopener">User1@org2.example.com</a><br>                ├── msp<br>                │   ├── admincerts<br>                │   ├── cacerts<br>                │   ├── keystore<br>                │   ├── signcerts<br>                │   └── tlscacerts<br>                └── tls<br>                    ├── ca.crt<br>                    ├── client.crt<br>                    └── client.key</p>
+<p>　　Cryptogen 按照配置文件中指定的结构生成了对应的组织和密钥、证书文件,其中最关键的是各个资源下的msp 目录内容，存储了生成的代表MSP 身份的各种证书文件，一般包括：</p>
+<ul>
+<li>admincerts ：管理员的身份证书文件</li>
+<li>cacerts ：信任的根证书文件</li>
+<li>key store ：节点的签名私钥文件</li>
+<li>signcerts ：节点的签名身份证书文件</li>
+<li>tlscacerts: TLS 连接用的证书</li>
+<li>intermediatecerts （可选）：信任的中间证书</li>
+<li>crls （可选）：证书撤销列表</li>
+<li>config.yaml （可选）：记录OrganizationalUnitldentifiers 信息，包括根证书位置和ID信息</li>
+</ul>
+<p>　　这些身份文件随后可以分发到对应的Orderer 节点和Peer 节点上，并放到对应的MSP路径下，用于签名使用</p>
+<h3 id="1-2-配置环境变量"><a href="#1-2-配置环境变量" class="headerlink" title="1.2 配置环境变量"></a>1.2 配置环境变量</h3><p>告诉configtxgen工具在哪里寻找configtx.yaml 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ export FABRIC_CFG_PATH=$PWD</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-创建Ordering服务启动初始区块"><a href="#1-3-创建Ordering服务启动初始区块" class="headerlink" title="1.3 创建Ordering服务启动初始区块"></a>1.3 创建Ordering服务启动初始区块</h3><p>　　指定使用  <code>configtx.yaml</code>  文件中定义的  <code>TwoOrgsOrdererGenesis</code>  模板, 生成Ordering服务系统通道的初始区块文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ../bin/configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block</span><br></pre></td></tr></table></figure>
+<p>命令执行后输出如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">10:49:21.181 CST [common/tools/configtxgen] main -&gt; INFO 001 Loading configuration</span><br><span class="line">10:49:21.207 CST [msp] getMspConfig -&gt; INFO 002 Loading NodeOUs</span><br><span class="line">10:49:21.208 CST [msp] getMspConfig -&gt; INFO 003 Loading NodeOUs</span><br><span class="line">10:49:21.210 CST [common/tools/configtxgen] doOutputBlock -&gt; INFO 004 Generating genesis block</span><br><span class="line">10:49:21.211 CST [common/tools/configtxgen] doOutputBlock -&gt; INFO 005 Writing genesis block</span><br></pre></td></tr></table></figure>
+<h3 id="1-4-创建一个应用通道"><a href="#1-4-创建一个应用通道" class="headerlink" title="1.4 创建一个应用通道"></a>1.4 创建一个应用通道</h3><p>务必替换$CHANNEL_NAME或设置CHANNEL_NAME为可在整个说明中使用的环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ export CHANNEL_NAME=mychannel</span><br></pre></td></tr></table></figure>
+<p>　　指定使用  <code>configtx.yaml</code>  配置文件中的  <code>TwoOrgsChannel</code>  模板, 来生成新建通道的配置交易文件,  <code>TwoOrgsChannel</code>  模板指定了Org1和Org2都属于后面新建的应用通道。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ../bin/configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">11:13:24.984 CST [common/tools/configtxgen] main -&gt; INFO 001 Loading configuration</span><br><span class="line">11:13:24.992 CST [common/tools/configtxgen] doOutputChannelCreateTx -&gt; INFO 002 Generating new channel configtx</span><br><span class="line">11:13:24.993 CST [msp] getMspConfig -&gt; INFO 003 Loading NodeOUs</span><br><span class="line">11:13:24.994 CST [msp] getMspConfig -&gt; INFO 004 Loading NodeOUs</span><br><span class="line">11:13:25.016 CST [common/tools/configtxgen] doOutputChannelCreateTx -&gt; INFO 005 Writing new channel tx</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-生成锚节点配置更新文件"><a href="#1-5-生成锚节点配置更新文件" class="headerlink" title="1.5 生成锚节点配置更新文件"></a>1.5 生成锚节点配置更新文件</h3><p>　　锚节点配置更新文件用来对组织的锚节点进行配置，同样基于  <code>configtx.yaml</code>  配置文件生成新建通道文件, 每个组织都需要分别生成且注意指定对应的组织名称</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP</span><br><span class="line"></span><br><span class="line">$ sudo ../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP</span><br></pre></td></tr></table></figure>
+<h2 id="2-启动网络"><a href="#2-启动网络" class="headerlink" title="2.启动网络"></a>2.启动网络</h2><p><code>$ sudo docker-compose -f docker-compose-cli.yaml up -d</code></p>
+<p>-f:  指定docker-compose文件</p>
+<p>注: </p>
+<blockquote>
+<p>如果想查看网络的实时日志，则不需要提供 -d 参数</p>
+</blockquote>
+<blockquote>
+<p>CLI容器将闲置1000秒。如果在需要时它消失了，可以用一个简单的命令重新启动它：</p>
+</blockquote>
+<blockquote>
+<p>​    $ sudo docker start cli</p>
+</blockquote>
+<p>网络启动顺序: 首先启动Orderer节点, 然后启动Peer节点, 日志输出如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">orderer.example.com       | 02:48:25.080 UTC [orderer/common/server] initializeServerConfig -&gt; INFO 002 Starting orderer with TLS enabled</span><br><span class="line">orderer.example.com       | 02:48:25.101 UTC [fsblkstorage] newBlockfileMgr -&gt; INFO 003 Getting block information from block storage</span><br><span class="line">orderer.example.com       | 02:48:25.138 UTC [orderer/commmon/multichannel] NewRegistrar -&gt; INFO 004 Starting system channel &apos;testchainid&apos; with genesis block hash 67662e918ab76b4a8863cc625d67fcc31e9cb3a7c3c4f9f707af1c05ba5be686 and orderer type solo</span><br><span class="line">orderer.example.com       | 02:48:25.138 UTC [orderer/common/server] Start -&gt; INFO 005 Starting orderer:</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<p>　　Peer节点启动后, 默认情况下没有加入网络中的任何应用通道, 也不会与Orderer服务建立连接.需要通过客户端对其进行操作, 让它加入网络和指定的应用通道中</p>
+<h3 id="2-1-进入Docker容器"><a href="#2-1-进入Docker容器" class="headerlink" title="2.1 进入Docker容器"></a>2.1 进入Docker容器</h3><p>执行如下命令进入到CLI容器中(后继操作都在容器中执行)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker exec -it cli bash</span><br></pre></td></tr></table></figure>
+<p>如果成功, 命令提示符会变为如下内容:</p>
+<p>​    <code>root@b240e1643244:/opt/gopath/src/github.com/hyperledger/fabric/peer#</code><br>​    </p>
+<h3 id="2-2-创建通道"><a href="#2-2-创建通道" class="headerlink" title="2.2 创建通道"></a>2.2 创建通道</h3><p>检查环境变量是否正确设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $CHANNEL_NAME</span><br></pre></td></tr></table></figure>
+<p>设置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export CHANNEL_NAME=mychannel</span><br></pre></td></tr></table></figure>
+<p>创建通道</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer channel create -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>该命令自动在本地生成与该应用通道同名的初始区块 <strong>mychannel.block</strong>, 只有拥有该文件才可以加入创建的应用通道中</p>
+</blockquote>
+<p>参数说明:</p>
+<p>-o: 指定Orderer服务的地址</p>
+<p>-c: 指定创建的通道的名称</p>
+<p>-f: 指定通道配置交易文件所在路径</p>
+<p>–tls: 指定是否开启TLS</p>
+<p>–cafile: 指定MSP CA证书路径</p>
+<p>查看:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@086adb802655:/opt/gopath/src/github.com/hyperledger/fabric/peer# ll</span><br><span class="line">total 36</span><br><span class="line">drwxr-xr-x 5 root root  4096 Apr 29 03:34 ./</span><br><span class="line">drwxr-xr-x 3 root root  4096 Apr 29 02:48 ../</span><br><span class="line">drwxr-xr-x 2 root root  4096 Apr 29 02:47 channel-artifacts/</span><br><span class="line">drwxr-xr-x 4 root root  4096 Apr 29 02:35 crypto/</span><br><span class="line">-rw-r--r-- 1 root root 15660 Apr 29 03:34 mychannel.block</span><br><span class="line">drwxr-xr-x 2 root root  4096 Apr 29 02:13 scripts/</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-加入通道"><a href="#2-3-加入通道" class="headerlink" title="2.3 加入通道"></a>2.3 加入通道</h3><p>应用通道所包含组织的成员节点可以加入通道中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer channel join -b mychannel.block</span><br></pre></td></tr></table></figure>
+<p>join命令: 将本Peer节点加入到某个应用通道中</p>
+<p><strong>参数含义</strong><br>-b:  初始区块文件的路径信息</p>
+<blockquote>
+<p>执行成功后, Peer连接到该应用通道的Ordering服务上, 开始接收区块信息</p>
+</blockquote>
+<h3 id="2-4-更新锚点"><a href="#2-4-更新锚点" class="headerlink" title="2.4 更新锚点"></a>2.4 更新锚点</h3><p>使用Org1的管理员身份更新锚节点配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Org1MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem</span><br></pre></td></tr></table></figure>
+<p>使用Org2的管理员身份更新锚节点配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot;</span><br><span class="line">CORE_PEER_ADDRESS=peer0.org2.example.com:7051 </span><br><span class="line">CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp</span><br><span class="line">CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt </span><br><span class="line"></span><br><span class="line">peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Org2MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem</span><br></pre></td></tr></table></figure>
+<p>手动配置网络完成, 可以测试Chaincode</p>
+<p>切换为pee1.org1.example.com</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CORE_PEER_ADDRESS=peer1.org1.example.com:7051</span><br><span class="line"></span><br><span class="line">CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp</span><br><span class="line"></span><br><span class="line">CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt</span><br></pre></td></tr></table></figure>
+<h2 id="3-手动启动网络流程示意图"><a href="#3-手动启动网络流程示意图" class="headerlink" title="3. 手动启动网络流程示意图"></a>3. 手动启动网络流程示意图</h2><p><img src="/2018/06/27/超级账本Fabric-手动启动网络/手动启动网络.png" alt=""></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/27/超级账本Fabric-手动启动网络/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-超级账本Fabric-自动启动网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -214,6 +724,7 @@
 <p>或者</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Encountered errors while bringing up the project.</span><br><span class="line"></span><br><span class="line">ERROR !!!! Unable to start network</span><br></pre></td></tr></table></figure>
 <p>则执行<code>./byfn.sh down</code> 清除网络后再启动</p>
+<h2 id="2-自动启动网络流程示意图"><a href="#2-自动启动网络流程示意图" class="headerlink" title="2. 自动启动网络流程示意图"></a>2. 自动启动网络流程示意图</h2><p><img src="/2018/06/26/超级账本Fabric-自动启动网络/自动启动网络.png" alt=""></p>
 
       
 
@@ -318,9 +829,11 @@
 <p>　　Fabric是最早加入到超级账本项目中的顶级项目, 面向企业的分布式账本平台,引入了权限管理,支持可插拔、可扩展,由IBM、DIH等企业于2015年底提交到社区,是首个面向联盟链场景的开源项目。</p>
 <p>Fabric基于GO语言实现,已发布1.1.0版本。</p>
 <p><a href="https://github.com/hyperledger/fabric" target="_blank" rel="noopener">项目地址:  https://github.com/hyperledger/fabric</a></p>
-<h2 id="2-节点类型"><a href="#2-节点类型" class="headerlink" title="2. 节点类型"></a>2. 节点类型</h2><p>　　Fabric从1.0开始，在架构上进行了重新设计，解耦了节点的角色，同时在安全性，性能，可靠性和可插拔性方面都有不少改进。目前，网络中存在以下4种不同种类的服务节点，彼此协作完成整个区块链系统的功能。<br>　　对网络中节点角色进行解耦是Fabric设计中的一大创新，这也是联盟链场景下的特殊需求和环境所决定的：　<br>　　- <strong>背书节点(Endorser)：</strong>负责对交易的提案(proposal)进行检查和背书，计算交易执行结果。<br>　　- <strong>确认节点(Committer)：</strong>负责在接受交易结果前再次检查合法性，接受合法交易对账本的修改，并写入区块链结构。<br>　　- <strong>排序节点(Orderer)：</strong>对所有发往网络中的交易进行排序，将排序后的交易按照配置中的约定整理为区块，之后提交给确认节点进行处理。<br>　　- <strong>证书节点(CA)：</strong>负责对网络中所有的证书进行管理，提供标准的PKI服务。
-　　</p>
+<h2 id="2-节点类型"><a href="#2-节点类型" class="headerlink" title="2. 节点类型"></a>2. 节点类型</h2><p>　　Fabric从1.0开始，在架构上进行了重新设计，解耦了节点的角色，同时在安全性，性能，可靠性和可插拔性方面都有不少改进。目前，网络中存在以下4种不同种类的服务节点，彼此协作完成整个区块链系统的功能。<br>　　对网络中节点角色进行解耦是Fabric设计中的一大创新，这也是联盟链场景下的特殊需求和环境所决定的：　<br>　　- <strong>背书节点(Endorser)：</strong>负责对交易的提案(proposal)进行检查和背书，计算交易执行结果。<br>　　- <strong>确认节点(Committer)：</strong>负责在接受交易结果前再次检查合法性，接受合法交易对账本的修改，并写入区块链结构。<br>　　- <strong>排序节点(Orderer)：</strong>对所有发往网络中的交易进行排序，将排序后的交易按照配置中的约定整理为区块，之后提交给确认节点进行处理。<br>　　- <strong>证书节点(CA)：</strong>负责对网络中所有的证书进行管理，提供标准的PKI服务。</p>
+<p>　　对于peer节点中的角色：<br>　　- <strong>Leader节点：</strong> 获取Orderer服务节点生成的区块，并广播给本组织其他节点<br>　　- <strong>Anchor节点：</strong> 用于跨组织的数据交换<br>　　- <strong>背书节点：</strong> 用于背书签名，检验交易是否合法<br>　　- <strong>commit节点：</strong> 用于保存区块，所有节点都是commit节点
+ 　　</p>
 <h2 id="3-启动网络的步骤"><a href="#3-启动网络的步骤" class="headerlink" title="3. 启动网络的步骤"></a>3. 启动网络的步骤</h2><p>　　要启动一个Fabric网络，需要遵循如下主要步骤：<br>1）预备网络内各项配置，包括网络中成员的组织结构和对应的身份证书(使用cryptogen工具完成);生成系统通道的初始配置区块文件，新建应用通道的配置更新交易文件以及可能需要的锚节点配置更新交易文件（使用configtxgen工具完成）。<br>2）使用系统通道的初始配置区块文件启动排序节点，排序节点启动后自动按照指定配置创建系统通道。<br>3）不同的组织按照预置角色分别启动Peer节点。这个时候网络中不存在应用通道，Peer节点也并没有加入网络中。<br>4）使用新建应用通道的配置更新交易文件，向系统通道发送交易，创建新的应用通道。<br>5）让对应的Peer节点加入所创建的应用通道中，此时Peer节点加入网络，可以准备接受交易。<br>6）用户通过客户端向网络中安装注册链码，链码容器启动成功后用户即可对链码进行调用，将交易发送到网络中。</p>
+<h2 id="4-fabric项目目录介绍"><a href="#4-fabric项目目录介绍" class="headerlink" title="4. fabric项目目录介绍"></a>4. fabric项目目录介绍</h2><p><img src="/2018/06/26/超级账本Fabric-介绍/fabric目录介绍.png" alt=""></p>
 
       
 
@@ -1177,429 +1690,9 @@
 
 
   
-    <article id="post-使用以太坊源码搭建私有链" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/30/使用以太坊源码搭建私有链/">使用以太坊源码搭建私有链</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/30/使用以太坊源码搭建私有链/" class="archive-article-date">
-  	<time datetime="2018-05-30T11:55:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-30</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="使用以太坊源码搭建私有链"><a href="#使用以太坊源码搭建私有链" class="headerlink" title="使用以太坊源码搭建私有链"></a>使用以太坊源码搭建私有链</h1><h2 id="1-下载源码"><a href="#1-下载源码" class="headerlink" title="1. 下载源码"></a>1. 下载源码</h2><p><a href="https://github.com/ethereum/go-ethereum.git" target="_blank" rel="noopener">以太坊下载地址</a></p>
-<h2 id="2-编译"><a href="#2-编译" class="headerlink" title="2. 编译"></a>2. 编译</h2><p>　　将下载好的代码放入<code>src</code>目录下，然后打开终端进入到当前目录路径：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd go-ethereum</span><br><span class="line">$ make geth</span><br></pre></td></tr></table></figure>
-<p>　　将 <code>geth</code> 添加到环境变量中 <code>vi ~/.bashrc</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GETH=&quot;$GOPATH/src/github.com/ethereum/go-ethereum/build&quot;</span><br><span class="line">export PATH=&quot;$PATH:$GETH/bin&quot;</span><br></pre></td></tr></table></figure>
-<p>　　然后执行 <code>source ~/.bashrc</code>，使配置生效。</p>
-<p>　　检查是否安装成功</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geth --help</span><br></pre></td></tr></table></figure>
-<p>　　如果输出一些帮助提示命令，则说明安装成功。</p>
-<h2 id="3-搭建私有链"><a href="#3-搭建私有链" class="headerlink" title="3. 搭建私有链"></a>3. 搭建私有链</h2><h3 id="3-1-配置初始状态"><a href="#3-1-配置初始状态" class="headerlink" title="3.1 配置初始状态"></a>3.1 配置初始状态</h3><p>　　要运行以太坊私有链，需要定义自己的创世区块，创世区块信息写在一个 JSON 格式的配置文件中。首先将下面的内容保存到一个 JSON 文件中，例如 <code>genesis.json</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ~/privatechain</span><br><span class="line">$ cd privatechain</span><br><span class="line">$ mkdir data0</span><br><span class="line">$ vi genesis.json</span><br></pre></td></tr></table></figure>
-<p><strong>genesis.json 的代码</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;config&quot;: &#123;</span><br><span class="line">        &quot;chainId&quot;: 10, </span><br><span class="line">        &quot;homesteadBlock&quot;: 0,</span><br><span class="line">        &quot;eip155Block&quot;: 0,</span><br><span class="line">        &quot;eip158Block&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;alloc&quot;      : &#123;&#125;,</span><br><span class="line">  &quot;coinbase&quot;   : &quot;0x0000000000000000000000000000000000000000&quot;,</span><br><span class="line">  &quot;difficulty&quot; : &quot;0x20000&quot;,</span><br><span class="line">  &quot;extraData&quot;  : &quot;&quot;,</span><br><span class="line">  &quot;gasLimit&quot;   : &quot;0x2fefd8&quot;,</span><br><span class="line">  &quot;nonce&quot;      : &quot;0x0000000000000042&quot;,</span><br><span class="line">  &quot;mixhash&quot;    : &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">  &quot;parentHash&quot; : &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">  &quot;timestamp&quot;  : &quot;0x00&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　其中，chainID 指定了独立的区块链网络 ID。网络 ID 在连接到其他节点的时候会用到，以太坊公网的网络 ID 是 1，为了不与公有链网络冲突，运行私有链节点的时候要指定自己的网络 ID。不同 ID 网络的节点无法相互连接。配置文件还对当前挖矿难度 difficulty、区块 Gas 消耗限制 gasLimit 等参数进行了设置。</p>
-<h3 id="3-2-初始化：写入创世区块"><a href="#3-2-初始化：写入创世区块" class="headerlink" title="3.2 初始化：写入创世区块"></a>3.2 初始化：写入创世区块</h3><p>　　准备好创世区块配置文件后，需要初始化区块链，将上面的创世区块信息写入到区块链中。首先要新建一个目录用来存放区块链数据，假设新建的数据目录为 ~/privatechain/data0，genesis.json 保存在 ~/privatechain 中，此时目录结构应该是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">privatechain</span><br><span class="line">├── data0</span><br><span class="line">└── genesis.json</span><br></pre></td></tr></table></figure>
-<p>执行初始化命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geth --datadir data0 init genesis.json</span><br></pre></td></tr></table></figure>
-<p>　　上面的命令的主体是 <code>geth init</code>，表示初始化区块链，命令可以带有选项和参数，其中 <code>--datadir</code> 选项后面跟一个目录名，这里为 <code>data0</code>，表示指定数据存放目录为 <code>data0</code>，<code>genesis.json</code> 是 <code>init</code> 命令的参数。</p>
-<p>　　运行上面的命令，会读取 <code>genesis.json</code> 文件，根据其中的内容，将创世区块写入到区块链中。如果看到以下的输出内容，说明初始化成功了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INFO [01-29|21:21:13] Maximum peer count                       ETH=25 LES=0 total=25</span><br><span class="line">INFO [01-29|21:21:13] Allocated cache and file handles         database=/Users/fujinliang/privatechain/data0/geth/chaindata cache=16 handles=16</span><br><span class="line">INFO [01-29|21:21:13] Writing custom genesis block </span><br><span class="line">INFO [01-29|21:21:13] Persisted trie from memory database      nodes=0 size=0.00B time=358.89µs gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B</span><br><span class="line">INFO [01-29|21:21:13] Successfully wrote genesis state         database=chaindata                                           hash=5e1fc7…d790e0</span><br><span class="line">INFO [01-29|21:21:13] Allocated cache and file handles         database=/Users/fujinliang/privatechain/data0/geth/lightchaindata cache=16 handles=16</span><br><span class="line">INFO [01-29|21:21:13] Writing custom genesis block </span><br><span class="line">INFO [01-29|21:21:13] Persisted trie from memory database      nodes=0 size=0.00B time=2.633µs  gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B</span><br><span class="line">INFO [01-29|21:21:13] Successfully wrote genesis state         database=lightchaindata                                           hash=5e1fc7…d790e0</span><br></pre></td></tr></table></figure>
-<p>　　初始化成功后，会在数据目录 data0 中生成 geth 和 keystore 两个文件夹，此时目录结构如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">privatechain</span><br><span class="line">├── data0</span><br><span class="line">│   ├── geth</span><br><span class="line">│   │   ├── chaindata</span><br><span class="line">│   │   │   ├── 000001.log</span><br><span class="line">│   │   │   ├── CURRENT</span><br><span class="line">│   │   │   ├── LOCK</span><br><span class="line">│   │   │   ├── LOG</span><br><span class="line">│   │   │   └── MANIFEST-000000</span><br><span class="line">│   │   └── lightchaindata</span><br><span class="line">│   │       ├── 000001.log</span><br><span class="line">│   │       ├── CURRENT</span><br><span class="line">│   │       ├── LOCK</span><br><span class="line">│   │       ├── LOG</span><br><span class="line">│   │       └── MANIFEST-000000</span><br><span class="line">│   └── keystore</span><br><span class="line">└── genesis.json</span><br></pre></td></tr></table></figure>
-<p>　　其中 <code>geth/chaindata</code> 中存放的是区块数据，<code>keystore</code> 中存放的是账户数据。</p>
-<h3 id="3-3-启动私有链节点"><a href="#3-3-启动私有链节点" class="headerlink" title="3.3 启动私有链节点"></a>3.3 启动私有链节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geth --datadir data0 --networkid 110 console</span><br></pre></td></tr></table></figure>
-<p>　　上面命令的主体是 <code>geth console</code>，表示启动节点并进入交互式控制台，–datadir选项指定使用data0作为数据目录，<code>--networkid</code> 选项后面跟一个数字，这里是110，表示指定这个私有链的网络id为110。网络id在连接到其他节点的时候会用到，以太坊公网的网络id是1，为了不与公有链网络冲突，运行私有链节点的时候要指定自己的网络id。</p>
-<p>　　运行上面的命令后，就启动了区块链节点并进入了该节点的控制台：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Welcome to the Geth JavaScript console!</span><br><span class="line"></span><br><span class="line">instance: Geth/v1.8.10-unstable-ccc0debb/darwin-amd64/go1.10.2</span><br><span class="line"> modules: admin:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0 txpool:1.0 web3:1.0</span><br><span class="line"></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-<p>　　这是一个交互式的 JavaScript 执行环境，在这里面可以执行 JavaScript 代码，其中 &gt; 是命令提示符。在这个环境里也内置了一些用来操作以太坊的 JavaScript 对象，可以直接使用这些对象。这些对象主要包括：</p>
-<ul>
-<li>eth：包含一些跟操作区块链相关的方法；</li>
-<li>net：包含一些查看p2p网络状态的方法；</li>
-<li>admin：包含一些与管理节点相关的方法；</li>
-<li>miner：包含启动&amp;停止挖矿的一些方法；</li>
-<li>personal：主要包含一些管理账户的方法；</li>
-<li>txpool：包含一些查看交易内存池的方法；</li>
-<li>web3：包含了以上对象，还包含一些单位换算的方法。</li>
-</ul>
-<h2 id="4-控制台操作"><a href="#4-控制台操作" class="headerlink" title="4. 控制台操作"></a>4. 控制台操作</h2><p>　　进入以太坊 Javascript Console 后，就可以使用里面的内置对象做一些操作，这些内置对象提供的功能很丰富，比如查看区块和交易、创建账户、挖矿、发送交易、部署智能合约等。</p>
-<p>常用命令有：</p>
-<ul>
-<li>personal.newAccount()：创建账户；</li>
-<li>personal.unlockAccount()：解锁账户；</li>
-<li>eth.accounts：枚举系统中的账户；</li>
-<li>eth.getBalance()：查看账户余额，返回值的单位是 Wei（Wei 是以太坊中最小货币面额单位，类似比特币中的聪，1 ether = 10^18 Wei）；</li>
-<li>eth.blockNumber：列出区块总数；</li>
-<li>eth.getTransaction()：获取交易；</li>
-<li>eth.getBlock()：获取区块；</li>
-<li>miner.start()：开始挖矿；</li>
-<li>miner.stop()：停止挖矿；</li>
-<li>eth.coinbase：挖矿奖励的账户</li>
-<li>web3.fromWei()：Wei 换算成以太币；</li>
-<li>web3.toWei()：以太币换算成 Wei；</li>
-<li>txpool.status：交易池中的状态；</li>
-<li>admin.addPeer()：连接到其他节点；</li>
-</ul>
-<h3 id="4-1-创建账户"><a href="#4-1-创建账户" class="headerlink" title="4.1 创建账户"></a>4.1 创建账户</h3><p>　　输入 <code>eth.accounts</code> 查询系统中的账户：<br>　<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.accounts</span><br><span class="line">[]</span><br></pre></td></tr></table></figure></p>
-<p>　　显示为 <code>[]</code>，表示没有账户，接下来使用 <code>personal.newAccount()</code> 来创建一个账户：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; personal.newAccount()</span><br><span class="line">Passphrase: </span><br><span class="line">Repeat passphrase: </span><br><span class="line">&quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;</span><br></pre></td></tr></table></figure>
-<p><code>Passphrase</code> 表示输入密码，<code>Repeat passphrase</code> 表示输入确认密码</p>
-<p>　　再次创建一个账户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; personal.newAccount()</span><br><span class="line">Passphrase: </span><br><span class="line">Repeat passphrase: </span><br><span class="line">&quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;</span><br></pre></td></tr></table></figure>
-<p>　　查看刚刚创建的用户：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.accounts</span><br><span class="line">[&quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;, &quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;]</span><br></pre></td></tr></table></figure>
-<p>　　账户默认会保存在数据目录的 <code>data0/keystore</code> 文件夹中。可以查看其中的文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;address&quot;: &quot;fb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;, </span><br><span class="line">    &quot;crypto&quot;: &#123;</span><br><span class="line">        &quot;cipher&quot;: &quot;aes-128-ctr&quot;, </span><br><span class="line">        &quot;ciphertext&quot;: &quot;0efae4f94134172b785f1f635be8e70342bf31e1e0ecad21d672594f09ccf572&quot;, </span><br><span class="line">        &quot;cipherparams&quot;: &#123;</span><br><span class="line">            &quot;iv&quot;: &quot;37f4f3fa2cf070b70e3eb668fad6f46f&quot;</span><br><span class="line">        &#125;, </span><br><span class="line">        &quot;kdf&quot;: &quot;scrypt&quot;, </span><br><span class="line">        &quot;kdfparams&quot;: &#123;</span><br><span class="line">            &quot;dklen&quot;: 32, </span><br><span class="line">            &quot;n&quot;: 262144, </span><br><span class="line">            &quot;p&quot;: 1, </span><br><span class="line">            &quot;r&quot;: 8, </span><br><span class="line">            &quot;salt&quot;: &quot;1cdd1cf97fb882c3d3e734223668b47c888170e795346e11d0f521a71fe3aa2a&quot;</span><br><span class="line">        &#125;, </span><br><span class="line">        &quot;mac&quot;: &quot;902a29db25a3a35a2568b04b30a8194201f07ab37c96ed1fe9af932fc1d38be0&quot;</span><br><span class="line">    &#125;, </span><br><span class="line">    &quot;id&quot;: &quot;ecd5beb2-8261-4207-8eff-2fa34678d064&quot;, </span><br><span class="line">    &quot;version&quot;: 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="4-2-查看账户余额"><a href="#4-2-查看账户余额" class="headerlink" title="4.2 查看账户余额"></a>4.2 查看账户余额</h3><p>　　通过 <code>eth.getBalance()</code> 可以查看账户余额</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.getBalance(eth.accounts[0])</span><br><span class="line">0</span><br><span class="line">&gt; eth.getBalance(eth.accounts[1])</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
-<p>　　目前两个账户的以太币余额都是0，要使账户有余额，可以从其他账户转账过来，或者通过挖矿来获得以太币奖励。</p>
-<h3 id="4-3-启动-amp-停止挖矿"><a href="#4-3-启动-amp-停止挖矿" class="headerlink" title="4.3 启动&amp;停止挖矿"></a>4.3 启动&amp;停止挖矿</h3><p>　　通过 <code>miner.start()</code> 启动挖矿</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; miner.start(3)</span><br></pre></td></tr></table></figure>
-<p>　　其中 start 的参数表示挖矿使用的线程数。第一次启动挖矿会先生成挖矿所需的 DAG 文件，这个过程有点慢，等进度达到 100% 后，就会开始挖矿，此时屏幕会被挖矿信息刷屏。</p>
-<p>　　停止挖矿，在 console 中输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">miner.stop()</span><br></pre></td></tr></table></figure>
-<p>　　挖到一个区块会奖励5个以太币，挖矿所得的奖励会进入矿工的账户，这个账户叫做coinbase，默认情况下coinbase是本地账户中的第一个账户：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.coinbase</span><br><span class="line">&quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;</span><br></pre></td></tr></table></figure>
-<p>　　可以通过 <code>miner.setEtherbase()</code> 将其他账户设置成 <code>coinbase</code> 即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; miner.setEtherbase(eth.accounts[1])</span><br><span class="line">true</span><br><span class="line">&gt; eth.coinbase</span><br><span class="line">&quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;</span><br></pre></td></tr></table></figure>
-<p>　　重新启动挖矿，查看 <code>eth.accounts[1]</code> 是否可以获得以太币</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; miner.start(3)</span><br><span class="line"></span><br><span class="line">//等待几秒后</span><br><span class="line">&gt; miner.stop()</span><br></pre></td></tr></table></figure>
-<p>　　查询账户余额：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.getBalance(eth.accounts[0])</span><br><span class="line">280000000000000000000</span><br><span class="line">&gt; eth.getBalance(eth.accounts[1])</span><br><span class="line">210000000000000000000</span><br></pre></td></tr></table></figure>
-<p>　　发现账户0 和 账号1 都有以太币，说明 <code>miner.setEtherbase()</code> 设置成功。</p>
-<p><code>getBalance()</code> 返回值的单位是wei，wei是以太币的最小单位，1个以太币=10的18次方个wei。要查看有多少个以太币，可以用web3.fromWei()将返回值换算成以太币：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[0]),&apos;ether&apos;)</span><br><span class="line">280</span><br><span class="line"></span><br><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[1]),&apos;ether&apos;)</span><br><span class="line">210</span><br></pre></td></tr></table></figure>
-<h3 id="4-4-发送交易"><a href="#4-4-发送交易" class="headerlink" title="4.4 发送交易"></a>4.4 发送交易</h3><p>　　从账户0转移10个以太币到账户1,首先要解锁账户 0，才能发起交易：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; personal.unlockAccount(eth.accounts[0])</span><br><span class="line">Unlock account 0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d</span><br><span class="line">Passphrase: </span><br><span class="line">true</span><br></pre></td></tr></table></figure>
-<p>　　发起交易</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; amount = web3.toWei(10,&apos;ether&apos;)</span><br><span class="line">&quot;10000000000000000000&quot;</span><br><span class="line">&gt; eth.sendTransaction(&#123;from:eth.accounts[0],to:eth.accounts[1],value:amount&#125;)</span><br><span class="line">INFO [05-29|22:37:32] Submitted transaction                    fullhash=0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2 recipient=0xc6b5702B15a3794374e28f41F36e1E8dBDd564DF</span><br><span class="line">&quot;0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2&quot;</span><br></pre></td></tr></table></figure>
-<p>　　查询 账户1 的余额：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[1]),&apos;ether&apos;)</span><br><span class="line">210</span><br></pre></td></tr></table></figure>
-<p>　　发现账户余额没有发生改变，此时交易已经提交到区块链，但还未被处理，这可以通过用 <code>txpool.status</code> 命令可以看到本地交易池中有一个待确认的交易：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; txpool.status</span><br><span class="line">&#123;</span><br><span class="line">  pending: 1,</span><br><span class="line">  queued: 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　其中有一条pending的交易，pending表示已提交但还未被处理的交易。</p>
-<p>　　要使交易被处理，必须要挖矿。这里我们启动挖矿，然后等待挖到一个区块之后就停止挖矿：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;miner.start(1);admin.sleepBlocks(1);miner.stop()</span><br><span class="line">&gt; web3.fromWei(eth.getBalance(eth.accounts[1]),&apos;ether&apos;)</span><br><span class="line">225.000378</span><br></pre></td></tr></table></figure>
-<p>　　发现账户收到了账户的钱，还多了5个以太币。其实多出的5个以太币是挖矿奖励。</p>
-<h3 id="4-5-查看交易和区块"><a href="#4-5-查看交易和区块" class="headerlink" title="4.5 查看交易和区块"></a>4.5 查看交易和区块</h3><p>查看当前区块总数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.blockNumber</span><br><span class="line">99</span><br></pre></td></tr></table></figure>
-<p>通过区块号查看区块：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt; eth.getBlock(6)</span><br><span class="line">&#123;</span><br><span class="line">  difficulty: 131328,</span><br><span class="line">  extraData: &quot;0xd98301080a846765746888676f312e31302e328664617277696e&quot;,</span><br><span class="line">  gasLimit: 3160033,</span><br><span class="line">  gasUsed: 0,</span><br><span class="line">  hash: &quot;0x9679d0dc01045c3d15cbf29241ae1cd6de2e5661d3387c0980f6397e3fd9ed2c&quot;,</span><br><span class="line">  logsBloom: &quot;0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">  miner: &quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;,</span><br><span class="line">  mixHash: &quot;0x05c369134eac2cb6227860b4ed11527b11825af3541712c5704914576c37c0a0&quot;,</span><br><span class="line">  nonce: &quot;0x00168a9831624417&quot;,</span><br><span class="line">  number: 6,</span><br><span class="line">  parentHash: &quot;0xad68f0a581cf2144b8a05190b6310c7a9d945d9c338fd16b4708651b8813ad8b&quot;,</span><br><span class="line">  receiptsRoot: &quot;0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421&quot;,</span><br><span class="line">  sha3Uncles: &quot;0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347&quot;,</span><br><span class="line">  size: 537,</span><br><span class="line">  stateRoot: &quot;0xfaa0a4ffe160a2937b967f9780ae0de51a465bcce6a3f6f3aa24b903df3d44a0&quot;,</span><br><span class="line">  timestamp: 1527602736,</span><br><span class="line">  totalDifficulty: 918144,</span><br><span class="line">  transactions: [],</span><br><span class="line">  transactionsRoot: &quot;0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421&quot;,</span><br><span class="line">  uncles: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过交易hash（hash 值包含在上面交易返回值中）查看交易：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">eth.getTransaction(&quot;0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2&quot;)</span><br><span class="line">&#123;</span><br><span class="line">  blockHash: &quot;0xbe60f7ccddcb7cab39a7b932c0d89d37ac13ae14521cfdcb8ac359a5b6773655&quot;,</span><br><span class="line">  blockNumber: 99,</span><br><span class="line">  from: &quot;0xfb9cc019fc650a1699d05b7fb564b83c3a72b64d&quot;,</span><br><span class="line">  gas: 90000,</span><br><span class="line">  gasPrice: 18000000000,</span><br><span class="line">  hash: &quot;0x493e8aa2bcb6b2a362bdbd86b2c454279e14beea43b444aeb45c7f667bf572e2&quot;,</span><br><span class="line">  input: &quot;0x&quot;,</span><br><span class="line">  nonce: 0,</span><br><span class="line">  r: &quot;0x8da41e865d399fc4d8f813a39116e486db7658a04ea1f89ca0b7f44c02dd3c57&quot;,</span><br><span class="line">  s: &quot;0x15edd22404460cfc5e86c9735774a02aad024bc8c369ec531e4485f1012cbcf6&quot;,</span><br><span class="line">  to: &quot;0xc6b5702b15a3794374e28f41f36e1e8dbdd564df&quot;,</span><br><span class="line">  transactionIndex: 0,</span><br><span class="line">  v: &quot;0x37&quot;,</span><br><span class="line">  value: 10000000000000000000</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">以太坊</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/30/使用以太坊源码搭建私有链/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-etcd本机手动测试集群及member操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/30/etcd本机手动测试集群及member操作/">etcd本机手动测试集群及member操作和代码调用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/30/etcd本机手动测试集群及member操作/" class="archive-article-date">
-  	<time datetime="2018-05-30T10:40:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-30</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="etcd本机手动测试集群及member操作和代码调用"><a href="#etcd本机手动测试集群及member操作和代码调用" class="headerlink" title="etcd本机手动测试集群及member操作和代码调用"></a>etcd本机手动测试集群及member操作和代码调用</h1><p>使用终端进入到<code>$GOPATH/src/github.com/coreos/etcd</code>目录下，再进入<code>bin</code>目录下使用如下指令：</p>
-<h2 id="1-启动节点"><a href="#1-启动节点" class="headerlink" title="1. 启动节点"></a>1. 启动节点</h2><p><strong>节点1</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd0 --initial-advertise-peer-urls http://127.0.0.1:2380 --listen-peer-urls http://127.0.0.1:2380 --listen-client-urls http://127.0.0.1:2379 --advertise-client-urls http://127.0.0.1:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480,cd2=http://127.0.0.1:2580 --initial-cluster-state new</span><br></pre></td></tr></table></figure>
-<p>在开启另一个终端，进入到相同的目录下：</p>
-<p><strong>节点2</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd1 --initial-advertise-peer-urls http://127.0.0.1:2480 --listen-peer-urls http://127.0.0.1:2480 --listen-client-urls http://127.0.0.1:2479 --advertise-client-urls http://127.0.0.1:2479 --initial-cluster-token etcd-cluster-1 --initial-cluster cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480,cd2=http://127.0.0.1:2580 --initial-cluster-state new</span><br></pre></td></tr></table></figure>
-<p>再开启另一个终端，进入到相同的目录下：</p>
-<p><strong>节点3</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd2 --initial-advertise-peer-urls http://127.0.0.1:2580 --listen-peer-urls http://127.0.0.1:2580 --listen-client-urls http://127.0.0.1:2579 --advertise-client-urls http://127.0.0.1:2579 --initial-cluster-token etcd-cluster-1 --initial-cluster cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480,cd2=http://127.0.0.1:2580 --initial-cluster-state new</span><br></pre></td></tr></table></figure>
-<h2 id="2-查询-member-列表"><a href="#2-查询-member-列表" class="headerlink" title="2. 查询 member 列表"></a>2. 查询 member 列表</h2><p>重新再打开一个终端，进入到<code>$GOPATH/src/github.com/coreos/etcd/bin</code>目录下，输入如下指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export ETCDCTL_API=3</span><br><span class="line">ENDPOINTS=127.0.0.1:2379,127.0.0.1:2479,127.0.0.1:2579</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
-<p>运行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">98f0c6bf64240842, started, cd2, http://127.0.0.1:2580, http://127.0.0.1:2579</span><br><span class="line">bf9071f4639c75cc, started, cd0, http://127.0.0.1:2380, http://127.0.0.1:2379</span><br><span class="line">e3ba87c3b4858ef1, started, cd1, http://127.0.0.1:2480, http://127.0.0.1:2479</span><br></pre></td></tr></table></figure>
-<h2 id="3-添加-member-节点"><a href="#3-添加-member-节点" class="headerlink" title="3. 添加 member 节点"></a>3. 添加 member 节点</h2><p><strong>member add</strong> 添加节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS member add cd3 --peer-urls=http://127.0.0.1:2180</span><br><span class="line">Member b9057cfdc8ff17ce added to cluster 9da8cd75487bd6dc</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ETCD_NAME=&quot;cd3&quot;</span><br><span class="line">ETCD_INITIAL_CLUSTER=&quot;cd3=http://127.0.0.1:2180,cd2=http://127.0.0.1:2580,cd0=http://127.0.0.1:2380,cd1=http://127.0.0.1:2480&quot;</span><br><span class="line">ETCD_INITIAL_ADVERTISE_PEER_URLS=&quot;http://127.0.0.1:2180&quot;</span><br><span class="line">ETCD_INITIAL_CLUSTER_STATE=&quot;existing&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>查询 member 节点列表信息</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">98f0c6bf64240842, started, cd2, http://127.0.0.1:2580, http://127.0.0.1:2579</span><br><span class="line">b9057cfdc8ff17ce, unstarted, , http://127.0.0.1:2180, </span><br><span class="line">bf9071f4639c75cc, started, cd0, http://127.0.0.1:2380, http://127.0.0.1:2379</span><br><span class="line">e3ba87c3b4858ef1, started, cd1, http://127.0.0.1:2480, http://127.0.0.1:2479</span><br></pre></td></tr></table></figure>
-<p>通过查询结果可以发现：<code>http://127.0.0.1:2180</code> 显示状态为：<code>unstarted</code></p>
-<p><strong>启动新节点</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd3 --listen-client-urls http://127.0.0.1:2179 --advertise-client-urls http://127.0.0.1:2179 --listen-peer-urls http://127.0.0.1:2180 --initial-advertise-peer-urls http://127.0.0.1:2180 --initial-cluster-state existing --initial-cluster cd2=http://127.0.0.1:2580,cd0=http://127.0.0.1:2380,cd3=http://127.0.0.1:2180,cd1=http://127.0.0.1:2480 --initial-cluster-token etcd-cluster-1</span><br></pre></td></tr></table></figure>
-<p><strong>查询 member 节点列表信息</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">98f0c6bf64240842, started, cd2, http://127.0.0.1:2580, http://127.0.0.1:2579</span><br><span class="line">b9057cfdc8ff17ce, started, cd3, http://127.0.0.1:2180, http://127.0.0.1:2179</span><br><span class="line">bf9071f4639c75cc, started, cd0, http://127.0.0.1:2380, http://127.0.0.1:2379</span><br><span class="line">e3ba87c3b4858ef1, started, cd1, http://127.0.0.1:2480, http://127.0.0.1:2479</span><br></pre></td></tr></table></figure>
-<h2 id="4-Go语言代码实现member的管理"><a href="#4-Go语言代码实现member的管理" class="headerlink" title="4. Go语言代码实现member的管理"></a>4. Go语言代码实现member的管理</h2><h3 id="4-1-添加节点"><a href="#4-1-添加节点" class="headerlink" title="4.1 添加节点"></a>4.1 添加节点</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addMember</span><span class="params">(cli *clientv3.Client)</span></span>  &#123;</span><br><span class="line">    peerURLs := []<span class="keyword">string</span>&#123;<span class="string">"http://127.0.0.1:2180"</span>&#125;</span><br><span class="line"></span><br><span class="line">    mresp, err := cli.MemberAdd(context.Background(), peerURLs)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(<span class="string">"added member.PeerURLs:"</span>, mresp.Member.PeerURLs)</span><br><span class="line">    resp, err := cli.MemberList(context.Background())</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(<span class="string">"添加后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行完 添加节点，需要打开终端启动节点服务器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd --name cd3 --listen-client-urls http://127.0.0.1:2179 --advertise-client-urls http://127.0.0.1:2179 --listen-peer-urls http://127.0.0.1:2180 --initial-advertise-peer-urls http://127.0.0.1:2180 --initial-cluster-state existing --initial-cluster cd2=http://127.0.0.1:2580,cd0=http://127.0.0.1:2380,cd3=http://127.0.0.1:2180,cd1=http://127.0.0.1:2480 --initial-cluster-token etcd-cluster-1</span><br></pre></td></tr></table></figure>
-<p><strong>如果启动失败，需要删除 cd3 的信息</strong></p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/20180129-104838.png" alt=""></p>
-<h3 id="4-2-删除节点"><a href="#4-2-删除节点" class="headerlink" title="4.2 删除节点"></a>4.2 删除节点</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">delMember</span> <span class="params">(cli *clientv3.Client, memberId <span class="keyword">uint64</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_, err = cli.MemberRemove(context.Background(), memberId)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	resp, err = cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"删除后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="5-全部代码"><a href="#5-全部代码" class="headerlink" title="5. 全部代码"></a>5. 全部代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/coreos/etcd/clientv3"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"context"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	dialTimeout    = <span class="number">5</span> * time.Second</span><br><span class="line">	requestTimeout = <span class="number">2</span> * time.Second</span><br><span class="line">	endpoints      = []<span class="keyword">string</span>&#123;<span class="string">"127.0.0.1:2379"</span>&#125;</span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	cli, err := clientv3.New(clientv3.Config&#123;</span><br><span class="line">		Endpoints:   endpoints,</span><br><span class="line">		DialTimeout: dialTimeout,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> cli.Close()</span><br><span class="line"></span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"members:"</span>, resp.Members)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//添加member</span></span><br><span class="line">	<span class="comment">//addMember(cli)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除节点</span></span><br><span class="line">	<span class="comment">//delMember(cli,uint64(7438291228984697304))</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addMember</span><span class="params">(cli *clientv3.Client)</span></span>  &#123;</span><br><span class="line">	peerURLs := []<span class="keyword">string</span>&#123;<span class="string">"http://127.0.0.1:2180"</span>&#125;</span><br><span class="line"></span><br><span class="line">	mresp, err := cli.MemberAdd(context.Background(), peerURLs)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"added member.PeerURLs:"</span>, mresp.Member.PeerURLs)</span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"添加后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除节点</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">delMember</span> <span class="params">(cli *clientv3.Client, memberId <span class="keyword">uint64</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	resp, err := cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_, err = cli.MemberRemove(context.Background(), memberId)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	resp, err = cli.MemberList(context.Background())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"删除后 members:"</span>, resp.Members)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言使用</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/30/etcd本机手动测试集群及member操作/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-etcd部署多个服务器集群" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/29/etcd部署多个服务器集群/">etcd部署多个服务器集群</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/29/etcd部署多个服务器集群/" class="archive-article-date">
-  	<time datetime="2018-05-29T12:11:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-29</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="etcd部署多个服务器集群"><a href="#etcd部署多个服务器集群" class="headerlink" title="etcd部署多个服务器集群"></a>etcd部署多个服务器集群</h1><h2 id="1-启动服务"><a href="#1-启动服务" class="headerlink" title="1. 启动服务"></a>1. 启动服务</h2><p>　　etcd系统的提前准备清楚参考<a href="http://www.wuecho.com/2018/05/28/分布式一致性键值存储系统-etcd/">分布式一致性键值存储系统–etcd(终端命令)</a>。<br>要想启动分布式系统必须停止之前的单机版的服务终端。</p>
-<p>　　每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IP</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TOKEN=token-01</span><br><span class="line">CLUSTER_STATE=new</span><br><span class="line">NAME_1=machine-1</span><br><span class="line">NAME_2=machine-2</span><br><span class="line">NAME_3=machine-3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">CLUSTER=$&#123;NAME_1&#125;=http://$&#123;HOST_1&#125;:2380,$&#123;NAME_2&#125;=http://$&#123;HOST_2&#125;:2380,$&#123;NAME_3&#125;=http://$&#123;HOST_3&#125;:2380</span><br></pre></td></tr></table></figure>
-<p><strong>machine 1</strong> 执行如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 1</span><br><span class="line">THIS_NAME=$&#123;NAME_1&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_1&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>machine 2</strong> 执行如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 2</span><br><span class="line">THIS_NAME=$&#123;NAME_2&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_2&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>machine 3</strong> 执行如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line"># For machine 3</span><br><span class="line">THIS_NAME=$&#123;NAME_3&#125;</span><br><span class="line">THIS_IP=$&#123;HOST_3&#125;</span><br><span class="line">./etcd --data-dir=data.etcd --name $&#123;THIS_NAME&#125; --initial-advertise-peer-urls http://$&#123;THIS_IP&#125;:2380 --listen-peer-urls http://$&#123;THIS_IP&#125;:2380 --advertise-client-urls http://$&#123;THIS_IP&#125;:2379 --listen-client-urls http://$&#123;THIS_IP&#125;:2379 --initial-cluster $&#123;CLUSTER&#125; --initial-cluster-state $&#123;CLUSTER_STATE&#125; --initial-cluster-token $&#123;TOKEN&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-测试验证"><a href="#2-测试验证" class="headerlink" title="2. 测试验证"></a>2. 测试验证</h2><p>检测服务器运行是否正常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line">export ETCDCTL_API=3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS member list</span><br></pre></td></tr></table></figure>
-<h2 id="3-操作"><a href="#3-操作" class="headerlink" title="3. 操作"></a>3. 操作</h2><h3 id="3-1-存储数据"><a href="#3-1-存储数据" class="headerlink" title="3.1 存储数据"></a>3.1 存储数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put foo &quot;Hello World!&quot;</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS get foo</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS --write-out=&quot;json&quot; get foo</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-根据前缀查询"><a href="#3-2-根据前缀查询" class="headerlink" title="3.2 根据前缀查询"></a>3.2 根据前缀查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put web1 value1</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put web2 value2</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put web3 value3</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS get web --prefix</span><br><span class="line"></span><br><span class="line">web1</span><br><span class="line">value1</span><br><span class="line">web2</span><br><span class="line">value2</span><br><span class="line">web3</span><br><span class="line">value3</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-删除"><a href="#3-3-删除" class="headerlink" title="3.3 删除"></a>3.3 删除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl --endpoints=$ENDPOINTS put key myvalue</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS del key</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put k1 value1</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put k2 value2</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS del k --prefix</span><br></pre></td></tr></table></figure>
-<h3 id="3-4-事务写入"><a href="#3-4-事务写入" class="headerlink" title="3.4 事务写入"></a>3.4 事务写入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS put user1 bad</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive</span><br><span class="line"></span><br><span class="line">compares:</span><br><span class="line">// 输入以下内容，输入结束按 两次回车</span><br><span class="line">value(&quot;user1&quot;) = &quot;bad&quot;      </span><br><span class="line"></span><br><span class="line">//如果 user1 = bad，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != bad，则执行 put user1 good</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 good</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 success</span><br><span class="line">SUCCESS</span><br><span class="line"></span><br><span class="line">user1</span><br><span class="line">bad</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive</span><br><span class="line">compares:</span><br><span class="line">value(&quot;user1&quot;) = &quot;111&quot;  </span><br><span class="line"></span><br><span class="line">// 如果 user1 = 111，则执行 get user1 </span><br><span class="line">success requests (get, put, del):</span><br><span class="line">get user1</span><br><span class="line"></span><br><span class="line">//如果 user1 != 111，则执行 put user1 2222</span><br><span class="line">failure requests (get, put, del):</span><br><span class="line">put user1 2222</span><br><span class="line"></span><br><span class="line">// 运行结果，执行 failure</span><br><span class="line">FAILURE</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ ./etcdctl --endpoints=$ENDPOINTS get user1</span><br><span class="line">user1</span><br><span class="line">2222</span><br></pre></td></tr></table></figure>
-<h3 id="3-5-watch"><a href="#3-5-watch" class="headerlink" title="3.5 watch"></a>3.5 watch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 当 stock1 的数值改变（ put 方法）的时候，watch 会收到通知</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS watch stock1</span><br><span class="line"></span><br><span class="line">// 新打开终端</span><br><span class="line">$ cd $GOPATH/src/github.com/coreos/etcd/bin</span><br><span class="line"></span><br><span class="line">export ETCDCTL_API=3</span><br><span class="line">HOST_1=192.168.1.126</span><br><span class="line">HOST_2=192.168.1.119</span><br><span class="line">HOST_3=192.168.1.103</span><br><span class="line">ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock1 1000</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS watch stock --prefix</span><br><span class="line"></span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock1 10</span><br><span class="line">./etcdctl --endpoints=$ENDPOINTS put stock2 20</span><br></pre></td></tr></table></figure>
-<h2 id="4-更多操作"><a href="#4-更多操作" class="headerlink" title="4. 更多操作"></a>4. 更多操作</h2><p><a href="https://coreos.com/etcd/docs/latest/demo.html" target="_blank" rel="noopener">了解更多操作</a></p>
-<h2 id="5-代码操作"><a href="#5-代码操作" class="headerlink" title="5. 代码操作"></a>5. 代码操作</h2><p>注：要想使用代码来存取查询操作，需要对构建的etcd对象ip地址进行修改。</p>
-<p><a href="https://github.com/WuEcho/etcdDemo.git" target="_blank" rel="noopener">Go语言使用etcd实现分布式集群demo示例</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">搭建多服务器集群</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/29/etcd部署多个服务器集群/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1710,10 +1803,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RPC</a>
               </li>
              
@@ -1722,7 +1811,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">通道</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1734,19 +1831,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">DPoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1754,7 +1843,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color2">Go语言实现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1766,6 +1859,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Go语言</a>
               </li>
              
@@ -1774,7 +1871,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1783,10 +1880,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1806,6 +1899,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
               </li>
              
@@ -1814,15 +1911,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">接口</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1842,15 +1935,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">搭建多服务器集群</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Go语言使用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1874,10 +1967,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
@@ -1887,6 +1976,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1918,15 +2011,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1934,7 +2027,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
             
             <div class="clearfix"></div>
