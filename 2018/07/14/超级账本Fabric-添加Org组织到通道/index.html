@@ -9,7 +9,7 @@
   <title>超级账本Fabric-添加Org组织到通道 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="超级账本Fabric-7.添加Org组织到通道1. 自动添加1.1 设置环境进入到fabric-samples/first-network目录中, 执行.byfn.sh -m down关闭网络,清理之前的任何环境 12$ cd $HOME/hyfa/fabric-samples/first-network/$ sudo ./byfn.sh -m down 重新生成默认的BYFN构件 1$ sudo">
-<meta name="keywords" content="区块链">
+<meta name="keywords" content="超级账本Fabric">
 <meta property="og:type" content="article">
 <meta property="og:title" content="超级账本Fabric-添加Org组织到通道">
 <meta property="og:url" content="http://www.wuecho.com/2018/07/14/超级账本Fabric-添加Org组织到通道/index.html">
@@ -17,7 +17,7 @@
 <meta property="og:description" content="超级账本Fabric-7.添加Org组织到通道1. 自动添加1.1 设置环境进入到fabric-samples/first-network目录中, 执行.byfn.sh -m down关闭网络,清理之前的任何环境 12$ cd $HOME/hyfa/fabric-samples/first-network/$ sudo ./byfn.sh -m down 重新生成默认的BYFN构件 1$ sudo">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/07/14/超级账本Fabric-添加Org组织到通道/将新组织添加到通道中.png">
-<meta property="og:updated_time" content="2018-07-15T03:29:03.253Z">
+<meta property="og:updated_time" content="2018-07-15T03:33:39.888Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="超级账本Fabric-添加Org组织到通道">
 <meta name="twitter:description" content="超级账本Fabric-7.添加Org组织到通道1. 自动添加1.1 设置环境进入到fabric-samples/first-network目录中, 执行.byfn.sh -m down关闭网络,清理之前的任何环境 12$ cd $HOME/hyfa/fabric-samples/first-network/$ sudo ./byfn.sh -m down 重新生成默认的BYFN构件 1$ sudo">
@@ -191,6 +191,30 @@
         
       </header>
       
+      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+      </p>
+      <div id="toc-article" class="toc-article">
+          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-7-添加Org组织到通道"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-7.添加Org组织到通道</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-自动添加"><span class="toc-number">1.1.</span> <span class="toc-text">1. 自动添加</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-设置环境"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 设置环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-添加组织Org3"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 添加组织Org3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-进入CLI容器"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 进入CLI容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-查询"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-调用-实现从a到b转账"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5 调用,实现从a到b转账</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-查询"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.6 查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-手动添加"><span class="toc-number">1.2.</span> <span class="toc-text">2. 手动添加</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-手动实现配置"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 手动实现配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-生成Org3加密材料"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 生成Org3加密材料</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-更新通道配置"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 更新通道配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-签署并提交配置更新"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 签署并提交配置更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-将Org3加入到通道"><span class="toc-number">1.2.5.</span> <span class="toc-text">2.5 将Org3加入到通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-升级并调用Chaincode"><span class="toc-number">1.2.6.</span> <span class="toc-text">2.6 升级并调用Chaincode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-添加通道操作的示意图"><span class="toc-number">1.3.</span> <span class="toc-text">3. 添加通道操作的示意图</span></a></li></ol></li></ol>
+      </div>
+      <script type="text/javascript">
+          function showToc(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:block");
+              show_toc_btn.setAttribute("style","display:none");
+          };
+          function showBtn(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:none");
+              show_toc_btn.setAttribute("style","display:block");
+          };
+      </script>
+      
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -363,7 +387,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -448,6 +494,19 @@
             </div>
         </div>
         
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-7-添加Org组织到通道"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-7.添加Org组织到通道</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-自动添加"><span class="toc-number">1.1.</span> <span class="toc-text">1. 自动添加</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-设置环境"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 设置环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-添加组织Org3"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 添加组织Org3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-进入CLI容器"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 进入CLI容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-查询"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-调用-实现从a到b转账"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5 调用,实现从a到b转账</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-查询"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.6 查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-手动添加"><span class="toc-number">1.2.</span> <span class="toc-text">2. 手动添加</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-手动实现配置"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 手动实现配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-生成Org3加密材料"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 生成Org3加密材料</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-更新通道配置"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 更新通道配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-签署并提交配置更新"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 签署并提交配置更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-将Org3加入到通道"><span class="toc-number">1.2.5.</span> <span class="toc-text">2.5 将Org3加入到通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-升级并调用Chaincode"><span class="toc-number">1.2.6.</span> <span class="toc-text">2.6 升级并调用Chaincode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-添加通道操作的示意图"><span class="toc-number">1.3.</span> <span class="toc-text">3. 添加通道操作的示意图</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
         
     </div>
 </aside>

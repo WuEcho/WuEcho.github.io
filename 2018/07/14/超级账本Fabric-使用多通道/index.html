@@ -9,7 +9,7 @@
   <title>超级账本Fabric-使用多通道 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="超级账本Fabric-6.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
-<meta name="keywords" content="区块链">
+<meta name="keywords" content="超级账本Fabric">
 <meta property="og:type" content="article">
 <meta property="og:title" content="超级账本Fabric-使用多通道">
 <meta property="og:url" content="http://www.wuecho.com/2018/07/14/超级账本Fabric-使用多通道/index.html">
@@ -17,7 +17,7 @@
 <meta property="og:description" content="超级账本Fabric-6.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/07/14/超级账本Fabric-使用多通道/应用多通道.png">
-<meta property="og:updated_time" content="2018-07-15T03:28:53.915Z">
+<meta property="og:updated_time" content="2018-07-15T03:31:29.281Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="超级账本Fabric-使用多通道">
 <meta name="twitter:description" content="超级账本Fabric-6.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
@@ -191,6 +191,30 @@
         
       </header>
       
+      <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+      </p>
+      <div id="toc-article" class="toc-article">
+          <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-6-使用多通道"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-6.使用多通道</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-使用多通道"><span class="toc-number">1.1.</span> <span class="toc-text">1. 使用多通道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-创建一个应用通道的配置交易"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 创建一个应用通道的配置交易</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-生成锚节点配置更新文件"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 生成锚节点配置更新文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-启动网络"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 启动网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-进入Docker容器"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 进入Docker容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-创建通道"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5 创建通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-加入通道"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.6 加入通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7-更新锚点"><span class="toc-number">1.1.7.</span> <span class="toc-text">1.7 更新锚点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8-列出所加入的通道"><span class="toc-number">1.1.8.</span> <span class="toc-text">1.8 列出所加入的通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-添加多通道流程图"><span class="toc-number">1.2.</span> <span class="toc-text">2. 添加多通道流程图</span></a></li></ol></li></ol>
+      </div>
+      <script type="text/javascript">
+          function showToc(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:block");
+              show_toc_btn.setAttribute("style","display:none");
+          };
+          function showBtn(){
+              var toc_article = document.getElementById("toc-article");
+              var show_toc_btn = document.getElementById("show-toc-btn");
+              toc_article.setAttribute("style","display:none");
+              show_toc_btn.setAttribute("style","display:block");
+          };
+      </script>
+      
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -260,6 +284,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -354,6 +389,19 @@
             </div>
         </div>
         
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超级账本Fabric-6-使用多通道"><span class="toc-number">1.</span> <span class="toc-text">超级账本Fabric-6.使用多通道</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-使用多通道"><span class="toc-number">1.1.</span> <span class="toc-text">1. 使用多通道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-创建一个应用通道的配置交易"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 创建一个应用通道的配置交易</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-生成锚节点配置更新文件"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 生成锚节点配置更新文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-启动网络"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 启动网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-进入Docker容器"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 进入Docker容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-创建通道"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5 创建通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-加入通道"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.6 加入通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7-更新锚点"><span class="toc-number">1.1.7.</span> <span class="toc-text">1.7 更新锚点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8-列出所加入的通道"><span class="toc-number">1.1.8.</span> <span class="toc-text">1.8 列出所加入的通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-添加多通道流程图"><span class="toc-number">1.2.</span> <span class="toc-text">2. 添加多通道流程图</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
         
     </div>
 </aside>
