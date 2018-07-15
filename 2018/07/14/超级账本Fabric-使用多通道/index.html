@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://www.wuecho.com">
   <title>超级账本Fabric-使用多通道 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="超级账本Fabric-5.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
+  <meta name="description" content="超级账本Fabric-6.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
 <meta name="keywords" content="区块链">
 <meta property="og:type" content="article">
 <meta property="og:title" content="超级账本Fabric-使用多通道">
 <meta property="og:url" content="http://www.wuecho.com/2018/07/14/超级账本Fabric-使用多通道/index.html">
 <meta property="og:site_name" content="WuEcho的博客">
-<meta property="og:description" content="超级账本Fabric-5.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
+<meta property="og:description" content="超级账本Fabric-6.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/07/14/超级账本Fabric-使用多通道/应用多通道.png">
-<meta property="og:updated_time" content="2018-07-14T15:39:34.600Z">
+<meta property="og:updated_time" content="2018-07-15T03:28:53.915Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="超级账本Fabric-使用多通道">
-<meta name="twitter:description" content="超级账本Fabric-5.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
+<meta name="twitter:description" content="超级账本Fabric-6.使用多通道1. 使用多通道12345$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode$ sudo docker-compose -f docker-compose-simple.yaml down	$ cd ../first-network 1.1 创建一个应用通道的配置交易务必替换$CHANNEL_NAME或设置CH">
 <meta name="twitter:image" content="http://www.wuecho.com/2018/07/14/超级账本Fabric-使用多通道/应用多通道.png">
   
     <link rel="alternative" href="/atom.xml" title="WuEcho的博客" type="application/atom+xml">
@@ -194,7 +194,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="超级账本Fabric-5-使用多通道"><a href="#超级账本Fabric-5-使用多通道" class="headerlink" title="超级账本Fabric-5.使用多通道"></a>超级账本Fabric-5.使用多通道</h1><h2 id="1-使用多通道"><a href="#1-使用多通道" class="headerlink" title="1. 使用多通道"></a>1. 使用多通道</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode</span><br><span class="line"></span><br><span class="line">$ sudo docker-compose -f docker-compose-simple.yaml down	</span><br><span class="line"></span><br><span class="line">$ cd ../first-network</span><br></pre></td></tr></table></figure>
+        <h1 id="超级账本Fabric-6-使用多通道"><a href="#超级账本Fabric-6-使用多通道" class="headerlink" title="超级账本Fabric-6.使用多通道"></a>超级账本Fabric-6.使用多通道</h1><h2 id="1-使用多通道"><a href="#1-使用多通道" class="headerlink" title="1. 使用多通道"></a>1. 使用多通道</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/hyfa/fabric-samples/chaincode-docker-devmode</span><br><span class="line"></span><br><span class="line">$ sudo docker-compose -f docker-compose-simple.yaml down	</span><br><span class="line"></span><br><span class="line">$ cd ../first-network</span><br></pre></td></tr></table></figure>
 <h3 id="1-1-创建一个应用通道的配置交易"><a href="#1-1-创建一个应用通道的配置交易" class="headerlink" title="1.1 创建一个应用通道的配置交易"></a>1.1 创建一个应用通道的配置交易</h3><p>务必替换$CHANNEL_NAME或设置CHANNEL_NAME为可在整个说明中使用的环境变量</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ export CHANNEL_NAME=mychannel2</span><br></pre></td></tr></table></figure>
 <p>指定使用  <code>configtx.yaml</code>  配置文件中的  <code>TwoOrgsChannel</code>  模板, 来生成新建通道的配置交易文件, </p>
