@@ -172,6 +172,182 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Go语言实现公链-2-地址与钱包" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/11/Go语言实现公链-2-地址与钱包/">Go语言实现搭建公链-(2)地址与钱包</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/11/Go语言实现公链-2-地址与钱包/" class="archive-article-date">
+  	<time datetime="2018-06-11T10:22:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-11</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Go语言实现搭建公链-2-地址与钱包"><a href="#Go语言实现搭建公链-2-地址与钱包" class="headerlink" title="Go语言实现搭建公链-(2)地址与钱包"></a>Go语言实现搭建公链-(2)地址与钱包</h1><h2 id="1-地址"><a href="#1-地址" class="headerlink" title="1. 地址"></a>1. 地址</h2><p>　　在比特币中，没有用户账户，也不需要任何存储个人信息(比如姓名，证件号等)，但是总要有某种途径识别谁是交易的输出者(也就是说，谁拥有这些输出上的锁定币)。这是<strong>比特币地址</strong></p>
+<h3 id="1-1-比特币地址"><a href="#1-1-比特币地址" class="headerlink" title="1.1 比特币地址"></a>1.1 比特币地址</h3><p>　　比特币地址是完全公开的，要想与别人进行交易只需要知道他的地址即可。所谓的<strong>地址</strong>，只不过是将公钥表示成人类可读的形式而已，因为原生的公钥人类很难阅读。在比特币中，身份就是一对或者多对保存在电脑的<strong>公钥(public key)</strong>和<strong>私钥(private key)</strong>。</p>
+<h3 id="1-2-公钥加密"><a href="#1-2-公钥加密" class="headerlink" title="1.2 公钥加密"></a>1.2 公钥加密</h3><p>　　<strong>公钥加密(public-key cryptography)</strong>算法使用的是成对的密钥：<strong>公钥</strong>和<strong>私钥</strong>。</p>
+<h3 id="1-3-数字签名"><a href="#1-3-数字签名" class="headerlink" title="1.3 数字签名"></a>1.3 数字签名</h3><p>　　在数学和密码学中，有个<strong>数字签名</strong>，该算法可以保证：</p>
+<blockquote>
+<p>1.当数据从发送方传送到接收方时，数据不会被修改；<br>2.数据由某一确定的发送方创建；<br>3.发送方无法否认发送过数据这一事实。</p>
+</blockquote>
+<p>　　通过在数据上应用签名算法，可以得到一个签名，这个签名晚些会被验证。生成数字签名需要一个私钥，而验证签名需要一个公钥。</p>
+<p>对数据进行签名，需要：</p>
+<blockquote>
+<p>1.要签名的数据<br>2.私钥</p>
+</blockquote>
+<p>应用签名算法可以生成一个签名，这个签名会被存储在交易输入中，对签名进行验证：</p>
+<blockquote>
+<p>1.被签名的数据<br>2.签名<br>3.公钥</p>
+</blockquote>
+<h2 id="2-比特币种的地址"><a href="#2-比特币种的地址" class="headerlink" title="2. 比特币种的地址"></a>2. 比特币种的地址</h2><p>　　以比特币为例，比特币是建立在数学加密学基础上的。先利用椭圆加密算法（ecc）来产生比特币的私钥和公钥，由私钥是可以计算出公钥，公钥的值经过一些列数字签名运算会得到比特币的地址，其步骤如下：</p>
+<ul>
+<li><ol>
+<li>随机选取一个32字节的数，作为私钥</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>使用椭圆曲线加密算法（ecc）计算私钥所对应的公钥</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>计算公钥的SHA-256Hash值</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>取上一步结果计算Ripemd-160Hash值</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>取上一步计算结果，前面加上地址版本号(Version)(比特币主网版本号“0x00”)</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>取上一步计算结果，计算SHA-256Hash值</li>
+</ol>
+</li>
+<li><ol start="7">
+<li>取上一步计算结果，计算SHA-256Hash值</li>
+</ol>
+</li>
+<li><ol start="8">
+<li>取上一步计算结果的前4字节(8为16进制)</li>
+</ol>
+</li>
+<li><ol start="9">
+<li>把这4字节加在第五步的结果后面，作为校验(这就是比特币地址的十六进制形态)</li>
+</ol>
+</li>
+<li><ol start="10">
+<li>用base58表示法变换一下地址就是常见的比特币地址</li>
+</ol>
+</li>
+</ul>
+<h2 id="3-地址代码实现"><a href="#3-地址代码实现" class="headerlink" title="3. 地址代码实现"></a>3. 地址代码实现</h2><p><strong>Base58加密算法</strong><br>　　创建项目名为<code>Walet</code>,文件夹下创建文件夹<code>blc</code>，在<code>blc</code>文件夹下创建<code>base58.go</code>，<code>base58.go</code>文件内容如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> blc</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"math/big"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b58Alphabet = []<span class="keyword">byte</span>(<span class="string">"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Base58Encode</span><span class="params">(input []<span class="keyword">byte</span>)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> result []<span class="keyword">byte</span></span><br><span class="line"></span><br><span class="line">	x := big.NewInt(<span class="number">0</span>).SetBytes(input)</span><br><span class="line">	base := big.NewInt(<span class="keyword">int64</span>(<span class="built_in">len</span>(b58Alphabet)))</span><br><span class="line">	zero := big.NewInt(<span class="number">0</span>)</span><br><span class="line">	mod := &amp;big.Int&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> x.Cmp(zero) != <span class="number">0</span> &#123;</span><br><span class="line">		x.DivMod(x,base,mod)</span><br><span class="line">		result = <span class="built_in">append</span>(result,b58Alphabet[mod.Int64()])</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//反转</span></span><br><span class="line">	ReverseBytes(result)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> b := <span class="keyword">range</span> input&#123;</span><br><span class="line">		<span class="keyword">if</span> b == <span class="number">0x00</span> &#123;</span><br><span class="line">			result = <span class="built_in">append</span>([]<span class="keyword">byte</span>&#123;b58Alphabet[<span class="number">0</span>]&#125;,result...)</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>反转函数</strong><br>在<code>blc</code>文件夹下创建<code>utils.go</code>的go文件，文件内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> blc</span><br><span class="line"></span><br><span class="line"><span class="comment">// 字节数组反转</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ReverseBytes</span><span class="params">(data []<span class="keyword">byte</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> i, j := <span class="number">0</span>, <span class="built_in">len</span>(data)<span class="number">-1</span>; i &lt; j; i, j = i+<span class="number">1</span>, j<span class="number">-1</span> &#123;</span><br><span class="line">		data[i], data[j] = data[j], data[i]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>创建钱包对象</strong><br>在<code>blc</code>文件夹下创建<code>walet.go</code>的go文件，文件内容如下：</p>
+<p>引入所需头文件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> blc</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"crypto/ecdsa"</span></span><br><span class="line">	<span class="string">"crypto/elliptic"</span></span><br><span class="line">	<span class="string">"crypto/rand"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">	<span class="string">"golang.org/x/crypto/ripemd160"</span></span><br><span class="line">	<span class="string">"code/publicChain/part45-base58/BLC"</span></span><br><span class="line">	<span class="string">"bytes"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>声明钱包的结构体,以及版本信息常量和校验位：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Walet <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//私钥</span></span><br><span class="line">	PrivateKey ecdsa.PrivateKey</span><br><span class="line">	<span class="comment">//公钥</span></span><br><span class="line">	Publishkey []<span class="keyword">byte</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//版本信息</span></span><br><span class="line"><span class="keyword">const</span> version = <span class="keyword">byte</span>(<span class="number">0x00</span>)</span><br><span class="line"><span class="comment">//校验位</span></span><br><span class="line"><span class="keyword">const</span> addressChecksumLen = <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>创建钱包对象的方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewWalet</span><span class="params">()</span> *<span class="title">Walet</span></span> &#123;</span><br><span class="line">	privateKey,publishKey := newKeyPair()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> &amp;Walet&#123;privateKey,publishKey&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//生成公钥以及私钥</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newKeyPair</span><span class="params">()</span> <span class="params">(ecdsa.PrivateKey,[]<span class="keyword">byte</span>)</span></span> &#123;</span><br><span class="line">	curve := elliptic.P256()</span><br><span class="line">	<span class="comment">//椭圆加密获取私钥</span></span><br><span class="line">	private,err := ecdsa.GenerateKey(curve,rand.Reader)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span>&#123;</span><br><span class="line">		log.Panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	pubKey := <span class="built_in">append</span>(private.PublicKey.X.Bytes(),private.PublicKey.Y.Bytes()...)</span><br><span class="line">	<span class="keyword">return</span> *private,pubKey</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成地址的方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取地址的方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w *Walet)</span><span class="title">GetAddress</span><span class="params">()</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	ripemd160 := w.Ripemd160Hash(w.Publishkey)</span><br><span class="line"></span><br><span class="line">    version_ripemd := <span class="built_in">append</span>([]<span class="keyword">byte</span>&#123;version&#125;,ripemd160...)</span><br><span class="line"></span><br><span class="line">    checkByts := CheckSum(version_ripemd)</span><br><span class="line"></span><br><span class="line">    bytes := <span class="built_in">append</span>(version_ripemd,checkByts...)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Base58Encode(bytes)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//取前4字节</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CheckSum</span><span class="params">(payload []<span class="keyword">byte</span>)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line"></span><br><span class="line"> 	hash1 := sha256.Sum256(payload)</span><br><span class="line"></span><br><span class="line"> 	hash1 = sha256.Sum256(hash1[:])</span><br><span class="line"></span><br><span class="line"> 	<span class="keyword">return</span> hash1[:addressChecksumLen]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//riemd160+sha256加密</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w *Walet)</span><span class="title">Ripemd160Hash</span><span class="params">(publishKey []<span class="keyword">byte</span>)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="comment">//sha256</span></span><br><span class="line">	hash256 := sha256.New()</span><br><span class="line">	hash256.Write(publishKey)</span><br><span class="line">	hash := hash256.Sum(<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//ripemd160</span></span><br><span class="line">	ripemd := ripemd160.New()</span><br><span class="line">	ripemd.Write(hash)</span><br><span class="line">	<span class="keyword">return</span> ripemd.Sum(<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>校验地址是否合法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过计算地址的逆运算来验证地址是否合法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">IsValidOfAddress</span><span class="params">(address []<span class="keyword">byte</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	version_publishkey_checknum := BLC.Base58Decode(address)</span><br><span class="line"></span><br><span class="line">	checkNum := version_publishkey_checknum[<span class="built_in">len</span>(version_publishkey_checknum)-addressChecksumLen:]</span><br><span class="line"></span><br><span class="line">	version_publishkey := version_publishkey_checknum[:<span class="built_in">len</span>(version_publishkey_checknum)-addressChecksumLen]</span><br><span class="line"></span><br><span class="line">	hashed := CheckSum(version_publishkey)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> bytes.Compare(hashed,checkNum) == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在项目文件夹下<code>walet</code>创建文件<code>main.go</code>的go文件，文件内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"code/0611/walet1/blc"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	walet := blc.NewWalet()</span><br><span class="line"></span><br><span class="line">	waltAddress := walet.GetAddress()</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(waltAddress))</span><br><span class="line"></span><br><span class="line">	addressIsValid := blc.IsValidOfAddress(waltAddress)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">string</span> := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> addressIsValid &#123;</span><br><span class="line">		<span class="keyword">string</span> = <span class="string">"是"</span></span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">string</span> = <span class="string">"否"</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"地址是否合法:%s"</span>,<span class="keyword">string</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">18L72T1ynk1uWj7d1kHL5MVkzD8xXH5Wr</span><br><span class="line">地址是否合法:是</span><br></pre></td></tr></table></figure>
+<p><strong>代码示例</strong></p>
+<p><a href="https://github.com/WuEcho/PublishBlockChain/tree/master/walet1" target="_blank" rel="noopener">地址钱包代码示例</a></p>
+<h2 id="4-钱包代码实现"><a href="#4-钱包代码实现" class="headerlink" title="4. 钱包代码实现"></a>4. 钱包代码实现</h2><p>　　钱包里面可以包含许多地址，因此钱包结构应如下，在上面到代码的基础上在<code>blc</code>文件夹下创建文件<code>walets.go</code>文件内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> blc</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Walets <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">	Walets <span class="keyword">map</span>[<span class="keyword">string</span>]*Walet</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建钱包对象</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewWalets</span><span class="params">()</span> *<span class="title">Walets</span></span> &#123;</span><br><span class="line">	walets := &amp;Walets&#123;&#125;</span><br><span class="line">	walets.Walets = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*Walet)</span><br><span class="line">	<span class="keyword">return</span> walets</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将钱包对象放入数组中保存起来</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w *Walets)</span><span class="title">CreatWalets</span><span class="params">()</span></span> &#123;</span><br><span class="line">	walet := NewWalet()</span><br><span class="line"></span><br><span class="line">	w.Walets[<span class="keyword">string</span>(walet.GetAddress())] = walet</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改<code>main.go</code>文件内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"walet2/blc"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">	waltes := blc.NewWalets()</span><br><span class="line"></span><br><span class="line">	waltes.CreatWalets()</span><br><span class="line"></span><br><span class="line">	waltes.CreatWalets()</span><br><span class="line"></span><br><span class="line">	fmt.Println(*waltes)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;map[1CEbw9xBymH9CT2GuijPu3A3Za4nUgd2XT:0xc420020240 1NCfkZCyVh12ur7b6nnL2bjdJnYL6F3QS6:0xc420020280]&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>代码示例</strong><br><a href="https://github.com/WuEcho/PublishBlockChain/tree/master/walet2" target="_blank" rel="noopener">钱包Demo示例</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">公链</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">地址与钱包</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/11/Go语言实现公链-2-地址与钱包/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言实现搭建公链-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1443,11 +1619,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoS共识算法</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoS共识算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
         		</li>
       		
 		</ul>
@@ -1469,205 +1645,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/22/Go语言实现PoS共识算法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Go语言实现PoW共识算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/22/Go语言实现PoW共识算法/">Go语言实现PoW共识算法</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/22/Go语言实现PoW共识算法/" class="archive-article-date">
-  	<time datetime="2018-05-22T02:50:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-22</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Go语言实现PoW共识算法"><a href="#Go语言实现PoW共识算法" class="headerlink" title="Go语言实现PoW共识算法"></a>Go语言实现PoW共识算法</h1><h2 id="1-简易实现Pow共识算法"><a href="#1-简易实现Pow共识算法" class="headerlink" title="1. 简易实现Pow共识算法"></a>1. 简易实现Pow共识算法</h2><p>要想实现PoW共识算法，需要声明区块结构和链表结构，区块结构负责产生新的区块，链表结构负责将新产生的区块挂到链上。</p>
-<p>新建一个项目目录名为<code>PoWdemo</code>，在项目目录<code>PoWdemo</code>下创建一个名为<code>Block</code>的文件夹，然后在<code>Block</code>文件夹下创建名为<code>block.go</code>的文件，其中内容如下：</p>
-<p>引入头文件</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Block</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">	<span class="string">"crypto/sha256"</span></span><br><span class="line">	<span class="string">"encoding/hex"</span></span><br><span class="line">	<span class="string">"strings"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>声明区块类型的结构体：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明区块</span></span><br><span class="line"><span class="keyword">type</span> Block <span class="keyword">struct</span> &#123;</span><br><span class="line">	  <span class="comment">//区块高度</span></span><br><span class="line">	  Index <span class="keyword">int</span></span><br><span class="line">	  <span class="comment">//时间戳</span></span><br><span class="line">     TimeStamp <span class="keyword">string</span></span><br><span class="line">     <span class="comment">//难度</span></span><br><span class="line">     Diff  <span class="keyword">int</span></span><br><span class="line">     <span class="comment">//上一个区块的哈希</span></span><br><span class="line">     PreHash  <span class="keyword">string</span></span><br><span class="line">     <span class="comment">//当前区块哈希</span></span><br><span class="line">     HashCode  <span class="keyword">string</span></span><br><span class="line">     <span class="comment">//随机数</span></span><br><span class="line">     Nonce  <span class="keyword">int</span></span><br><span class="line">     <span class="comment">//交易信息</span></span><br><span class="line">     Data <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>声明产生创世区块的方法，以及产生区块哈希的方法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建创世区块</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateFirstBlock</span><span class="params">(data <span class="keyword">string</span>)</span> <span class="title">Block</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> firstBlock Block</span><br><span class="line">	firstBlock.Index = <span class="number">1</span></span><br><span class="line">	firstBlock.TimeStamp = time.Now().String()</span><br><span class="line">	firstBlock.Diff = <span class="number">4</span></span><br><span class="line">	firstBlock.Nonce = <span class="number">0</span></span><br><span class="line">	firstBlock.Data = data</span><br><span class="line">	firstBlock.HashCode = GenerateBlockHashValue(firstBlock)</span><br><span class="line">	<span class="keyword">return</span> firstBlock</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//生产区块的哈希值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateBlockHashValue</span><span class="params">(block Block)</span> <span class="title">string</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> hashData = strconv.Itoa(block.Index) + block.TimeStamp + strconv.Itoa(block.Diff) + strconv.Itoa(block.Nonce) +</span><br><span class="line">		block.Data</span><br><span class="line">    <span class="comment">//hash算法</span></span><br><span class="line">    <span class="keyword">var</span> hash = sha256.New()</span><br><span class="line">    hash.Write([]<span class="keyword">byte</span>(hashData))</span><br><span class="line">    hashed := hash.Sum(<span class="literal">nil</span>)</span><br><span class="line">    <span class="comment">//将字节装换成字符串</span></span><br><span class="line">    <span class="keyword">return</span> hex.EncodeToString(hashed)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>产生新的区块的方法，以及PoW算法实现：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//产生下一区块</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateNextBlock</span><span class="params">(data <span class="keyword">string</span>,oldBlock Block)</span> <span class="title">Block</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> newBlock Block</span><br><span class="line">	  newBlock.Data = data</span><br><span class="line">	  newBlock.TimeStamp = time.Now().String()</span><br><span class="line">	  <span class="comment">//应该由矿工操作处理 暂时设置为0</span></span><br><span class="line">	  newBlock.Nonce = <span class="number">0</span></span><br><span class="line">	  newBlock.Diff = <span class="number">4</span></span><br><span class="line">	  newBlock.PreHash = oldBlock.HashCode</span><br><span class="line">    newBlock.Index = <span class="number">2</span></span><br><span class="line">    <span class="comment">//应该填写PoW挖矿成功后的值</span></span><br><span class="line">    newBlock.HashCode = pow(newBlock.Diff,&amp;newBlock)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> newBlock</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//PoW工作量证明   diff 为难度系数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">pow</span><span class="params">(diff <span class="keyword">int</span>, block *Block)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		hash := GenerateBlockHashValue(*block)</span><br><span class="line">     <span class="comment">//产生的哈希值是否满足难度系数要求即产生的哈希值前面是不是有难度系数个“0”</span></span><br><span class="line">		<span class="keyword">if</span> strings.HasPrefix(hash,strings.Repeat(<span class="string">"0"</span>,diff)) &#123;</span><br><span class="line">			<span class="comment">//挖矿成功</span></span><br><span class="line">			<span class="keyword">return</span> hash</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			block.Nonce ++</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在<code>PoWdemo</code>文件夹下创建一个名为<code>BlockChain</code>的文件夹，在<code>BlockChain</code>文件夹下创建名为<code>blockChain.go</code>的go文件，这个文件里面为链表结构，代码如下：</p>
-<p>引入头文件：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> BlockChain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"PoWdemo/Block"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>构建链表结构体，和全局变量头节点：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过链表的形式维护区块链的业务</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Node <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">//指针域</span></span><br><span class="line">	NextNode *Node</span><br><span class="line">	<span class="comment">//数据域</span></span><br><span class="line">	Data *Block.Block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> HeadNode *Node</span><br></pre></td></tr></table></figure>
-<p>创建头节点：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建头节点，保存创世区块</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreatHeadNode</span><span class="params">(data *Block.Block)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> headNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">	headNode.NextNode = <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">	headNode.Data = data</span><br><span class="line"></span><br><span class="line">	HeadNode = headNode</span><br><span class="line">	<span class="keyword">return</span> headNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>添加节点方法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//添加节点，当挖矿成功以后添加区块</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNode</span><span class="params">(data *Block.Block,prefNode *Node)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">    newNode.Data = data</span><br><span class="line">    newNode.NextNode = <span class="literal">nil</span></span><br><span class="line">    prefNode.NextNode = newNode</span><br><span class="line">    <span class="keyword">return</span> newNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>添加节点的方法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//添加节点，当挖矿成功以后添加区块</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNode</span><span class="params">(data *Block.Block,prefNode *Node)</span> *<span class="title">Node</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> newNode *Node = <span class="built_in">new</span>(Node)</span><br><span class="line">    newNode.Data = data</span><br><span class="line">    newNode.NextNode = <span class="literal">nil</span></span><br><span class="line">    prefNode.NextNode = newNode</span><br><span class="line">    <span class="keyword">return</span> newNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>遍历区块链中所有的节点</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ShowBlockChain</span><span class="params">(headNode *Node)</span></span>  &#123;</span><br><span class="line">	<span class="keyword">var</span> node *Node = headNode</span><br><span class="line">	fmt.Print(node.Data)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> node.NextNode != <span class="literal">nil</span> &#123;</span><br><span class="line">			node = node.NextNode</span><br><span class="line">			fmt.Print(<span class="string">"----"</span>,node.Data,<span class="string">"----"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span> node.NextNode == <span class="literal">nil</span>&#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在<code>PoWdemo</code>文件夹下创建<code>main.go</code>文件，文件内容如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"PoWdemo/Block"</span></span><br><span class="line">	<span class="string">"PoWdemo/BlockChain"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> headBlock = Block.GenerateFirstBlock(<span class="string">"创世区块"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> nextBlock = Block.GenerateNextBlock(<span class="string">"第二区块"</span>,headBlock)</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">var</span> blockChain = BlockChain.CreatHeadNode(&amp;headBlock)</span><br><span class="line"></span><br><span class="line">	BlockChain.AddNode(&amp;nextBlock,blockChain)</span><br><span class="line"></span><br><span class="line">	BlockChain.ShowBlockChain(blockChain)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行之后的输出为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;&#123;1 2018-05-22 18:54:44.637808998 +0800 CST m=+0.000331467 4  273fa2792a1ad07c0eda1d7e0ec541fc92d2bb88bbb06971326b08e9a43ef0e2 0 创世区块&#125;----&amp;&#123;2 2018-05-22 18:54:44.637880532 +0800 CST m=+0.000403003 4 273fa2792a1ad07c0eda1d7e0ec541fc92d2bb88bbb06971326b08e9a43ef0e2 00004bbab101f9698c518a0c4136d40777f7d9c31020358df9d085065ea87b5d 41229 第二区块&#125;----</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/WuEcho/PoWDemo.git" target="_blank" rel="noopener">使用Go语言实现Pow示例地址</a></p>
-<h2 id="2-与服务器搭配实现PoW共识算法"><a href="#2-与服务器搭配实现PoW共识算法" class="headerlink" title="2. 与服务器搭配实现PoW共识算法"></a>2. 与服务器搭配实现PoW共识算法</h2><h3 id="2-1-安装依赖软件"><a href="#2-1-安装依赖软件" class="headerlink" title="2.1 安装依赖软件"></a>2.1 安装依赖软件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ go get github.com/davecgh/go-spew/spew</span><br><span class="line"></span><br><span class="line">$ go get github.com/gorilla/mux</span><br><span class="line"></span><br><span class="line">$ go get github.com/joho/godotenv</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>spew</code> 在控制台中格式化输出相应的结果。</p>
-</li>
-<li><p><code>gorilla/mux</code> 是编写web处理程序的流行软件包。</p>
-</li>
-<li><p><code>godotenv</code> 可以从我们项目的根目录的 <code>.env</code> 文件中读取数据。</p>
-</li>
-</ul>
-<h3 id="2-2-实现PoW共识算法"><a href="#2-2-实现PoW共识算法" class="headerlink" title="2.2 实现PoW共识算法"></a>2.2 实现PoW共识算法</h3><p>新建 <code>.env</code> ，添加 <code>ADDR=8080</code><br>新建 <code>main.go</code>，引入相应的包</p>
-<p><strong>引入头文件：</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"crypto/sha256"</span></span><br><span class="line">        <span class="string">"encoding/hex"</span></span><br><span class="line">        <span class="string">"encoding/json"</span></span><br><span class="line">        <span class="string">"fmt"</span></span><br><span class="line">        <span class="string">"io"</span></span><br><span class="line">        <span class="string">"log"</span></span><br><span class="line">        <span class="string">"net/http"</span></span><br><span class="line">        <span class="string">"os"</span></span><br><span class="line">        <span class="string">"strconv"</span></span><br><span class="line">        <span class="string">"strings"</span></span><br><span class="line">        <span class="string">"sync"</span></span><br><span class="line">        <span class="string">"time"</span></span><br><span class="line"></span><br><span class="line">        <span class="string">"github.com/davecgh/go-spew/spew"</span></span><br><span class="line">        <span class="string">"github.com/gorilla/mux"</span></span><br><span class="line">        <span class="string">"github.com/joho/godotenv"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p><strong>定义区块：</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> difficulty = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Block <span class="keyword">struct</span> &#123;</span><br><span class="line">        Index      <span class="keyword">int</span></span><br><span class="line">        Timestamp  <span class="keyword">string</span></span><br><span class="line">        BPM        <span class="keyword">int</span></span><br><span class="line">        Hash       <span class="keyword">string</span></span><br><span class="line">        PrevHash   <span class="keyword">string</span></span><br><span class="line">        Difficulty <span class="keyword">int</span></span><br><span class="line">        Nonce      <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Blockchain []Block</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Message <span class="keyword">struct</span> &#123;</span><br><span class="line">        BPM <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mutex = &amp;sync.Mutex&#123;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>difficulty</code> 代表难度系数，如果赋值为 <code>1</code>，则需要判断生成区块时所产生的 Hash 前缀至少包含1个 <code>0</code></li>
-<li><p><code>Block</code> 代表区块的结构体。</p>
-<ul>
-<li><p><code>Index</code> 是区块链中数据记录的位置</p>
-</li>
-<li><p><code>Timestamp</code> 是自动确定的，并且是写入数据的时间</p>
-</li>
-<li><p><code>BPM</code> 是每分钟跳动的次数，是你的脉率</p>
-</li>
-<li><p><code>Hash</code> 是代表这个数据记录的SHA256标识符</p>
-</li>
-<li><p><code>PrevHash</code> 是链中上一条记录的SHA256标识符</p>
-</li>
-<li><code>Difficulty</code> 是当前区块的难度系数</li>
-<li><code>Nonce</code> 是 PoW 挖矿中符合条件的数字</li>
-</ul>
-</li>
-<li><code>Blockchain</code> 是存放区块数据的集合</li>
-<li><code>Message</code> 是使用 <code>POST</code> 请求传递的数据</li>
-<li><code>mutex</code> 是为了防止同一时间产生多个区块</li>
-</ul>
-<p><strong>生成区块</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateBlock</span><span class="params">(oldBlock Block, BPM <span class="keyword">int</span>)</span> <span class="title">Block</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> newBlock Block</span><br><span class="line"></span><br><span class="line">        t := time.Now()</span><br><span class="line"></span><br><span class="line">        newBlock.Index = oldBlock.Index + <span class="number">1</span></span><br><span class="line">        newBlock.Timestamp = t.String()</span><br><span class="line">        newBlock.BPM = BPM</span><br><span class="line">        newBlock.PrevHash = oldBlock.Hash</span><br><span class="line">        newBlock.Difficulty = difficulty</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; ; i++ &#123;</span><br><span class="line">                hex := fmt.Sprintf(<span class="string">"%x"</span>, i)</span><br><span class="line">                newBlock.Nonce = hex</span><br><span class="line">                <span class="keyword">if</span> !isHashValid(calculateHash(newBlock), newBlock.Difficulty) &#123;</span><br><span class="line">                        fmt.Println(calculateHash(newBlock), <span class="string">" do more work!"</span>)</span><br><span class="line">                        time.Sleep(time.Second)</span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        fmt.Println(calculateHash(newBlock), <span class="string">" work done!"</span>)</span><br><span class="line">                        newBlock.Hash = calculateHash(newBlock)</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newBlock</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>newBlock</code> 中的 <code>PrevHash</code> 存储的上一个区块的 <code>Hash</code>。</p>
-<p><code>for 循环</code> 通过循环改变 <code>Nonce</code>，然后选出符合相应难度系数的 <code>Nonce</code>。</p>
-<p><code>isHashValid</code> 判断 hash，是否满足当前的难度系数。如果难度系数是2，则当前hash的前缀有2个0。</p>
-<p><strong>判断产生的哈希值是否合法</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isHashValid</span><span class="params">(hash <span class="keyword">string</span>, difficulty <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        prefix := strings.Repeat(<span class="string">"0"</span>, difficulty)</span><br><span class="line">        <span class="keyword">return</span> strings.HasPrefix(hash, prefix)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>strings.Repeat(&quot;0&quot;, difficulty)</code> 复制 <code>difficulty</code> 个<code>0</code>，并返回新字符串，当 difficulty 为 <code>2</code> ，则 prefix 为 <code>00</code></p>
-</li>
-<li><p><code>strings.HasPrefix(hash, prefix)</code> 判断字符串 <code>hash</code> 是否包含前缀 <code>prefix</code></p>
-</li>
-</ul>
-<p><strong><code>calculateHash</code> 根据设定的规则，生成 Hash 值。</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calculateHash</span><span class="params">(block Block)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">        record := strconv.Itoa(block.Index) + block.Timestamp + strconv.Itoa(block.BPM) + block.PrevHash + block.Nonce</span><br><span class="line">        h := sha256.New()</span><br><span class="line">        h.Write([]<span class="keyword">byte</span>(record))</span><br><span class="line">        hashed := h.Sum(<span class="literal">nil</span>)</span><br><span class="line">        <span class="keyword">return</span> hex.EncodeToString(hashed)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>验证区块</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isBlockValid</span><span class="params">(newBlock, oldBlock Block)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> oldBlock.Index+<span class="number">1</span> != newBlock.Index &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> oldBlock.Hash != newBlock.PrevHash &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> calculateHash(newBlock) != newBlock.Hash &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>web服务器</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">run</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">        mux := makeMuxRouter()</span><br><span class="line">        httpAddr := os.Getenv(<span class="string">"ADDR"</span>)</span><br><span class="line">        log.Println(<span class="string">"Listening on "</span>, os.Getenv(<span class="string">"ADDR"</span>))</span><br><span class="line">        s := &amp;http.Server&#123;</span><br><span class="line">                Addr:           <span class="string">":"</span> + httpAddr,</span><br><span class="line">                Handler:        mux,</span><br><span class="line">                ReadTimeout:    <span class="number">10</span> * time.Second,</span><br><span class="line">                WriteTimeout:   <span class="number">10</span> * time.Second,</span><br><span class="line">                MaxHeaderBytes: <span class="number">1</span> &lt;&lt; <span class="number">20</span>,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> err := s.ListenAndServe(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> err</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeMuxRouter</span><span class="params">()</span> <span class="title">http</span>.<span class="title">Handler</span></span> &#123;</span><br><span class="line">        muxRouter := mux.NewRouter()</span><br><span class="line">        muxRouter.HandleFunc(<span class="string">"/"</span>, handleGetBlockchain).Methods(<span class="string">"GET"</span>)</span><br><span class="line">        muxRouter.HandleFunc(<span class="string">"/"</span>, handleWriteBlock).Methods(<span class="string">"POST"</span>)</span><br><span class="line">        <span class="keyword">return</span> muxRouter</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>makeMuxRouter</code> 主要定义路由处理，当收到 <code>GET</code> 请求，就会调用 <code>handleGetBlockchain</code> 方法。当收到 <code>POST</code> 请求，就会调用 <code>handleWriteBlock</code> 方法。</p>
-<p><strong><code>handleGetBlockchain</code> 获取所有区块的列表信息</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleGetBlockchain</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">        bytes, err := json.MarshalIndent(Blockchain, <span class="string">""</span>, <span class="string">"  "</span>)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">                http.Error(w, err.Error(), http.StatusInternalServerError)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        io.WriteString(w, <span class="keyword">string</span>(bytes))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><code>handleWriteBlock</code> 主要是生成新的区块</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleWriteBlock</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)</span><br><span class="line">	<span class="keyword">var</span> m Message</span><br><span class="line"></span><br><span class="line">	decoder := json.NewDecoder(r.Body)</span><br><span class="line">	<span class="keyword">if</span> err := decoder.Decode(&amp;m); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			respondWithJSON(w, r, http.StatusBadRequest, r.Body)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">	&#125;   </span><br><span class="line">	<span class="keyword">defer</span> r.Body.Close()</span><br><span class="line"></span><br><span class="line">	<span class="comment">//ensure atomicity when creating new block</span></span><br><span class="line">	mutex.Lock()</span><br><span class="line">	newBlock := generateBlock(Blockchain[<span class="built_in">len</span>(Blockchain)<span class="number">-1</span>], m.BPM)</span><br><span class="line">	mutex.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> isBlockValid(newBlock, Blockchain[<span class="built_in">len</span>(Blockchain)<span class="number">-1</span>]) &#123;</span><br><span class="line">			Blockchain = <span class="built_in">append</span>(Blockchain, newBlock)</span><br><span class="line">			spew.Dump(Blockchain)</span><br><span class="line">	&#125;   </span><br><span class="line"></span><br><span class="line">	respondWithJSON(w, r, http.StatusCreated, newBlock)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">respondWithJSON</span><span class="params">(w http.ResponseWriter, r *http.Request, code <span class="keyword">int</span>, payload <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)</span><br><span class="line">	response, err := json.MarshalIndent(payload, <span class="string">""</span>, <span class="string">"  "</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			w.WriteHeader(http.StatusInternalServerError)</span><br><span class="line">			w.Write([]<span class="keyword">byte</span>(<span class="string">"HTTP 500: Internal Server Error"</span>))</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	w.WriteHeader(code)</span><br><span class="line">	w.Write(response)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>主函数</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	err := godotenv.Load()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Fatal(err)</span><br><span class="line">	&#125;   </span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			t := time.Now()</span><br><span class="line">			genesisBlock := Block&#123;&#125;</span><br><span class="line">			genesisBlock = Block&#123;<span class="number">0</span>, t.String(), <span class="number">0</span>, calculateHash(genesisBlock), <span class="string">""</span>, difficulty, <span class="string">""</span>&#125; </span><br><span class="line">			spew.Dump(genesisBlock)</span><br><span class="line"></span><br><span class="line">			mutex.Lock()</span><br><span class="line">			Blockchain = <span class="built_in">append</span>(Blockchain, genesisBlock)</span><br><span class="line">			mutex.Unlock()</span><br><span class="line">	&#125;() </span><br><span class="line">	log.Fatal(run())</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>godotenv.Load()</code> 允许我们从 根目录的文件 <code>.env</code> 读取相应的变量。</p>
-</li>
-<li><p><code>genesisBlock</code> 创建初始区块。</p>
-</li>
-<li><p><code>run()</code> 启动 web 服务</p>
-</li>
-</ul>
-<p><strong>启动web服务器</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go run main.go</span><br></pre></td></tr></table></figure>
-<p>可以通过 <code>Postman</code>软件模拟网络请求。<br>通过 <code>POST</code> 访问 <code>http://localhost:8080</code> 可以添加新的区块信息。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180507-162511.png" alt=""></p>
-<p>可以在终端查看挖矿过程，如图所示：</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180507-162255.png" alt=""></p>
-<p>通过 <code>GET</code> 访问 <code>http://localhost:8080</code> 可以获取区块链信息。</p>
-<p><img src="http://olgjbx93m.bkt.clouddn.com/WX20180507-162527.png" alt=""></p>
-<p>如果没有Postman可以通过终端输出指令来实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8080</span><br><span class="line"></span><br><span class="line">curl -d &apos;&#123;&quot;BMP&quot;: 20&#125;&apos; http://localhost:8080</span><br></pre></td></tr></table></figure>
-<p><strong>源码下载</strong></p>
-<p><a href="https://github.com/didianV5/blockchain/tree/master/proof-of-work" target="_blank" rel="noopener">使用 go 实现 Proof-of-Work 共识机制</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">PoW共识算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Go语言实现</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Golang//" class="article-tag-list-link color2">Golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/22/Go语言实现PoW共识算法/">展开全文 >></a>
         </p>
       
 
@@ -1842,7 +1819,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1850,7 +1827,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1874,15 +1851,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1950,15 +1927,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式一致性系统</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1978,11 +1955,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
