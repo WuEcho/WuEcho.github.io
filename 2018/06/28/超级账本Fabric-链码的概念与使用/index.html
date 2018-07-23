@@ -9,7 +9,7 @@
   <title>超级账本Fabric-链码的概念与使用 | WuEcho的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="超级账本Fabric-5.链码的概念与使用1.概念:链码(Chaincode): 链上代码, 简称链码, 一般是指用户编写的应用代码 链码被部署在Fabric网络节点上,  ​    Peer 节点: ​        – 背书节点 ​        – commit节点 ​        – Leader节点 ​        – 锚节点 运行在隔离沙盒(当前为Docker容器)中, 并通过gR">
-<meta name="keywords" content="超级账本Fabric">
+<meta name="keywords" content="超级账本Fabric,链码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="超级账本Fabric-链码的概念与使用">
 <meta property="og:url" content="http://www.wuecho.com/2018/06/28/超级账本Fabric-链码的概念与使用/index.html">
@@ -17,7 +17,7 @@
 <meta property="og:description" content="超级账本Fabric-5.链码的概念与使用1.概念:链码(Chaincode): 链上代码, 简称链码, 一般是指用户编写的应用代码 链码被部署在Fabric网络节点上,  ​    Peer 节点: ​        – 背书节点 ​        – commit节点 ​        – Leader节点 ​        – 锚节点 运行在隔离沙盒(当前为Docker容器)中, 并通过gR">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuecho.com/2018/06/28/超级账本Fabric-链码的概念与使用/链码.png">
-<meta property="og:updated_time" content="2018-07-14T15:23:52.744Z">
+<meta property="og:updated_time" content="2018-07-18T16:02:17.455Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="超级账本Fabric-链码的概念与使用">
 <meta name="twitter:description" content="超级账本Fabric-5.链码的概念与使用1.概念:链码(Chaincode): 链上代码, 简称链码, 一般是指用户编写的应用代码 链码被部署在Fabric网络节点上,  ​    Peer 节点: ​        – 背书节点 ​        – commit节点 ​        – Leader节点 ​        – 锚节点 运行在隔离沙盒(当前为Docker容器)中, 并通过gR">
@@ -405,6 +405,10 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">超级账本Fabric</a>
         		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">链码</a>
+        		</li>
       		
 		</ul>
 	</div>
@@ -638,11 +642,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -650,7 +658,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+                <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -659,10 +667,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -682,7 +686,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -690,7 +694,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -718,11 +722,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -822,15 +826,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -875,6 +879,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">超级账本Fabric</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">区块链应用开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">票据背书</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">超级账本Fabcir</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">简单资产</a>
               </li>
             
             <div class="clearfix"></div>
