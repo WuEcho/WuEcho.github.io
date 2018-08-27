@@ -172,6 +172,152 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-星云链Nebulas101-02-发送交易" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/08/星云链Nebulas101-02-发送交易/">星云链Nebulas101 - 02 发送交易</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/08/星云链Nebulas101-02-发送交易/" class="archive-article-date">
+  	<time datetime="2018-05-08T14:42:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="02-发送交易"><a href="#02-发送交易" class="headerlink" title="02 发送交易"></a>02 发送交易</h1><p><strong>Nebulas提供了三种方式去发送交易：</strong></p>
+<ol>
+<li>签名 &amp; 发送</li>
+<li>密码 &amp; 发送</li>
+<li>解锁 &amp; 发送</li>
+</ol>
+<p>发送者账户</p>
+<p>在这里，将会使用配置文件<code>conf/default/genesis.conf</code>中预分配过代币的账户中选择一个作为发送者账户，默认选择<code>n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE</code>。</p>
+<p>接受者账户</p>
+<p>我们使用如下指令创建一个全新的账户来做接受者，请记住输入的密码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./neb account new</span><br><span class="line">Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.</span><br><span class="line">Passphrase:</span><br><span class="line">Repeat passphrase:</span><br><span class="line">Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提示：你创建的新账户和上面可能不一样，请以你创建的账户做为接受者继续接下来的实验</p>
+</blockquote>
+<p>新账户的keystore文件将会被放置在$GOPATH/src/github.com/nebulasio/go-nebulas/keydir/内。</p>
+<h2 id="1-启动私有链"><a href="#1-启动私有链" class="headerlink" title="1.启动私有链"></a>1.启动私有链</h2><h3 id="1-1-启动种子节点"><a href="#1-1-启动种子节点" class="headerlink" title="1.1 启动种子节点"></a>1.1 启动种子节点</h3><p>首先，我们启动本地私有链的第一个节点，它可以作为其他节点的种子节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./neb -c conf/default/config.conf</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-启动矿工节点"><a href="#1-2-启动矿工节点" class="headerlink" title="1.2 启动矿工节点"></a>1.2 启动矿工节点</h3><p>接着，我们启动一个矿工节点接入本地私有链，这个节点之后将会产生新的区块。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./neb -c conf/example/miner.conf</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>多久会生成一个新的区块?</p>
+<p>在星云链上, 在贡献度证明（Proof-of-Devotion， <a href="https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf" target="_blank" rel="noopener">技术白皮书</a>中有详细描述）被充分验证前，DPoS<br>被选择作为一个过渡方案。在采用DPoS共识算法中，总共有21个矿工，每个矿工会轮流每15s出一个<br>新区块。<br>在目前的测试环境中，由于只启动了21个矿工中的一个，所以需要等待15*21s才会出一个新区<br>块。</p>
+</blockquote>
+<p>一旦一个新区块被挖出，挖块奖励将会被自动发送到当前矿工配置的Coinbase账户中，在<code>conf/example/miner.conf</code>里，该账户就是<code>n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE</code></p>
+<h2 id="2-星云链交互"><a href="#2-星云链交互" class="headerlink" title="2.星云链交互"></a>2.星云链交互</h2><p>星云链提供给开发者HTTP API, RPC API和CLI来和运行中的星云节点交互。在教程中，我们将会基于HTTP API（<a href="https://github.com/nebulasio/wiki/blob/master/rpc.md" target="_blank" rel="noopener">API Module</a> | <a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md" target="_blank" rel="noopener">Admin Module</a>）来介绍三种发送交易的方法。</p>
+<blockquote>
+<p>提示：星云链的HTTP服务默认端口号为8685</p>
+</blockquote>
+<p>首先，在发送新交易前，我们检查下发送者账户的状态</p>
+<h3 id="2-1-检查账户状态"><a href="#2-1-检查账户状态" class="headerlink" title="2.1 检查账户状态"></a>2.1 检查账户状态</h3><p>每个交易如果需要上链，都需要给矿工缴纳一部分手续费，所以发送者账户中需要有一部分钱才能成功发送交易。一般一个普通转账交易，手续费在0.000000002NAS左右，非常少。</p>
+<p>我们可以通过API Module中的<code>/v1/user/accountstate</code>接口来获取发送者账户<code>n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE</code>的账户信息，检查下是否有足够的钱支付上链手续费。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d &apos;&#123;&quot;address&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">//输出</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;balance&quot;:&quot;5000000000000000000000000&quot;,&quot;nonce&quot;:&quot;0&quot;,&quot;type&quot;:87&#125;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提示：Type用于标记账户类型。88表示该账户为智能合约账户，部署一个合约之后，就可以得到一个合约<br>账户。87表示非合约账户，我们通过./neb account new创建的账户就是非合约账户，用户存储链上资<br>产。</p>
+<p>提示：Nonce用于标记账户发起的所有交易的顺序。同一个账户，每发起一个新的交易，Nonce就加一，<br>初始为0，第一个交易的Nonce为1。</p>
+</blockquote>
+<p>如我们所见，发送者账户在预分配后拥有5000000000000000000000000(5 * 10^24)个代币，1个NAS是1000000000000000000（10^18）个代币，用于支付交易上链的手续费绰绰有余。</p>
+<p>然后我们检查接受者账户的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d &apos;&#123;&quot;address&quot;:&quot;n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy&quot;&#125;&apos;</span><br><span class="line">//输出</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;balance&quot;:&quot;0&quot;,&quot;nonce&quot;:&quot;0&quot;,&quot;type&quot;:87&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>如期望的那样，新账户没有任何代币</p>
+<h3 id="2-2-发送交易"><a href="#2-2-发送交易" class="headerlink" title="2.2 发送交易"></a>2.2 发送交易</h3><h4 id="2-2-1-签名-amp-发送"><a href="#2-2-1-签名-amp-发送" class="headerlink" title="2.2.1 签名 &amp; 发送"></a>2.2.1 签名 &amp; 发送</h4><p>使用这种方式，我们可以在离线环境下先使用私钥签名好交易，然后把签好名的交易在联网的机器上发出。这是最安全的发送交易的方式，私钥可以完全离线保存，不触网。<a href="https://github.com/nebulasio/web-wallet" target="_blank" rel="noopener">Web-Wallet</a>正是基于<a href="https://github.com/nebulasio/neb.js" target="_blank" rel="noopener">Neb.js</a>采用这种方法发送的交易。</p>
+<p>首先，我们使用<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#signtransactionwithpassphrase" target="_blank" rel="noopener">Admin Module</a>中的<code>v1/admin/sign</code>接口给准备发的交易签名，得到交易的二进制数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/sign -d &apos;&#123;&quot;transaction&quot;:&#123;&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;, &quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:1,&quot;gasPrice&quot;:&quot;1000000&quot;,&quot;gasLimit&quot;:&quot;2000000&quot;&#125;, &quot;passphrase&quot;:&quot;passphrase&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">//打印</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;data&quot;:&quot;CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA=&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提示：在发送交易时，对于同一个账户，只有当他Nonce为N的交易上链后，Nonce为N+1的交易才能上<br>链，有严格的顺序，Nonce必须严格加1。可以通过<a href="https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate" target="_blank" rel="noopener">GetAccountState</a>接口查看最新的Nonce。</p>
+</blockquote>
+<p>然后，将签好名的交易原始数据提交到本地私有链里的星云节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/user/rawtransaction -d &apos;&#123;&quot;data&quot;:&quot;CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA=&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">//打印</span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;txhash&quot;:&quot;1b8cc3f977256c4d620b7d72f531bc19f10eb13a05ff24a8a792cd5da53a1277&quot;,&quot;contract_address&quot;:&quot;&quot;&#125;&#125;⏎</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-2-密码-amp-发送"><a href="#2-2-2-密码-amp-发送" class="headerlink" title="2.2.2 密码 &amp; 发送"></a>2.2.2 密码 &amp; 发送</h4><p>如果你信任一个星云节点帮你保存keystore文件，你可以使用第二种方法发送交易。</p>
+<p>首先，上传你的keystore文件到你信任的星云节点的keydir文件夹下。如果在节点在本地，可以使用如下指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /path/to/keystore.json /path/to/keydir/</span><br></pre></td></tr></table></figure></p>
+<p>然后，我们发送交易的同时，带上我们keystore的密码，在被信任的节点使用<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransactionwithpassphrase" target="_blank" rel="noopener">SendTransactionWithPassphrase</a>接口上一次性完成签名和发送过程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d &apos;&#123;&quot;transaction&quot;:&#123;&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;, &quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:2,&quot;gasPrice&quot;:&quot;1000000&quot;,&quot;gasLimit&quot;:&quot;2000000&quot;&#125;,&quot;passphrase&quot;:&quot;passphrase&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;txhash&quot;:&quot;3cdd38a66c8f399e2f28134e0eb556b292e19d48439f6afde384ca9b60c27010&quot;,&quot;contract_address&quot;:&quot;&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提示：因为我们在之前使用n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE发送了一个Nonce为1的交易，<br>所以这里新的交易的Nonce应该增加1，变成2再提交。</p>
+</blockquote>
+<h4 id="2-2-3-解锁-amp-发送"><a href="#2-2-3-解锁-amp-发送" class="headerlink" title="2.2.3 解锁 &amp; 发送"></a>2.2.3 解锁 &amp; 发送</h4><p>这是最危险的发送交易的方法。除非你完全信任一个星云节点，否则不要使用这种方法来发送交易。</p>
+<p>首先，上传你的keystore文件到你信任的星云节点的keydir文件夹下。如果在节点在本地，可以使用如下指令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /path/to/keystore.json /path/to/keydir/</span><br></pre></td></tr></table></figure>
+<p>然后，使用你的keystore文件的密码，在指定的时间范围来在被信任的节点上使用<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount" target="_blank" rel="noopener">Unlock</a>接口解锁账户。时间单位为纳秒，300000000000为300s。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/account/unlock -d &apos;&#123;&quot;address&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;passphrase&quot;:&quot;passphrase&quot;,&quot;duration&quot;:&quot;300000000000&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;result&quot;:true&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>一旦一个账户在节点上被解锁，任何可以访问该机器<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction" target="_blank" rel="noopener">SendTransaction</a>接口的人，都可以直接使用该账户的身份发送交易。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/transaction -d &apos;&#123;&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;, &quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:3,&quot;gasPrice&quot;:&quot;1000000&quot;,&quot;gasLimit&quot;:&quot;2000000&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;txhash&quot;:&quot;8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf&quot;,&quot;contract_address&quot;:&quot;&quot;&#125;&#125;⏎</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-交易收据"><a href="#2-4-交易收据" class="headerlink" title="2.4 交易收据"></a>2.4 交易收据</h3><p>不论使用的哪一种方法发送交易，我们都会得到两个返回值，<code>txhash</code>和<code>contract_address</code>。其中<code>txhash</code>为交易hash，是一个交易的唯一标识。如果当前交易是一个部署合约的交易，<code>contract_address</code>将会是合约地址，调用合约时都会使用这个地址，是合约的唯一标识。我们将在编写并运行智能合约中介绍如何发送部署合约的交易</p>
+<p>使用<code>txhash</code>我们可以查看交易收据，知道当前交易的状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d &apos;&#123;&quot;hash&quot;:&quot;8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;hash&quot;:&quot;8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf&quot;,&quot;chainId&quot;:100,&quot;from&quot;:&quot;n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE&quot;,&quot;to&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;,&quot;value&quot;:&quot;1000000000000000000&quot;,&quot;nonce&quot;:&quot;3&quot;,&quot;timestamp&quot;:&quot;1524667888&quot;,&quot;type&quot;:&quot;binary&quot;,&quot;data&quot;:null,&quot;gas_price&quot;:&quot;1000000&quot;,&quot;gas_limit&quot;:&quot;2000000&quot;,&quot;contract_address&quot;:&quot;&quot;,&quot;status&quot;:1,&quot;gas_used&quot;:&quot;20000&quot;&#125;&#125;⏎</span><br></pre></td></tr></table></figure></p>
+<p>这里的<code>status</code>可能有三种状态值，0，1和2。</p>
+<ul>
+<li>0: 交易失败. 表示当前交易已经上链，但是执行失败了。可能是因为部署合约或者调用合约参数错误。</li>
+<li>1: 交易成功. 表示当前交易已经上链，而且执行成功了。</li>
+<li>2: 交易待定. 表示当前交易还没有上链。可能是因为当前交易还没有被打包；如果长时间处于当前状态，可能是因为当前交易的发送者账户的余额不够支付上链手续费。</li>
+</ul>
+<h3 id="2-5-复查接受者账户余额"><a href="#2-5-复查接受者账户余额" class="headerlink" title="2.5 复查接受者账户余额"></a>2.5 复查接受者账户余额</h3><p>我们复查一下接受者账户上的钱是否已经到账了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d &apos;&#123;&quot;address&quot;:&quot;n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;balance&quot;:&quot;3000000000000000000&quot;,&quot;nonce&quot;:&quot;0&quot;,&quot;type&quot;:87&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>我们用三种方式分别发送了一笔转账，每笔转一个NAS，所以这里看到接受者账户中已经有了3个NAS，即3000000000000000000个代币</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">发送交易</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/08/星云链Nebulas101-02-发送交易/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-星云链Nebulas101-01-编译安装星云链" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1158,11 +1304,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hash,sha256,及应用</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hash,sha256,及应用</a>
         		</li>
       		
 		</ul>
@@ -1863,140 +2009,6 @@
 
 
   
-    <article id="post-MySQL与Golang交互" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/30/MySQL与Golang交互/">MySQL与Golang交互</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/30/MySQL与Golang交互/" class="archive-article-date">
-  	<time datetime="2018-04-30T00:04:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-30</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="MySQL和Golang交互"><a href="#MySQL和Golang交互" class="headerlink" title="MySQL和Golang交互"></a>MySQL和Golang交互</h1><h2 id="1-安装mysql模块"><a href="#1-安装mysql模块" class="headerlink" title="1. 安装mysql模块"></a>1. 安装mysql模块</h2><p><strong>go语言连接mysql简介</strong></p>
-<p> go官方仅提供了<code>database package</code>，<code>database package</code>下有两个包<code>sql</code>，<code>sql/driver</code>。这两个包用来定义操作数据库的接口，这就保证了无论使用哪种数据库，他们的操作方式都是相同的。<br>​    但go官方并没有提供连接数据库的driver，如果要操作数据库，还需要第三方的driver 包，最常用的有：<br>​    <a href="https://github.com/Go-SQL-Driver/MySQL" target="_blank" rel="noopener">https://github.com/Go-SQL-Driver/MySQL</a>支持database/sql，全部采用go写。</p>
-<p>1.下载安装</p>
-<p>​    A：Windows系统下载</p>
-<p>​    使用github.com/go-sql-driver/mysql这个驱动包，打开cmd窗口输入：go get     github.com/go-sql-driver/mysql，会下载到你的GOPATH路径的src 下：</p>
-<p>​    <img src="http://om1c35wrq.bkt.clouddn.com/101mysql%E9%A9%B1%E5%8A%A81.bmp" alt=""></p>
-<p>如果没有安装git，需要先安装git。否则安装失败。</p>
-<p>下载后在有如下目录。</p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/105%E9%A9%B1%E5%8A%A8.bmp" alt=""></p>
-<p>B：Ubuntu/Mac 下安装方式：</p>
-<p>　　执行下面两个命令：</p>
-<p>　　　　下载：go get github.com/Go-SQL-Driver/MySQL<br> 　　　 安装：go install github.com/Go-SQL-Driver/MySQL</p>
-<h2 id="2-导入包"><a href="#2-导入包" class="headerlink" title="2. 导入包"></a>2. 导入包</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">​        　　<span class="string">"database/sql"</span></span><br><span class="line">​        　　_<span class="string">"github.com/Go-SQL-Driver/MySQL"</span></span><br><span class="line">　　)</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ol>
-<li>database/sql，是golang的标准库之一，它提供了一系列接口方法，用于访问关系数据库。它并不会提供数据库特有的方法，那些特有的方法交给数据库驱动去实现。</li>
-<li>我们正在加载的驱动是匿名的，将其限定符别名为_,因此我们的代码中没有一个到处的名称可见。</li>
-</ol>
-</blockquote>
-<p>下面例子中的表结构：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE userinfo (</span><br><span class="line">	uid int(10) NOT NULL AUTO_INCREMENT,</span><br><span class="line">	username varchar(64) DEFAULT NULL,</span><br><span class="line">	departname varchar(64) DEFAULT NULL,</span><br><span class="line">	created date DEFAULT NULL,</span><br><span class="line">	PRIMARY KEY (uid)</span><br><span class="line">) ;</span><br></pre></td></tr></table></figure>
-<h2 id="3-连接"><a href="#3-连接" class="headerlink" title="3.连接"></a>3.连接</h2><p>Open函数：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"用户名:密码@tcp(IP:端口)/数据库?charset=utf8"</span>)</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:111111@tcp(127.0.0.1:3306)/test?charset=utf8"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="4-增删改"><a href="#4-增删改" class="headerlink" title="4. 增删改"></a>4. 增删改</h2><p>有两种方法：<br><strong>1.直接使用Exec函数添加</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(db *DB)</span> <span class="title">Exec</span><span class="params">(query <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(Result, error)</span></span></span><br></pre></td></tr></table></figure>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result, err := db.Exec(<span class="string">"INSERT INTO userinfo (username, departname, created) VALUES (?, ?, ?)"</span>,<span class="string">"lily"</span>,<span class="string">"销售"</span>,<span class="string">"2016-06-21"</span>)</span><br></pre></td></tr></table></figure>
-<p><strong>2.首先使用Prepare获得stmt，然后调用Exec添加</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(db *DB)</span> <span class="title">Prepare</span><span class="params">(query <span class="keyword">string</span>)</span> <span class="params">(*Stmt, error)</span></span></span><br></pre></td></tr></table></figure>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stmt, err := db.Prepare(<span class="string">"INSERT userinfo SET username=?,departname=?,created=?"</span>)</span><br><span class="line"></span><br><span class="line">result, err := stmt.Exec(<span class="string">"zhja"</span>, <span class="string">"研发"</span>, <span class="string">"2016-06-17"</span>)</span><br></pre></td></tr></table></figure>
-<p>获取影响数据库的行数，可以根据该数值判断是否插入或删除或修改成功。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count, err := result.RowsAffected()</span><br></pre></td></tr></table></figure>
-<p>获得刚刚添加数据的自增ID</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id, err := result.LastInsertId()</span><br></pre></td></tr></table></figure>
-<h2 id="5-查询"><a href="#5-查询" class="headerlink" title="5. 查询"></a>5. 查询</h2><p><strong>查询单条数据，QueryRow 函数</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(db *DB)</span> <span class="title">QueryRow</span><span class="params">(query <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> *<span class="title">Row</span></span></span><br></pre></td></tr></table></figure>
-<p>示例代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> username, departname, created <span class="keyword">string</span></span><br><span class="line">err := db.QueryRow(<span class="string">"SELECT username,departname,created FROM userinfo WHERE uid=?"</span>, <span class="number">3</span>).Scan(&amp;username, &amp;departname, &amp;created)</span><br></pre></td></tr></table></figure>
-<p>代码截图：</p>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/120query.png" alt=""></p>
-<p>扫描并复制当前行中每一列的值，但是要求行必须与行中的列数相同。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rs *Rows)</span> <span class="title">Scan</span><span class="params">(dest ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span></span><br></pre></td></tr></table></figure>
-<p><strong>查询多条数据，并遍历</strong><br>　　Query 获取数据，for xxx.Next() 遍历数据</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(db *DB)</span> <span class="title">Query</span><span class="params">(query <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(*Rows, error)</span></span></span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rs *Rows)</span> <span class="title">Next</span><span class="params">()</span> <span class="title">bool</span></span></span><br></pre></td></tr></table></figure>
-<p><img src="http://om1c35wrq.bkt.clouddn.com/121query.png" alt=""></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">与Golang交互</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/DataBase//" class="article-tag-list-link color4">DataBase</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/30/MySQL与Golang交互/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
@@ -2098,15 +2110,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">指针</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
+                <a href="javascript:void(0)" class="js-tag color4">并发性</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2114,7 +2122,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">通道</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络编程</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2123,6 +2131,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">通道</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2142,7 +2154,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2150,11 +2162,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">PoS共识算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
+                <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2163,6 +2175,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">地址与钱包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2178,7 +2194,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2186,7 +2202,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">简易单向链表</a>
+                <a href="javascript:void(0)" class="js-tag color4">小技巧</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2198,11 +2214,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+                <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">reflection反射</a>
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2218,23 +2234,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">结构体</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2250,7 +2262,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2259,6 +2271,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">etcd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2274,10 +2290,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
@@ -2286,11 +2298,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+                <a href="javascript:void(0)" class="js-tag color4">事务，索引，视图</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2318,11 +2334,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
