@@ -65,6 +65,8 @@
 	        
 				<li><a href="/categories/BlockChain">区块链</a></li>
 	        
+				<li><a href="/categories/Python">Python</a></li>
+	        
 				<li><a href="/categories/Other">其余</a></li>
 	        
 			</ul>
@@ -127,6 +129,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -147,15 +151,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 20%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/Golang">Golang</a></li>
+					<li style="width: 16.666666666666668%"><a href="/categories/Golang">Golang</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/DataBase">数据库</a></li>
+					<li style="width: 16.666666666666668%"><a href="/categories/DataBase">数据库</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/BlockChain">区块链</a></li>
+					<li style="width: 16.666666666666668%"><a href="/categories/BlockChain">区块链</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/Other">其余</a></li>
+					<li style="width: 16.666666666666668%"><a href="/categories/Python">Python</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/categories/Other">其余</a></li>
 		        
 				</ul>
 			</nav>
@@ -171,6 +177,240 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-编译Openssl" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/18/编译Openssl/">编译Openssl</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/18/编译Openssl/" class="archive-article-date">
+  	<time datetime="2018-05-18T04:26:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-18</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-提前准备工作"><a href="#1-提前准备工作" class="headerlink" title="1. 提前准备工作"></a>1. 提前准备工作</h2><p>去<a href="https://www.openssl.org" target="_blank" rel="noopener">https://www.openssl.org</a>网站下载openssl源码，作者下载的openssl-1.1.0h.tar版本</p>
+<p>解压openssl开发包文件</p>
+<h3 id="2-在终端下操作如下"><a href="#2-在终端下操作如下" class="headerlink" title="2. 在终端下操作如下"></a>2. 在终端下操作如下</h3><p>进入刚才解压的文件夹，如图所示</p>
+<p><img src="http://om1c35wrq.bkt.clouddn.com/2018_4_4.png" alt=""></p>
+<p>-设定Openssl 安装路径，( <strong>–prefix</strong> )参数为欲安装之目录，执行如下命令：</p>
+<p>​     ./config –prefix=/usr/local/openssl</p>
+<h3 id="3-执行命令-config-t"><a href="#3-执行命令-config-t" class="headerlink" title="3.执行命令./config -t"></a>3.执行命令./config -t</h3><h3 id="4-执行make命令，编译Openssl，编译需要等待一定的时间。"><a href="#4-执行make命令，编译Openssl，编译需要等待一定的时间。" class="headerlink" title="4.执行make命令，编译Openssl，编译需要等待一定的时间。"></a>4.执行make命令，编译Openssl，编译需要等待一定的时间。</h3><h3 id="5-执行make-install，安装-Openssl，安装也需要一定的时间。"><a href="#5-执行make-install，安装-Openssl，安装也需要一定的时间。" class="headerlink" title="5.执行make install，安装 Openssl，安装也需要一定的时间。"></a>5.执行make install，安装 Openssl，安装也需要一定的时间。</h3><p>安装完成后,openssl 会被安装到/usr/local/openssl 目录，包括头文件目录 </p>
+<p><img src="http://om1c35wrq.bkt.clouddn.com/1522819297%281%29.png" alt=""></p>
+<p>进入lib后，libssl.a和libcrypto.a则为编译后的库文件</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">编译Openssl</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/18/编译Openssl/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Hash加密原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/17/Hash加密原理/">Hash加密原理</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/17/Hash加密原理/" class="archive-article-date">
+  	<time datetime="2018-05-17T10:38:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-17</time>
+</a>
+        
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Hash加密原理"><a href="#Hash加密原理" class="headerlink" title="Hash加密原理"></a>Hash加密原理</h1><p>　　计算理论中，没有Hash函数的说法，只有单向函数的说法。所谓的单向函数，是一个复杂的定义，可以去看计算理论或者密码学方面的内容。用“人类”的语言描述单向函数就是：<strong>如果某个函数在给定输入的时候，很容易计算出其结果来；而当给定结果的时候，很难计算出输入来，这就是单向函数</strong>。各种加密函数都可以被认为是单向函数的逼近。Hash函数（或者成为散列函数）也可以看成是单向函数的一个逼近。即它接近于满足单向函数的定义。<br>　　Hash函数还有另外的含义。实际中的Hash函数是指把一个大范围映射到一个小范围。把大范围映射到一个小范围的目的往往是为了节省空间，使得数据容易保存。除此以外，Hash函数往往应用于查找上。所以，在考虑使用Hash函数之前，需要明白它的几个限制：</p>
+<ol>
+<li>Hash的主要原理就是把大范围映射到小范围；所以，你输入的实际值的个数必须和小范围相当或者比它更小。不然冲突就会很多。</li>
+<li>由于Hash逼近单向函数；所以，你可以用它来对数据进行加密。</li>
+<li>不同的应用对Hash函数有着不同的要求；比如，用于加密的Hash函数主要考虑它和单项函数的差距，而用于查找的Hash函数主要考虑它映射到小范围的冲突率。<br>Hash函数应用的主要对象是数组（比如，字符串），而其目标一般是一个int类型。以下我们都按照这种方式来说明。</li>
+</ol>
+<p>一般的说，Hash函数可以简单的划分为如下几类：</p>
+<ol>
+<li>加法Hash；</li>
+<li>位运算Hash；</li>
+<li>乘法Hash；</li>
+<li>除法Hash；</li>
+<li>查表Hash；</li>
+<li>混合Hash；</li>
+</ol>
+<h3 id="1-加法Hash"><a href="#1-加法Hash" class="headerlink" title="1. 加法Hash"></a>1. 加法Hash</h3><p>所谓的加法Hash就是把输入元素一个一个的加起来构成最后的结果。标准的加法Hash的构造如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">static int additiveHash(String key, int prime)</span><br><span class="line"> &#123;</span><br><span class="line">  int hash, i;</span><br><span class="line">  for (hash = key.length(), i = 0; i &lt; key.length(); i++)</span><br><span class="line">   hash += key.charAt(i);</span><br><span class="line">  return (hash % prime);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里的prime是任意的质数，看得出，结果的值域为[0,prime-1]。</p>
+<h3 id="2-位运算Hash"><a href="#2-位运算Hash" class="headerlink" title="2. 位运算Hash"></a>2. 位运算Hash</h3><p>　　这类型Hash函数通过利用各种位运算（常见的是移位和异或）来充分的混合输入元素。比如，标准的旋转Hash的构造如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">static int rotatingHash(String key, int prime)</span><br><span class="line"> &#123;</span><br><span class="line">   int hash, i;</span><br><span class="line">   for (hash=key.length(), i=0; i&lt;key.length(); ++i)</span><br><span class="line">     hash = (hash&lt;&lt;4)^(hash&gt;&gt;28)^key.charAt(i);</span><br><span class="line">   return (hash % prime);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>　　先移位，然后再进行各种位运算是这种类型Hash函数的主要特点。比如，以上的那段计算hash的代码还可以有如下几种变形：</p>
+<ol>
+<li>hash = (hash&lt;&lt;5)^(hash&gt;&gt;27)^key.charAt(i);</li>
+<li>hash += key.charAt(i);<br>hash += (hash &lt;&lt; 10);<br>hash ^= (hash &gt;&gt; 6);</li>
+<li>if((i&amp;1) == 0){<br> hash ^= (hash&lt;&lt;7) ^ key.charAt(i) ^ (hash&gt;&gt;3);<br>}else{<br> hash ^= ~((hash&lt;&lt;11) ^ key.charAt(i) ^ (hash &gt;&gt;5));<br>}</li>
+<li>hash += (hash&lt;&lt;5) + key.charAt(i);</li>
+<li>hash = key.charAt(i) + (hash&lt;&lt;6) + (hash&gt;&gt;16) – hash;</li>
+<li>hash ^= ((hash&lt;&lt;5) + key.charAt(i) + (hash&gt;&gt;2));</li>
+</ol>
+<h3 id="3-乘法Hash"><a href="#3-乘法Hash" class="headerlink" title="3. 乘法Hash"></a>3. 乘法Hash</h3><p>　　这种类型的Hash函数利用了乘法的不相关性（乘法的这种性质，最有名的莫过于平方取头尾的随机数生成算法，虽然这种算法效果并不好）。比如，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static int bernstein(String key)</span><br><span class="line">&#123;</span><br><span class="line">  int hash = 0;</span><br><span class="line">  int i;</span><br><span class="line">  for (i=0; i&lt;key.length(); ++i) </span><br><span class="line">   hash = 33*hash + key.charAt(i);</span><br><span class="line">  return hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　jdk5.0里面的String类的hashCode()方法也使用乘法Hash。不过，它使用的乘数是31。推荐的乘数还有：131, 1313, 13131, 131313等等。</p>
+<p>使用这种方式的著名Hash函数还有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> //  32位FNV算法</span><br><span class="line"> int M_SHIFT = 0;</span><br><span class="line">    public int FNVHash(byte[] data)</span><br><span class="line">    &#123;</span><br><span class="line">        int hash = (int)2166136261L;</span><br><span class="line">        for(byte b : data)</span><br><span class="line">            hash = (hash * 16777619) ^ b;</span><br><span class="line">        if (M_SHIFT == 0)</span><br><span class="line">            return hash;</span><br><span class="line">        return (hash ^ (hash &gt;&gt; M_SHIFT)) &amp; M_MASK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以及改进的FNV算法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> public static int FNVHash1(String data)</span><br><span class="line">    &#123;</span><br><span class="line">        final int p = 16777619;</span><br><span class="line">        int hash = (int)2166136261L;</span><br><span class="line">        for(int i=0;i&lt;data.length();i++)</span><br><span class="line">            hash = (hash ^ data.charAt(i)) * p;</span><br><span class="line">        hash += hash &lt;&lt; 13;</span><br><span class="line">        hash ^= hash &gt;&gt; 7;</span><br><span class="line">        hash += hash &lt;&lt; 3;</span><br><span class="line">        hash ^= hash &gt;&gt; 17;</span><br><span class="line">        hash += hash &lt;&lt; 5;</span><br><span class="line">        return hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了乘以一个固定的数，常见的还有乘以一个不断改变的数，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> static int RSHash(String str)</span><br><span class="line">    &#123;</span><br><span class="line">        int b    = 378551;</span><br><span class="line">        int a    = 63689;</span><br><span class="line">        int hash = 0;</span><br><span class="line"></span><br><span class="line">       for(int i = 0; i &lt; str.length(); i++)</span><br><span class="line">       &#123;</span><br><span class="line">          hash = hash * a + str.charAt(i);</span><br><span class="line">          a    = a * b;</span><br><span class="line">       &#125;</span><br><span class="line">       return (hash &amp; 0x7FFFFFFF);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　虽然Adler32算法的应用没有CRC32广泛，不过，它可能是乘法Hash里面最有名的一个了。关于它的介绍，可以去看RFC 1950规范。</p>
+<h3 id="4-除法Hash"><a href="#4-除法Hash" class="headerlink" title="4. 除法Hash"></a>4. 除法Hash</h3><p>　　除法和乘法一样，同样具有表面上看起来的不相关性。不过，因为除法太慢，这种方式几乎找不到真正的应用。需要注意的是，我们在前面看到的hash的 结果除以一个prime的目的只是为了保证结果的范围。如果你不需要它限制一个范围的话，可以使用如下的代码替代”hash%prime”： <code>hash = hash ^ (hash&gt;&gt;10) ^ (hash&gt;&gt;20)。</code></p>
+<h3 id="5-查表Hash"><a href="#5-查表Hash" class="headerlink" title="5. 查表Hash"></a>5. 查表Hash</h3><p>　　查表Hash最有名的例子莫过于CRC系列算法。虽然CRC系列算法本身并不是查表，但是，查表是它的一种最快的实现方式。查表Hash中有名的例子有：Universal Hashing和Zobrist Hashing。他们的表格都是随机生成的。</p>
+<h3 id="6-混合Hash"><a href="#6-混合Hash" class="headerlink" title="6. 混合Hash"></a>6. 混合Hash</h3><p>　　混合Hash算法利用了以上各种方式。各种常见的Hash算法，比如MD5、Tiger都属于这个范围。它们一般很少在面向查找的Hash函数里面使用。</p>
+<h3 id="7-对Hash算法的评价"><a href="#7-对Hash算法的评价" class="headerlink" title="7. 对Hash算法的评价"></a>7. 对Hash算法的评价</h3><p>　　<a href="http://www.burtleburtle.net/bob/hash/doobs.html" target="_blank" rel="noopener">这个页面</a>提供了对几种流行Hash算法的评价。对Hash函数的建议如下：</p>
+<ol>
+<li><p>字符串的Hash。最简单可以使用基本的乘法Hash，当乘数为33时，对于英文单词有很好的散列效果（小于6个的小写形式可以保证没有冲突）。复杂一点可以使用FNV算法（及其改进形式），它对于比较长的字符串，在速度和效果上都不错。</p>
+</li>
+<li><p>长数组的Hash。可以使用<a href="http://burtleburtle.net/bob/c/lookup3.c这种算法，它一次运算多个字节，速度还算不错。" target="_blank" rel="noopener">http://burtleburtle.net/bob/c/lookup3.c这种算法，它一次运算多个字节，速度还算不错。</a></p>
+</li>
+</ol>
+<h3 id="8-后记"><a href="#8-后记" class="headerlink" title="8. 后记"></a>8. 后记</h3><p>　　本文简略的介绍了一番实际应用中的用于查找的Hash算法。Hash算法除了应用于这个方面以外，另外一个著名的应用是巨型字符串匹配（这时的 Hash算法叫做：rolling hash，因为它必须可以滚动的计算）。设计一个真正好的Hash算法并不是一件容易的事情。做为应用来说，选择一个适合的算法是最重要的。</p>
+<h3 id="9-数组hash"><a href="#9-数组hash" class="headerlink" title="9. 数组hash"></a>9. 数组hash</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">inline int hashcode(const int *v)&#123;</span><br><span class="line">  int s = 0;</span><br><span class="line">  for(int i=0; i&lt;k; i++)</span><br><span class="line">  s=((s&lt;&lt;2)+(v[i]&gt;&gt;4))^(v[i]&lt;&lt;10);</span><br><span class="line">  s = s % M;</span><br><span class="line">  s = s &lt; 0 ? s + M : s;</span><br><span class="line"> return s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：虽说以上的hash能极大程度地避免冲突，但是冲突是在所难免的。所以无论用哪种hash函数，都要加上处理冲突的方法。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码学</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">hash加密原理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BlockChain//" class="article-tag-list-link color1">BlockChain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/17/Hash加密原理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-密码算法加密原理及攻击方式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -1532,235 +1772,9 @@
 
 
   
-    <article id="post-星云链Nebulas101-05-通过RPC接口与星云链交互" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/08/星云链Nebulas101-05-通过RPC接口与星云链交互/">星云链Nebulas101 - 05 通过RPC接口与星云链交互</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/08/星云链Nebulas101-05-通过RPC接口与星云链交互/" class="archive-article-date">
-  	<time datetime="2018-05-08T14:48:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="05-通过RPC接口与星云链交互"><a href="#05-通过RPC接口与星云链交互" class="headerlink" title="05. 通过RPC接口与星云链交互"></a>05. 通过RPC接口与星云链交互</h1><p>星云链节点启动后可以通过RPC远程控制访问。星云链提供了一系列API来获取节点的信息，账号余额，发送交易和部署调用智能合约。</p>
-<p>星云链的远程访问是<a href="https://grpc.io" target="_blank" rel="noopener">GRPC</a>实现的，通过代理(<a href="https://github.com/grpc-ecosystem/grpc-gateway" target="_blank" rel="noopener">GRPC Gateway</a>)也可以通过HTTP访问。HTTP访问是RESTful实现的接口，参数与GRPC的调用接口参数相同。</p>
-<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><p>在每个星云节点中实现了RPC服务器和HTTP服务器，提供给用户丰富的接口来与星云节点交互。</p>
-<h3 id="接口模块"><a href="#接口模块" class="headerlink" title="接口模块"></a>接口模块</h3><p>现在，星云节点的所有的接口被分为两个模块：API和Admin。</p>
-<ul>
-<li>API：提供所有和用户私钥无关的接口</li>
-<li>Admin：提供所有和用户私钥相关的接口<br>建议星云节点对外提供服务时，可以把API接口开放给公众，而将Admin接口开放给授权用户</li>
-</ul>
-<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>星云节点中的RPC服务器和HTTP服务器都可以在节点的配置中配置对应的端口，以及开放的模块。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 用户与节点交互的服务配置，同一台机器启动多个时注意修改端口防止占用</span><br><span class="line">rpc &#123;</span><br><span class="line">    # gRPC API服务端口</span><br><span class="line">    rpc_listen: [&quot;127.0.0.1:8684&quot;]</span><br><span class="line">    # HTTP API服务端口</span><br><span class="line">    http_listen: [&quot;127.0.0.1:8685&quot;]</span><br><span class="line">    # 开放可对外提供http服务的模块</span><br><span class="line">    http_module: [&quot;api&quot;,&quot;admin&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h3><h4 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h4><p>通过HTTP接口和星云节点交互<br><strong>GetNebState</strong><br>我们可以调用API模块中的<a href="https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate" target="_blank" rel="noopener">GetNebState</a>接口来获取节点当前状态，包括所在链ID，最新区块，协议版本等等。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nebstate</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;chain_id&quot;:100,&quot;tail&quot;:&quot;0aa1cceb7801b110fdd5217ba0a4356780c940133924d1c1a4eb60336934dab1&quot;,&quot;lib&quot;:&quot;0000000000000000000000000000000000000000000000000000000000000000&quot;,&quot;height&quot;:&quot;479&quot;,&quot;protocol_version&quot;:&quot;/neb/1.0.0&quot;,&quot;synchronized&quot;:false,&quot;version&quot;:&quot;0.7.0&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="UnlockAccount"><a href="#UnlockAccount" class="headerlink" title="UnlockAccount"></a>UnlockAccount</h4><p>我们可以调用Admin模块中的<a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount" target="_blank" rel="noopener">UnlockAccount</a>接口来在节点内存中解锁一个账户。所有解锁的账户都可以被用来直接发送交易，而不需要密码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl -i -H &apos;Content-Type: application/json&apos; -X POST http://localhost:8685/v1/admin/account/unlock -d &apos;&#123;&quot;address&quot;:&quot;n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz&quot;, &quot;passphrase&quot;: &quot;passphrase&quot;&#125;&apos;</span><br><span class="line"></span><br><span class="line">&#123;&quot;result&quot;:&#123;&quot;result&quot;:true&#125;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h3><p>RPC服务器基于<a href="https://grpc.io" target="_blank" rel="noopener">GRPC</a>实现. GRPC的基于<a href="https://github.com/google/protobuf" target="_blank" rel="noopener">Protocol Buffers</a>来做序列化，你可以在星云<a href="https://github.com/nebulasio/go-nebulas/tree/develop/rpc/pb" target="_blank" rel="noopener">RPC Protobuf文件夹</a>下找到所有的RPC相关的Proto文件定义。</p>
-<p>这里有一些使用golang调用RPC接口的实例。</p>
-<h4 id="GetNebState"><a href="#GetNebState" class="headerlink" title="GetNebState"></a>GetNebState</h4><p>我们可以使用API模块中的<code>GetNebState</code>接口来获取节点当前状态。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>(</span><br><span class="line">    <span class="string">"github.com/nebulasio/go-nebulas/rpc"</span></span><br><span class="line">    <span class="string">"github.com/nebulasio/go-nebulas/rpc/pb"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// GRPC server connection address configuration</span></span><br><span class="line">addr := fmt.Sprintf(<span class="string">"127.0.0.1:%d"</span>,<span class="keyword">uint32</span>(<span class="number">8684</span>))</span><br><span class="line">conn, err := grpc.Dial(addr, grpc.WithInsecure())</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Warn(<span class="string">"rpc.Dial() failed:"</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> conn.Close()</span><br><span class="line"></span><br><span class="line"><span class="comment">// API interface to access node status information</span></span><br><span class="line">api := rpcpb.NewAPIServiceClient(conn)</span><br><span class="line">resp, err := ac.GetNebState(context.Background(), &amp; rpcpb.GetNebStateRequest &#123;&#125;)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Println(<span class="string">"GetNebState"</span>, <span class="string">"failed"</span>, err)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    log.Println(<span class="string">"GetNebState tail"</span>, resp)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="LockAccount"><a href="#LockAccount" class="headerlink" title="LockAccount"></a>LockAccount</h4><p>我们已经在之前使用HTTP接口把账户<code>n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz</code>解锁了。 我们可以调用Admin模块中的<code>LockAccount</code>再次锁定它。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>(</span><br><span class="line">    <span class="string">"github.com/nebulasio/go-nebulas/rpc"</span></span><br><span class="line">    <span class="string">"github.com/nebulasio/go-nebulas/rpc/pb"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// GRPC server connection address configuration</span></span><br><span class="line">addr := fmt.Sprintf(<span class="string">"127.0.0.1:%d"</span>,<span class="keyword">uint32</span>(<span class="number">8684</span>))</span><br><span class="line">conn, err := grpc.Dial(addr, grpc.WithInsecure())</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Warn(<span class="string">"rpc.Dial() failed:"</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> conn.Close()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Admin interface to access, lock account address</span></span><br><span class="line">admin := rpcpb.NewAdminServiceClient(conn)</span><br><span class="line">from := <span class="string">"n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz"</span></span><br><span class="line">resp, err = management.LockAccount(context.Background(), &amp; rpcpb.LockAccountRequest &#123;Address: from&#125;)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Println(<span class="string">"LockAccount"</span>, from, <span class="string">"failed"</span>, err)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    log.Println(<span class="string">"LockAccount"</span>, from, <span class="string">"result"</span>, resp)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="接口列表"><a href="#接口列表" class="headerlink" title="接口列表"></a>接口列表</h3><p>更多的接口列表请参考官方文档。</p>
-<ul>
-<li><a href="https://github.com/nebulasio/wiki/blob/master/rpc.md" target="_blank" rel="noopener">API Module</a></li>
-<li><a href="https://github.com/nebulasio/wiki/blob/master/rpc_admin.md" target="_blank" rel="noopener">Admin Module</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">通过RPC接口与星云链交互</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/08/星云链Nebulas101-05-通过RPC接口与星云链交互/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-星云链Nebulas101-03-编写智能合约" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/08/星云链Nebulas101-03-编写智能合约/">星云链Nebulas101 - 03 编写智能合约</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/08/星云链Nebulas101-03-编写智能合约/" class="archive-article-date">
-  	<time datetime="2018-05-08T14:43:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="03-编写智能合约"><a href="#03-编写智能合约" class="headerlink" title="03 编写智能合约"></a>03 编写智能合约</h1><h2 id="1-编写智能合约"><a href="#1-编写智能合约" class="headerlink" title="1.编写智能合约"></a>1.编写智能合约</h2><p>跟以太坊类似，Nebulas实现了NVM虚拟机来运行智能合约，NVM的实现使用了JavaScript V8引擎，所以当前的开发版，我们可以使用JavaScript、TypeScript来编写智能合约。</p>
-<p><strong>编写智能合约的简要规范：</strong></p>
-<ol>
-<li>智能合约代码必须是一个Prototype的对象；</li>
-<li>智能合约代码必须有一个init()的方法，这个方法只会在部署的时候被执行一次；</li>
-<li>智能合约里面的私有方法是以_开头的方法，私有方法不能被外部直接调用；</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明一个类</span></span><br><span class="line"><span class="keyword">var</span> SuperDictionary = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"repo"</span>, &#123;</span><br><span class="line">        parse: <span class="function"><span class="keyword">function</span> (<span class="params">text</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> DictItem(text);</span><br><span class="line">        &#125;,</span><br><span class="line">        stringify: <span class="function"><span class="keyword">function</span> (<span class="params">o</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> o.toString();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//prototype对象</span></span><br><span class="line">SuperDictionary.prototype = &#123;</span><br><span class="line"> <span class="comment">//init方法</span></span><br><span class="line">    init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// todo</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">//合约提供的其他方法</span></span><br><span class="line">    save: <span class="function"><span class="keyword">function</span> (<span class="params">key, value</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        key = key.trim();</span><br><span class="line">        value = value.trim();</span><br><span class="line">        <span class="keyword">if</span> (key === <span class="string">""</span> || value === <span class="string">""</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"empty key / value"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (value.length &gt; <span class="number">64</span> || key.length &gt; <span class="number">64</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"key / value exceed limit length"</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">from</span> = Blockchain.transaction.from;</span><br><span class="line">        <span class="keyword">var</span> dictItem = <span class="keyword">this</span>.repo.get(key);</span><br><span class="line">        <span class="keyword">if</span> (dictItem)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"value has been occupied"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        dictItem = <span class="keyword">new</span> DictItem();</span><br><span class="line">        dictItem.author = <span class="keyword">from</span>;</span><br><span class="line">        dictItem.key = key;</span><br><span class="line">        dictItem.value = value;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.repo.put(key, dictItem);</span><br><span class="line">    &#125;,</span><br><span class="line"><span class="comment">//合约提供的其他方法</span></span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">        key = key.trim();</span><br><span class="line">        <span class="keyword">if</span> ( key === <span class="string">""</span> ) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"empty key"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.repo.get(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>下面使用JavaScript来编写第一个智能合约：银行保险柜。 这个智能合约需要实现以下功能：</p>
-<ul>
-<li>用户可以向这个银行保险柜存钱。</li>
-<li>用户可以从这个银行保险柜取钱。</li>
-<li>用户可以查询银行保险柜中的余额。</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//严格语法</span></span><br><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"><span class="comment">//声明一个账户类</span></span><br><span class="line"><span class="keyword">var</span> DepositeContent = <span class="function"><span class="keyword">function</span> (<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (text) &#123;</span><br><span class="line">    <span class="keyword">var</span> o = <span class="built_in">JSON</span>.parse(text);</span><br><span class="line">    <span class="keyword">this</span>.balance = <span class="keyword">new</span> BigNumber(o.balance);</span><br><span class="line">    <span class="keyword">this</span>.expiryHeight = <span class="keyword">new</span> BigNumber(o.expiryHeight);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.balance = <span class="keyword">new</span> BigNumber(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">this</span>.expiryHeight = <span class="keyword">new</span> BigNumber(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">DepositeContent.prototype = &#123;</span><br><span class="line">  toString: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//合约类</span></span><br><span class="line"><span class="keyword">var</span> BankVaultContract = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  LocalContractStorage.defineMapProperty(<span class="keyword">this</span>, <span class="string">"bankVault"</span>, &#123;</span><br><span class="line">    parse: <span class="function"><span class="keyword">function</span> (<span class="params">text</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> DepositeContent(text);</span><br><span class="line">    &#125;,</span><br><span class="line">    stringify: <span class="function"><span class="keyword">function</span> (<span class="params">o</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> o.toString();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// save value to contract, only after height of block, users can takeout</span></span><br><span class="line"><span class="comment">//合约里面提供的方法</span></span><br><span class="line">BankVaultContract.prototype = &#123;</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//<span class="doctag">TODO:</span></span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">//对应存的操作 </span></span><br><span class="line">  save: <span class="function"><span class="keyword">function</span> (<span class="params">height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">from</span> = Blockchain.transaction.from;</span><br><span class="line">    <span class="keyword">var</span> value = Blockchain.transaction.value;</span><br><span class="line">    <span class="keyword">var</span> bk_height = <span class="keyword">new</span> BigNumber(Blockchain.block.height);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> orig_deposit = <span class="keyword">this</span>.bankVault.get(<span class="keyword">from</span>);</span><br><span class="line">    <span class="keyword">if</span> (orig_deposit) &#123;</span><br><span class="line">      value = value.plus(orig_deposit.balance);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> deposit = <span class="keyword">new</span> DepositeContent();</span><br><span class="line">    deposit.balance = value;</span><br><span class="line">    deposit.expiryHeight = bk_height.plus(height);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.bankVault.put(<span class="keyword">from</span>, deposit);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">//对应取的操作</span></span><br><span class="line">  takeout: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">from</span> = Blockchain.transaction.from;</span><br><span class="line">    <span class="keyword">var</span> bk_height = <span class="keyword">new</span> BigNumber(Blockchain.block.height);</span><br><span class="line">    <span class="keyword">var</span> amount = <span class="keyword">new</span> BigNumber(value);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> deposit = <span class="keyword">this</span>.bankVault.get(<span class="keyword">from</span>);</span><br><span class="line">    <span class="keyword">if</span> (!deposit) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"No deposit before."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (bk_height.lt(deposit.expiryHeight)) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Can not takeout before expiryHeight."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (amount.gt(deposit.balance)) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Insufficient balance."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result = Blockchain.transfer(<span class="keyword">from</span>, amount);</span><br><span class="line">    <span class="keyword">if</span> (!result) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"transfer failed."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Event.Trigger(<span class="string">"BankVault"</span>, &#123;</span><br><span class="line">      Transfer: &#123;</span><br><span class="line">        <span class="keyword">from</span>: Blockchain.transaction.to,</span><br><span class="line">        to: <span class="keyword">from</span>,</span><br><span class="line">        value: amount.toString()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    deposit.balance = deposit.balance.sub(amount);</span><br><span class="line">    <span class="keyword">this</span>.bankVault.put(<span class="keyword">from</span>, deposit);</span><br><span class="line">  &#125;,</span><br><span class="line">  balanceOf: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">from</span> = Blockchain.transaction.from;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.bankVault.get(<span class="keyword">from</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  verifyAddress: <span class="function"><span class="keyword">function</span> (<span class="params">address</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 1-valid, 0-invalid</span></span><br><span class="line">    <span class="keyword">var</span> result = Blockchain.verifyAddress(address);</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      valid: result == <span class="number">0</span> ? <span class="literal">false</span> : <span class="literal">true</span></span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = BankVaultContract;</span><br></pre></td></tr></table></figure>
-<p>上面智能合约的示例可以看到，BankVaultContract是一个prototype对象，这个对象有一个init()方法，满足了我们说的编写智能合约最基础的规范。</p>
-<p><code>BankVaultContract</code>实现了另外两个方法：</p>
-<ul>
-<li>save(): 用户可以通过调用save()方法向银行保险柜存钱；</li>
-<li>takeout(): 用户可以通过调用takeout()方法向银行保险柜取钱；</li>
-<li>balanceOf(): 用户可以通过调用balanceOf()方法向银行保险柜查询余额</li>
-</ul>
-<p>上面的合约代码用到了内置的Blockchain对象和内置的BigNumber()方法，下面我们来逐行拆解分析合约代码：</p>
-<p><strong>save():</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">save: <span class="function"><span class="keyword">function</span> (<span class="params">height</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="keyword">from</span> = Blockchain.transaction.from;</span><br><span class="line">  <span class="keyword">var</span> value = Blockchain.transaction.value;</span><br><span class="line">  <span class="keyword">var</span> bk_height = <span class="keyword">new</span> BigNumber(Blockchain.block.height);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> orig_deposit = <span class="keyword">this</span>.bankVault.get(<span class="keyword">from</span>);</span><br><span class="line">  <span class="keyword">if</span> (orig_deposit) &#123;</span><br><span class="line">    value = value.plus(orig_deposit.balance);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> deposit = <span class="keyword">new</span> DepositeContent();</span><br><span class="line">  deposit.balance = value;</span><br><span class="line">  deposit.expiryHeight = bk_height.plus(height);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.bankVault.put(<span class="keyword">from</span>, deposit);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p><strong>takeout():</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">takeout: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="keyword">from</span> = Blockchain.transaction.from;</span><br><span class="line">  <span class="keyword">var</span> bk_height = <span class="keyword">new</span> BigNumber(Blockchain.block.height);</span><br><span class="line">  <span class="keyword">var</span> amount = <span class="keyword">new</span> BigNumber(value);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> deposit = <span class="keyword">this</span>.bankVault.get(<span class="keyword">from</span>);</span><br><span class="line">  <span class="keyword">if</span> (!deposit) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"No deposit before."</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (bk_height.lt(deposit.expiryHeight)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Can not takeout before expiryHeight."</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (amount.gt(deposit.balance)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Insufficient balance."</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> result = Blockchain.transfer(<span class="keyword">from</span>, amount);</span><br><span class="line">  <span class="keyword">if</span> (!result) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"transfer failed."</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  Event.Trigger(<span class="string">"BankVault"</span>, &#123;</span><br><span class="line">    Transfer: &#123;</span><br><span class="line">      <span class="keyword">from</span>: Blockchain.transaction.to,</span><br><span class="line">      to: <span class="keyword">from</span>,</span><br><span class="line">      value: amount.toString()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  deposit.balance = deposit.balance.sub(amount);</span><br><span class="line">  <span class="keyword">this</span>.bankVault.put(<span class="keyword">from</span>, deposit);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<h2 id="2-部署智能合约"><a href="#2-部署智能合约" class="headerlink" title="2.部署智能合约"></a>2.部署智能合约</h2><p>这里部署合约我推荐采用通过钱包部署，<a href="https://github.com/nebulasio/web-wallet" target="_blank" rel="noopener">Nebulas钱包地址</a>。将钱包下载到本地以后打开该文件夹，其目录结构如下：<br><img src="/2018/05/08/星云链Nebulas101-03-编写智能合约/p1.png" alt=""><br>打开名为index.html的文件，就能在浏览器中看到钱包界面如图：<br><img src="/2018/05/08/星云链Nebulas101-03-编写智能合约/p2.png" alt=""></p>
-<p>没有钱包地址的需要注册一个钱包地址，操作如图：<br><img src="/2018/05/08/星云链Nebulas101-03-编写智能合约/p3.png" alt=""></p>
-<p>部署合约如下图：<br><img src="/2018/05/08/星云链Nebulas101-03-编写智能合约/p4.png" alt=""><br><img src="/2018/05/08/星云链Nebulas101-03-编写智能合约/p5.png" alt=""></p>
-<p>之后<br><img src="/2018/05/08/星云链Nebulas101-03-编写智能合约/p6.png" alt=""></p>
-<p>合约就已经被部署到链上了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">编写智能合约</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Other//" class="article-tag-list-link color1">Other</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/08/星云链Nebulas101-03-编写智能合约/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
   
 
@@ -1887,15 +1901,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Go语言使用etcd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">面向对象</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1911,10 +1925,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PoW共识算法</a>
               </li>
              
@@ -1927,7 +1937,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+                <a href="javascript:void(0)" class="js-tag color3">RSA加密解密</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1939,6 +1949,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数字验签</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">加密算法</a>
               </li>
              
@@ -1947,15 +1965,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">数据库存储与命令行控制</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">小技巧</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+                <a href="javascript:void(0)" class="js-tag color5">包管理以及依赖管理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1967,11 +1981,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">函数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1979,19 +1989,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">基本语法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">接口</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
+                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1999,7 +2009,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组,切片(slice),集合(map)，字符串(string)</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">与Golang交互</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hash加密原理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2011,7 +2033,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Hash,sha256,及应用</a>
+                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2023,15 +2045,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">以太坊</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">区块链简介</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2039,11 +2053,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+                <a href="javascript:void(0)" class="js-tag color5">共识算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2051,11 +2061,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查询及复杂操作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">基础知识</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">三大范式</a>
+                <a href="javascript:void(0)" class="js-tag color5">基本操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2063,15 +2081,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">智能合约存储区</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">发送交易</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2083,7 +2097,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
+                <a href="javascript:void(0)" class="js-tag color2">编写智能合约</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2091,11 +2105,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
+                <a href="javascript:void(0)" class="js-tag color2">正则表达式Go语言应用</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编译Openssl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">环境配置</a>
               </li>
              
               <li class="article-tag-list-item">
